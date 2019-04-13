@@ -46,7 +46,7 @@ function get_data($vid){
   $body=mk_body($tbls,$vid);
   $qry = 'select * from (' . $body . ') order by time desc limit ';
   if($utime){
-    $qry .= '100 offset ( select count(time) from (' . $body . ') where time >'. $utime . ') - 50';
+    $qry .= '1000 offset ( select count(time) from (' . $body . ') where time >'. $utime . ') - 500';
   }else{
     $qry .= '24';
   }

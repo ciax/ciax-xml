@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # I/O Simulator
 require 'libsimio'
 
@@ -9,7 +9,7 @@ module CIAX
     class FpDio < Server
       def initialize(cfg = nil)
         super(10_001, cfg)
-        @devlist[:fp] = self
+        @dev_dic[:fp] = self
         @ifs = "\n"
         @ofs = "\r"
         # @reg[2]: output, @reg[3]: input
@@ -47,11 +47,11 @@ module CIAX
       end
 
       def arm_oc(idx, hexstr)
-        log(@devlist.keys.inspect)
+        log(@dev_dic.keys.inspect)
         # OUTPUT?
-        return unless idx == 2 && @devlist.key?(:arm)
+        return unless idx == 2 && @dev_dic.key?(:arm)
         # ARM:STORE position?
-        return unless @devlist[:arm].fpos > 200
+        return unless @dev_dic[:arm].fpos > 200
         change_mode(hexstr)
       end
 
@@ -97,6 +97,8 @@ module CIAX
         end
       end
     end
+
+    @sim_list << FpDio
 
     FpDio.new.serve if __FILE__ == $PROGRAM_NAME
   end

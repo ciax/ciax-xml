@@ -2,14 +2,17 @@
 function json_view(data) {
   return (JSON.stringify(data).replace(/"/g, "'"));
 }
+
 function replace(sel, str, cls) {
   return $(sel).text(str).attr('class', cls || str);
 }
+
 function open_table(site) {
   window.open('/json/' + site + '.html', 't' + site,
-              'menubar=no,location=no,status=no,width=600,height=200'
-             ).focus();
+    'menubar=no,location=no,status=no,width=600,height=200'
+  ).focus();
 }
+
 function open_graph(site, vid, time) {
   var url = '/json/graph.html?site=' + site + '&vid=' + vid;
   var pre = 'g' + vid.replace(/,/g, '_');
@@ -18,19 +21,25 @@ function open_graph(site, vid, time) {
     pre += 'h';
   }
   window.open(url, pre + '_' + site,
-              'menubar=no,location=no,status=no,width=700,height=380'
-             ).focus();
+    'menubar=no,location=no,status=no,width=700,height=380'
+  ).focus();
 }
+
 function exec_funcs(funclist) {
-  $.each(funclist, function(k, func) { func(); });
+  $.each(funclist, function(k, func) {
+    func();
+  });
 }
 // ******* Animation *********
 // Auto scroll. Check box with id:go_bottm is needed;
 function sticky_bottom(speed) {
   if (!$('#scroll :checkbox').prop('checked')) return;
   var div = $('#record');
-  div.animate({ scrollTop: div[0].scrollHeight},speed);
+  div.animate({
+    scrollTop: div[0].scrollHeight
+  }, speed);
 }
+
 function set_sticky_bottom() {
   $('#scroll :checkbox').prop('checked', true);
 }
@@ -44,6 +53,7 @@ function set_auto_release(sel) {
   div.on('mouseleave', function() {
     $(this).off('scroll', auto_release);
   });
+
   function auto_release() {
     var cr = $(this).scrollTop();
     if (cr < start_pos && !$('#record :animated')[0])
@@ -64,6 +74,7 @@ function set_acordion(sel) {
   return function(sub) {
     toggle(sel + ' h4' + sub);
   }
+
   function toggle(sub) {
     $(sub).next().slideToggle('slow', function() {
       sticky_bottom(0);
@@ -72,7 +83,9 @@ function set_acordion(sel) {
 }
 // interactive mode
 function blinking() {
-  $('.query,.run,.busy').fadeOut(500, function() {$(this).fadeIn(500)});
+  $('.query,.run,.busy').fadeOut(500, function() {
+    $(this).fadeIn(500);
+  });
 }
 // contents resize
 function height_adjust() {
@@ -81,7 +94,9 @@ function height_adjust() {
     var h = $(window).height();
     var res = $(ol).children('div:not(".contents")').map(function(j, e) {
       return $(e).height();
-    }).get().reduce(function(p, c, i, arr) {return p + c});
+    }).get().reduce(function(p, c, i, arr) {
+      return p + c;
+    });
     $(ol).children('.contents').css('max-height', h - res - 100);
     sticky_bottom(0);
   });
@@ -89,7 +104,10 @@ function height_adjust() {
 // ******** Control by UDP ********
 // dvctl with func when success
 function dvctl(args, func) {
-  var send = {port: port, cmd: args};
+  var send = {
+    port: port,
+    cmd: args
+  };
   //console.log('send=' + JSON.stringify(data));
   $.ajax('/json/dvctl-udp.php', {
     data: send,
@@ -101,7 +119,7 @@ function dvctl(args, func) {
       if (func) {
         console.log(JSON.stringify(recv));
         func(recv.sid);
-      };
+      }
     },
     error: function(recv) {
       //console.log('recv=' + JSON.stringify(recv));
@@ -115,16 +133,18 @@ function exec(csv, func) {
   if (confirm('EXEC?' + JSON.stringify(args))) {
     dvctl(args, func);
     return true;
-  }else
+  } else
     return false;
 }
 // Button/Check
 function stop() {
   dvctl(['interrupt']);
 }
+
 function upd() {
   dvctl(['upd']);
 }
+
 function interactive() {
   var jq = $('#interactive :checkbox'); // :checlbox
   if (!jq[0]) return;
@@ -146,7 +166,7 @@ function make_select(sel, ary) {
     $.each(ary, function(key, val) {
       if (typeof key === 'number') {
         make_optpar(key, val);
-      }else {
+      } else {
         make_optgrp(key, val);
       }
     });
@@ -156,7 +176,7 @@ function make_select(sel, ary) {
     opt.push('<option');
     if (Array.isArray(val)) {
       opt.push(' value="' + val[0] + '">' + val[1]);
-    }else {
+    } else {
       opt.push('>' + val);
     }
     opt.push('</option>');
@@ -167,13 +187,14 @@ function make_select(sel, ary) {
       opt.push('<optgroup label="' + key + '">');
       make_opt(val);
       opt.push('</optgroup>');
-    }else {
+    } else {
       opt.push('<option>' + key + '</option>');
     }
   }
 }
+
 function get_select(dom) {
-  var cmd = $(dom).val();//options[obj.selectedIndex].value;
+  var cmd = $(dom).val(); //options[obj.selectedIndex].value;
   if (cmd == '--select--') return;
   return cmd;
 }
@@ -185,7 +206,7 @@ function make_radio(dom, ary) {
     opt.push('<input type="radio" name="query" value="');
     if (Array.isArray(val)) {
       opt.push(val[0] + ':' + val[1] + '"/>' + val[0]);
-    }else {
+    } else {
       opt.push(val + '"/>' + val);
     }
     opt.push('</label>');
@@ -194,11 +215,17 @@ function make_radio(dom, ary) {
 }
 // ********* Ajax *********
 function ajax_static(url) {
-  return $.ajax(url, { ifModified: false, cache: true});
+  return $.ajax(url, {
+    ifModified: false,
+    cache: true
+  });
 }
 // func1 for updated, func2 for no changes
 function ajax_update(url) {
-  return $.ajax(url, { ifModified: true, cache: false});
+  return $.ajax(url, {
+    ifModified: true,
+    cache: false
+  });
 }
 // ********* Page Update *********
 // Control Part/Shared with ciax-xml.js
@@ -206,6 +233,7 @@ function update() {
   exec_funcs(upd_list);
   blinking();
 }
+
 function init() {
   exec_funcs(init_list);
   setInterval(update, 1000);
@@ -217,4 +245,7 @@ var init_list = []; // Global Init functions, element will be added only
 $(window).on('resize', height_adjust);
 // ifModified option makes error in FireFox (not Chrome).
 // JSON will be loaded as html if no update at getJSON().
-$.ajaxSetup({ mimeType: 'json', cahce: false});
+$.ajaxSetup({
+  mimeType: 'json',
+  cahce: false
+});

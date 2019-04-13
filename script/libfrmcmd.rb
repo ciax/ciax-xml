@@ -1,7 +1,7 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libcmdext'
-require 'libframe'
-require 'libfield'
+require 'libfrmsel'
+require 'libfrmstat'
 # CIAX-XML Command module
 module CIAX
   # Frame Layer
@@ -14,123 +14,101 @@ module CIAX
         # Internal Command Group
         class Group
           # cfg should have [:field]
-          def initialize(cfg, atrb = Hashx.new)
+          def initialize(spcfg, atrb = Hashx.new)
             super
-            init_item_file_io
-            add_item('set', '[key(@idx)] [val(,val)]').pars_any(2)
-            add_item('flush', 'Stream')
+            init_form_fio
+            add_form('set', '[key(@idx)] [val(,val)]').pars_any(2)
+            add_form('flush', 'Stream')
           end
         end
       end
       # External Command Group
       module Ext
         # Generate [:frame]
-        class Item
+        class Form
           private
 
           def _gen_entity(opt)
             ent = super
-            @field = type?(@cfg[:field], Field)
-            @fstr = {}
-            @sel = ___init_sel
+            @stat = type?(@cfg[:field], Field)
+            @sel = Select.new(@cfg[:dbi], :command).get(ent[:id])
             @cfg[:nocache] = @sel[:nocache] if @sel.key?(:nocache)
-            @chg_flg = nil
-            @frame = ___init_frame
-            @sel[:body] = ent.deep_subst(@cfg[:body])
-            ___init_body(ent) if @sel[:body]
+            @stat.echo = ___init_frame(ent)
             ent
           end
 
-          def ___init_body(ent)
+          def ___init_frame(ent)
             verbose { "Body:#{@cfg[:label]}(#{@id})" }
-            __add_frame(:body)
-            ___init_cc
-            __add_frame(:main)
-            ___chk_nocache
-            verbose { "Cmd Generated [#{@id}]" }
-            # For send back
-            @field.echo = ent[:frame] = @fstr[:main]
-            ent
-          end
-
-          def ___init_sel
-            if /true|1/ =~ @cfg[:noaffix]
-              { main: [:body] }
-            else
-              Hashx.new(@cfg[:command][:frame])
-            end
-          end
-
-          def ___init_frame
-            sp = type?(@cfg[:stream], Hash)
-            Frame.new(sp[:endian], sp[:ccmethod])
-          end
-
-          def ___init_cc
-            return unless @sel.key?(:ccrange)
-            @frame.cc.enclose { __add_frame(:ccrange) }
-          end
-
-          def ___chk_nocache
-            return if @cfg[:nocache] || !@chg_flg
-            warning("Cache stored (#{@id}) despite Frame includes Status")
-            @cfg[:nocache] = true
+            @sp = type?(@cfg[:stream], Hash)
+            @codec = Codec.new(@sp[:endian])
+            @frame = ['']
+            ent[:frame] = __mk_frame(ent.deep_subst(@sel[:struct]))
           end
 
           # instance var frame,sel,field,fstr
-          def __add_frame(domain)
-            @frame.reset
-            @sel[domain].each { |db| ___frame_by_type(db) }
-            @fstr[domain] = @frame.copy
+          def __mk_frame(array)
+            array.each do |dbc|
+              dbc.is_a?(Array) ? ___cc_frame(dbc) : ___single_frame(dbc)
+            end
+            # Replace check code with ${cc}
+            @frame[1] = __mk_code(@cc.ccc, @frame[1]) if @cc
+            @frame.join
           end
 
-          def ___frame_by_type(db)
-            if db.is_a? Hash
-              subfrm = ___conv_by_stat(___conv_by_cc(db[:val]))
-              ___set_csv_frame(subfrm, db)
-            else # ccrange,body ...
-              @frame.push(@fstr[db.to_sym])
+          def ___cc_frame(array)
+            @cc = CheckCode.new(@sp[:ccmethod]) do
+              array.map { |dbc| ___single_frame(dbc) }.join
             end
           end
 
-          def ___conv_by_cc(val)
-            val.gsub(/\$\{cc\}/) { @frame.cc }
-          end
-
-          def ___conv_by_stat(frame)
-            subfrm = @field.subst(frame)
-            if subfrm != frame
-              @chg_flg = true
-              verbose do
-                "Convert (#{@id}) #{frame.inspect} -> #{subfrm.inspect}"
-              end
-            end
-            subfrm
-          end
-
-          def ___set_csv_frame(subfrm, db)
+          def ___single_frame(dbc)
+            word = ___chk_cc(dbc)
+            return('') unless word
+            # Replace status with ${status_id}
+            res = @stat.subst(word)
+            # No cache if status replacement
+            chg = @cfg[:nocache] = true if res != word
+            verbose { cfmt('Convert (%s) %S -> %S', @id, word, res) } if chg
             # Allow csv parameter
-            subfrm.split(',').each do |s|
-              @frame.push(s, db)
+            code = res.split(',').map { |s| __mk_code(s, dbc) }.join
+            verbose { cfmt('Cmd Frame Db [%S] -> %S', dbc, code) }
+            @frame.last << code
+          end
+
+          def ___chk_cc(dbc)
+            if dbc[:type] == 'cc'
+              @frame.push(dbc)
+              @frame.push('')
+              return
             end
+            dbc[:val].dup
+          end
+
+          def __mk_code(str, db = {})
+            return '' unless str
+            verbose { "Add [#{str.inspect}]" }
+            @codec.encode(str, db)
           end
         end
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libfrmrsp'
-      require 'libfrmdb'
+      require 'libfrmconv'
+      require 'libdevdb'
       cap = '[dev] [cmd] (par) < field_file'
-      ConfOpts.new(cap, options: 'r') do |cfg, args|
-        fld = cfg[:field] = Field.new(args.shift)
+      ConfOpts.new(cap, options: 'r') do |cfg|
+        if STDIN.tty?
+          dbi = Dev::Db.new.get(cfg.args.shift)
+          cfg[:field] = Field.new(dbi[:id])
+        else
+          dbi = (cfg[:field] = Field.new).dbi
+        end
         # dbi.pick alreay includes :layer, :command, :version
-        cobj = Index.new(cfg, fld.dbi.pick(%i(stream)))
-        cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }
-        cobj.rem.add_ext
-        fld.jmerge unless STDIN.tty?
-        res = cobj.set_cmd(args).exe_cmd('test')
-        if cfg[:opt][:r]
+        cobj = Index.new(cfg, dbi.pick(:stream))
+        rem = cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }.add_ext
+        res = rem.set_cmd(cfg.args).exe_cmd('test')
+        if cfg.opt[:r]
           print res.msg
         else
           puts res.path

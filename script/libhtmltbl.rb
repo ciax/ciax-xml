@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libxmlfmt'
 require 'libinsdb'
 # CIAX-XML
@@ -9,7 +9,7 @@ module CIAX
     class Header < Xml::Format
       def initialize(dbi)
         super()
-        @dbi = type?(dbi, Dbi)
+        @dbi = type?(dbi, Dbx::Item)
         dbc = @dbi[:command]
         @idx = dbc[:index]
         @gdb = dbc[:group]
@@ -121,7 +121,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (ctl)') do |_opt, args|
+      Opt::Get.new('[id] (ctl)') do |_opt, args|
         puts Status.new(Ins::Db.new.get(args.shift))
       end
     end

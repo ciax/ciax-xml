@@ -1,10 +1,11 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 $LOAD_PATH << __dir__
-require 'libwatlist'
 require 'libdaemon'
 # CIAX-XML Device Server
 module CIAX
-  Daemon.new('dvsv', 'e') do |cfg, atrb|
-    Wat::List.new(cfg, atrb)
+  ConfOpts.new('[id] ...', options: 'fawxmdeb') do |cfg|
+    Daemon.new(cfg) do |layer|
+      layer::ExeDic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).run
+    end
   end
 end

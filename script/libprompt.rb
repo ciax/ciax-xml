@@ -1,7 +1,8 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libvarx'
 module CIAX
   # For server status through all layers
+  #   This instance will be assigned as @sv_stat in other classes
   class Prompt < Varx
     attr_reader :db
     # type = site,mcr
@@ -10,9 +11,7 @@ module CIAX
       @db = {}
       self[:msg] = ''
       init_time2cmt
-      @cmt_procs << proc do
-        verbose { "Save #{id}:timing #{pick(%i(busy queue)).inspect}" }
-      end
+      @layer = 'all'
     end
 
     # For String Data
@@ -69,13 +68,18 @@ module CIAX
       self
     end
 
+    def erase(key, elem)
+      type?(self[key], Array).delete(elem)
+      self
+    end
+
     # For Message
     def msg
       self[:msg]
     end
 
     def seterr
-      repl(:msg, $ERROR_INFO.to_s)
+      repl(:msg, $ERROR_INFO.to_s.split("\n").first)
     end
 
     def to_v

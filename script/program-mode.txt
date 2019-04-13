@@ -1,0 +1,22 @@
+* Data Mode (Varx)
+- Test
+    Show skeleton by Dbx::Item
+
+- Remote : ext_remote
+    Read URL for update
+
++- Local/Conv  : ext_local, ext_conv
+|    Manipulate Memory (Convert data)
+|
+|-+- File   : ext_local
+| |    Load File for initiate
+| |
+| +- Save   : ext_save (dep. ext_local)
+|      Load w/o Header
+|      Save to File after manipulate
+|
+|-+- Log    : ext_log
+  |    Add Logging feature
+  |
+  +- SqLog  : ext_sqlog (dep. ext_log)
+       Add RDB logging feature

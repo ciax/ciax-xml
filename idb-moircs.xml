@@ -6,8 +6,8 @@
     <include ref="cmp"/>
   </project>
   <project id="moircs_arc" label="MOIRCS Archive" column="3">
-    <group id="mc_tele" label="Telemetory">
-      <site id="ml1" app_id="lk8" host="moircsobcp" port="25605" label="Temperature 1">
+    <group id="mc_tele" enable="false" label="Telemetory">
+      <site id="ml1" dev_id="ml1" app_id="lk8" host="moircsobcp" port="25605" label="Temperature 1">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <index ref="ch0" label="MosCold2"/>
           <index ref="ch1" label="MosCold1"/>
@@ -21,7 +21,7 @@
           <index ref="htr" label="HeaterPower1(%%)"/>
         </status>
       </site>
-      <site id="ml2" app_id="lk8" host="moircsobcp" port="25606" label="Temperature 2">
+      <site id="ml2" dev_id="ml2" app_id="lk8" host="moircsobcp" port="25606" label="Temperature 2">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <index ref="ch0" label="Robohand"/>
           <index ref="ch1" label="CollBench"/>
@@ -35,20 +35,20 @@
           <index ref="htr" label="HeaterPower2(%%)"/>
         </status>
       </site>
-      <site id="mva" app_id="var" host="moircsobcp" port="25608" label="Pumping"/>
-      <site id="mt1" app_id="tpg" host="moircsobcp" port="25609" label="Pressure Main">
+      <site id="mva" dev_id="mva" app_id="var" host="moircsobcp" port="25608" label="Pumping"/>
+      <site id="mt1" dev_id="mt1" app_id="tpg" host="moircsobcp" port="25609" label="Pressure Main">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <index ref="st1" label="Main Dewar Stat"/>
           <index ref="ch1" label="Main Dewar (Torr)"/>
         </status>
       </site>
-      <site id="mt2" app_id="tpg" host="moircsobcp" port="25610" label="Pressure Main">
+      <site id="mt2" dev_id="mt2" app_id="tpg" host="moircsobcp" port="25610" label="Pressure Main">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <index ref="st1" label="Throat Stat"/>
           <index ref="ch1" label="Throat (Torr)"/>
         </status>
       </site>
-      <site id="mt3" app_id="tpg" host="moircsobcp" port="25611" label="Pressure Pump">
+      <site id="mt3" dev_id="mt3" app_id="tpg" host="moircsobcp" port="25611" label="Pressure Pump">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <index ref="st1" label="Turbo Pump Stat"/>
           <index ref="ch1" label="Turbo Pump (Torr)"/>
@@ -57,8 +57,8 @@
         </status>
       </site>
     </group>
-    <group id="mc_mtn" label="Maintenance">
-      <site id="mp1" app_id="ken" host="moircsobcp" port="25613" label="Power Supply 1">
+    <group id="mc_mtn" enable="false" label="Maintenance">
+      <site id="mp1" dev_id="mp1" app_id="ken" host="moircsobcp" port="25613" label="Power Supply 1">
         <command ref="mp1"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="go0" caption="Output [UNIT A]"/>
@@ -76,7 +76,7 @@
           <group ref="gt2" caption="Tracking/CH [UNIT C]"/>
         </status>
       </site>
-      <site id="mp2" app_id="ken" host="moircsobcp" port="25614" label="Power Supply 2">
+      <site id="mp2" dev_id="mp2" app_id="ken" host="moircsobcp" port="25614" label="Power Supply 2">
         <command ref="mp2"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="go0" caption="Output [UNIT A]"/>
@@ -95,10 +95,10 @@
           <group ref="gdo2" caption="Delay/CH [UNIT C]"/>
         </status>
       </site>
-      <site id="mph" app_id="mph" host="moircsobcp" port="25615" label="Power Supply Hilo"/>
-      <site id="mh1" app_id="psp" host="merope" port="25621" label="Carrousel Heater"/>
-      <site id="mh2" app_id="psp" host="atlas" port="25622" label="Main Heater"/>
-      <site id="mmf" app_id="mic" host="elextra" port="25623" label="Focus Control"/>
+      <site id="mph" dev_id="mph" app_id="mph" host="moircsobcp" port="25615" label="Power Supply Hilo"/>
+      <site id="mh1" dev_id="mh1" app_id="psp" host="merope" port="25621" label="Carrousel Heater"/>
+      <site id="mh2" dev_id="mh2" app_id="psp" host="atlas" port="25622" label="Main Heater"/>
+      <site id="mmf" dev_id="mmf" app_id="mic" host="elextra" port="25623" label="Focus Control"/>
     </group>
   </project>
 </idb>

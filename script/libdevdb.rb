@@ -1,19 +1,15 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libfrmdb'
+require 'libinsdb'
 
 module CIAX
   # Device Layer
   module Dev
     # Device DB
-    class Db < Db
+    class Db < Dbx::Index
       def initialize
         super('ddb')
         @fdb = Frm::Db.new
-      end
-
-      # Compatible for Idb
-      def run_list
-        []
       end
 
       private
@@ -41,8 +37,11 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
-        dbi = Db.new.get(args.shift)
+      Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
+        dlist = Ins::Db.new.valid_devs.trues
+        db = Db.new.reduce(dlist)
+        puts "Dev list = #{db.list.inspect}"
+        dbi = db.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end
     end

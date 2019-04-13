@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libmsgdbg'
 # Add deep_include to Module
 class Module
@@ -39,6 +39,14 @@ end
 module CIAX
   ### Checking Methods ###
   module Msg
+    def base_class
+      class_path.last(2).join('::')
+    end
+
+    def layer_name
+      class_path[1].downcase
+    end
+
     module_function
 
     ## class name handling
@@ -62,16 +70,26 @@ module CIAX
       CIAX.const_get self.class.name.split('::')[1]
     end
 
-    def layer_name
-      class_path[1].downcase
-    end
-
     def class_path
       self.class.to_s.split('::')
     end
 
     def m2id(mod, pos = -1)
       mod.name.split('::')[pos].downcase
+    end
+
+    # Module extend order check
+    def bad_order(name, *mods)
+      if mods.any? { |mod| name.is_a?(mod) }
+        sv_err("Bad ext order #{name} -> #{class_path.last}")
+      else
+        name
+      end
+    end
+
+    def type_gen(obj, mod)
+      obj = yield mod if !obj && defined? yield
+      type?(obj, mod)
     end
   end
 end

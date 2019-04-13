@@ -1,87 +1,90 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libexe'
 require 'libmcrcmd'
-require 'libmanview'
+require 'librecview'
+require 'libwatdic' # deprecated
+
 module CIAX
   # Macro Layer
   module Mcr
-    # Macro Manager
-    class Man < Exe
-      attr_reader :sub_list # Used for Layer module
-      # cfg should have [:dev_list]
-      def initialize(cfg)
-        super(Conf.new(cfg))
-        verbose { 'Initiate Manager (option:' + @cfg[:opt].keys.join + ')' }
+    # Macro Manager/Manipulator
+    #  Features
+    #   *Test/Driver
+    #    -Generate Mcr::Exe and Push to ExeDic
+    #   *Front End
+    #    -Switch to Exe(Shell) if Driver mode
+    #    -Show List of picked Record in Archive besides Exes
+    #    -Pseudo Shell for Archive Records/Remote Exe
+    #   *Server
+    #    -Accept Mcr generate command
+    #    -Accept Manipulation command to individual Exes with ID
+    #  Commands
+    #   *Mcr Generation Command (gencmd)
+    #   *Mcr Manipulation command (mancmd)
+    class Man < CIAX::Exe
+      def initialize(spcfg, atrb = Hashx.new)
+        super
+        verbose { 'Initiate Manager (option:' + @opt.keys.join + ')' }
         # id = nil -> taken by ARGV
-        @sv_stat = @cfg[:sv_stat]
-        @par = Parameter.new(list: @sv_stat.get(:list))
-        ___init_net
-        ___init_cmd
+        # pick already includes :command, :version
+        _init_dbi2cfg(%i(sites))
+        _init_net
         ___init_stat
-      end
-
-      # this is separated for background run
-      def run
-        @sub_list.run
+        ___init_cmd
         _opt_mode
-        @mode = 'MCR:' + @mode
-        self
-      end
-
-      # Mode Extention by Option
-      def ext_local_test
-        require 'libmandrv'
-        super
-      end
-
-      def ext_local_driver
-        require 'libmandrv'
-        super
-      end
-
-      def ext_local_server
-        verbose { 'Initiate Record Archive' }
-        @cfg[:rec_arc].clear.refresh
-        ___mk_cmdlist
-        super
       end
 
       private
 
-      # Initiate for all mode
-      def ___init_net
-        @id = @cfg[:id]
-        @host = @cfg[:host]
-        @port = @cfg[:port]
+      # Overridden by libmansh
+      def _ext_local_shell
+        super
+        @cobj.loc.add_view
+        @cfg[:output] = RecView.new(@stat)
+        @prompt_proc = proc do
+          @int_par.def_par
+          ''
+        end
+        self
       end
 
       def ___init_stat
-        @stat = ManView.new(@cfg, @par, @cobj.rem.int.valid_keys)
-        @sub_list = @cfg[:dev_list]
+        @stat = (@cfg[:rec_arc] ||= RecArc.new)
+        @sv_stat = (@cfg[:sv_stat] ||= Prompt.new(@id, @opt))
       end
 
+      # Initiate for all mode
       def ___init_cmd
         rem = @cobj.add_rem
         rem.cfg[:def_msg] = 'ACCEPT'
         rem.add_sys
-        rem.add_int.add_par(@par)
+        @int_par = rem.add_int.pars.add_enum(@sv_stat.get(:list)).last
         rem.add_ext
-        rem.sys.add_item('nonstop', 'Mode')
-        rem.sys.add_item('interactive', 'Mode')
       end
+      # Local mode
+      module Local
+        include CIAX::Exe::Local
+        def self.extended(obj)
+          Msg.type?(obj, Man)
+        end
 
-      # Making Command List JSON file for WebApp
-      def ___mk_cmdlist
-        verbose { 'Initiate JS Command List' }
-        IO.write(
-          vardir('json') + 'mcr_conf.js', 'var config = ' + @cfg[:jlist].to_j
-        )
+        private
+
+        def _ext_local_driver
+          super
+          @cfg[:cid] = 'manager'
+          @mode = 'DRY' if @opt.dry?
+          @pre_exe_procs << proc do
+            @sv_stat.repl(:sid, '')
+            @sv_stat.flush(:run).cmt if @sv_stat.get(:list).empty?
+          end
+          self
+        end
       end
     end
-
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[proj] [cmd] (par)', options: 'cenlrs') do |cfg|
-        Man.new(cfg).run.ext_shell.shell
+      ConfOpts.new('[proj] [cmd] (par)', options: 'cedhlnr') do |cfg|
+        Man.new(cfg, Atrb.new(cfg)).shell
       end
     end
   end

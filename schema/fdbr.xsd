@@ -8,7 +8,6 @@
     <xsd:attribute name="label" type="xsd:token"/>
     <!--Valid content is regexp-->
     <xsd:attribute name="valid" type="xsd:token"/>
-    <xsd:attribute name="assign" type="xsd:NCName"/>
     <xsd:attribute name="decode" type="fdbr:codec"/>
     <xsd:attribute name="sign" type="fdbr:sign"/>
     <xsd:attribute name="length" type="xsd:int"/>
@@ -23,7 +22,7 @@
   <xsd:element name="echo">
     <xsd:complexType/>
   </xsd:element>
-  <xsd:element name="field">
+  <xsd:element name="verify">
     <xsd:complexType>
       <xsd:simpleContent>
         <xsd:extension base="xsd:token">
@@ -32,40 +31,39 @@
       </xsd:simpleContent>
     </xsd:complexType>
   </xsd:element>
-  <xsd:element name="array">
+  <xsd:element name="assign">
     <xsd:complexType>
-      <xsd:sequence>
-        <xsd:element ref="fdbr:index" minOccurs="1" maxOccurs="unbounded"/>
-      </xsd:sequence>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="fdbr:index"/>
+      </xsd:choice>
+      <xsd:attribute name="ref" type="xsd:token"/>
       <xsd:attributeGroup ref="fdbr:rsp_attr"/>
     </xsd:complexType>
   </xsd:element>
-  <!--Field Elements-->
-  <xsd:element name="index">
-    <xsd:complexType>
-      <!--Whole size of Array-->
-      <xsd:attribute name="size" type="xsd:int" use="required"/>
-      <!--Part of Array Range-->
-      <xsd:attribute name="range" type="xsd:token"/>
-    </xsd:complexType>
-  </xsd:element>
+  <xsd:element name="index" type="xsd:token"/>
+  <xsd:group name="fieldgroup">
+    <xsd:choice>
+      <xsd:element ref="fdbr:verify"/>
+      <xsd:element ref="fdbr:assign"/>
+    </xsd:choice>
+  </xsd:group>
   <!--Response CC-->
   <xsd:element name="ccrange">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="fdbr:body"/>
-        <xsd:element ref="fdbr:field"/>
+        <xsd:group ref="fdbr:fieldgroup"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
   <!--Response frame-->
-  <xsd:element name="rspframe">
+  <xsd:element name="frame">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
         <xsd:element ref="fdbr:echo"/>
         <xsd:element ref="fdbr:body"/>
         <xsd:element ref="fdbr:ccrange"/>
-        <xsd:element ref="fdbr:field"/>
+        <xsd:group ref="fdbr:fieldgroup"/>
       </xsd:choice>
     </xsd:complexType>
   </xsd:element>
@@ -73,6 +71,7 @@
   <xsd:element name="response">
     <xsd:complexType>
       <xsd:sequence>
+        <xsd:element ref="fdbr:frame" minOccurs="1" maxOccurs="1"/>
         <xsd:element ref="fdbr:item" minOccurs="1" maxOccurs="unbounded"/>
       </xsd:sequence>
     </xsd:complexType>
@@ -84,12 +83,41 @@
   <xsd:element name="item">
     <xsd:complexType>
       <xsd:choice minOccurs="0" maxOccurs="unbounded">
-        <xsd:element ref="fdbr:field"/>
-        <xsd:element ref="fdbr:array"/>
+        <xsd:group ref="fdbr:fieldgroup"/>
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:NCName" use="required"/>
       <xsd:attribute name="label" type="xsd:token"/>
       <xsd:attribute name="noaffix" type="xsd:boolean"/>
     </xsd:complexType>
   </xsd:element>
+  <!--Field Var-->
+  <xsd:element name="field">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="unbounded">
+        <xsd:element ref="fdbr:var"/>
+        <xsd:element ref="fdbr:array"/>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="var">
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:token">
+          <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+          <xsd:attribute name="label" type="xsd:token"/>
+        </xsd:extension>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="array">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="fdbr:size" minOccurs="1" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="label" type="xsd:token"/>
+    </xsd:complexType>
+  </xsd:element>
+  <!--Field Elements-->
+  <xsd:element name="size" type="xsd:int"/>
 </xsd:schema>

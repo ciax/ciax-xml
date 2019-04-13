@@ -1,9 +1,51 @@
-#!/usr/bin/ruby
-require 'libenumx'
+#!/usr/bin/env ruby
+require 'libhashx'
 require 'librerange'
 module CIAX
   # Command Module
   module CmdBase
+    # Parameter Array
+    class ParArray < Arrayx
+      def initialize(obj = 0, val = '.')
+        case obj
+        when Array
+          super(obj.map { |e| Parameter.new(e) })
+        when Numeric
+          super(obj) { Parameter.new(type: 'reg', list: [val]) }
+        else
+          super
+        end
+      end
+
+      def valid_pars
+        map(&:list).flatten
+      end
+
+      def validate(ary)
+        type?(ary, Array)
+        map { |p| p.validate(ary.shift) }
+      end
+
+      ## Refernce Parameter Setting
+      # returns Reference Parameter Array
+      def add_enum(list, default = nil)
+        push Parameter.new(type: 'str', list: type?(list, Array))
+        last[:default] = default if default && list.include?(default)
+        self
+      end
+
+      def add_reg(str, default = nil)
+        push Parameter.new(type: 'reg', list: [str])
+        last[:default] = default if default && Regexp.new(str).match(default)
+        self
+      end
+
+      # Parameter for numbers
+      def add_num(default = nil)
+        add_reg('^[0-9]+$', default)
+      end
+    end
+
     # Parameter commands
     class Parameter < Hashx
       # Parameter for validate (element of cfg[:parameters]#Array)
@@ -19,19 +61,66 @@ module CIAX
       #   o   |   o   |    x      |    *     | error
       #   x   |   *   |    -      |    o     | :default
       #   *   |   x   |    -      |    o     | :default
-      def valid_pars
-        self[:type] == 'str' ? get(:list) : []
+      def initialize(hash = {})
+        super
+        self[:list] ||= []
+      end
+
+      def list
+        li = get(:list)
+        li.upd if li.is_a? Arrayx
+        li
+      end
+
+      def list=(ary)
+        self[:list] = type?(ary, Array)
       end
 
       def validate(str)
-        list = get(:list)
-        csv = a2csv(list)
+        li = list
+        csv = a2csv(li)
         return ___use_default(csv) unless str
-        return method('_val_' + get(:type)).call(str, list, csv) if list
-        key?(:default) ? get(:default) : str
+        return method('_val_' + get(:type)).call(str, li, csv) if li
+        __get_default || str
+      end
+
+      def def_par(str = nil)
+        self[:default] = str || get(:list).first
       end
 
       private
+
+      def ___chk_default
+        return unless key?(:default)
+        df = get(:default)
+        df || delete(:default)
+      end
+
+      def ___chk_def_str(df)
+        return df if self[:type] != 'str'
+        get(:list).include?(df)
+      end
+
+      def ___chk_def_reg(df)
+        return df if self[:type] != 'reg'
+        get(:list).any? do |r|
+          Regexp.new(r).match(df)
+        end
+      end
+
+      def __get_default
+        df = ___chk_default
+        return df if ___chk_def_str(df) && ___chk_def_reg(df)
+        delete(:default)
+        false
+      end
+
+      def ___use_default(csv)
+        df = __get_default
+        raise ParShortage, csv unless df
+        verbose { "Validate: Using default value [#{df}]" }
+        df
+      end
 
       def _val_num(str, list, csv)
         num = expr(str)
@@ -50,12 +139,6 @@ module CIAX
         verbose { "Validate: [#{str}] Match? [#{csv}]" }
         return str if list.include?(str)
         par_err("Parameter Invalid Str (#{str}) for [#{csv}]")
-      end
-
-      def ___use_default(csv)
-        raise ParShortage, csv unless key?(:default)
-        verbose { "Validate: Using default value [#{get(:default)}]" }
-        get(:default)
       end
     end
   end

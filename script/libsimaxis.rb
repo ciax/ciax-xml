@@ -1,11 +1,12 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libsim'
 
 module CIAX
   module Simulator
     # Motor Axis Simulator
     class Axis
-      attr_accessor :speed, :hardlim
+      # :timeout for error test
+      attr_accessor :speed, :hardlim, :timeout
       attr_reader :absp, :pulse, :busy, :help
       def initialize(hl_min = -999_999, hl_max = 999_999, spd = 1_000)
         Msg.cfg_err('Limit Max < Min') if hl_min > hl_max
@@ -16,12 +17,13 @@ module CIAX
         @absp = 0
         @speed = spd # 1000 pulse per second
         @hardlim = true # Hardware Limit
+        @start_time = Time.now.to_i
       end
 
       def servo(target)
         return unless __in_range?
-        target = ___regulate(target)
-        Thread.new(target.to_i) do |t|
+        Thread.new(___regulate(target).to_i) do |t|
+          @start_time = Time.now.to_i
           @busy = true
           while @busy
             ___toward_target(t)
@@ -63,7 +65,12 @@ module CIAX
       end
 
       def ___upd_busy(t)
-        t != @absp && __in_range?
+        t != @absp && __in_range? && !___timeout?
+      end
+
+      def ___timeout?
+        return unless @timeout
+        Time.now.to_i > @timeout + @start_time
       end
 
       def __in_range?

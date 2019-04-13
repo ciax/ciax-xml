@@ -1,5 +1,5 @@
-#!/usr/bin/ruby
-require 'libcmditem'
+#!/usr/bin/env ruby
+require 'libcmdform'
 require 'libdispgrp'
 # CIAX-XML
 module CIAX
@@ -9,49 +9,56 @@ module CIAX
       include CmdFunc
       attr_reader :valid_keys
       # cfg keys: caption,color,column
-      def initialize(cfg, atrb = Hashx.new)
+      def initialize(spcfg, atrb = Hashx.new)
         super()
-        @cfg = cfg.gen(self).update(atrb)
-        @displist = Disp.new(@cfg.pick(%i(caption color column line_number)))
-        @cfg[:disp] = @displist
-        @valid_keys = @displist.valid_keys
+        @cfg = spcfg.gen(self).update(atrb)
+        datr = @cfg.pick(:caption, :color, :column, :line_number)
+        @disp_dic = Disp::Index.new(datr)
+        @cfg[:disp] = @disp_dic
+        @valid_keys = @disp_dic.valid_keys
         rank(ENV['RANK'].to_i)
       end
 
       def add_dummy(id, title = nil) # returns Display
-        @displist.put_item(id, title)
+        @disp_dic.put_item(id, title)
       end
 
       # atrb could be dbi[:index][id]
       # atrb could have 'label',:body,'unit','group'
-      def add_item(id, title = nil, atrb = Hashx.new) # returns Item
-        @displist.put_item(id, title)
-        _new_item(id, atrb)
+      def add_form(id, title = nil, atrb = Hashx.new) # returns Form
+        return self[id] if key?(id)
+        @disp_dic.put_item(id, title)
+        _new_form(id, atrb)
       end
 
-      def del_item(id)
-        @displist.delete(id)
+      def del_form(id)
+        @disp_dic.delete(id)
         delete(id)
       end
 
-      def clear_item
-        @displist.clear
+      def clear_form
+        @disp_dic.clear
         clear
       end
 
-      def merge_items(displist)
-        @displist.merge_sub(displist)
-        displist.keys.each { |id| _new_item(id) }
+      def merge_forms(disp_dic)
+        @disp_dic.merge_sub(disp_dic)
+        disp_dic.keys.each { |id| _new_form(id) }
         self
       end
 
       def valid_reset
-        @displist.index.reset!
+        @disp_dic.index.reset!
         self
       end
 
+      # Subtract ary from full keys from valid_keys
       def valid_sub(ary)
         @valid_keys.replace(keys - type?(ary, Array))
+        verbose do
+          "(#{@cfg[:id]}) valid_keys " +
+            (ary.empty? ? 'restored' : "subtracted with #{ary.inspect}")
+        end
         self
       end
 
@@ -59,25 +66,25 @@ module CIAX
         values.map(&:valid_pars).flatten
       end
 
-      def view_list
-        @displist.to_s
+      def view_dic
+        @disp_dic.to_s
       end
 
       def rank(n)
-        @displist.rank = n
+        @disp_dic.rank = n
         self
       end
 
       def rankup
-        @displist.rank = @displist.rank + 1
+        @disp_dic.rank = @disp_dic.rank + 1
         self
       end
 
       private
 
       # atrb can be /cdb//index[id] which contains [:parameter] and so on
-      def _new_item(id, atrb = Hashx.new)
-        self[id] = context_module('Item').new(@cfg, atrb.update(id: id))
+      def _new_form(id, atrb = Hashx.new)
+        self[id] = context_module('Form').new(@cfg, atrb.update(id: id))
       end
     end
   end

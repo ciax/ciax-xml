@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libcmdext'
 require 'libappdb'
 # CIAX-XML Command module
@@ -13,18 +13,18 @@ module CIAX
         # Internal Command Group
         class Group
           # cfg should have [:dbi] and [:stat]
-          def initialize(cfg, atrb = Hashx.new)
+          def initialize(spcfg, atrb = Hashx.new)
             super
-            init_item_file_io
-            add_item('set', '[key] [val]').pars_any(2)
-            add_item('del', '[key,...]').pars_any(1)
+            init_form_fio
+            add_form('set', '[key] [val]').pars_any(2)
+            add_form('del', '[key,...]').pars_any(1)
           end
         end
       end
       # External Command
       module Ext
         # Generate [:batch]
-        class Item
+        class Form
           # Ext entity
           include Math
 
@@ -61,12 +61,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
-      ConfOpts.new('[id] [cmd] (par)', options: 'i') do |cfg, args|
-        dbi = (cfg[:opt][:i] ? Ins::Db : Db).new.get(args.shift)
+      ConfOpts.new('[id] [cmd] (par)', options: 'i') do |cfg|
+        dbi = (cfg.opt[:i] ? Ins::Db : Db).new.get(cfg.args.shift)
         # dbi.pick already includes :layer, :command, :version
-        cobj = Index.new(cfg, dbi.pick)
-        cobj.add_rem.add_ext
-        ent = cobj.set_cmd(args)
+        ent = Index.new(cfg, dbi.pick).add_rem.add_ext.set_cmd(cfg.args)
         puts ent[:batch].to_s
       end
     end

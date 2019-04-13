@@ -1,8 +1,8 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
+require 'libdaemon'
 require 'libsimap'
 require 'libsimarm'
 require 'libsimbb'
-require 'libsimcar'
 require 'libsimfp'
 
 #### Condition for Contact Sensor ####
@@ -22,14 +22,16 @@ require 'libsimfp'
 #---------+--------++------
 # STORE   | OPEN   || STORE
 # STORE   | CLOSE  || LOAD
+
+# Option -d: carousel motor down
 module CIAX
   # Simulator
   module Simulator
-    cfg = Conf.new
-    mods = [Arm, Ap, BBIO, Carousel, FpDio]
-    list = mods.map { |mod| mod.new(cfg) }
-    Process.daemon(true, true)
-    list.each(&:start)
-    sleep
+    ConfOpts.new('-(d)', options: 'd') do |cfg|
+      require 'libsimcar' unless cfg.opt.dry?
+      Daemon.new(cfg, 54_301) do
+        @sim_list.gen.run
+      end
+    end
   end
 end

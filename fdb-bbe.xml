@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="bbe" label="BB Electric 232SDD16" version="2">
+  <frm id="bbe" label="BB Electric 232SDD16" version="2">
     <stream endian="big" wait="0.2"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <string label="Prefix">!0</string>
-      <body/>
-    </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
+      <frame>
+        <string label="Prefix">!0</string>
+        <body/>
+      </frame>
       <group id="gst">
         <item id="getstat" label="Get Status" response="getstat" type="stat">
           <string>RD</string>
@@ -28,13 +28,16 @@
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <body/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <body/>
+      </frame>
       <item id="getstat">
-        <field assign="stat" decode="integer" label="Status" length="2"/>
+        <assign decode="integer" length="2" ref="stat"/>
       </item>
     </response>
-  </frame>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="stat" label="Status"/>
+    </field>
+  </frm>
 </fdb>

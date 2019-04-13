@@ -1,12 +1,12 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 $LOAD_PATH << __dir__
-require 'libapplist'
+require 'libwatdic'
 # CIAX-XML Device Executor
 module CIAX
-  ConfOpts.new('[id] [cmd] (par)', options: 'elch') do |cfg, args|
+  ConfOpts.new('[id] [cmd] (par)', options: 'elch') do |cfg|
     cfg[:cmd_line_mode] = true # exclude empty command
-    aex = App::List.new(cfg).get(args.shift)
-    args.empty? ? aex.no_cmd : aex.exe(args)
+    aex = Wat::ExeDic.new(cfg, db: Ins::Db.new(cfg.proj)).get(cfg.args.shift)
+    cfg.args.empty? ? aex.no_cmd : aex.exe(cfg.args)
     puts aex
     puts aex.wait_ready ? 'COMPLETE' : 'TIMEOUT'
   end

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # I/O Simulator
 # Need GServer: sudo gem install gserver
 require 'libsimconf'
@@ -9,7 +9,7 @@ module CIAX
     # Simulation Server
     class Server < GServer
       include Msg
-      def initialize(port, cfg = nil)
+      def initialize(port = nil, cfg = nil)
         super(port)
         @cfg = cfg || Conf.new
         ___init_instance
@@ -27,6 +27,7 @@ module CIAX
         ___sv_loop(io)
       rescue
         log("#{$ERROR_INFO} #{$ERROR_POSITION}")
+        raise unless io
       end
 
       private
@@ -38,21 +39,29 @@ module CIAX
         # @length is set when STDIN is stream
         @length = 1024
         @ifs = @ofs = $OUTPUT_RECORD_SEPARATOR
-        @devlist = @cfg[:devlist]
+        @dev_dic = @cfg[:dev_dic]
         # Mask loading info
         @mask_load = false
       end
 
       def ___sv_loop(io)
         loop do
-          str = ___input(io)
-          log("#{self.class}:Recieve #{str.inspect}")
-          res = _dispatch(str) || next
-          res += @ofs
-          log("#{self.class}:Send #{res.inspect}")
-          io ? io.syswrite(res) : puts(res.inspect)
+          str = __data_log('Recieve', ___input(io))
+          if (res = _dispatch(str))
+            res = __data_log('Send', res + @ofs.to_s)
+            io ? io.syswrite(res) : puts(res.inspect)
+          else
+            __data_log('No send')
+          end
           sleep 0.1
         end
+      end
+
+      def __data_log(caption, data = nil)
+        ary = [self.class, caption]
+        ary << data.inspect if data
+        log(ary.join(' '))
+        data
       end
 
       def ___input(io)
@@ -87,11 +96,32 @@ module CIAX
         par ? me.call(par) : me.call || @prompt_ng
       end
 
-      def _get_cmd_list
-        methods.map(&:to_s).grep(/^_cmd_/).map do |s|
-          s.sub(/^_cmd_/, '')
-        end
+      def _cmd_help
+        (@io.keys.map { |k| [k.to_s, "#{k}="] }.flatten +
+         methods.map(&:to_s).grep(/^_cmd_/).map do |s|
+           s.sub(/^_cmd_/, '')
+         end).sort.join(@ofs)
       end
     end
+
+    # Run object for Daemon
+    class SimList < Array
+      attr_reader :id
+      def initialize
+        @id = 'dmcs'
+      end
+
+      def gen
+        map! { |mod| mod.new(Conf.new) }
+      end
+
+      def run
+        each(&:start)
+      end
+    end
+
+    @sim_list = SimList.new
+
+    Server.new.serve if __FILE__ == $PROGRAM_NAME
   end
 end

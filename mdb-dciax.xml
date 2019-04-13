@@ -52,7 +52,7 @@
             <option val="COMICS">
               <mcr name="rrto"/>
             </option>
-            <option val="MC-BOX">
+            <option val="MCS">
               <mcr name="rrto"/>
             </option>
             <option val="FOCAS">
@@ -70,7 +70,7 @@
             <option val="COMICS">
               <mcr name="hmi"/>
             </option>
-            <option val="MC-BOX">
+            <option val="MCS">
               <mcr name="hfo"/>
             </option>
             <option val="FOCAS">
@@ -86,7 +86,7 @@
             <option val="COMICS">
               <mcr name="cmi"/>
             </option>
-            <option val="MC-BOX">
+            <option val="MCS">
               <mcr name="cfo"/>
             </option>
             <option val="FOCAS">
@@ -1966,11 +1966,11 @@
         </item>
         <item id="k3d" label="Assign Current Inst to Kyoto 3D">
           <goal label="Assigned?">
-            <equal form="msg" site="trt" var="ist">MC-BOX</equal>
-            <equal form="msg" site="tts" var="iid">MC-BOX</equal>
+            <equal form="msg" site="trt" var="ist">MCS</equal>
+            <equal form="msg" site="tts" var="iid">MCS</equal>
           </goal>
-          <cfg site="trt" name="mc-box"/>
-          <cfg site="tts" name="mc-box"/>
+          <cfg site="trt" name="mcs"/>
+          <cfg site="tts" name="mcs"/>
         </item>
       </unit>
       <unit id="unit_upd" label="Update All Devices">

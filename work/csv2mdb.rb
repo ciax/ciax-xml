@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # IDB,CDB CSV(CIAX-v1) to MDB
 # alias c2m
 require 'optparse'

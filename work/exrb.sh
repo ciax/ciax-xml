@@ -1,6 +1,7 @@
 #!/bin/bash
-files=${*:-*.rb}
+files=${*:-lib*.rb}
 for file in $files; do
-    ./$file
+    echo $file
+    ./$file $ARGV
     [ $? = 1 ] && break
 done

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libconf'
 
 module CIAX
@@ -11,7 +11,7 @@ module CIAX
         super()
         ___init_log
         # :mask_loaded is mask mode: true:loaded, false:stored
-        self[:devlist] = Hashx.new
+        self[:dev_dic] = Hashx.new
       end
 
       private

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'json'
 # Device simulator SQL generator from Stream Log file
 # Internal functions

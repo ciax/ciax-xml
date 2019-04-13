@@ -1,4 +1,13 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
+# Array#to_s shows lines
+class Array
+  def to_s
+    ary = compact
+    return '' if ary.empty?
+    ary.join("\n") + "\n"
+  end
+end
+
 # Common Module
 module CIAX
   ### Formatting methods ###
@@ -17,10 +26,15 @@ module CIAX
     # Colored format
     # specify color with :n (n =0..f) located between '%' and flag
     # (ex. '%:1s')
-    def cformat(fmt, *ary)
+    # Inspection format
+    #  %S converts the object with inspect
+    def cfmt(fmt, *ary)
+      i = 0
       fmt.gsub!(/%.*?[a-zA-Z]/) do |m|
-        m.sub!(/:(.)/, '')
-        $+ ? colorize(m, $+.hex) : m
+        m = colorize(m, $+.hex) if m.sub!(/:(.)/, '')
+        ary[i] = ary[i].inspect if m.sub!(/S/, 's')
+        i += 1
+        m
       end
       format(fmt, *ary)
     end
@@ -53,9 +67,9 @@ module CIAX
     end
 
     # Query options
-    def optlist(list)
-      return '' if !list || list.empty?
-      colorize("[#{list.join('/')}]?", 5)
+    def opt_listing(ary)
+      return '' if !ary || ary.empty?
+      colorize("[#{ary.join('/')}]?", 5)
     end
 
     # Display methods
@@ -72,8 +86,8 @@ module CIAX
       ary.to_a.flatten.compact.join(':')
     end
 
-    def a2csv(ary)
-      ary.to_a.flatten.compact.join(',')
+    def a2csv(ary, space = '')
+      ary.to_a.flatten.compact.join(',' + space)
     end
 
     # max string length of value and key in hash at each column
@@ -92,6 +106,17 @@ module CIAX
         kx, vx = cary[i]
         indent(ind.to_i) + itemize(k, h[k], kx).ljust(kx + vx + 15)
       end.join('').rstrip
+    end
+
+    # Specific text for verbose
+    #  verbose text for exec
+    def _exe_text(*par)
+      # Action, cmdstr, source, priority
+      cfmt("Executing %s from '%s' with priority %s", *par)
+    end
+
+    def _conv_text(*par)
+      cfmt('Conversion %s %S %S', *par)
     end
   end
 end

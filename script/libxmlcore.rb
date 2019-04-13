@@ -1,5 +1,5 @@
-#!/usr/bin/ruby
-require 'libenumx'
+#!/usr/bin/env ruby
+require 'libhashx'
 
 module CIAX
   module Xml
@@ -69,7 +69,7 @@ module CIAX
         type?(db, Hashx)
         key, atrb = ___attr_to_a(id, &at_proc)
         if id != :ref && db.key?(key)
-          alert("ATTRDB: Duplicated ID [#{key}]")
+          alert('ATTRDB: Duplicated ID [%s]', key)
           db.delete(key)
         end
         db.get(key) { Hashx.new }.update(atrb)
@@ -93,7 +93,7 @@ module CIAX
         return f if f.is_a?(_element)
         cfg_err('Parameter shoud be String or Node') unless f.is_a? String
         test('r', f) || cfg_err("Can't read file #{f}")
-        verbose { "Loading file #{f}" }
+        verbose { "Loading xml file #{f}" }
         _get_file(f)
       end
 

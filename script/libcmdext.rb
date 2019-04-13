@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libcmdremote'
 module CIAX
   module CmdTree
@@ -6,38 +6,44 @@ module CIAX
     module Remote
       # For External Command Domain
       # @cfg must contain [:dbi]
-      # Content of Dbi[:command][:index][id] will be merged in Item@cfg
+      # Content of Db::Item[:command][:index][id] will be merged in Item@cfg
       module Ext
         include CmdBase
         # External Command Group
         class Group < Group
-          def initialize(cfg, atrb = Hashx.new)
+          def initialize(spcfg, atrb = Hashx.new)
             atrb.get(:caption) { 'External Commands' }
             super
-            @displist = @displist.ext_grp
-            ___init_items(@cfg[:command])
-            @displist.reset!
+            cfg_err('No dbi in Ext::Group@cfg') unless @cfg.key?(:dbi)
+            @disp_dic = @disp_dic.ext_grp
+            ___init_form(@cfg[:dbi].get(:command))
+            @disp_dic.reset!
           end
 
           private
 
           # itm is from cdb
-          def ___add_item(id, itm) # returns Item
-            label = itm[:label]
-            # command label can contain printf format (i.e. %s)
-            # and are replaced with each parameter's label
-            pars = itm[:parameters]
-            if label && pars.is_a?(Array)
+          def ___add_form(id, itm) # returns Form
+            ___init_par(itm)
+            _new_form(id, itm)
+          end
+
+          # command label can contain printf format (i.e. %s)
+          # and are replaced with each parameter's label
+          def ___init_par(itm)
+            return unless itm.key?(:parameters)
+            pars = CmdBase::ParArray.new(type?(itm[:parameters], Array))
+            if (label = itm[:label])
               ary = pars.map { |e| e[:label] || 'str' }
               label.replace(format(label, *ary))
             end
-            _new_item(id, itm).tr_pars
+            itm[:parameters] = pars
           end
 
           # Set items by DB
-          def ___init_items(cdb)
+          def ___init_form(cdb)
             cdb[:group].each do |gid, gat|
-              sg = @displist.put_grp(gid, gat[:caption], nil, gat[:rank])
+              sg = @disp_dic.add_grp(gid, gat[:caption], nil, gat[:rank])
               ___init_member(cdb, gat[:members], sg)
               ___init_unit(cdb, gat[:units], sg)
             end
@@ -50,7 +56,7 @@ module CIAX
               itm = cdb[:index][id]
               sg.put_item(id, itm[:label])
               # [:parameters] is set here
-              ___add_item(id, itm)
+              ___add_form(id, itm)
             end
           end
 
@@ -61,11 +67,11 @@ module CIAX
             guni.each do |u|
               uat = cdb[:unit][u]
               next unless uat.key?(:title)
-              ___make_unit_item(sg, uat, cdb[:index])
+              ___make_unit_form(sg, uat, cdb[:index])
             end
           end
 
-          def ___make_unit_item(sg, uat, index)
+          def ___make_unit_form(sg, uat, index)
             umem = uat[:members]
             il = umem.map { |m| index[m][:label] }.join('/')
             sg.put_dummy(uat[:title], uat[:label] % il)
@@ -73,18 +79,21 @@ module CIAX
           end
         end
 
-        class Item < Item; end
+        class Form < Form; end
 
         # Substitute string($+number) with parameters, which is called by others
         #  par={ val,range,format } or String
         #  str could include Math functions
+        # Returns new object
         class Entity < Entity
           def deep_subst(data)
             case data
             when Array
-              data.map { |v| deep_subst(v) }
+              data.map { |v| deep_subst(v) }.extend(Enumx)
             when Hash
-              data.each_with_object({}) { |(k, v), r| r[k] = deep_subst(v) }
+              data.each_with_object(Hashx.new) do |(k, v), r|
+                r[k] = deep_subst(v)
+              end
             else
               ___subst_str(data)
             end

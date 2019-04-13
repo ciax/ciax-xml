@@ -32,7 +32,10 @@
         <xsd:element ref="idb:site"/>
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:NCName" use="required"/>
+      <xsd:attribute name="host" type="xsd:token"/>
+      <xsd:attribute name="enable" type="xsd:boolean"/>
       <xsd:attribute name="label" type="xsd:token"/>
+      <xsd:attribute name="column" type="xsd:int"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="site">
@@ -44,9 +47,11 @@
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:NCName" use="required"/>
       <xsd:attribute name="app_id" use="required" type="xsd:NCName"/>
-      <xsd:attribute name="frm_site" type="xsd:NCName"/>
+      <xsd:attribute name="dev_id" type="xsd:NCName"/>
       <xsd:attribute name="host" type="xsd:token"/>
       <xsd:attribute name="port" type="xsd:int"/>
+      <xsd:attribute name="enable" type="xsd:boolean"/>
+      <xsd:attribute name="run" type="xsd:boolean"/>
       <xsd:attribute name="label" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>

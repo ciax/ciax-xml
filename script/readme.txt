@@ -13,12 +13,12 @@
 ## Required Apps
 xmllint: XML validator
 socat: communication for UDP/TCP/..., that has more features than 'nc'
-sqlite3: light weight sql server for logging, not for access from multiple processes  
+sqlite3: light weight sql server for logging, not for access from multiple processes
 
 ## ENV Var ##
  RUBYLIB
- ENV['PROJ']
- ENV['NOCACHE']
+ PROJ
+ NOCACHE
  DEBUG
  VER
 
@@ -28,17 +28,18 @@ sqlite3: light weight sql server for logging, not for access from multiple proce
 
 ## Verbose mode ##
  set VER environment
+ VER=* for All
  VER=string,.. for set 'or'
  VER=string:..  for set 'and'
- VER=^string1.. for set 'exclude'
- VER=* for All
+ VER=!string1.. for set 'exclude'
+ VER=traceback  show traceback of error
 
 ## json udp communicaton ##
  no command:
    "" : (cmdline) -> "[]":(udp comm) -> nil : (App::Intect)
  interrupt:
    ^D : (cmdline) -> nil : (readline) -> "interrupt" : (udp comm)
-  
+
 ## Server interference ##
 Do not run "intfrm","intapp" and "inthex" simultaneously with option -s.
 frmsh (intfrm -t)/ used when running site is different from intapp
@@ -66,10 +67,10 @@ frmsh (intfrm -t)/ used when running site is different from intapp
   ==================================
   ACT   Exec    Source   Check   Log
   ==================================
-  nil   check   file     -       -  
-  0     check   file     o       -  
-  1     simu    file     o       -  
-  2     exec    remote   o       o  
+  nil   check   file     -       -
+  0     check   file     o       -
+  1     simu    file     o       -
+  2     exec    remote   o       o
 
 ## Project mode
   set ENV['PROJ'] to limit Device ID (is in idb-{ENV['PROJ']}.xml)

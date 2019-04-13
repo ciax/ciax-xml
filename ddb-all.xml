@@ -1,75 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ddb xmlns="http://ciax.sum.naoj.org/ciax-xml/ddb">
+  <!-- You can specify host in <group> attributes when it is different from idb setting -->
   <group id="ciax" label="CIAX" column="2">
-    <site id="crt" frm_id="mel" host="ciax" port="24101" iocmd="socat - udp:cart3:5000" label="CIAX CART 3"/>
-    <site id="dsi" frm_id="cj2" host="ciax" port="24102" iocmd="socat - udp:cst-i:9600" label="IR Stand-by Flange">
+    <site id="crt" frm_id="mel" port="24101" iocmd="socat - udp:cart3:5000" label="CIAX CART 3"/>
+    <site id="dsi" frm_id="cj2" port="24102" iocmd="socat - udp:cst-i:9600" label="IR Stand-by Flange">
       <field>
         <assign id="ipl" val="1"/>
         <assign id="ipr" val="33"/>
       </field>
     </site>
-    <site id="dso" frm_id="cj2" host="ciax" port="24103" iocmd="socat - udp:cst-o:9600" label="OPT Stand-by Flange">
+    <site id="dso" frm_id="cj2" port="24103" iocmd="socat - udp:cst-o:9600" label="OPT Stand-by Flange">
       <field>
         <assign id="ipl" val="1"/>
         <assign id="ipr" val="32"/>
       </field>
     </site>
     <site id="det" frm_id="srm" port="24104" iocmd="socat - tcp:ltc-e:4002" label="CsEtr Control"/>
-    <!-- site id="dts" frm_id="oss" port="24105" iocmd="socat - tcp:cxws2:9999" label="Gen2 TSC Control" -->
-    <site id="dts" frm_id="oss" host="cxws2" port="24105" iocmd="/bin/sh" label="Gen2 TSC Control"/>
-    <site id="cr2" frm_id="mel" port="24502" iocmd="socat - udp:cart2:5000" label="CIAX CART 2"/>
+    <site id="dts" frm_id="oss" port="24105" iocmd="socat - tcp:ciax:9999" label="Gen2 TSC Control"/>
+    <!-- site id="ist" frm_id="ist" port="24106" label="Instument Status"/ -->
+    <!--site id="dts" frm_id="oss" port="24105" iocmd="/bin/sh" label="Gen2 TSC Control" run="false"/-->
+    <site id="cr2" frm_id="mel" port="24502" iocmd="socat - udp:cart2:5000" label="CIAX CART 2" enable="false"/>
   </group>
   <group id="moircs" label="MOIRCS" column="3">
-    <site id="mfp" frm_id="cfp" host="moircsobcp" port="24601" iocmd="socat - tcp:133.40.161.140:2101" label="Pneumatic Actuator"/>
-    <site id="map" frm_id="oma" host="moircsobcp" port="24602" iocmd="socat - tcp:133.40.161.140:2102" label="Air Pressure"/>
-    <site id="mma" frm_id="slo" host="moircsobcp" port="24603" iocmd="socat - tcp:133.40.161.140:2103" label="Extension Arm"/>
-    <site id="mmc" frm_id="slo" host="moircsobcp" port="24604" iocmd="socat - tcp:133.40.161.140:2104" label="Carrousel"/>
-    <site id="ml1" frm_id="lk8" port="24605" iocmd="socat - tcp:133.40.161.140:2105" label="Temperature 1"/>
-    <site id="ml2" frm_id="lk8" port="24606" iocmd="socat - tcp:133.40.161.140:2106" label="Temperature 2"/>
-    <site id="mix" frm_id="ixe" host="moircsobcp" port="24607" iocmd="socat - tcp:133.40.161.140:2107" label="Turret"/>
-    <site id="mva" frm_id="var" port="24608" iocmd="socat - tcp:133.40.161.140:2108" label="Pumping"/>
-    <site id="mt1" frm_id="tpg" port="24609" iocmd="socat - tcp:133.40.161.140:2109" label="Pressure Main"/>
-    <site id="mt2" frm_id="tpg" port="24610" iocmd="socat - tcp:133.40.161.140:2110" label="Pressure Throat"/>
-    <site id="mt3" frm_id="tpg" port="24611" iocmd="socat - tcp:133.40.161.140:2111" label="Pressure Pump"/>
-    <site id="mft" frm_id="fpa" host="moircsobcp" port="24612" iocmd="socat - tcp:133.40.161.140:2112" label="Hall Sensor"/>
-    <site id="mp1" frm_id="ken" port="24613" iocmd="socat - tcp:133.40.161.140:2113" label="Power Supply 1"/>
-    <site id="mp2" frm_id="ken" port="24614" iocmd="socat - tcp:133.40.161.140:2114" label="Power Supply 2"/>
-    <site id="mph" frm_id="mph" port="24615" iocmd="socat - tcp:133.40.147.230:10017" label="Power Supply Hilo"/>
-    <site id="mh1" frm_id="psp" port="24621" iocmd="socat - tcp:merope:59999" label="Main/Carrousel Heater"/>
-    <site id="mh2" frm_id="psp" port="24622" iocmd="socat - tcp:atlas:59999" label="Main Heater"/>
-    <site id="mmf" frm_id="mic" port="24623" iocmd="socat - tcp:localhost:19990" label="Focus Actuator"/>
+    <site id="mfp" frm_id="cfp" port="24601" iocmd="socat - tcp:133.40.161.140:2101" label="Pneumatic Actuator"/>
+    <site id="map" frm_id="oma" port="24602" iocmd="socat - tcp:133.40.161.140:2102" label="Air Pressure"/>
+    <site id="mma" frm_id="slo" port="24603" iocmd="socat - tcp:133.40.161.140:2103" label="Extension Arm"/>
+    <site id="mmc" frm_id="slo" port="24604" iocmd="socat - tcp:133.40.161.140:2104" label="Carrousel"/>
+    <site id="ml1" frm_id="lk8" port="24605" iocmd="socat - tcp:133.40.161.140:2105" label="Temperature 1" enable="false"/>
+    <site id="ml2" frm_id="lk8" port="24606" iocmd="socat - tcp:133.40.161.140:2106" label="Temperature 2" enable="false"/>
+    <site id="mix" frm_id="ixe" port="24607" iocmd="socat - tcp:133.40.161.140:2107" label="Turret"/>
+    <site id="mva" frm_id="var" port="24608" iocmd="socat - tcp:133.40.161.140:2108" label="Pumping" enable="false"/>
+    <site id="mt1" frm_id="tpg" port="24609" iocmd="socat - tcp:133.40.161.140:2109" label="Pressure Main" enable="false"/>
+    <site id="mt2" frm_id="tpg" port="24610" iocmd="socat - tcp:133.40.161.140:2110" label="Pressure Throat" enable="false"/>
+    <site id="mt3" frm_id="tpg" port="24611" iocmd="socat - tcp:133.40.161.140:2111" label="Pressure Pump" enable="false"/>
+    <site id="mft" frm_id="fpa" port="24612" iocmd="socat - tcp:133.40.161.140:2112" label="Hall Sensor"/>
+    <site id="mp1" frm_id="ken" port="24613" iocmd="socat - tcp:133.40.161.140:2113" label="Power Supply 1" enable="false"/>
+    <site id="mp2" frm_id="ken" port="24614" iocmd="socat - tcp:133.40.161.140:2114" label="Power Supply 2" enable="false"/>
+    <site id="mph" frm_id="mph" port="24615" iocmd="socat - tcp:133.40.147.230:10017" label="Power Supply Hilo" enable="false"/>
+    <site id="mh1" frm_id="psp" port="24616" iocmd="socat - tcp:merope:59999" label="Main/Carrousel Heater" enable="false"/>
+    <site id="mh2" frm_id="psp" port="24617" iocmd="socat - tcp:atlas:59999" label="Main Heater" enable="false"/>
+    <site id="mmf" frm_id="mic" port="24618" iocmd="socat - tcp:localhost:19990" label="Focus Actuator" enable="false"/>
   </group>
   <group id="cmp" label="Helium Compressor" column="2">
-    <site id="cro" frm_id="bbe" host="ciax" port="24106" iocmd="socat - tcp:ltc-o:4003" label="OPT Helium Compressor 2"/>
-    <site id="cci" frm_id="bbe" host="ciax" port="24108" iocmd="socat - tcp:ltc-i:4002" label="IR Helium Compressor 1"/>
-    <site id="cco" frm_id="bbe" host="ciax" port="24109" iocmd="socat - tcp:ltc-o:4002" label="OPT Helium Compressor 1"/>
-    <site id="cri" frm_id="bbe" host="ciax" port="24110" iocmd="socat - tcp:ltc-i:4003" label="IR Helium Compressor 2"/>
-    <site id="cf1" frm_id="k3n" port="24201" iocmd="socat - tcp:ltt-o:4001" label="S1 HC Coolant Flow"/>
-    <site id="cfa" frm_id="k3n" port="24210" iocmd="socat - tcp:ltt-i:4015" label="S10 HC Coolant Flow"/>
+    <site id="cro" frm_id="bbe" port="24106" iocmd="socat - tcp:ltc-o:4003" label="OPT Helium Compressor 2"/>
+    <site id="cci" frm_id="bbe" port="24108" iocmd="socat - tcp:ltc-i:4002" label="IR Helium Compressor 1"/>
+    <site id="cco" frm_id="bbe" port="24109" iocmd="socat - tcp:ltc-o:4002" label="OPT Helium Compressor 1"/>
+    <site id="cri" frm_id="bbe" port="24110" iocmd="socat - tcp:ltc-i:4003" label="IR Helium Compressor 2"/>
+    <site id="cf1" frm_id="k3n" port="24201" iocmd="socat - tcp:ltt-o:4001" label="S1 HC Coolant Flow" enable="false"/>
+    <site id="cfa" frm_id="k3n" port="24210" iocmd="socat - tcp:ltt-i:4015" label="S10 HC Coolant Flow" enable="false"/>
   </group>
   <group id="dmcs" label="Dummy MOIRCS Simulator" column="2">
-    <site id="tfp" frm_id="cfp" host="localhost" port="24691" iocmd="socat - tcp:localhost:10001" label="Field Point dummy"/>
-    <site id="tap" frm_id="oma" host="localhost" port="24692" iocmd="socat - tcp:localhost:10002" label="Air Pres dummy"/>
-    <site id="tma" frm_id="slo" host="localhost" port="24693" iocmd="socat - tcp:localhost:10003" label="Arm dummy"/>
-    <site id="tmc" frm_id="slo" host="localhost" port="24694" iocmd="socat - tcp:localhost:10004" label="Carousel dummy"/>
-    <site id="tbb" frm_id="bbe" host="localhost" port="24697" iocmd="socat - tcp:localhost:10007" label="BBE dummy"/>
+    <site id="tfp" frm_id="cfp" port="24691" iocmd="socat - tcp:localhost:10001" label="Field Point dummy"/>
+    <site id="tap" frm_id="oma" port="24692" iocmd="socat - tcp:localhost:10002" label="Air Pres dummy"/>
+    <site id="tma" frm_id="slo" port="24693" iocmd="socat - tcp:localhost:10003" label="Arm dummy"/>
+    <site id="tmc" frm_id="slo" port="24694" iocmd="socat - tcp:localhost:10004" label="Carousel dummy"/>
+    <site id="tbb" frm_id="bbe" port="24697" iocmd="socat - tcp:localhost:10007" label="BBE dummy"/>
   </group>
   <group id="dciax" label="Dummy CIAX Simulator" column="2">
-    <site id="trt" frm_id="mel" host="localhost" port="24191" iocmd="socat - udp:localhost:8888" label="CIAX CART Dummy"/>
-    <site id="tsi" frm_id="cj2" host="localhost" port="24192" iocmd="socat - udp:localhost:8889" label="IR Stand-by Flange">
+    <site id="trt" frm_id="mel" port="24191" iocmd="socat - udp:localhost:8888" label="CIAX CART Dummy"/>
+    <site id="tsi" frm_id="cj2" port="24192" iocmd="socat - udp:localhost:8889" label="IR Stand-by Flange">
       <field>
         <assign id="ipl" val="1"/>
         <assign id="ipr" val="33"/>
       </field>
     </site>
-    <site id="tso" frm_id="cj2" host="localhost" port="24193" iocmd="socat - udp:localhost:8890" label="OPT Stand-by Flange">
+    <site id="tso" frm_id="cj2" port="24193" iocmd="socat - udp:localhost:8890" label="OPT Stand-by Flange">
       <field>
         <assign id="ipl" val="1"/>
         <assign id="ipr" val="32"/>
       </field>
     </site>
-    <site id="tts" frm_id="oss" host="localhost" port="24195" iocmd="socat - udp:localhost:8891" label="Gen2 TSC Control"/>
-    <site id="tci" frm_id="bbe" host="localhost" port="24198" iocmd="socat - udp:localhost:8892" label="CCI dummy"/>
-    <site id="tco" frm_id="bbe" host="localhost" port="24199" iocmd="socat - udp:localhost:8893" label="CCO dummy"/>
+    <site id="tts" frm_id="oss" port="24195" iocmd="socat - udp:localhost:8891" label="Gen2 TSC Control"/>
+    <site id="tci" frm_id="bbe" port="24198" iocmd="socat - udp:localhost:8892" label="CCI dummy"/>
+    <site id="tco" frm_id="bbe" port="24199" iocmd="socat - udp:localhost:8893" label="CCO dummy"/>
   </group>
 </ddb>

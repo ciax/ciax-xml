@@ -43,4 +43,4 @@ focas,,*
 moircs,,*
 comics,,*
 ciao,,*
-mc-box,,*
+mcs,,*

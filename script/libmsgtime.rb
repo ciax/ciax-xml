@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libmsgfmt'
 # Common Module
 module CIAX
@@ -10,15 +10,15 @@ module CIAX
       (Time.now.to_f * 1000).to_i
     end
 
-    def elps_sec(msec, target = nil)
-      return 0 unless msec
-      target ||= now_msec
-      format('%.3f', (target - msec).to_f / 1000)
+    def elps_sec(base_msec, later_msec = nil)
+      return 0 unless base_msec
+      later_msec ||= now_msec
+      format('%.3f', (later_msec - base_msec).to_f / 1000)
     end
 
-    def elps_date(msec, target = now_msec)
-      return 0 unless msec
-      sec = (target - msec).to_f / 1000
+    def elps_date(base_msec, later_msec = now_msec)
+      return 0 unless base_msec
+      sec = (later_msec - base_msec).to_f / 1000
       interval(sec)
     end
 
@@ -40,6 +40,17 @@ module CIAX
 
     def today
       Time.now.strftime('%Y%m%d')
+    end
+  end
+  # Show Elapsed time
+  class Elapsed
+    include Msg
+    def initialize(stat)
+      @base = stat
+    end
+
+    def to_s
+      elps_date(@base[:time])
     end
   end
 end

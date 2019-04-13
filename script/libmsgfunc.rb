@@ -1,24 +1,34 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Common Module
 require 'libmsgdbg'
 require 'libmsgtime'
-require 'fileutils'
 require 'json'
 module CIAX
   ### Checking Methods ###
   module Msg
+    def Math.bind
+      binding
+    end
+
     module_function
 
+    # You can use Math functions in str
     def expr(str)
       return unless str
-      eval(str) || 0
-    rescue SyntaxError, NoMethodError
+      eval(str, Math.bind) || 0
+    rescue SyntaxError, NameError
       cfg_err("#{str} is not number")
     end
 
     def esc_code(str)
       return unless str
       eval("\"#{str}\"")
+    end
+
+    # Use num.clamp() on ruby 2.4 or later
+    # the order of range parameters is not concerned
+    def limit(num, *rg)
+      [[rg.min, num].max, rg.max].min
     end
 
     # variable keys of db will be converted to String
@@ -33,6 +43,7 @@ module CIAX
       hash
     end
 
+    # Json feature
     def j2h(jstr = nil)
       key2str(JSON.parse(jstr, symbolize_names: true))
     rescue JSON::ParserError
@@ -44,19 +55,19 @@ module CIAX
       Thread.current == Thread.main
     end
 
-    def xmlfiles(type)
-      Dir.glob("#{__dir__}/../#{type}-*.xml").map { |f| File.absolute_path(f) }
+    # For information (e.g. macro)
+    def show_fg(str = "\n")
+      print(str) if fg?
+      self
     end
 
-    def v1cfgdir
-      "#{__dir__}/../config-v1"
+    # Encode/Decode base64
+    def enc64(binstr)
+      [binstr].pack('m').split("\n").join('')
     end
 
-    # Make Var dir if not exist
-    def vardir(subdir)
-      dir = "#{ENV['HOME']}/.var/#{subdir}/"
-      FileUtils.mkdir_p(dir)
-      dir
+    def dec64(ascii)
+      ascii.unpack('m').first
     end
 
     # Git administration
@@ -66,10 +77,12 @@ module CIAX
     end
 
     # Set Tag
-    def tag_set(msg)
+    def tag_set
       br = _git("branch|grep '^\*'").split(' ')[1]
-      ary = [PROGRAM, ENV['PROJ'], today, HOST, br, RUBY_VERSION]
-      tag = format('%s(%s)@%d/%s/%s/%s', *ary)
+      tagary = [PROGRAM, HOST, today]
+      tag = format('%s@%s%d', *tagary)
+      msgary = [ENV['PROJ'], br, RUBY_VERSION]
+      msg = format('PROJECT = %s, BRANCH = %s, RUBY Ver = %s', *msgary)
       _git("tag -afm '#{msg}' '#{tag}'")
       tag
     end

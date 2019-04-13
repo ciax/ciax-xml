@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libdb'
 
 # id = Table Group ID
@@ -6,7 +6,8 @@ module CIAX
   # Hex module
   module Hex
     # Hex DB
-    class Db < Db
+    class Db < Dbx::Index
+      # [:length] is output str length in hex or others
       def initialize
         super('hdb')
       end
@@ -41,7 +42,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
+      Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
         dbi = Db.new.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end

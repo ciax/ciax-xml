@@ -9,7 +9,7 @@
    -l  : Client to Device Serverr (connect to dvsv)
 
  *Processing Options
-   -d  : Processing but Motion command is skipped
+   -d  : Processing without Device Execution
    -e  : Processing with internal Device Driver
    -l  : Processing with external Device Server
 
@@ -18,6 +18,7 @@
 
 # Function Table
   Legend:
+   PR: Processing?
    AS: Actual Status?
    DV: Device Driver Running?
    FE: Force Entering
@@ -26,33 +27,30 @@
    MV: Moving Command Execution
    RI: Retry with Interval Second
    RC: Recording?
+   LO: Logging at Device Level?
 
-  Opt  |AS |DV |FE |IG |QW |MV |RI |RC | Description
- ------+---+---+---+---+---+---+---+---+------------
+  Opt  |PR |AS |DV |FE |IG |QW |MV |RI |RC |LO | Description
+ ------+---+---+---+---+---+---+---+---+---+---+------------
 
- *Test mode (Listing)
-       | N | N | Y | Y | Y | N | 0 | N | Interactive(default)
- (-n)  | N | N | Y | Y | N | N | 0 | N | Browsing
+ *Test mode (Processing w/o Actual Device Driver Data)
+       | Y | N | N | N | Y | Y | N | 1 | N | N | Interactive DryRun
+ (-n)  | Y | N | N | N | Y | N | N | 1 | N | N | Nonstop DryRun
 
- *DryRun mode (Processing w/o Device Driver Data)
- (-d)  | N | N | N | N | Y | N | 1 | N | Interactive DryRun
- (-dn) | N | N | N | N | N | N | 1 | N | Nonstop DryRun
+ *DryRun mode (Processing w/Device Driver Running, No execution)
+ (-d)  | Y | Y | Y | N | N | Y | N | 1 | N | Y | Interactive DryRun
+ (-dn) | Y | Y | Y | N | N | N | N | 1 | N | Y | Nonstop DryRun
 
- *DryRun mode (Processing w/Device Driver Running)
- (-ed) | Y | Y | N | N | Y | N | 1 | N | Interactive DryRun
- (-edn)| Y | Y | N | N | N | N | 1 | N | Nonstop DryRun
-
- *DryRun mode (Processing w/Client to Device Driver)
- (-ld) | Y | N | N | N | Y | N | 1 | N | Interactive DryRun
- (-ldn)| Y | N | N | N | N | N | 1 | N | Nonstop DryRun
+ *DryRun mode (Processing w/Client to Device Driver, No execution)
+ (-ld) | Y | Y | N | N | N | Y | N | 1 | N | N |Interactive DryRun
+ (-ldn)| Y | Y | N | N | N | N | N | 1 | N | N | Nonstop DryRun
 
  *Real Motion (Processing w/Device Driver Running)
- (-e)  | Y | Y | N | N | Y | Y | 1 | Y | Interactive
- (-en) | Y | Y | N | N | N | Y | 1 | Y | Nonstop
+ (-e)  | Y | Y | Y | N | N | Y | Y | 1 | Y | Y | Interactive
+ (-en) | Y | Y | Y | N | N | N | Y | 1 | Y | Y | Nonstop
 
  *Real Motion (Processing w/Client to Device Driver)
- (-l)  | Y | N | N | N | Y | Y | 1 | Y | Interactive
- (-ln) | Y | N | N | N | N | Y | 1 | Y | Nonstop
+ (-l)  | Y | Y | N | N | N | Y | Y | 1 | Y | N | Interactive
+ (-ln) | Y | Y | N | N | N | N | Y | 1 | Y | N | Nonstop
 
 
 # TEST: query(exec,error,enter), interval=0

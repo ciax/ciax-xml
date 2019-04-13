@@ -1,5 +1,6 @@
-#!/usr/bin/ruby
-require 'libenumx'
+#!/usr/bin/env ruby
+require 'libhashx'
+require 'libconfview'
 module CIAX
   # Recursive hash array of @generation:
   #   each Hash is associated with Domain,Group,Item;
@@ -12,27 +13,25 @@ module CIAX
   # Usage:[]
   #   get val from current Hash otherwise from upper generation of Hash;
   class Config < Hashx
-    attr_reader :generation
+    include ConfigView
+    attr_reader :generation, :access_method_keys
     alias this_keys keys
     alias this_key? key?
-    def initialize(cfg = nil, obj = self)
+    def initialize(spcfg = nil, obj = self)
       super()
       @generation = [self]
+      @access_method_keys = []
       self[:obj] = obj
-      case cfg
-      when Config
-        join_in(cfg)
-      when Hash
-        update(cfg)
-      end
+      ___init_param(spcfg)
     end
 
     def gen(obj)
       Config.new(self, obj)
     end
 
-    def join_in(cfg)
-      @generation.concat(cfg.generation)
+    def join_in(spcfg)
+      @generation.concat(spcfg.generation)
+      @access_method_keys.concat(spcfg.access_method_keys)
       self
     end
 
@@ -61,7 +60,7 @@ module CIAX
     # Check key if it is correct type. Used for argument validation.
     def check_type(key, type)
       sv_err("No such key in Config [#{key}]") unless self[key]
-      sv_err("Confi Key Type is mismatch [#{key}]") unless self[key].is_a?(type)
+      sv_err("Config Key Type mismatch [#{key}]") unless self[key].is_a?(type)
       true
     end
 
@@ -76,74 +75,32 @@ module CIAX
       @generation[n][:obj]
     end
 
-    # Show all contents of all generation
-    def path(key = nil)
-      i = 0
-      ary = @generation.map do |h|
-        "  [#{i += 1}]{" + ___show_generation(key, h) + "} (#{h.object_id})"
-      end
-      __decorate(ary.reverse)
-    end
-
-    # Show list of all key,val which will be taken with [] access
-    def list
-      db = {}
-      @generation.each_with_index do |h, i|
-        h.each { |k, v| db[k] = [i, v] unless db.key?(k) }
-      end
-      ary = db.map do |k, a|
-        val = ___show_db(a[1])
-        "  #{k} (#{a[0]}) = #{val}"
-      end
-      __decorate(ary.reverse)
-    end
-
     private
 
-    def ___show_db(v)
-      return __show(v.inspect) if __any_mod?(v, String, Numeric, Enumerable)
-      return __show(v.class) if v.is_a? Proc
-      __show(v)
+    def ___init_param(spcfg)
+      case spcfg
+      when Config
+        join_in(spcfg)
+      when Hash
+        update(spcfg)
+        @access_method_keys.concat(spcfg.keys)
+      end
+      ___access_method
     end
 
-    def __decorate(ary)
-      ["******[Config]******(#{object_id})", *ary, '************'].join("\n")
-    end
-
-    def ___show_generation(key, h)
-      h.map do |k, v|
-        next if key && k != key
-        val = k == :obj ? __show(v.class) : ___show_contents(v)
-        "#{k.inspect.sub(/^:/, '')}: #{val}"
-      end.compact.join(', ')
-    end
-
-    def ___show_contents(v)
-      return __show(v.class) if __any_mod?(v, Hash, Proc)
-      return ___show_array(v) if v.is_a? Array
-      __show(v.inspect)
-    end
-
-    def ___show_array(v)
-      '[' + v.map do |e|
-        __show(e.is_a?(Enumerable ? e.class : e.inspect))
-      end.join(',') + "](#{v.object_id})"
-    end
-
-    def __show(v)
-      v.to_s.sub('CIAX::', '')
-    end
-
-    def __any_mod?(v, *modary)
-      modary.any? { |mod| v.is_a? mod }
+    def ___access_method
+      @access_method_keys.each do |k|
+        next if respond_to?(k)
+        define_singleton_method(k) { self[k] }
+      end
     end
   end
-
   # Option parser with Config
-  class ConfOpts < GetOpts
+  class ConfOpts < Config
     def initialize(ustr = '', optargs = {})
-      super do |opt, args|
-        yield(Config.new(opt: opt, jump_groups: [], args: args), args)
+      Opt::Get.new(ustr, optargs) do |opt, args|
+        super(args: args, opt: opt, proj: ENV['PROJ'])
+        yield(self)
       end
     end
   end

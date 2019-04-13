@@ -37,7 +37,7 @@ comics,,*
 ciao,,*
 ciax3,,*
 mp-cs1,,*
-mc-box,,*
+mcs,,*
 moircs,,*
 cat
 cdt

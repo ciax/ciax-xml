@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libcmdgroup'
 
 # @cfg[:def_proc] should be Proc which is given |Entity| as param,
@@ -8,10 +8,10 @@ module CIAX
     # Inherited by Index,Domain
     class GrpAry < Arrayx
       include CmdFunc
-      def initialize(cfg, atrb = Hashx.new)
+      def initialize(spcfg, atrb = Hashx.new)
         # @cfg is isolated from cfg
         # So it is same meaning to set value to 'atrb' and @cfg
-        @cfg = cfg.gen(self).update(type?(atrb, Hash))
+        @cfg = spcfg.gen(self).update(type?(atrb, Hash))
         @layer = @cfg[:layer]
       end
 
@@ -24,8 +24,8 @@ module CIAX
         map(&:valid_pars).compact.flatten
       end
 
-      def view_list
-        map(&:view_list).compact.grep(/./).join("\n")
+      def view_dic
+        map(&:view_dic).compact.grep(/./).join("\n")
       end
 
       # Add sub group
@@ -60,24 +60,15 @@ module CIAX
     end
 
     # Top Level Command Index
+    #  This instance will be assigned as @cobj in other classes
     class Index < GrpAry
-      def initialize(cfg, atrb = Hashx.new)
+      def initialize(spcfg, atrb = Hashx.new)
         atrb[:index] = self
         super
       end
 
       def add_dom(ns, atrb = Hashx.new)
         add("#{ns}::Domain", atrb)
-      end
-
-      def set_cmd(args = [], opt = {})
-        id, *par = type?(args, Array)
-        valid_keys.include?(id) || error
-        get(id).set_par(par, opt)
-      end
-
-      def error
-        cmd_err(view_list)
       end
     end
 

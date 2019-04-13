@@ -1,6 +1,7 @@
-#!/usr/bin/ruby
-require 'libfrmrsp'
+#!/usr/bin/env ruby
+require 'libfrmconv'
 require 'libfrmcmd'
+require 'libframe'
 require 'libdevdb'
 require 'libexe'
 
@@ -9,15 +10,16 @@ module CIAX
   module Frm
     # Frame Exe module
     class Exe < Exe
-      # cfg must have [:db]
-      def initialize(cfg, atrb = Hashx.new)
+      # atrb must have [:dbi]
+      def initialize(spcfg, atrb = Hashx.new)
         super
-        # DB is generated in List level
+        # DB is generated in ExeDic level
         dbi = _init_dbi2cfg(%i(stream iocmd))
         @cfg[:site_id] = @id
         @stat = @cfg[:field] = Field.new(dbi)
-        @sv_stat = Prompt.new(@id)
-        ___init_net(dbi)
+        @frame = @stat.frame
+        @sv_stat = @cfg[:sv_stat] = Prompt.new(@id)
+        _init_net
         ___init_command
         _opt_mode
       end
@@ -27,47 +29,17 @@ module CIAX
       rescue CommError
         @sv_stat.up(:comerr)
         @sv_stat.seterr
-        @stat.seterr
+        @stat.comerr
         raise
-      end
-
-      def ext_shell
-        super
-        @cfg[:output] = @stat
-        input_conv_set
-        self
-      end
-
-      def ext_local_test
-        @stat.ext_local_file
-        @cobj.rem.ext.cfg[:def_msg] = 'TEST'
-        super
-      end
-
-      def ext_local_driver
-        require 'libfrmdrv'
-        super
       end
 
       private
 
-      # Mode Extension by Option
-      def _ext_local
-        @cobj.get('set').def_proc do |ent|
-          @stat.repl(ent.par[0], ent.par[1])
-          @stat.flush
-          verbose { "Set [#{ent.par[0]}] = #{ent.par[1]}" }
-        end
-        super
+      def _ext_local_shell
+        super.input_conv_set
       end
 
       # Sub Methods for Initialize
-      def ___init_net(dbi)
-        @host = @cfg[:opt].host || dbi[:host]
-        @port ||= dbi[:port]
-        self
-      end
-
       def ___init_command
         @cobj.add_rem.cfg[:def_msg] = 'OK'
         @cobj.rem.add_sys
@@ -75,10 +47,51 @@ module CIAX
         @cobj.rem.add_int
         self
       end
+
+      # Local mode
+      module Local
+        include CIAX::Exe::Local
+        def self.extended(obj)
+          Msg.type?(obj, Exe)
+        end
+
+        # Mode Extension by Option
+        def ext_local
+          @frame.ext_local
+          @cobj.get('set').def_proc do |ent|
+            key, val = ent.par
+            @stat.repl(key, val)
+            @stat.flush
+            verbose { "Set [#{key}] = #{val}" }
+          end
+          super
+        end
+
+        def run
+          super
+          @sv_stat.ext_local.ext_file.ext_save.ext_log
+          self
+        end
+
+        private
+
+        def _ext_local_test
+          @cobj.rem.ext.cfg[:def_msg] = 'TEST'
+          super
+        end
+
+        def _ext_local_driver
+          super
+          require 'libfrmdrv'
+          extend(Driver).ext_local_driver
+        end
+      end
     end
 
     # For Frm
     class Prompt < Prompt
+      # commerr: device no response
+      # ioerr: port is not open (communication refused)
       def initialize(id)
         super('dev', id)
         init_flg(comerr: 'X', ioerr: 'E')
@@ -86,9 +99,15 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
-        dbi = Dev::Db.new.get(args.shift)
-        Exe.new(cfg, dbi: dbi).ext_shell.shell
+      ConfOpts.new('[id]', options: 'cehls') do |cfg|
+        db = cfg[:db] = Dev::Db.new
+        dbi = db.get(cfg.args.shift)
+        eobj = Exe.new(cfg, dbi: dbi)
+        if cfg.opt.sh?
+          eobj.shell
+        else
+          puts eobj.exe(cfg.args).stat
+        end
       end
     end
   end

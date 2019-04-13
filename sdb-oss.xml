@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="oss" label="TSC Control">
+    <table id="pid" label="On Motion">
+      <pattern class="active" msg="RUN">[1-9]</pattern>
+      <default class="normal" msg="NO"/>
+    </table>
     <table id="bl" label="Jack Length">
       <pattern class="warn" msg="MID">0</pattern>
       <pattern class="normal" msg="UP">2</pattern>
@@ -30,7 +34,7 @@
       <pattern class="normal" msg="FOCAS">5</pattern>
       <pattern class="normal" msg="COMICS">7</pattern>
       <pattern class="normal" msg="MP-CS1">10</pattern>
-      <pattern class="normal" msg="MC-BOX">11</pattern>
+      <pattern class="normal" msg="MCS">11</pattern>
       <pattern class="normal" msg="MOIRCS">12</pattern>
       <pattern class="normal" msg="CIAX3">13</pattern>
       <default class="warn" msg="N/A"/>

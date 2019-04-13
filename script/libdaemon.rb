@@ -1,6 +1,7 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libconf'
 require 'libthreadx'
+require 'libudp'
 module CIAX
   ### Daemon Methods ###
   class Daemon
@@ -8,17 +9,13 @@ module CIAX
     # Previous process will be killed at the start up.
     # Reloadable by HUP signal
     # Get Thread status by UDP:54321 connection
-    def initialize(tag, ops = '', port = 54_321)
+    # Closure should return an object having ('run' and 'id')
+    def initialize(cfg, port = 54_321)
       ___set_env
-      @layer = tag
-      ConfOpts.new('[id] ...', options: ops + 'b') do |cfg, args|
-        opt = cfg[:opt]
-        ___chk_args(___kill_pids(tag), args + opt.values)
-        opt[:s] = true
-        @obj = yield(cfg, sites: args)
-        ___init_server(tag, opt)
-        ___main_loop(port) { yield(cfg, sites: args) }
-      end
+      tag = $PROGRAM_NAME.split('/').last
+      ___chk_args(___kill_pids(tag), cfg.args + cfg.opt.values)
+      ___init_server(tag, cfg.opt, port)
+      ___server(port) { yield cfg.opt.init_layer_mod }
     end
 
     private
@@ -28,24 +25,23 @@ module CIAX
       ENV['NOCACHE'] ||= '1'
     end
 
-    def ___main_loop(port)
-      @obj.run
+    def ___server(port)
+      info('Start Layer %s', yield.class)
       msg = 'for Thread status'
-      Udp::Server.new('daemon', 'top', port, msg).listen { Threadx.list.to_s }
+      Udp::Server.new('daemon', 'top', port, msg).listen do |reg, _host|
+        ['===== Thread List =====',
+         Threadx.list.view(reg.chomp!), '(reg)?>'].join("\n")
+      end
     rescue SignalException
       Threadx.killall
-      if $ERROR_INFO.message == 'SIGHUP'
-        @obj = yield
-        retry
-      end
+      retry if $ERROR_INFO.message == 'SIGHUP'
     end
 
     # Background (Switch error output to file)
-    def ___init_server(tag, opt)
-      gittag = tag_set(@obj.id)
-      info("Git Tagged [#{gittag}]")
+    def ___init_server(tag, opt, port)
+      info('Git Tagged [%s], Status Port [%s]', tag_set, port) if opt.git_tag?
       ___detach
-      ___redirect(tag) if opt[:b]
+      ___redirect(tag) if opt.bg?
       verbose { "Initiate Daemon Start [#{tag}] " + git_ver }
     end
 
@@ -72,7 +68,7 @@ module CIAX
 
     def ___kill_pid(pid)
       Process.kill(:TERM, pid.to_i)
-      show cformat('%:1s Process Killed (%s)', 'Daemon', pid)
+      show cfmt('%:1s Process Killed (%s)', 'Daemon', pid)
     rescue
       nil
     end
@@ -110,12 +106,12 @@ module CIAX
       include Msg
       def initialize(fname, rw)
         super
-        @base = now_msec
+        @base_time = now_msec
         write("\n")
       end
 
       def puts(str)
-        super(format("[#{Time.now}/%s]%s", elps_date(@base), str))
+        super(format("[#{Time.now}/%s]%s", elps_date(@base_time), str))
       end
     end
   end

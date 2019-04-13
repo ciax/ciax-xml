@@ -5,6 +5,6 @@ for i in $file ; do
     j=${i#*_}
     k=${j%.*}
     echo "### $k ###"
-    libwatrsp $k || exit
+    libwatcond $k || exit
     read -t 0 && break
 done

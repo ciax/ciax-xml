@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="ohp" label="OMEGA Helium Pressure Sensor">
+  <frm id="ohp" label="OMEGA Helium Pressure Sensor">
     <serial databit="7" flowctl="NONE" parity="ODD" speed="9600" stopbit="1"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <body/>
-      <char length="1">13</char>
-    </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <frame>
+        <body/>
+        <char length="1">13</char>
+      </frame>
+      <group caption="Status" id="gst">
         <item id="getstat" label="Get Status" type="stat">
           <string>*X01</string>
         </item>
       </group>
-      <group id="gcfg" caption="Configuration">
+      <group caption="Configuration" id="gcfg">
         <item id="setd" label="Set default" type="config">
           <string>*W1F14</string>
         </item>
@@ -21,20 +21,23 @@
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <body/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <body/>
+      </frame>
       <item id="getstat">
-        <field label="Prefix">X01</field>
-        <field assign="pres" length="5"/>
+        <verify decode="string" label="Prefix">X01</verify>
+        <assign decode="string" length="5" ref="pres"/>
       </item>
       <item id="setd">
-        <field label="Command">W1F</field>
+        <verify decode="string" label="Command">W1F</verify>
       </item>
       <item id="init">
-        <field label="Command">Z02</field>
+        <verify decode="string" label="Command">Z02</verify>
       </item>
     </response>
-  </frame>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="pres"/>
+    </field>
+  </frm>
 </fdb>

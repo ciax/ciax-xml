@@ -19,7 +19,7 @@
       </group>
       <group id="gc" caption="Device Config">
         <item id="mres" label="Motor Reset">
-          <frmcmd name="reset"/>
+          <frmcmd name="mres"/>
         </item>
         <item id="defcon" label="Default Config">
           <frmcmd name="hl">

@@ -1,68 +1,71 @@
 <!DOCTYPE html>
 <?xml version="1.0"?><html lang="en-US">
-  <head>
-    <meta charset="utf-8">
-    <title>CIAX-XML(Record)</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" type="text/css" href="ciax-xml.css">
-    <script type="text/javascript" src="jquery-3.0.0.min.js"></script>
-    <script type="text/javascript" src="ciax-xml.js"></script>
-    <script type="text/javascript" src="mcr_conf.js"></script>
-    <script type="text/javascript" src="record.js"></script>
-    <script type="text/javascript">
-      init_list.push(update_record);
-      $(init);
-    </script>
-  </head>
-  <body>
-    <div class="outline">
-      <!-- HEADER -->
-      <div>
-        <div class="title">
-          <span class="mcr">Macro</span>:
-          <span class="cmd" id="mcrcmd"></span>
-        </div>
-        <div class="bar">
-          <em id="result"></em>
-          <span class="tail">
-            <time id="date"></time>
-            <span class="elps" id="total"></span>
-          </span>
-        </div>
+
+<head>
+  <meta charset="utf-8">
+  <title>CIAX-XML(Record)</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="ciax-xml.css">
+  <script type="text/javascript" src="jquery-3.0.0.min.js"></script>
+  <script type="text/javascript" src="ciax-xml.js"></script>
+  <script type="text/javascript" src="mcr_conf.js"></script>
+  <script type="text/javascript" src="record.js"></script>
+  <script type="text/javascript">
+    init_list.push(update_record);
+    $(init);
+  </script>
+</head>
+
+<body>
+  <div class="outline">
+    <!-- HEADER -->
+    <div>
+      <div class="title">
+        <span class="mcr">Macro</span>:
+        <span class="cmd" id="mcrcmd"></span>
       </div>
-      <div id="record" class="contents">
-        <ul class="depth1"></ul>
-      </div>
-      <!-- FOOTER -->
-      <div class="footer">
-        <table>
-          <tr>
-            <td>
-              <em id="status"></em>
-            </td>
-            <td>
-              <span id="query"></span>
-              <span id="msg"></span>
-            </td>
-            <td style="text-align:right;">
-              <select id="command" onchange="selmcr(this)">
-                <option>--select--</option>
-              </select>
-              <span class="control-label" id="interactive">Interactive
-                <input type="checkbox" onclick="interactive();">
-              </span>
-              <button class="stop" id="stop" onclick="stop();">STOP</button>
-              <span class="control-label">Scroll
-                <label class="switch" id="scroll">
-                  <input type="checkbox" class="switch-input" onclick="sticky_bottom('slow');">
-                  <span class="switch-label" data-on="Auto" data-off="Manual"></span>
-                  <span class="switch-handle"></span>
-                </label>
-              </span>
-            </td>
-          </tr>
-        </table>
+      <div class="bar">
+        <em id="result"></em>
+        <span class="tail">
+          <time id="date"></time>
+          <span class="elps" id="total"></span>
+        </span>
       </div>
     </div>
-  </body>
+    <div id="record" class="contents">
+      <ul class="depth1"></ul>
+    </div>
+    <!-- FOOTER -->
+    <div class="footer">
+      <table>
+        <tr>
+          <td>
+            <em id="status"></em>
+          </td>
+          <td>
+            <span id="query"></span>
+            <span id="msg"></span>
+          </td>
+          <td style="text-align:right;">
+            <select id="command" onchange="selmcr(this)">
+              <option>--select--</option>
+            </select>
+            <span class="control-label" id="interactive">Interactive
+              <input type="checkbox" onclick="interactive();">
+            </span>
+            <button class="stop" id="stop" onclick="stop();">STOP</button>
+            <span class="control-label">Scroll
+              <label class="switch" id="scroll">
+                <input type="checkbox" class="switch-input" onclick="sticky_bottom('slow');">
+                <span class="switch-label" data-on="Auto" data-off="Manual"></span>
+                <span class="switch-handle"></span>
+              </label>
+            </span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+
 </html>

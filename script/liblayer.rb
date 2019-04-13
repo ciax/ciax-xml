@@ -1,31 +1,32 @@
-#!/usr/bin/ruby
-require 'liblist'
+#!/usr/bin/env ruby
+require 'libexedic'
 
 module CIAX
-  # list object can be (Frm,App,Wat,Hex)
-  # atrb can have [:top_layer]
-  class Layer < CIAX::List
-    def initialize(usagestr, optargs = {})
-      ConfOpts.new(usagestr, optargs) do |cfg, args|
-        super(cfg)
-        obj = yield(@cfg, args)
-        loop do
-          ns = m2id(obj.class, -2)
-          _list.put(ns, obj)
-          obj = obj.sub_list || break
-        end
+  # element object can be (Frm,App,Wat,Hex)
+  class Layer < CIAX::ExeDic
+    def initialize(top_cfg)
+      super(top_cfg)
+      obj = yield(@cfg, top_cfg[:opt].init_layer_mod)
+      # Initialize all sub layers
+      loop do
+        ns = m2id(obj.class, -2)
+        put(ns, obj)
+        obj = obj.sub_dic || break
       end
     end
 
-    def ext_shell
-      extend(CIAX::List::Shell).ext_shell(Jump)
-      @cfg[:jump_layer] = @jumpgrp
-      _list.each do |id, obj|
-        obj.ext_shell
-        @jumpgrp.add_item(id, id.capitalize + ' mode')
+    # Shell module which is Layer specific
+    module Shell
+      include CIAX::ExeDic::Shell
+      def ext_local_shell
+        super
+        @cfg[:jump_layer] = @jumpgrp
+        _dic.each do |id, _obj|
+          @jumpgrp.add_form(id, id.capitalize + ' mode')
+        end
+        @current = @cfg[:opt].init_layer || _dic.keys.first
+        self
       end
-      @current = @cfg[:opt].init_layer || _list.keys.first
-      self
     end
 
     class Jump < LongJump; end

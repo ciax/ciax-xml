@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # For sqlite3
 require 'libsqlogsv'
 
@@ -14,7 +14,7 @@ module CIAX
         @layer = layer
         @stat = type?(stat, Varx)
         @id = stat[:id]
-        @tid = "#{@stat.type}_#{@stat[:ver]}"
+        @tid = "#{@stat.type}_#{@stat[:data_ver]}"
         @tname = @stat.type.capitalize
         verbose { "Initiate Table '#{@tid}'" }
       end
@@ -79,10 +79,10 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libstatus'
-      GetOpts.new('[id]') do |_opt, args|
+      require 'libappstat'
+      Opt::Get.new('[id]') do |_opt, args|
         dbi = Ins::Db.new.get(args.shift)
-        stat = App::Status.new(dbi).ext_local_file
+        stat = App::Status.new(dbi).ext_local
         tbl = Table.new('app', stat)
         puts stat
         puts tbl.create

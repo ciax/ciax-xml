@@ -1,0 +1,54 @@
+!key,caption,inv,host,port,dev,ctype,cpar,elen,updint,exeint
+!0,---------- Device Mode (CIAX Summit)----------
+###### Server Depends on Device ######
+#dct,CIAX New Cart at the Dome,,ciax,54056,mlq,udp,cart3:5000,220
+#nso,OPT Stand-by Flange,,ciax,54053,nt,fsc,O,45,20
+#nsi,IR Stand-by Flange,,ciax,54054,nt,fsc,I,45,20
+dso,OPT Stand-by Flange,1,ciax,26103,nt,fsc,O,45,20
+dsi,IR Stand-by Flange,1,ciax,26102,nt,fsc,I,45,20
+# CIAX Server (Shared file communication)
+ist,Instrument Assignment,,ciax,54051,inst,cfg,,32,3600
+# CXWS Server
+dts,Telescope(TSC) & MLP3,,ciax,26105,tsc,exe,,325
+
+crt,CIAX New Cart3,1,ciax,26101,cmd,,,220
+#cr2,CIAX New Cart2,1,ciax,26502,cmd,,,220
+#crt,CIAX New Cart2,,ciax,54057,cmd,,,220
+# CLX-.? Server
+#dxo,OPT Loft Peripheral,,clx-o,54301,725,pio,0x2a8 0x2aa,4
+#dzo,OPT Flange Z sensor,,clx-o,54302,818,pio,0x220,24,3600
+#dxi,IR Loft Peripheral,,clx-i,54401,725,pio,0x2a8 0x2b8,4
+#dzi,IR Flange Z sensor,,clx-i,54402,818,pio,0x220,24,3600
+
+# Via Lantronix
+det,CsEtr Control Box,,ciax,26104,srm1,tcp,ltc-c:4003,12
+
+!1,----------	Device Mode (Helium Compressors)
+# Via Lantronix on CIAX
+cco,OPT He Comp Control,,ciax,54204,bbe,tcp,ltc-o:4002,4
+cro,OPT He Comp Room I/O,,ciax,54205,bbe,tcp,ltc-o:4003,4
+cci,IR He Comp Control,,ciax,54206,bbe,tcp,ltc-i:4002,4
+cri,IR He Comp Room I/O,,ciax,54207,bbe,tcp,ltc-i:4003,4
+
+# Via Lantronix on E-LAN(C)
+#cfo,OPT He Comp Fluid(l/min),,any,54501,k3n,tcp,ltt-o:4001 2 3 4,5,600
+#cho,OPT He Comp Pressure(MPa),,any,54502,omg,tcp,ltt-o:4005 6 7 8,5,600
+#caf,HDS AIR FLOW(l/min),,any,54506,k3n,tcp,ltt-o:4012 3,5,600
+#cfi,IR He Comp Fluid(l/min),,any,54503,k3n,tcp,ltt-i:4001 2 3 11 14 15,5,600
+#chi,IR He Comp Pressure(MPa),,any,54504,omg,tcp,ltt-i:4004 5 6 10 12 13 16,5,600
+
+###### Instdiv APS ######
+#!2,----------	Device Mode (Summit APS)
+#alc,APS/LN2 Flow Control,,ciax,54602,omo,tcp,aps-c:4002
+#alp,APS Tank Pressure,,ciax,54604,oma,tcp,aps-c:4004 5,30
+#ap1,APS PDU PULLIZI Device,,ciax,54605,pul,tcp,aps-p1:23,,3600
+#ap2,APS PDU PULLIZI Valve,,ciax,54606,pul,tcp,aps-p2:23,,3600
+#alk,APS/Lakeshore,,ciax,54607,olk,tcp,aps-c:4006,15,30
+
+###### OPSM Server ######
+!3,----------	Device Mode (OPSM)
+hoj,OPSM Jack Bolt at Hilo,,osch,54604,srm1,rsl,ttyS0,88,6
+
+###### General Server ######
+msg,MACRO Messages,1,dmy,,,,,,,
+mcr,MACRO Command,1,dmy,54001,mcr,,,,,

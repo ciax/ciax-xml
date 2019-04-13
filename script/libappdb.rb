@@ -1,11 +1,11 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libwatdb'
 
 module CIAX
   # Application Layer
   module App
     # Application DB
-    class Db < DbTree
+    class Db < Dbx::Tree
       include Wat::Db
       def initialize
         super('adb')
@@ -22,10 +22,10 @@ module CIAX
         dbi
       end
 
-      def _add_item(e0, gid)
+      def _add_form(e0, gid)
         id, itm = super
         @rep.each(e0) do |e1|
-          _par2item(e1, itm) && next
+          _par2form(e1, itm) && next
           ___add_frmcmd(e1, itm)
         end
         _validate_par(itm)
@@ -102,7 +102,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
+      Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
         dbi = Db.new.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end

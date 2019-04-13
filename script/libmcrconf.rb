@@ -1,75 +1,54 @@
-#!/usr/bin/ruby
-require 'libprompt'
-require 'librecarc'
+#!/usr/bin/env ruby
 require 'libmcrdb'
-require 'libhexlist' # deprecated
+require 'libprompt'
+require 'libwatdic'
+require 'librecarc'
+require 'libudp'
 
+# CIAX_XML
 module CIAX
   # Macro Layer
   module Mcr
-    # Mcr Common Parameters across all the layers
-    # Upper Conf should have: :option, :jump_groups, :jump_layer
-    # Mcr::Conf includes:
-    # :layer_type, :db, :command, :version, :sites, :dev_list, :sv_stat
-    # :host, :port
-    class Conf < Config
-      def initialize(root_cfg)
-        super(root_cfg)
-        check_keys([:opt])
-        @opt = self[:opt]
-        verbose { 'Initiate Mcr Conf (option:' + @opt.keys.join + ')' }
-        ___init_db(root_cfg)
+    # Attribute for Mcr Config (Separated from Driver Config)
+    class Atrb < Hashx
+      def initialize(cfg)
+        super()
+        proj = ___get_proj(cfg)
+        self[:dbi] = Db.new.get(proj)
+        self[:sv_stat] = ___init_prompt(proj, cfg.opt[:n])
+        self[:dev_dic] = Wat::ExeDic.new(cfg, db: Ins::Db.new(proj))
+        self[:rec_arc] = RecArc.new
       end
 
       private
 
-      def ___init_db(root_cfg)
-        db = Db.new
-        update(layer_type: 'mcr', db: db)
-        ___init_with_dbi(db.get(ENV['PROJ'] ||= self[:args].shift))
-        ___init_dev_list(root_cfg.gen(self))
+      def ___get_proj(cfg)
+        if (host = cfg.opt[:h])
+          udp = Udp::Client.new('mcr', 'client', host, 54_321)
+          udp.send('mcr:Server').recv.split(/\W/)[2]
+        else
+          cfg[:proj] || (self[:proj] = cfg.args.shift)
+        end
       end
 
-      def ___init_with_dbi(dbi)
-        # pick already includes :command, :version
-        update(dbi.pick([:sites, :id]))
-        self[:host] = @opt.host || dbi[:host]
-        self[:port] = dbi[:port] || 55_555
-        self[:jlist] = Hashx.new(
-          port: dbi[:port], commands: dbi.list, label: dbi.label
-        )
-      end
-
-      # self is branch from root_cfg
-      # site_cfg is handover to App,Frm
-      # atrb is Wat only
-      def ___init_dev_list(site_cfg)
-        # handover to Wat only
-        id = self[:id]
-        # handover to Wat, App
-        site_cfg.update(db: Ins::Db.new(id), proj: id, opt: @opt.sub_opt)
-        dev_layer = @opt[:x] ? Hex : Wat
-        self[:dev_list] = dev_layer::List.new(site_cfg, sites: self[:sites])
-        self[:sv_stat] = Prompt.new(id, @opt)
-        self[:rec_arc] = RecArc.new(id)
-      end
-    end
-
-    # Prompt for Mcr
-    class Prompt < Prompt
-      def initialize(id, opt = {})
-        super('mcr', id)
+      def ___init_prompt(proj, nonstop)
+        ss = Prompt.new('mcr', proj)
         # list: running macros
-        init_array(:list)
+        ss.init_array(:list)
         # run: sites in motion
-        init_array(:run)
+        ss.init_array(:run)
         # sid: serial ID
-        init_str(:sid)
-        init_flg(nonstop: '(nonstop)')
-        up(:nonstop) if opt[:n]
+        ss.init_str(:sid)
+        ss.init_flg(nonstop: '(nonstop)')
+        ss.up(:nonstop) if nonstop
+        ss
       end
     end
 
-    ConfOpts.new { |cfg| puts Conf.new(cfg).list } if __FILE__ == $PROGRAM_NAME
+    if __FILE__ == $PROGRAM_NAME
+      ConfOpts.new('[id]') do |cfg|
+        puts Atrb.new(cfg).path(cfg.args)
+      end
+    end
   end
 end

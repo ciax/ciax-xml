@@ -1,5 +1,5 @@
-#!/usr/bin/ruby
-require 'libmsg'
+#!/usr/bin/env ruby
+require 'libenumx'
 require 'thread'
 
 # Add hash manipulate feature to Thread
@@ -10,7 +10,7 @@ class Thread
   end
 
   def to_hash
-    keys.each_with_object({}) { |k, h| h[k] = self[k] }
+    keys.each_with_object(status: status) { |k, h| h[k] = self[k] }
   end
 end
 
@@ -24,27 +24,38 @@ module CIAX
 
     module_function
 
+    # List all threads besides own ThreadGroup member
     def list
-      Threads.list.map do |t|
-        str = "[#{t.status}]"
-        str += %i(id layer name).map { |id| t[id] }.join(':')
-        str += "(#{t[:type]})" if t[:type]
-        str + "\n"
-      end.sort.join
+      Thread.list.map(&:to_hash).extend(View)
     end
 
     def killall
       Threads.list.each(&:kill)
     end
 
+    # Thread List View module
+    module View
+      include Enumx
+
+      # narrow down
+      def view(reg = '.')
+        map do |h|
+          str = "[#{h[:status]}]"
+          str += %i(id layer name port).map { |id| h[id] }.compact.join(':')
+          str += "(#{h[:type]})" if h[:type]
+          str
+        end.grep(/#{reg}/).sort.join("\n")
+      end
+    end
+
     # Simple Extention
     class Fork < Thread
       include Msg
-      def initialize(tname, layer, id, type = nil)
+      def initialize(tname, layer, id, atrb = {})
         @layer = layer
         @id = id
         th = super { ___do_proc(id) { yield } }
-        th.update(layer: layer, name: tname, id: id, type: type)
+        th.update(layer: layer, name: tname, id: id).update(atrb)
         Threads.add(th)
       end
 
@@ -61,7 +72,7 @@ module CIAX
 
     # Thread with Loop
     class Loop < Fork
-      def initialize(tname, layer, id, type = nil)
+      def initialize(tname, layer, id, atrb = {})
         super do
           loop do
             yield
@@ -72,27 +83,11 @@ module CIAX
     end
 
     # Queue Thread with Loop
-    class QueLoop < Fork
-      def initialize(tname, layer, id, type = nil)
-        @in = Queue.new
-        @out = Queue.new
-        super { loop { yield @in, @out } }
-      end
-
-      def push(str) # returns self
-        warning("Thread [#{self[:name]}] is not running") unless alive?
-        @in.push(str)
-        self
-      end
-
-      def shift
-        @out.shift
-      end
-
-      def clear
-        @in.clear
-        @out.clear
-        self
+    class QueLoop < Loop
+      attr_reader :que
+      def initialize(tname, layer, id, atrb = {})
+        @que = Queue.new
+        super { yield @que }
       end
     end
   end

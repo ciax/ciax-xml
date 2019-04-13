@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libudp'
 
 # Provide Server
@@ -13,10 +13,10 @@ module CIAX
 
       # JSON expression of server stat will be sent.
       def ext_local_server
-        return self if @mode == 'CL' || !@port
+        return self unless @port
         @mode += ':SV'
+        @cobj.rem.sys.add_empty
         @server_input_proc ||= ___init_input
-        @sv_stat.ext_local_file.auto_save.ext_local_log
         @server_output_proc ||= proc { JSON.dump(@sv_stat) }
         ___startup
         self
@@ -39,7 +39,7 @@ module CIAX
 
       # Separated form ext_* for detach process of this part
       def ___startup
-        Threadx::Fork.new('Server', @layer, @id, "udp:#{@port}") do
+        Threadx::Fork.new('Server', @layer, @id, port: "udp:#{@port}") do
           ___srv_udp
           sleep 0.3
         end

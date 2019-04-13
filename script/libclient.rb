@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libudp'
 
 # Provide Client
@@ -13,7 +13,7 @@ module CIAX
 
       # If you get a system error 'Address family not ..',
       # remove ipv6 entry from /etc/hosts
-      def ext_client
+      def ext_remote
         @mode = 'CL'
         @stat.ext_remote(@host)
         @pre_exe_procs << proc { @stat.upd }
@@ -25,14 +25,14 @@ module CIAX
 
       def ___init_upd
         @sv_stat.init_flg(udperr: 'x')
-        @sv_stat.upd_procs << proc { exe([]) }
+        @sv_stat.upd_procs.append(self, :client) { exe([]) }
         @udp = Udp::Client.new(@layer, @id, @host, @port)
         ___set_client_proc
       end
 
       def ___set_client_proc
         @cobj.rem.def_proc do |ent|
-          @udp.send(ent.id.split(':'))
+          @udp.send(JSON.dump(ent.id.split(':')))
           ___udp_recv
         end
         self

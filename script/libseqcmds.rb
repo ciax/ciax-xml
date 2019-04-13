@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libseqfunc'
 
 module CIAX
@@ -12,8 +12,7 @@ module CIAX
 
       private
 
-      def _cmd_mesg(_e, step, _mstat)
-        _show
+      def _cmd_mesg(step, _mstat)
         @qry.query(['ok'], step)
         true
       end
@@ -26,95 +25,78 @@ module CIAX
 
       # Bypass if condition is satisfied (return false)
       # Vars in conditions are not related in this sequence
-      def _cmd_bypass(_e, step, mstat)
+      def _cmd_bypass(step, mstat)
         return true unless step.skip?
-        mstat[:result] = 'bypass'
+        mstat.result = 'bypass'
         false
       end
 
       # Enter if condition is unsatisfied (return true)
       # Vars in conditions are changed in this sequence
       # It is used for multiple retry function
-      def _cmd_goal(_e, step, mstat)
+      def _cmd_goal(step, _mstat)
         return true unless step.skip?
-        if step.opt.nonstop?
-          return true unless step.opt.drv?
-        else
-          return true unless @qry.query(%w(pass enter), step)
-        end
-        mstat[:result] = 'skipped'
-        false
+        # When condition meets skip
+        # Enter if test mode
+        return @opt.test? if @opt.nonstop?
+        _qry_enter?(step)
       end
 
-      def _cmd_check(_e, step, mstat)
-        return true unless step.fail? && _giveup?(step)
-        mstat[:result] = 'failed'
+      def _cmd_check(step, _mstat)
+        return true unless step.fail? && _qry_giveup?(step)
         raise Interlock
       end
 
-      def _cmd_verify(_e, step, mstat)
-        return true unless step.fail? && _giveup?(step)
-        mstat[:result] = 'failed'
-        raise Verification
-      end
-
-      def _cmd_wait(_e, step, mstat)
-        return true unless step.timeout? && _giveup?(step)
-        mstat[:result] = 'timeout'
+      def _cmd_verify(step, mstat)
+        return true unless step.fail?
+        raise Verification if mstat[:retry].to_i > 0
+        return true unless _qry_giveup?(step)
         raise Interlock
       end
 
-      def _cmd_sleep(_e, step, _mstat)
+      def _cmd_wait(step, _mstat)
+        return true unless step.timeout? && _qry_giveup?(step)
+        raise Interlock
+      end
+
+      def _cmd_sleep(step, _mstat)
         step.sleeping
         true
       end
 
-      def _cmd_exec(e, step, _mstat)
-        if step.exec? && @qry.query(%w(exec skip), step)
-          step.set_result(_exe_site(e).to_s)
-        end
-        @sv_stat.push(:run, e[:site]).cmt unless
-          @sv_stat.upd.get(:run).include?(e[:site])
+      def _cmd_exec(step, _mstat)
+        step.exec if step.exec? && _qry_exec?(step)
+        site = step[:site]
+        @sv_stat.push(:run, site).cmt unless
+          @sv_stat.upd.get(:run).include?(site)
         true
       end
 
-      def _cmd_cfg(e, step, _mstat)
-        _show
-        step.set_result(_exe_site(e).to_s)
-        true
+      # return T/F
+      def _cmd_cfg(step, _mstat)
+        step.exec_wait
       end
 
-      def _cmd_upd(e, step, _mstat)
-        _show
-        _exe_site(e).wait_ready
-        true
+      # return T/F
+      def _cmd_upd(step, mstat)
+        step.exec_wait
       rescue CommError
-        step.set_result('comerr')
-        true
+        mstat.result = __set_err(step)
       end
 
-      def _cmd_system(e, step, _mstat)
-        return true unless step.exec?
-        step.set_result(`#{e[:val]}`.chomp)
+      # return T/F
+      def _cmd_system(step, _mstat)
+        step.system if step.exec? && _qry_exec?(step)
         true
       end
 
       # Return T/F
-      def _cmd_select(e, step, mstat)
-        var = ___get_stat(e) || cfg_err('No data in status')
-        step[:result] = var
-        _show step.result
-        sel = e[:select]
-        name = sel[var] || sel['*'] || mcr_err("No option for #{var} ")
-        _do_step({ type: 'mcr', args: name }, mstat)
+      def _cmd_select(step, _mstat)
+        ___mcr_exe(step.select_args, step)
       end
 
-      def _cmd_mcr(e, step, mstat)
-        if e[:async] && @submcr_proc.is_a?(Proc)
-          step[:id] = @submcr_proc.call(_get_ment(e), @id).id
-        else
-          ___mcr_fg(e, step, mstat)
-        end
+      def _cmd_mcr(step, _mstat)
+        ___mcr_exe(step[:args], step)
       end
     end
   end

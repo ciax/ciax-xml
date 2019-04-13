@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="mel" id="mel" label="Cart PLC" version="7">
+  <app frm_id="mel" id="mel" label="Cart PLC" version="8">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gint" caption="Interrupt Commands" column="2">
         <unit id="uu">
@@ -60,7 +60,7 @@
           <frmcmd name="clr_int"/>
           <frmcmd name="getstat"/>
         </item>
-        <item id="reset" label="Reset Cmd Flag" hidden="true">
+        <item id="rescmd" label="Reset Cmd Flag" hidden="true">
           <frmcmd name="clr_act"/>
           <frmcmd name="getcmd"/>
         </item>
@@ -252,7 +252,7 @@
           </frmcmd>
           <frmcmd name="getstat"/>
         </item>
-        <item id="mc-box" label="Meteorogy Box">
+        <item id="mcs" label="Meteorogy Box">
           <frmcmd name="set_ins">
             <argv>5</argv>
           </frmcmd>
@@ -426,13 +426,13 @@
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
       <event label="During Issued" id="isu">
-        <range var="isu" inv="1">0</range>
+        <range var="isu" inv="true">0</range>
         <exec name="upd"/>
       </event>
       <event label="Command Receive" id="rec">
         <range var="isu" inv="true">0</range>
         <range var="acp">0</range>
-        <exec name="reset"/>
+        <exec name="rescmd"/>
         <exec name="upd"/>
       </event>
       <event label="While Running" id="run">
@@ -443,12 +443,22 @@
         <int name="pause"/>
         <exec name="upd"/>
       </event>
+      <event label="Run End" id="rend">
+        <onchange var="run"/>
+        <range var="run">0</range>
+        <exec name="upd"/>
+      </event>
       <event label="While Jacking" id="jak">
         <range var="jak">1</range>
         <block_grp ref="grun"/>
         <block_grp ref="gjak"/>
         <block_grp ref="gchg"/>
         <int name="pause"/>
+        <exec name="upd"/>
+      </event>
+      <event label="Jak End" id="jend">
+        <onchange var="jak"/>
+        <range var="jak">0</range>
         <exec name="upd"/>
       </event>
     </watch>

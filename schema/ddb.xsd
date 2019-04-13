@@ -15,6 +15,8 @@
       </xsd:sequence>
       <xsd:attribute name="id" type="xsd:NCName" use="required"/>
       <xsd:attribute name="label" type="xsd:token" use="optional"/>
+      <xsd:attribute name="host" type="xsd:token"/>
+      <xsd:attribute name="enable" type="xsd:boolean"/>
       <xsd:attribute name="column" type="xsd:int"/>
     </xsd:complexType>
   </xsd:element>
@@ -30,11 +32,13 @@
         <xsd:element ref="ddb:field"/>
       </xsd:choice>
       <xsd:attribute name="id" type="xsd:NCName" use="required"/>
-      <xsd:attribute name="label" type="xsd:token" use="optional"/>
       <xsd:attribute name="frm_id" use="required" type="xsd:NCName"/>
       <xsd:attribute name="iocmd" type="xsd:token"/>
       <xsd:attribute name="host" type="xsd:token"/>
       <xsd:attribute name="port" type="xsd:int"/>
+      <xsd:attribute name="enable" type="xsd:boolean"/>
+      <xsd:attribute name="run" type="xsd:boolean"/>
+      <xsd:attribute name="label" type="xsd:token" use="optional"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="field">

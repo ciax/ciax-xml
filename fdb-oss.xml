@@ -1,42 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="oss" label="OSS Command line" version="1">
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <body/>
-      <char length="1" label="Suffix">0xa</char>
-    </cmdframe>
+  <frm id="oss" label="OSS Command line" version="2">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
-        <item id="getstat" label="Get all status" response="getstat" type="stat">
+      <frame>
+        <body/>
+        <char label="Suffix" length="1">0xa</char>
+      </frame>
+      <group caption="Status" id="gst">
+        <item id="getstat" label="InR status" response="getstat" type="stat">
           <string label="Status Command">gen2prt</string>
           <string label="InR Select(NsOpt/NsIR/Cas)"> TSCV.RotatorType</string>
-          <string label="Stow pin Status"> CXWS.TSCV.STOW_1</string>
-          <string label="Shutter Status"> CXWS.TSCV.SHUTTER</string>
-          <string label="AZ/EL Drive Status"> CXWS.TSCV.TELDRIVE</string>
-          <string label="EL Angle(deg)"> CXWS.TSCS.EL</string>
-          <string label="CIAX-MLP3 Comm Error"> CXWS.TSCV.CIAX_MLP3_FAULT</string>
           <string label="InR Drive ON/OFF"> TSCV.InsRotRotation</string>
-          <string label="BOLT Status"> CXWS.TSCV.0_SENSOR</string>
-        </item>
-        <item id="iststat" label="Get Instrument ID" response="iststat" type="stat">
-          <string label="Status Command">gen2prt</string>
-          <string label="CAS Instrument"> CXWS.TSCV.OBE_INR</string>
+          <string label="InR Pin Sensor"> CXWS.TSCV.0_SENSOR</string>
         </item>
         <item id="jakstat" label="Jack Bolt Status" response="jakstat" type="stat">
           <string label="Status Command">gen2prt</string>
           <string label="Bolt Each Status"> CXWS.TSCV.POWER_V1</string>
         </item>
-        <item id="jaklen" label="Jack Bolt Status" response="jaklen" type="stat">
+        <item id="jaklen" label="Jack Bolt Length" response="jaklen" type="stat">
           <string label="Status Command">gen2prt</string>
           <string label="Bolt Each Position"> CXWS.TSCV.POWER_V2</string>
         </item>
-        <item id="zlen" label="Jack Bolt Status" response="zlen" type="stat">
+        <item id="zlen" label="Z Sensor Length" response="zlen" type="stat">
           <string label="Status Command">gen2prt</string>
           <string label="Zsensor Each Position"> CXWS.TSCL.Z_SENSOR</string>
         </item>
-        <item id="inrstat" label="Cas InR Status" response="inrstat" type="stat">
+        <item id="telstat" label="Telescope Status" response="telstat" type="stat">
+          <string label="Status Command">gen2prt</string>
+          <string label="Stow pin Status"> CXWS.TSCV.STOW_1</string>
+          <string label="Shutter Status"> CXWS.TSCV.SHUTTER</string>
+          <string label="AZ/EL Drive Status"> CXWS.TSCV.TELDRIVE</string>
+          <string label="EL Angle(deg)"> CXWS.TSCS.EL</string>
+        </item>
+        <item id="inrang" label="Cas InR Angle" response="inrang" type="stat">
           <string label="Status Command">gen2prt</string>
           <string label="InR Angle(deg)"> CXWS.TSCS.INSROT</string>
+        </item>
+        <item id="comerr" label="Comm Error" response="comerr" type="stat">
+          <string label="Status Command">gen2prt</string>
+          <string label="CIAX-MLP3 Comm Error"> CXWS.TSCV.CIAX_MLP3_FAULT</string>
+        </item>
+        <item id="iststat" label="Instrument ID" response="iststat" type="stat">
+          <string label="Status Command">gen2prt</string>
+          <string label="CAS Instrument"> CXWS.TSCV.OBE_INR</string>
         </item>
         <item id="logstat" label="Login Status" response="logstat" type="stat">
           <string label="Status Command">gen2prt</string>
@@ -46,156 +52,218 @@
           <string label="LOGIN 3"> TSCV.TSC.LOGIN3</string>
         </item>
         <item id="getexit" label="Exit Code" response="exit" type="stat">
-          <string>exe</string>
+          <string>gen2exe</string>
         </item>
         <item id="getpid" label="Running?" response="pid" type="stat">
-          <string>exe -b</string>
+          <string>gen2exe -b</string>
         </item>
       </group>
-      <group id="gcfg" caption="Configuration">
+      <group caption="Configuration" id="gcfg">
         <item id="login" label="TSC Login" response="exit" type="config">
           <string>gen2cmd</string>
-          <string> 1A1901ciax%%%%%%%%%%%%%%%%</string>
-          <string> CIAX%%%%%%%%%%%%</string>
-          <string> dummyunit</string>
-          <string> dummyMenu</string>
-          <string> dummyMessage</string>
+          <string> login</string>
         </item>
         <item id="logout" label="TSC Login" response="exit" type="config">
-          <string>gen2cmd 1A1902</string>
+          <string>gen2cmd</string>
+          <string> logout</string>
         </item>
         <item id="init" label="Status Delivery Request" response="exit" type="config">
-          <string>gen2cmd 1A1011</string>
+          <string>gen2cmd</string>
+          <string> init</string>
         </item>
         <item id="tsconly" label="TSC Only Mode(CIAX Mode)" response="exit" type="config">
-          <string>gen2cmd 1A1008TSCONLY</string>
+          <string>gen2cmd</string>
+          <string> tsconly</string>
         </item>
         <item id="tscpri" label="TSC Primaly Mode(OBS Mode)" response="exit" type="config">
-          <string>gen2cmd 1A1008TSCPRI%</string>
+          <string>gen2cmd</string>
+          <string> tscpri</string>
         </item>
         <item id="setinst" label="Set Instrument ID [0-12]" response="exit" type="config">
           <par_num>1:12</par_num>
-          <string>gen2cmd 13200700</string>
+          <string>gen2cmd</string>
+          <string> setinst </string>
           <string format="%02d">$1</string>
         </item>
       </group>
-      <group id="gdrv" caption="Drive">
+      <group caption="Drive" id="gdrv">
         <item id="ron" label="InR Drive ON" response="exit" type="action">
-          <string>gen2cmd 904013</string>
+          <string>gen2cmd</string>
+          <string> ron</string>
         </item>
         <item id="roff" label="InR Drive OFF" response="exit" type="action">
-          <string>gen2cmd 904014</string>
+          <string>gen2cmd</string>
+          <string> roff</string>
         </item>
         <item id="jon" label="Jack Drive ON" response="exit" type="action">
-          <string>gen2cmd 132001ON%</string>
+          <string>gen2cmd</string>
+          <string> jon</string>
         </item>
         <item id="joff" label="Jack Drive OFF" response="exit" type="action">
-          <string>gen2cmd 132001OFF</string>
+          <string>gen2cmd</string>
+          <string> joff</string>
         </item>
         <item id="jres" label="Jack Drive Reset" response="exit" type="action">
-          <string>gen2cmd 132008</string>
+          <string>gen2cmd</string>
+          <string> jres</string>
         </item>
       </group>
-      <group id="gact" caption="Action">
+      <group caption="Action" id="gact">
         <item id="rhook" label="InR Hook(0deg)" response="exit" type="action">
-          <string>gen2cmd -b 132004</string>
+          <string>gen2cmd</string>
+          <string> rhook</string>
         </item>
         <item id="runhk" label="InR UnHook(-4deg)" response="exit" type="action">
-          <string>gen2cmd -b 132005</string>
+          <string>gen2cmd</string>
+          <string> runhk</string>
         </item>
         <item id="rstop" label="InR Stop" response="exit" type="action">
-          <string>gen2cmd 104011</string>
+          <string>gen2cmd</string>
+          <string> rstop</string>
         </item>
         <item id="ajup" label="All EJB Up" response="exit" type="action">
-          <string>gen2cmd -b 932001</string>
+          <string>gen2cmd</string>
+          <string> ajup</string>
         </item>
         <item id="ajdw" label="All EJB Down" response="exit" type="action">
-          <string>gen2cmd -b 932002</string>
+          <string>gen2cmd</string>
+          <string> ajdw</string>
         </item>
         <item id="ajstop" label="All EJB Stop" response="exit" type="action">
-          <string>gen2cmd 932003</string>
+          <string>gen2cmd</string>
+          <string> ajstop</string>
         </item>
         <item id="jup" label="EJB Up [#]" response="exit" type="action">
           <par_num>1:16</par_num>
-          <string>gen2cmd -b 9320</string>
+          <string>gen2cmd</string>
+          <string> jup </string>
           <string format="%02d">$1*3+1</string>
         </item>
         <item id="jdw" label="EJB Down [#]" response="exit" type="action">
           <par_num>1:16</par_num>
-          <string>gen2cmd -b 9320</string>
+          <string>gen2cmd</string>
+          <string> jdw </string>
           <string format="%02d">$1*3+2</string>
         </item>
         <item id="jstop" label="EJB Stop [num]" response="exit" type="action">
           <par_num>1:16</par_num>
-          <string>gen2cmd 9320</string>
+          <string>gen2cmd</string>
+          <string> jdw </string>
           <string format="%02d">$1*3+3</string>
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <body/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <body/>
+      </frame>
       <item id="getstat">
         <!--TSCMON-->
-        <field assign="rsel" label="InR Select(NsOpt/NsIR/Cas)" delimiter="\n"/>
+        <assign decode="string" delimiter="\n" label="InR Select(NsOpt/NsIR/Cas)" ref="rsel"/>
         <!--MCUMON-->
-        <field assign="stow_1" decode="hexstr" label="Stow pin Status" delimiter="\n"/>
-        <field assign="shutter" decode="hexstr" label="Shutter Status" delimiter="\n"/>
-        <field assign="teldrive" decode="hexstr" label="AZ/EL Drive Status" delimiter="\n"/>
-        <field assign="el" label="EL Angle(deg)" delimiter="\n"/>
-        <field assign="mlp3" label="CIAX-MLP3 Comm Error" delimiter="\n"/>
-        <field assign="rpw" label="InR Drive ON/OFF" delimiter="\n"/>
-        <field assign="bstat" decode="hexstr" label="BOLT System Status" delimiter="\n"/>
+        <assign decode="string" delimiter="\n" label="InR Drive ON/OFF" ref="rpw"/>
+        <assign decode="hexstr" delimiter="\n" label="BOLT System Status" ref="bstat"/>
+      </item>
+      <item id="telstat">
+        <assign decode="hexstr" delimiter="\n" label="Stow pin Status" ref="stow_1"/>
+        <assign decode="hexstr" delimiter="\n" label="Shutter Status" ref="shutter"/>
+        <assign decode="hexstr" delimiter="\n" label="AZ/EL Drive Status" ref="teldrive"/>
+        <assign decode="string" delimiter="\n" label="EL Angle(deg)" ref="el"/>
+      </item>
+      <item id="comerr">
+        <assign decode="string" delimiter="\n" label="CIAX-MLP3 Comm Error" ref="mlp3"/>
       </item>
       <item id="iststat">
-        <field assign="iid" label="CAS Instrument" delimiter="\n"/>
+        <assign decode="string" delimiter="\n" label="CAS Instrument" ref="iid"/>
       </item>
       <item id="jakstat">
         <!--POWER_V1-->
-        <field assign="bsa" label="BOLT SUM ALM(B0)" length="2" decode="hexstr"/>
-        <field assign="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="2" decode="hexstr"/>
+        <assign decode="hexstr" label="BOLT SUM ALM(B0)" length="2" ref="bsa"/>
+        <assign decode="hexstr" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)" length="2" ref="abs"/>
         <!--Order:2,1,4,3..-->
-        <array assign="bs" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B3:Ready)" length="1" decode="hexstr">
-          <index size="16"/>
-        </array>
-        <array assign="bl" label="Each Bolt Limit(DrvAlm,UP,DW,UnitAlm)" length="1" decode="hexstr">
-          <!--Order:2,1,4,3..-->
-          <index size="16"/>
-        </array>
-        <field assign="mba" label="MLP3-BOLT COMM ALM(18:B0)" length="2" decode="hexstr"/>
-        <field assign="loc" label="CS BOLT LOCAL(19:B0)" length="2" decode="hexstr"/>
-        <array assign="clm" label="CS BOLT Current Limit(20-21)" length="2" decode="hexstr">
-          <index size="2"/>
-        </array>
+        <assign decode="hexstr" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B3:Ready)" length="1" ref="bs">
+          <index>0:15</index>
+        </assign>
+        <assign decode="hexstr" label="Each Bolt Limit(DrvAlm,UP,DW,UnitAlm)" length="1" ref="bl">
+          <index>0:15</index>
+        </assign>
+        <assign decode="hexstr" label="MLP3-BOLT COMM ALM(18:B0)" length="2" ref="mba"/>
+        <assign decode="hexstr" label="CS BOLT LOCAL(19:B0)" length="2" ref="loc"/>
+        <assign decode="hexstr" label="CS BOLT Current Limit(20-21)" length="2" ref="clm">
+          <index>0:1</index>
+        </assign>
       </item>
       <item id="jaklen">
         <!--POWER_V2-->
-        <array assign="jk" label="Bolt Position" length="12" slice="0:6" decode="decstr">
-          <index size="16"/>
-        </array>
+        <assign decode="decstr" label="Bolt Position" length="12" ref="jk" slice="0:6">
+          <index>0:15</index>
+        </assign>
       </item>
       <item id="zlen">
         <!--Z_SENSOR-->
-        <array assign="zp" label="Zsensor Position" length="12" slice="0:6">
-          <index size="4"/>
-        </array>
+        <assign decode="string" label="Zsensor Position" length="12" ref="zp" slice="0:6">
+          <index>0:3</index>
+        </assign>
       </item>
-      <item id="inrstat">
-        <field assign="iang" label="InR Angle(deg)" delimiter="\n"/>
+      <item id="inrang">
+        <assign decode="string" delimiter="\n" label="InR Angle(deg)" ref="iang"/>
       </item>
       <item id="logstat">
-        <field assign="login0" label="LOGIN 0" delimiter="\n"/>
-        <field assign="login1" label="LOGIN 1" delimiter="\n"/>
-        <field assign="login2" label="LOGIN 2" delimiter="\n"/>
-        <field assign="login3" label="LOGIN 3" delimiter="\n"/>
+        <assign decode="string" delimiter="\n" label="LOGIN 0" ref="login0"/>
+        <assign decode="string" delimiter="\n" label="LOGIN 1" ref="login1"/>
+        <assign decode="string" delimiter="\n" label="LOGIN 2" ref="login2"/>
+        <assign decode="string" delimiter="\n" label="LOGIN 3" ref="login3"/>
       </item>
       <item id="exit">
-        <field assign="exit" label="Exit Code" delimiter="\n"/>
+        <assign decode="string" delimiter="\n" label="Exit Code" ref="exit"/>
       </item>
       <item id="pid">
-        <field assign="pid" label="Background Process ID" delimiter="\n"/>
+        <assign decode="string" delimiter="\n" label="Background Process ID" ref="pid"/>
       </item>
     </response>
-  </frame>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <!--TSCMON-->
+      <var id="rsel" label="InR Select(NsOpt/NsIR/Cas)"/>
+      <!--MCUMON-->
+      <var id="rpw" label="InR Drive ON/OFF"/>
+      <var id="bstat" label="BOLT System Status"/>
+      <var id="stow_1" label="Stow pin Status"/>
+      <var id="shutter" label="Shutter Status"/>
+      <var id="teldrive" label="AZ/EL Drive Status"/>
+      <var id="el" label="EL Angle(deg)"/>
+      <var id="mlp3" label="CIAX-MLP3 Comm Error"/>
+      <var id="iid" label="CAS Instrument"/>
+      <!--POWER_V1-->
+      <var id="bsa" label="BOLT SUM ALM(B0)"/>
+      <var id="abs" label="ALL BOLT STAT(B0:Anchord,B2:Stop,B4:Ready)"/>
+      <!--Order:2,1,4,3..-->
+      <array id="bs" label="EACH BOLT STAT(B0:Anchord,B2:Stop,B3:Ready)">
+        <size>16</size>
+      </array>
+      <array id="bl" label="Each Bolt Limit(DrvAlm,UP,DW,UnitAlm)">
+        <!--Order:2,1,4,3..-->
+        <size>16</size>
+      </array>
+      <var id="mba" label="MLP3-BOLT COMM ALM(18:B0)"/>
+      <var id="loc" label="CS BOLT LOCAL(19:B0)"/>
+      <array id="clm" label="CS BOLT Current Limit(20-21)">
+        <size>2</size>
+      </array>
+      <!--POWER_V2-->
+      <array id="jk" label="Bolt Position">
+        <size>16</size>
+      </array>
+      <!--Z_SENSOR-->
+      <array id="zp" label="Zsensor Position">
+        <size>4</size>
+      </array>
+      <var id="iang" label="InR Angle(deg)"/>
+      <var id="login0" label="LOGIN 0"/>
+      <var id="login1" label="LOGIN 1"/>
+      <var id="login2" label="LOGIN 2"/>
+      <var id="login3" label="LOGIN 3"/>
+      <var id="exit" label="Exit Code"/>
+      <var id="pid" label="Background Process ID"/>
+    </field>
+  </frm>
 </fdb>

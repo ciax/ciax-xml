@@ -1,17 +1,17 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libdispgrp'
-require 'libenumx'
+require 'libhashx'
 require 'libxmlox'
 
-# Structure for Command: (top: listed in disp), <doclist: separated top-doc>
-#   ADB:/adb/(app)/<command>/group/unit/item
-#   FDB:/fdb/(frame)/<command>/group/item
-#   SDB:/sdb/(symbol)/<table>/pattern
-#   CDB:/cdb/(alias)/<top>/unit|item
-#   DDB:/ddb/group/(site)/field
-#   IDB:/idb/project/include|group/(instance)/include|<alias>/unit/item
-#   MDB:/mdb/(macro)/include|<group>/unit/item
-#   HDB:/hdb/(hexpack)/pack/field
+# Structure for Command: [top: listed in disp], <doclist: separated top-doc>
+#   ADB:/adb/[app]/<command>/group/unit/item
+#   FDB:/fdb/[frame]/<command>/group/item
+#   SDB:/sdb/[symbol]/<table>/pattern
+#   CDB:/cdb/[alias]/<top>/unit|item
+#   DDB:/ddb/group/[site]/field
+#   IDB:/idb/project/include|group/[site]/<command>/unit/item
+#   MDB:/mdb/[macro]/include|<group>/unit/item
+#   HDB:/hdb/[hexpack]/pack/field
 # Domain is the top node of each name spaces (different from top ns),
 #   otherwise element is stored in Property
 module CIAX
@@ -26,25 +26,22 @@ module CIAX
     # The project named file can conatin referenced item whose entity is
     # in another file.
     class Doc < Hashx
-      attr_reader :top, :displist
+      attr_reader :top, :disp_dic
       def initialize(type, proj = nil)
         super()
         /.+/ =~ type || Msg.args_err('No Db Type')
         @type = type
         @proj = proj
-        @displist = Disp.new
+        @disp_dic = Disp::Index.new
         ___read_files(Msg.xmlfiles(@type))
         ___set_includes
-      end
-
-      # get generates document branch of db items(Hash),
-      # which includes attribute and domains
-      def get(id)
-        super { id_err(id, @type, self) }
+        # get generates document branch of db items(Hash),
+        # which includes attribute and domains
+        self.default_proc = proc { |_hash, id| id_err(id, @type, self) }
       end
 
       def to_s
-        @displist.to_s
+        @disp_dic.to_s
       end
 
       private
@@ -96,14 +93,16 @@ module CIAX
 
       # Takes second level (use group for display only)
       def __mk_group(gdoc)
-        @displist.ext_grp unless @displist.is_a? Disp::Grouping
-        sub = @displist.put_grp(gdoc['id'], gdoc['label'])
-        gdoc.each { |e| __mk_sub_db(e, sub) }
+        @disp_dic.ext_grp unless @disp_dic.is_a? Disp::Grouping
+        gatt = gdoc.to_h
+        return if gatt[:enable] == 'false'
+        sub = @disp_dic.add_grp(gatt.delete(:id), gatt.delete(:label))
+        gdoc.each { |e| __mk_sub_db(e, sub, gatt.dup) }
       end
 
       # Includable (macro)
-      def __mk_sub_db(top, sub = @displist)
-        item = __set_item(top, sub)
+      def __mk_sub_db(top, sub = @disp_dic, attr = Hashx.new)
+        item = __set_item(top, sub, attr) || return
         top.each do |e| # e.name can be include or group
           ___include_grp(e, item, top.ns != e.ns)
         end
@@ -122,9 +121,10 @@ module CIAX
       end
 
       # set single item to self
-      def __set_item(top, disp = @displist)
+      def __set_item(top, disp = @disp_dic, attr = Hashx.new)
+        return if top['enable'] == 'false'
         id = top['id'] # site_id or macro_proj
-        item = Hashx[top: top, attr: top.to_h]
+        item = Hashx[top: top, attr: attr.update(top.to_h)]
         disp.put_item(id, top['label'])
         self[id] = item
       end
@@ -143,14 +143,14 @@ module CIAX
       def ___upd_valid
         return unless @valid_proj
         vp = @valid_proj.map { |proj| @grps[proj] }.flatten
-        vk = vp.map { |gid| @displist.sub[gid] }.flatten
-        @displist.valid_keys.replace(vk)
+        vk = vp.map { |gid| @disp_dic.sub[gid] }.flatten
+        @disp_dic.valid_keys.replace(vk)
       end
     end
   end
 
   if __FILE__ == $PROGRAM_NAME
-    GetOpts.new('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb,hdb)') do |opt, args|
+    Opt::Get.new('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb,hdb)') do |opt, args|
       doc = Xml::Doc.new(args.shift)
       opt.getarg('[type] [id]') do |_o, ar|
         puts doc.get(ar.shift).path(ar)

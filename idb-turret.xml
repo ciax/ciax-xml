@@ -2,8 +2,8 @@
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="turret" label="MOIRCS" column="3">
     <group id="mc_turret" label="Turret control">
-      <site id="mft" app_id="fpa" host="moircsobcp" port="25612" label="Hall Sensor"/>
-      <site id="mix" app_id="ixe" host="moircsobcp" port="25607" label="Turret">
+      <site id="mft" dev_id="mft" app_id="fpa" host="moircsobcp" port="25612" label="Hall Sensor"/>
+      <site id="mix" dev_id="mix" app_id="ixe" host="moircsobcp" port="25607" label="Turret">
         <command ref="mix"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <symtbl ref="mix"/>

@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="tmos" version="2" label="MOS Macro" port="55555">
+    <group id="grp_upd_1" caption="Update All" rank="0">
+      <item id="upd" label="Update">
+        <upd site="tma"/>
+        <upd site="tmc"/>
+        <upd site="tfp"/>
+        <upd site="tap"/>
+      </item>
+      <item id="upd_all" label="Update All">
+        <mcr name="upd"/>
+        <cfg site="tmc" name="lowspd"/>
+        <mesg label="moircs ok?"/>
+      </item>
+    </group>
     <group id="grp_tfp_2" caption="Action" rank="2">
       <item id="tfp_ro" label="Robohand All Open">
         <goal>
@@ -150,14 +163,6 @@
           <match site="tma" var="abs" form="msg">STORE</match>
         </check>
         <cfg site="tma" name="sets"/>
-      </item>
-    </group>
-    <group id="grp_mos_1" caption="Update All" rank="0">
-      <item id="upd" label="Update">
-        <upd site="tma"/>
-        <upd site="tmc"/>
-        <upd site="tfp"/>
-        <upd site="tap"/>
       </item>
     </group>
     <group id="grp_mos_2" caption="Sub Start Mask" rank="1">

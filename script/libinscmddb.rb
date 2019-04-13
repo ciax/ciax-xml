@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libdbtree'
 
 module CIAX
@@ -6,7 +6,7 @@ module CIAX
   module Ins
     # This is part of Instance DB
     # You need add <command ref='*'/> in InsDB to use it
-    class CmdDb < DbTree
+    class CmdDb < Dbx::Tree
       def initialize
         super('cdb')
       end
@@ -30,7 +30,7 @@ module CIAX
         dbi
       end
 
-      def _add_item(e0, gid)
+      def _add_form(e0, gid)
         id, itm = super
         e0.each do |e1|
           itm.get(:argv) { [] } << e1.text
@@ -42,14 +42,14 @@ module CIAX
         idx = cdb[:index]
         aidx = ali[:index]
         aidx.each do |_id, itm|
-          itm.update(idx[itm[:ref]].pick(%i(parameters body)))
+          itm.update(idx[itm[:ref]].pick(:parameters, :body))
         end
         idx.update(aidx)
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
+      Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
         dbi = CmdDb.new.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end

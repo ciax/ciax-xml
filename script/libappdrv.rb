@@ -1,48 +1,30 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libbuffer'
+require 'libexedrv'
 # CIAX-XML
 module CIAX
   # Application Layer
   module App
     class Exe
-      # Drv module
-      module Drv
-        def self.extended(obj)
-          Msg.type?(obj, Exe)
-        end
+      # Driver module
+      module Driver
+        include CIAX::Exe::Driver
 
         # type of usage: shell/command line
         # type of semantics: execution/test
         def ext_local_driver
-          @stat.ext_local_rsp(@sub.stat)
-          @stat.ext_local_sym(@cfg[:sdb]).ext_local_file.auto_save
-          @buf = ___init_buf
-          ___init_log_mode
-          ___init_drv_save
-          ___init_drv_load
+          super
+          return self unless @sub
+          @stat.ext_conv
+          @stat.ext_sym(@cfg[:sdb])
+          ___init_buffer
           self
         end
 
         private
 
         def ___init_log_mode
-          return unless @cfg[:opt].log?
-          @stat.ext_local_log.ext_local_sqlog
-          @cobj.rem.ext_input_log
-        end
-
-        def ___init_drv_save
-          @cobj.get('save').def_proc do |ent|
-            @stat.save_partial(ent.par[0].split(','), ent.par[1])
-            verbose { "Saving [#{ent.par[0]}]" }
-          end
-        end
-
-        def ___init_drv_load
-          @cobj.get('load').def_proc do |ent|
-            @stat.load_partial(ent.par[0] || '')
-            verbose { "Loading [#{ent.par[0]}]" }
-          end
+          super && @stat.ext_sqlog
         end
 
         # Process of command execution:
@@ -58,12 +40,15 @@ module CIAX
         #      Batch: Get Frm command response
         #      Batch: Update Field by Frm response
         #      Batch: Repeat until outbuffer is empty
-        def ___init_buf
-          buf = Buffer.new(@sv_stat)
+        def ___init_buffer
+          buf = Buffer.new(@sv_stat, @sub.cobj) do |args, src|
+            verbose { cfmt('Processing App to Buffer %S', args) }
+            @sub.exe(args, src)
+          end
           ___init_proc_int(buf)
           ___init_proc_ext(buf)
-          ___init_proc_buf(buf)
-          ___init_proc_sub
+          # @stat file output should be done before :busy flag is reset
+          @stat.propagation(buf)
           # Start buffer server thread
           buf.server
         end
@@ -73,39 +58,17 @@ module CIAX
           @cobj.get('interrupt').def_proc do |_ent, src|
             @batch_interrupt.each do |args|
               verbose { "Issuing:#{args} for Interrupt" }
-              buf.send(@cobj.set_cmd(args), 0)
+              buf.send(@cobj.set_cmd(args.dup), 0)
             end
-            warning("Interrupt(#{@batch_interrupt}) from #{src}")
+            warning('Interrupt%S from %s', @batch_interrupt, src)
           end
         end
 
         # App: Sending a general App command (Frm batch)
         def ___init_proc_ext(buf)
           @cobj.rem.ext.def_proc do |ent, src, pri|
-            verbose { "Issuing:[#{ent.id}] from #{src} with priority #{pri}" }
+            verbose { _exe_text(ent.id, src, pri) }
             buf.send(ent, pri)
-          end
-        end
-
-        def ___init_proc_buf(buf)
-          # Frm: Execute single command
-          buf.recv_proc = proc do |args, src|
-            verbose { "Processing App to Buffer #{args}" }
-            @sub.exe(args, src)
-          end
-          # Frm: Update after each single command finish
-          # @stat file output should be done before :busy flag is reset
-          buf.flush_proc = proc do
-            verbose { 'Propagate Buffer#flush -> Field#flush' }
-            @sub.stat.flush
-          end
-        end
-
-        # Field: Update after each Batch Frm command finish
-        def ___init_proc_sub
-          @sub.stat.flush_procs << proc do
-            verbose { 'Propagate Field#flush -> Status#cmt' }
-            @stat.cmt
           end
         end
       end

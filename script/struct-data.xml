@@ -21,25 +21,25 @@
     <msg type="Hash">
       <Item key="Status ID" type="String"/>
     </msg>
-    <watch>
-      <active type="Array">
-        <List val="Condition ID"/>
-      </active>
-      <exec type="Array">
-        <List type="Array" label="Statement">
-          <List val="Command ID"/>
-          <List val="Command ARGS"/>
-        </List>
-      </exec>
-      <block copy="exec"/>
-      <int copy="exec"/>
-      <val type="Hash">
-        <Item key="Status ID" type="String"/>
-      </val>
-      <last copy="val"/>
-      <res type="Hash">
-        <Item key="Condition ID:NUM" type="Boolean"/>
-      </res>
-    </watch>
   </status>
+  <event>
+    <active type="Array">
+      <List val="Condition ID"/>
+    </active>
+    <exec type="Array">
+      <List type="Array" label="Statement">
+        <List val="Command ID"/>
+        <List val="Command ARGS"/>
+      </List>
+    </exec>
+    <block copy="exec"/>
+    <int copy="exec"/>
+    <val type="Hash">
+      <Item key="Status ID" type="String"/>
+    </val>
+    <last copy="val"/>
+    <res type="Hash">
+      <Item key="Condition ID:NUM" type="Boolean"/>
+    </res>
+  </event>
 </Var>

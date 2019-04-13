@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="srm" id="srm" label="CsEtr Controller" version="1">
+  <app frm_id="srm" id="srm" label="CsEtr Controller" version="2">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <group id="g0" caption="Device">
-        <unit id="upd" label="Status">
+      <group id="gu" caption="Device">
+        <unit id="uu" label="Status">
           <item id="upd" label="Upd">
             <frmcmd name="getstat"/>
+          </item>
+        </unit>
+      </group>
+      <group id="gz" caption="Obsolete Device">
+        <unit id="stp" label="STOW PIN">
+          <item id="ston" label="ON">
+            <frmcmd name="fset" label="Bit 5 ON">
+              <argv>500000</argv>
+            </frmcmd>
+          </item>
+          <item id="stoff" label="OFF">
+            <frmcmd name="fset" label="Bit 5 OFF">
+              <argv>400000</argv>
+            </frmcmd>
           </item>
         </unit>
         <unit id="c3p" label="CIAX3 POWER">
@@ -32,6 +46,8 @@
             </frmcmd>
           </item>
         </unit>
+      </group>
+      <group id="gp" caption="Peripheral Device">
         <unit id="ccd" label="CS CCD">
           <item id="ccdon" label="ON">
             <frmcmd name="fset" label="Bit 2 ON">
@@ -56,6 +72,8 @@
             </frmcmd>
           </item>
         </unit>
+      </group>
+      <group id="gm" caption="Main Device">
         <unit id="ipw" label="CS IPW">
           <item id="ipwon" label="ON">
             <frmcmd name="fset" label="Bit 4 ON">
@@ -65,18 +83,6 @@
           <item id="ipwoff" label="OFF">
             <frmcmd name="fset" label="Bit 4 OFF">
               <argv>40000</argv>
-            </frmcmd>
-          </item>
-        </unit>
-        <unit id="stp" label="STOW PIN">
-          <item id="ston" label="ON">
-            <frmcmd name="fset" label="Bit 5 ON">
-              <argv>500000</argv>
-            </frmcmd>
-          </item>
-          <item id="stoff" label="OFF">
-            <frmcmd name="fset" label="Bit 5 OFF">
-              <argv>400000</argv>
             </frmcmd>
           </item>
         </unit>

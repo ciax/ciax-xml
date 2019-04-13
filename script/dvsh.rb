@@ -1,10 +1,11 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 $LOAD_PATH << __dir__
 require 'liblayer'
-require 'libhexlist'
 # CIAX-XML Device Shell
 module CIAX
-  Layer.new('[id]', options: 'fawxelrchs', default: 'w') do |cfg, args|
-    cfg[:opt].init_layer_mod::List.new(cfg, sites: args)
-  end.ext_shell.shell
+  ConfOpts.new('[id]', options: 'fawxmelrchs') do |root_cfg|
+    Layer.new(root_cfg) do |cfg, layer|
+      layer::ExeDic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args)
+    end.shell
+  end
 end

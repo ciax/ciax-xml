@@ -1,8 +1,8 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libappcmd'
-require 'libapprsp'
+require 'libappsym'
 require 'libappview'
-require 'libfrmlist'
+require 'libfrmdic'
 require 'libinsdb'
 # CIAX-XML
 module CIAX
@@ -10,86 +10,43 @@ module CIAX
   module App
     # Exec class
     class Exe < Exe
-      # cfg must have [:dbi],[:sub_list]
+      # atrb must have [:dbi],[:sub_dic]
       attr_accessor :batch_interrupt
-      def initialize(cfg, atrb = Hashx.new)
+      def initialize(spcfg, atrb = Hashx.new)
         super
-        dbi = _init_dbi2cfg(%i(frm_site))
+        dbi = _init_dbi2cfg(%i(dev_id))
         @cfg[:site_id] = @id
-        @stat = Status.new(dbi)
-        @sv_stat = Prompt.new(@id)
+        @sv_stat = Prompt.new('site', @id)
+        @stat = Status.new(dbi, ___init_sub)
         @batch_interrupt = []
-        ___init_sub
-        ___init_net(dbi)
+        _init_net
         ___init_command
         _opt_mode
       end
 
-      def exe(args, src = nil, pri = 1)
-        super
-      end
-
-      def active?
-        @sv_stat.upd.up?(:event)
-      end
-
-      # wait for busy end or status changed
-      def wait_ready
-        verbose { "Waiting busy end for #{@id}" }
-        100.times do
-          sleep 0.1
-          next if @sv_stat.upd.up?(:busy)
-          return true unless @sv_stat.up?(:comerr)
-          com_err('Device not responding')
-        end
-        false
-      end
-
-      def ext_shell
-        super
-        @cfg[:output] = View.new(@stat)
-        @cobj.loc.add_view
-        input_conv_set
-        self
-      end
-
-      def ext_local_test
-        @stat.ext_local_sym(@cfg[:sdb]).ext_local_file
-        @cobj.rem.ext.def_proc do |ent|
-          @stat[:time] = now_msec
-          ent.msg = ent[:batch].inspect
-        end
-        super
-      end
-
-      def ext_local_driver
-        require 'libappdrv'
-        super
-      end
-
       private
 
-      # Mode Extension by Option
-      def _ext_local
-        ___init_proc_set
-        ___init_proc_del
-        super
+      def _ext_local_shell
+        super.input_conv_set
+        @cfg[:output] = View.new(@stat)
+        @cobj.loc.add_view
+        self
       end
 
       # Sub methods for Initialize
       def ___init_sub
-        # LayerDB might generated in List level
-        @sub = @cfg[:sub_list].get(@cfg[:frm_site])
-        @sv_stat.db.update(@sub.sv_stat.db)
-        @sub.sv_stat.cmt_procs << proc do |ss|
-          @sv_stat.update(ss.pick(%i(comerr ioerr))).cmt
-        end
+        id = @cfg[:dev_id] || return
+        # LayerDB might generated in ExeDic level
+        @sub = @cfg[:sub_dic].get(id)
+        ___init_svstat(@sub.sv_stat)
+        @sub.stat
       end
 
-      def ___init_net(dbi)
-        @host = @cfg[:opt].host || dbi[:host]
-        @port ||= dbi[:port]
-        self
+      def ___init_svstat(subsvs)
+        @sv_stat.db.update(subsvs.db)
+        subsvs.cmt_procs.append(self, "sv_stat:#{@id}", 4) do |ss|
+          @sv_stat.update(ss.pick(:comerr, :ioerr)).cmt
+        end
       end
 
       def ___init_command
@@ -100,35 +57,70 @@ module CIAX
         self
       end
 
-      # Initiate procs
-      def ___init_proc_set
-        @cobj.get('set').def_proc do |ent|
-          @stat[:data].repl(ent.par[0], ent.par[1])
-          verbose { "SET:#{ent.par[0]}=#{ent.par[1]}" }
+      # Local mode
+      module Local
+        include CIAX::Exe::Local
+        def self.extended(obj)
+          Msg.type?(obj, Exe)
         end
-      end
 
-      def ___init_proc_del
-        @cobj.get('del').def_proc do |ent|
-          ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
-          verbose { "DELETE:#{ent.par[0]}" }
+        # Mode Extension by Option
+        def ext_local
+          ___init_proc_set
+          ___init_proc_del
+          super
         end
-      end
-    end
 
-    # For App
-    class Prompt < Prompt
-      def initialize(id)
-        super('site', id)
-        init_flg(busy: '*')
+        def run
+          super
+          @sv_stat.ext_local.ext_file.ext_save.ext_log
+          self
+        end
+
+        private
+
+        def _ext_local_test
+          @cobj.rem.ext.def_proc do |ent|
+            @stat[:time] = now_msec
+            ent.msg = ent[:batch].inspect
+          end
+          super
+        end
+
+        def _ext_local_driver
+          super
+          require 'libappdrv'
+          extend(Driver).ext_local_driver
+        end
+
+        # Initiate procs
+        def ___init_proc_set
+          @cobj.get('set').def_proc do |ent|
+            @stat[:data].repl(ent.par[0], ent.par[1])
+            verbose { "SET:#{ent.par[0]}=#{ent.par[1]}" }
+          end
+        end
+
+        def ___init_proc_del
+          @cobj.get('del').def_proc do |ent|
+            ent.par[0].split(',').each { |key| @stat[:data].delete(key) }
+            verbose { "DELETE:#{ent.par[0]}" }
+          end
+        end
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', options: 'cehls') do |cfg, args|
-        dbi = Ins::Db.new.get(args.shift)
-        atrb = { dbi: dbi, sub_list: Frm::List.new(cfg) }
-        Exe.new(cfg, atrb).ext_shell.shell
+      ConfOpts.new('[id]', options: 'cehls') do |cfg|
+        db = cfg[:db] = Ins::Db.new
+        dbi = db.get(cfg.args.shift)
+        atrb = { dbi: dbi, sub_dic: Frm::ExeDic.new(cfg) }
+        eobj = Exe.new(cfg, atrb)
+        if cfg.opt.sh?
+          eobj.shell
+        else
+          puts eobj.exe(cfg.args).stat
+        end
       end
     end
   end

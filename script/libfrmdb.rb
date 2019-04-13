@@ -1,11 +1,11 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libdbtree'
 
 module CIAX
   # Frame Layer
   module Frm
     # Frame DB
-    class Db < DbTree
+    class Db < Dbx::Tree
       def initialize
         super('fdb')
       end
@@ -15,19 +15,21 @@ module CIAX
       def _doc_to_db(doc)
         dbi = super
         dbi[:stream] = doc[:stream] || Hashx.new
-        _init_command_db(dbi, doc)
-        ___init_response(doc, dbi)
+        _init_command_db(dbi, doc[:command])
+        ___init_field(dbi, doc[:field])
+        ___init_response(dbi, doc[:response])
         dbi
       end
 
-      # Command section
-      def _init_command_db(dbi, doc)
-        cdb = super(dbi, doc[:command])
-        cdb[:frame] = __init_frame(doc[:cmdframe]) { |e| __add_cmdfrm(e) }
-        cdb
+      ######## Command section #######
+      def _add_group(ec)
+        return super unless ec.name == 'frame'
+        @cdb.get(:frame) do
+          __init_frame(ec) { |e| __add_cmdfrm(e) }
+        end
       end
 
-      def _add_item(e0, gid)
+      def _add_form(e0, gid)
         id, itm = super
         # enclose("INIT:Body Frame [#{id}]<-", '-> INIT:Body Frame') do
         ___rep_item(e0, itm)
@@ -38,75 +40,72 @@ module CIAX
 
       def ___rep_item(e0, itm)
         @rep.each(e0) do |e1|
-          _par2item(e1, itm) && next
-          e = __add_cmdfrm(e1) || next
-          itm.get(:body) { [] } << e
-          verbose { "Body Frame [#{e.inspect}]" }
+          # skip <par_..>
+          _par2form(e1, itm) && next
+          e2 = __add_cmdfrm(e1)
+          itm.get(:body) { [] } << e2
+          verbose { "Body Frame [#{e2.inspect}]" }
         end
       end
 
       def __add_cmdfrm(e)
-        return e.name unless %w(char string).include?(e.name)
-        _get_h(e) do |atrb|
-          atrb[:val] = @rep.subst(atrb[:val])
-          verbose { "Data:[#{atrb}]" }
+        item = { type: e.name }
+        if %w(char string cc).include?(e.name)
+          item.update(_get_h(e) { |a| a[:val] = @rep.subst(a[:val]) })
+        end
+        verbose { "Data:[#{item}]" }
+        item
+      end
+
+      ######## Status section #######
+      # Field section
+      def ___init_field(dbi, dom)
+        @fld = dbi[:field] = Hashx.new # template
+        dom.each do |e|
+          id = e.attr2item(@fld)
+          ___init_ary(e, @fld[id]) if e.name == 'array'
         end
       end
 
-      # Status section
-      def ___init_response(dom, dbi)
-        tpl = dbi[:field] = Hashx.new # template
-        frm = __init_frame(dom[:rspframe]) { |e| __add_rspfrm(e, tpl) }
-        dbi[:response] = Hashx.new(index: idx = Hashx.new, frame: frm)
-        dom[:response].each { |e0| ___add_fld(e0, tpl, idx) }
+      # pick child elements
+      def ___init_ary(e, fval)
+        return unless fval
+        fval[:struct] = idx = []
+        e.each { |e1| idx << e1.text }
+        verbose { "InitArray: #{fval}" }
+      end
+
+      # Response section
+      def ___init_response(dbi, dom)
+        # Response DB (index)
+        idx = Hashx.new
+        @res = dbi[:response] = Hashx.new(index: idx)
+        dom.each { |e0| ___add_fld(e0, idx) }
         dbi[:frm_id] = dbi[:id]
-        dbi
       end
 
-      def ___add_fld(e0, tpl, db)
-        itm = db[e0.attr2item(db)]
-        @rep.each(e0) do |e1|
-          e = __add_rspfrm(e1, tpl) || next
-          itm.get(:body) { [] } << e
+      def ___add_fld(e0, db)
+        if e0.name == 'frame'
+          @res[:frame] = __init_frame(e0) { |e| __mk_rspfrm(e) }
+        else
+          itm = db[e0.attr2item(db)]
+          @rep.each(e0) do |e1|
+            itm.get(:body) { [] } << __mk_rspfrm(e1)
+          end
         end
       end
 
-      def __add_rspfrm(e, tpl)
-        # Avoid override duplicated id
-        elem = { type: e.name }
-        if (id = e[:assign]) && !tpl.key?(id)
-          asn = tpl[id] = { label: e[:label] }
+      def __mk_rspfrm(e)
+        db = { type: e.name }.update(e.to_h)
+        if /verify|assign/ =~ db[:type]
+          e.each { |e1| (db[e1.name.to_sym] ||= []) << e1.text }
         end
-        elem.update(___init_elem(e, asn) || {})
+        db
       end
 
-      def ___init_elem(e, asn)
-        case e.name
-        when 'field', 'body'
-          ___init_field(e, asn)
-        when 'array'
-          ___init_ary(e, asn)
-        end
-      end
-
-      def ___init_field(e, asn)
-        _get_h(e) do |atrb|
-          asn[:struct] = [] if asn
-          verbose { "InitField: #{atrb}" }
-        end
-      end
-
-      def ___init_ary(e, asn)
-        _get_h(e) do |atrb|
-          idx = atrb[:index] = []
-          e.each { |e1| idx << e1.to_h }
-          asn[:struct] = idx.map { |h| h[:size] } if asn
-          verbose { "InitArray: #{atrb}" }
-        end
-      end
-
-      # Common Frame section
+      ####### Common Frame section #######
       def __init_frame(domain)
+        return unless domain
         _get_h(domain) do |db|
           ___add_main(domain, db) { |e1| yield(e1) }
           ___add_cc(domain, db) { |e1| yield(e1) }
@@ -133,7 +132,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
+      Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
         dbi = Db.new.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end

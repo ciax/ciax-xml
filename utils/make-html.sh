@@ -1,6 +1,6 @@
 #!/bin/bash
 #alias mkhtml
-[ "$1" ] || { echo "Usage: make-html [site] [ctlunit].."; exit; }
+[ "$1" ] || { echo "Usage: make-html [site] [ctlunit].. or -"; exit; }
 setup-www
 id=$1
 shift

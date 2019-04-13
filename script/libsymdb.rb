@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libdb'
 require 'librerange'
 
@@ -7,13 +7,13 @@ module CIAX
   # Symbol module
   module Sym
     # Symbole DB
-    class Db < Db
+    class Db < Dbx::Index
       def initialize
         super('sdb')
       end
 
       def get_dbi(ary = [])
-        dbi = Dbi.new
+        dbi = Dbx::Item.new
         ary.compact.each { |k| dbi.update(get(k)) }
         dbi
       end
@@ -35,7 +35,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (key) ..', options: 'r') do |opt, args|
+      Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
         dbi = Db.new.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end

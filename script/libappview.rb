@@ -1,8 +1,9 @@
-#!/usr/bin/ruby
-require 'libappsym'
+#!/usr/bin/env ruby
+require 'libappstat'
 
+# View is separated from Status. (Propagate Status -> View (Prt)
 # View is not used for computing, just for apperance for user.
-# Some information is added from Dbi
+# Some information is added from Dbx::Item
 # So the convert process (upd) will be included in to_v
 # Updated at to_v.
 module CIAX
@@ -14,17 +15,15 @@ module CIAX
       def initialize(stat)
         super()
         @stat = type?(stat, Status)
-        adbs = type?(@stat.dbi, Dbi)[:status]
+        adbs = type?(@stat.dbi, Dbx::Item)[:status]
         @group = adbs[:group]
         @index = adbs[:index].dup
         @index.update(adbs[:alias]) if adbs.key?(:alias)
         # Just additional data should be provided
-        %i(data class msg).each { |key| stat.get(key) { Hashx.new } }
-        ___init_upd_proc
+        ___init_cmt_procs
       end
 
       def to_csv
-        upd
         @group.values.each_with_object('') do |gdb, str|
           cap = gdb[:caption] || next
           gdb[:members].each do |id|
@@ -35,7 +34,6 @@ module CIAX
       end
 
       def to_v
-        upd
         values.flat_map do |v|
           next unless v.is_a? Hash
           lns = ___view_lines(v[:lines])
@@ -49,14 +47,16 @@ module CIAX
 
       private
 
-      def ___init_upd_proc
-        @upd_procs << proc do
-          @stat.upd
+      def ___init_cmt_procs
+        @elps = Elapsed.new(@stat)
+        @cmt_procs.append(self, :view, 1) do
           self['gtime'] = { caption: '', lines: [hash = {}] }
           hash[:time] = { label: 'TIMESTAMP', msg: date(@stat[:time]) }
-          hash[:elapsed] = { label: 'ELAPSED', msg: elps_date(@stat[:time]) }
+          hash[:elapsed] = { label: 'ELAPSED', msg: @elps }
           ___view_groups
         end
+        propagation(@stat)
+        cmt
       end
 
       def ___view_groups
@@ -87,9 +87,10 @@ module CIAX
       end
 
       def ___upd_line(id, hash)
-        stc = @stat[:class]
-        msg = @stat[:msg][id] || @stat[:data][id]
+        stc = @stat[:class] || {}
+        stm = @stat[:msg] || {}
         cls = stc[id] if stc.key?(id)
+        msg = stm[id] || @stat.get(id)
         lvl = @index[id][:label] || id.upcase
         hash[id] = { label: lvl, msg: msg, class: cls }
       end
@@ -102,11 +103,11 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
       odb = { options: 'rj', c: 'CSV output' }
-      GetOpts.new('[site] | < status_file', odb) do |opt, args|
-        stat = Status.new(args.shift)
+      Opt::Get.new('[site] | < status_file', odb) do |opt, args|
+        stat = Status.new(args).ext_local
         view = View.new(stat)
-        stat.ext_local_file if STDIN.tty?
-        stat.ext_local_sym.cmt
+        stat.ext_local if STDIN.tty?
+        stat.cmt
         puts opt[:c] ? view.to_csv : view.to_s
       end
     end

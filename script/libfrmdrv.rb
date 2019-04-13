@@ -1,72 +1,43 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
+require 'libexedrv'
+require 'libstream'
 module CIAX
   # Frame Layer
   module Frm
     class Exe
       # Frame Exe module
-      module Drv
-        def self.extended(obj)
-          Msg.type?(obj, Exe)
-        end
+      module Driver
+        include CIAX::Exe::Driver
 
         def ext_local_driver
+          super
           ___init_stream
-          ___init_drv_ext
-          ___init_drv_save
-          ___init_drv_load
-          ___init_drv_flush
-          ___init_log_mode
+          ___init_processor_ext
+          ___init_processor_int
           self
         end
 
         private
 
         def ___init_stream
-          @stream = Stream.new(@id, @cfg)
-          @stream.pre_open_proc = proc { @sv_stat.up(:ioerr) }
-          @stream.post_open_proc = proc { @sv_stat.dw(:ioerr) }
-          @stat.ext_local_rsp(@stream).ext_local_file.auto_save
+          @stat.ext_conv
+          @frame.ext_local.ext_conv(@cfg).ext_file.ext_save
         end
 
-        def ___init_drv_ext
+        def ___init_processor_ext
           @cobj.rem.ext.def_proc do |ent, src|
-            @sv_stat.dw(:comerr)
-            @stream.snd(ent[:frame], ent.id)
-            if ent[:response]
-              @stream.rcv
-              @stat.conv(ent)
-            end
+            # This corresponds the propagation
+            next unless @frame.conv(ent)
+            @stat.conv(ent)
+            # Frm: Update after each single command finish
+            #   flush => clear [:comerr]
             @stat.flush if src != 'buffer'
           end
         end
 
-        def ___init_drv_save
-          @cobj.get('save').def_proc do |ent|
-            @stat.save_partial(ent.par[0].split(','), ent.par[1])
-            verbose { "Saving [#{ent.par[0]}]" }
-          end
-        end
-
-        def ___init_drv_load
-          @cobj.get('load').def_proc do |ent|
-            @stat.load_partial(ent.par[0] || '')
-            @stat.flush
-            verbose { "Loading [#{ent.par[0]}]" }
-          end
-        end
-
-        def ___init_drv_flush
-          @cobj.get('flush').def_proc do
-            @stream.rcv
-            @stat.flush
-            verbose { 'Flush Stream' }
-          end
-        end
-
-        def ___init_log_mode
-          return unless @cfg[:opt].log?
-          @stream.ext_local_log
-          @cobj.rem.ext_input_log
+        def ___init_processor_int
+          @cobj.get('flush').def_proc { @frame.flush }
+          @cobj.get('reset').def_proc { @frame.reset }
         end
       end
     end

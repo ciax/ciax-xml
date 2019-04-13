@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libprompt'
 require 'libcmdremote'
 
@@ -9,6 +9,7 @@ require 'libcmdremote'
 
 module CIAX
   # Device Execution Engine
+  #  This instance will be assinged as @eobj in other classes
   class Exe
     include Msg
     attr_reader :layer, :id, :mode, :cobj, :stat, :sub, :cfg,
@@ -17,9 +18,10 @@ module CIAX
                   :server_input_proc, :server_output_proc
     #  cfg must have [:opt]
     #  atrb contains the parameter for each layer individually
-    def initialize(cfg, atrb = Hashx.new)
-      @cfg = type?(cfg, Config).gen(self).update(atrb)
+    def initialize(spcfg, atrb = Hashx.new)
+      @cfg = type?(spcfg, Config).gen(self).update(atrb)
       @cfg.check_keys(%i(opt))
+      @opt = @cfg[:opt]
       ___init_procs
       @cobj = context_module('Index').new(@cfg)
       @layer = layer_name
@@ -31,9 +33,9 @@ module CIAX
     def exe(args, src = nil, pri = 1)
       type?(args, Array)
       src ||= 'local'
-      verbose { "Executing Command #{args} from '#{src}' as ##{pri}" }
+      verbose { _exe_text(args.inspect, src, pri) }
       @pre_exe_procs.each { |p| p.call(args, src) }
-      msg = @cobj.set_cmd(args).exe_cmd(src, pri).msg
+      msg = @cobj.set_cmd(args.dup).exe_cmd(src, pri).msg
       @post_exe_procs.each { |p| p.call(args, src, msg) }
       self
     rescue LongJump, InvalidARGS
@@ -46,47 +48,56 @@ module CIAX
     end
 
     def no_cmd
-      cmd_err @cobj.view_list
+      cmd_err @cobj.view_dic
     end
 
-    def ext_shell
-      require 'libsh'
-      extend(context_module('Shell')).ext_shell
-    end
+    #  Modes
+    #   Shell  : ext_local_shell
+    #       Add shell feature
+    #   Remote : ext_remote
+    #       Access via udp/html
+    #   Local  : ext_local
+    #       Manipulates memory
+    #     Local Test   : ext_local_test
+    #         Access to local file (read only)
+    #     Local Driver : ext_local_driver
+    #         Access to local file (R/W)
+    #       Local log     : ext_local_log
+    #           Add logging feature to local file
+    #       Local server   : ext_local_server
+    #           Add network command input feature
 
-    # No save any data
-    def ext_local_test
-      @mode = 'TEST'
-      _ext_local
-      self
-    end
-
-    # Generate and Save Data
-    def ext_local_driver
-      @mode = @cfg[:opt].dry? ? 'DRY' : 'DRV'
-      extend(context_module('Drv')).ext_local_driver
-      _ext_local
-      self
-    end
-
-    # Load Data
-    def ext_client
-      require 'libclient'
-      extend(Client).ext_client
-    end
-
-    # UDP Listen
-    def ext_local_server
-      require 'libserver'
-      extend(Server).ext_local_server
+    def shell
+      _ext_local_shell.shell
     end
 
     private
 
-    # Local operation included in ext_local_test, ext_local_driver (non_client)
+    # Option handling
+    # Single Mode
+    # none: test mode
+    # -c: client mode
+    # -e: drive mode
+    # -s: test mode + server
+    # -es: drive mode + server
+    def _opt_mode
+      @opt.cl? ? _ext_remote : _ext_local.opt_mode
+    end
+
+    def _ext_remote
+      require 'libclient'
+      return self if is_a?(Client)
+      extend(Client).ext_remote
+    end
+
     def _ext_local
-      @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
-      self
+      extend(context_module('Local')).ext_local
+    end
+
+    def _ext_local_shell
+      require 'libsh'
+      return self if is_a?(Shell)
+      extend(Shell).ext_local_shell
     end
 
     # Sub methods for Initialize
@@ -100,34 +111,64 @@ module CIAX
     end
 
     # For external command
-    #  cfg must have [:dbi] shared in the site (among layers)
+    #  @cfg must have [:dbi] shared in the site (among layers)
     #  @dbi will be set for Varx, @cfg[:dbi] will be set for Index
     #  It is not necessarily the case that id and Config[:dbi][:id] is identical
     def _init_dbi2cfg(ary = [])
-      dbi = type?(@cfg[:dbi], CIAX::Dbi)
+      dbi = type?(@cfg[:dbi], Dbx::Item)
       # dbi.pick already includes :command, :version
-      @cfg.update(dbi.pick(ary))
+      @cfg.update(dbi.pick(*ary, :id, :host, :port))
       @id = dbi[:id]
       dbi
     end
 
-    # Single Mode
-    # none: test mode
-    # -c: client mode
-    # -e: drive mode
-    # -s: test mode + server
-    # -es: drive mode + server
-    def _opt_mode
-      # Option handling
-      opt = @cfg[:opt]
-      return ext_client if opt.cl?
-      if opt.drv?
-        ext_local_driver
-      else
-        ext_local_test
-      end
-      ext_local_server if opt.sv?
+    def _init_net
+      @host = @opt.host || @cfg[:host]
+      @port = @cfg[:port]
       self
+    end
+
+    # Local mode
+    module Local
+      def self.extended(obj)
+        Msg.type?(obj, Exe)
+      end
+
+      # Local operation included in ext_local_test, ext_local_driver
+      # (non_client)
+      def ext_local
+        @stat.ext_local.ext_file
+        @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
+        self
+      end
+
+      # UDP Listen
+      def run
+        return self if @opt.cl?
+        require 'libserver'
+        return self if is_a?(Server)
+        extend(Server).ext_local_server
+      end
+
+      # Option handling
+      def opt_mode
+        @opt.drv? ? _ext_local_driver : _ext_local_test
+      end
+
+      private
+
+      # No save any data
+      def _ext_local_test
+        @mode = 'TEST'
+        self
+      end
+
+      # Generate and Save Data
+      def _ext_local_driver
+        @mode = 'DRV'
+        @stat.ext_save
+        self
+      end
     end
   end
 end

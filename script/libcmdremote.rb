@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libvarx'
 require 'libcmdlocal'
 module CIAX
@@ -17,7 +17,7 @@ module CIAX
       # @cfg should have [:dbi]
       class Domain < Domain
         attr_reader :sys, :ext, :int
-        def initialize(cfg, atrb = Hashx.new)
+        def initialize(spcfg, atrb = Hashx.new)
           super
           @cfg[:def_proc] = proc {} # proc is re-defined
         end
@@ -47,10 +47,10 @@ module CIAX
       # Command Input Logging
       class Input < Varx
         def initialize(id, ver)
-          super("input_#{layer_name}", id, ver)
+          super("input_#{layer_name}", id)
+          _attr_set(ver)
           init_time2cmt
-          ext_local_file
-          ext_local_log
+          ext_local.ext_log
         end
       end
 
@@ -63,9 +63,13 @@ module CIAX
           def initialize(dom_cfg, atrb = Hashx.new)
             atrb.get(:caption) { 'System Commands' }
             super
-            add_item('interrupt', nil, def_msg: 'INTERRUPT')
+            add_form('interrupt', nil, def_msg: 'INTERRUPT')
+            add_form('reset', 'stream', dev_msg: 'RESET')
+          end
+
+          def add_empty
             # Accept empty command for upd
-            add_item(nil, nil, def_msg: '')
+            add_form(nil, nil, def_msg: '')
           end
         end
       end
@@ -81,9 +85,9 @@ module CIAX
             @cfg[:nocache] = true
           end
 
-          def init_item_file_io
-            add_item('save', '[key,key...] [tag]').pars_any(2)
-            add_item('load', '[tag]').pars_any(1)
+          def init_form_fio
+            add_form('save', '[key,key...] [tag]').pars_any(2)
+            add_form('load', '[tag]').pars.add_enum([])
           end
         end
       end

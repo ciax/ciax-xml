@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="fpa" label="Field Point Analog Input(FP-AI-100)" version="1">
-    <spec brand="Field Point" type="Analog Input" model="FP-AI-100" reference="http://ciax.sum.naoj.org/man/fieldpoint/fp-1000prm-321632c.pdf"/>
-    <stream ccmethod="sum" wait="0.01" terminator="\r"/>
+  <frm id="fpa" label="Field Point Analog Input(FP-AI-100)" version="1">
+    <spec brand="Field Point" model="FP-AI-100" reference="http://ciax.sum.naoj.org/man/fieldpoint/fp-1000prm-321632c.pdf" type="Analog Input"/>
+    <stream ccmethod="sum" terminator="\r" wait="0.01"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="38400" stopbit="1"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <string label="Prefix">&gt;01</string>
-      <body/>
-      <string>??</string>
-      <char length="1">13</char>
-    </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <frame>
+        <string label="Prefix">&gt;01</string>
+        <body/>
+        <string>??</string>
+        <char length="1">13</char>
+      </frame>
+      <group caption="Status" id="gst">
         <!--String Length must be <32-->
         <item id="getstat" label="Get status" response="getstat" type="stat">
           <string>!F00FF</string>
@@ -23,7 +23,7 @@
           </repeat>
         </item>
       </group>
-      <group id="gcfg" caption="Configuration">
+      <group caption="Configuration" id="gcfg">
         <item id="setr1" label="Set range +-1.2V" response="default" type="config">
           <string>!D00FF</string>
           <repeat from="1" to="8">
@@ -44,25 +44,34 @@
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <field label="Prefix">A</field>
-      <ccrange>
-        <body/>
-      </ccrange>
-      <field assign="cc" decode="hexstr" label="BCC" length="2"/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <verify decode="string" label="Prefix">A</verify>
+        <ccrange>
+          <body/>
+        </ccrange>
+        <assign decode="hexstr" label="BCC" length="2" ref="cc"/>
+      </frame>
       <item id="getstat">
-        <array assign="stat" decode="hexstr" label="Status" length="4">
-          <index size="8"/>
-        </array>
+        <assign decode="hexstr" label="Status" length="4" ref="stat">
+          <index>0:7</index>
+        </assign>
       </item>
       <item id="getcfg">
-        <array assign="cfg" decode="hexstr" label="Config" length="2">
-          <index size="8"/>
-        </array>
+        <assign decode="hexstr" label="Config" length="2" ref="cfg">
+          <index>0:7</index>
+        </assign>
       </item>
       <item id="default" noaffix="true"/>
     </response>
-  </frame>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="cc" label="BCC"/>
+      <array id="stat" label="Status">
+        <size>8</size>
+      </array>
+      <array id="cfg" label="Config">
+        <size>8</size>
+      </array>
+    </field>
+  </frm>
 </fdb>

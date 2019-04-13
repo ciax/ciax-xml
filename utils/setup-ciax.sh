@@ -1,7 +1,4 @@
 #!/bin/bash
-# Required packages(Debian,Raspbian,Ubuntu): ruby ruby-libxml libxml2-utils apache2 socat libxml-xpath-perl
-# Required packages(CentOs): ruby-devel libxml2-devel httpd socat
-# Required modules(Ruby): json libxml-ruby
 mklink(){
     for i;do
         [ -d "$i" ] && (dig_dir "$i";mklink *)

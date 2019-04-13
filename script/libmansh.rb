@@ -1,79 +1,88 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
+require 'libsh'
 require 'libman'
+require 'librecdic'
 module CIAX
   # Macro Layer
   module Mcr
     # Macro Manager
     class Man
+      def _ext_local_shell
+        extend(Shell).ext_local_shell
+      end
+
       # Macro Shell
       module Shell
         include Exe::Shell
         # cfg should have [:jump_groups]
-        def ext_shell
+        def ext_local_shell
           super
-          ___init_view_rec
-          ___init_view_list
-          ___init_view_cmd
-          ___init_post_exe
+          verbose { 'Initiate Mcr Shell' }
+          ___init_stat
+          ___init_procs
           ___init_conv
+          ___init_recview_cmd
+          ___init_rank_cmd(@cobj.loc.add_view)
           self
         end
 
         private
 
-        def ___init_view_rec
-          # @stat will be switched among Whole List or Records
-          # Setting @par will switch the Record
-          @cfg[:output] = @stat
+        def ___init_stat
+          @view = RecDic.new(@stat, @int_par)
+          @cfg[:output] = @view
+        end
+
+        def ___init_procs
+          # @view will be switched among Whole List or Records
           @prompt_proc = proc do
-            @sv_stat.to_s + @stat.index
+            opt = (@view.current_rec || {})[:option]
+            str = "[#{@view.current_page}]"
+            str << opt_listing(opt)
           end
         end
 
-        def ___init_view_list
+        def ___init_recview_cmd
           page = @cobj.loc.add_page
           page.get('last').def_proc do |ent|
-            n = ent.par[0]
-            n ? @stat.get_arc(n.to_i) : @stat.add_arc
+            @view.inc(ent.par[0] || 1)
           end
           page.get('cl').def_proc do
-            @par.flush(@sv_stat.get(:list))
+            @view.flush
           end
         end
 
-        def ___init_view_cmd
-          view = @cobj.loc.add_view
-          view.get('dig').def_proc do
+        def ___init_rank_cmd(view)
+          return unless @cobj.rem.ext
+          view.add_form('dig', 'Show more Submacros').def_proc do
             @cobj.rem.ext.rankup
             @cobj.error
           end
-          view.get('hide').def_proc do
+          view.add_form('hide', 'Hide Submacros').def_proc do
             @cobj.rem.ext.rank(0)
             @cobj.error
           end
         end
 
-        def ___init_post_exe
-          @post_exe_procs << proc do
-            @sv_stat.get(:list).each { |id| @par.push(id) }
-          end
-        end
-
         # Set Current ID by number
         def ___init_conv
+          # i should be number
           input_conv_num do |i|
-            # i should be number
-            @par.sel(i)
-            # nil:no command -> show record
-            nil
+            if i > 10_000
+              i.to_s
+            else
+              @view.sel(i)
+              nil
+              # nil:no command -> show record
+            end
           end
         end
       end
+    end
 
-      if __FILE__ == $PROGRAM_NAME
-        ConfOpts.new('[proj] [cmd] (par)', options: 'cnlr') do |cfg|
-          Man.new(cfg).ext_shell.shell
-        end
+    if __FILE__ == $PROGRAM_NAME
+      ConfOpts.new('[proj] [cmd] (par)', options: 'cenlr') do |cfg|
+        Man.new(cfg, Atrb.new(cfg)).shell
       end
     end
   end

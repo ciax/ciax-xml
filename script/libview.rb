@@ -1,43 +1,63 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libpath'
+require 'libopt'
 module CIAX
-  # show_iv = Show Instance Variable
   module View
-    include ViewPath
-    @default = 'v'
+    # view mode change
+    module Mode
+      include Path
+      @default_view = 'v'
 
-    def to_s
-      return to_j unless STDOUT.tty?
-      @vmode ||= View.default
-      method("to_#{@vmode}").call
-    rescue NameError
-      super
+      def to_s
+        return to_j unless STDOUT.tty?
+        @vmode ||= Mode.default_view
+        method("to_#{@vmode}").call
+      rescue NameError
+        super
+      end
+
+      def to_j
+        JSON.pretty_generate(self)
+      end
+
+      def to_r
+        Struct.new(self).to_s
+      end
+
+      def to_v
+        to_r
+      end
+
+      def to_o # original data
+        to_r
+      end
+
+      # For Exe @def_proc
+      def vmode(mode)
+        @vmode = mode || Mode.default_view
+        self
+      end
+
+      def self.default_view
+        @default_view
+      end
     end
+  end
 
-    def to_j
-      JSON.pretty_generate(self)
-    end
+  module Opt
+    # Adding View mode option to Opt
+    module Chk
+      private
 
-    def to_r
-      view_struct
-    end
-
-    def to_v
-      to_r
-    end
-
-    def to_o # original data
-      to_r
-    end
-
-    # For Exe @def_proc
-    def vmode(mode)
-      @vmode = mode ? mode : View.default
-      self
-    end
-
-    def self.default
-      @default
+      # Set view mode procs
+      def ___set_opt(str)
+        %i(j r).each do |k|
+          @optdb[k][:proc] = proc do
+            View.default_view.replace(k.to_s)
+          end
+        end
+        super
+      end
     end
   end
 end

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Class/Module Definition
 module CIAX
   require 'English' # To use $! -> $ERROR_INFO
@@ -32,12 +32,6 @@ module CIAX
   # Switching Layer
   class LayerJump < LongJump; end
 
-  # Macro
-  class Interlock < LongJump; end
-  class Verification < LongJump; end
-  class Retry < LongJump; end
-  class NoMcrCmd < LongJump; end
-
   # Server error (Handled in Server)
   class ServerError < RuntimeError; end
 
@@ -49,9 +43,19 @@ module CIAX
 
   # Stream Open Error
   class StreamError < CommError; end
+
   # CC Verification Error
   class CheckCodeError < CommError; end
 
   # Invalid Data in Field for Status
-  class InvalidData < RuntimeError; end
+  class InvalidData < CommError; end
+
+  # File Format Version Mismatch
+  class VerMismatch < CommError; end
+
+  # Macro
+  class Verification < RuntimeError; end
+  class Interlock < Verification; end
+  class Retry < LongJump; end
+  class NoMcrCmd < ConfigError; end
 end

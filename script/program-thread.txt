@@ -1,6 +1,6 @@
 #### Threads ####
 
-## By Input Source 
+## By Input Source
    Main:   Local User Input
    Server: Remote User Input
    Buffer: Device Response (Stream)

@@ -1,10 +1,15 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 $LOAD_PATH << __dir__
 require 'liblayer'
-require 'libmansh'
+require 'libmcrdic'
 # CIAX-XML Macro Shell
 module CIAX
-  Layer.new('[proj]', options: 'elchdnr') do |cfg|
-    Mcr::Man.new(cfg).run
-  end.ext_shell.shell
+  # Macro
+  module Mcr
+    ConfOpts.new('[proj]', options: 'elchdnr') do |root_cfg|
+      Layer.new(root_cfg) do |cfg|
+        ExeDic.new(cfg, Atrb.new(cfg))
+      end.shell
+    end
+  end
 end

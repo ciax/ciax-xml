@@ -1,16 +1,17 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libcmdfunc'
 #   returns String as message.
 module CIAX
   # Command Module
   module CmdBase
-    # Command db with parameter derived from Item
+    # Command db with parameter derived from Form
     class Entity < Config
       attr_reader :id, :par
       attr_accessor :msg
       # set should have :def_proc
-      def initialize(cfg, atrb = Hashx.new)
-        super(cfg).update(atrb)
+      def initialize(spcfg, atrb = Hashx.new)
+        super(spcfg)
+        update(atrb)
         @par = self[:par]
         @id = self[:cid]
         verbose { "Config\n" + path }
@@ -18,7 +19,7 @@ module CIAX
 
       # returns result of def_proc block (String)
       def exe_cmd(src, pri = 1)
-        verbose { "Execute [#{@id}] from #{src}" }
+        verbose { _exe_text(@id, src, pri) }
         ___input_log(src, pri)
         @msg = self[:def_msg] || ''
         self[:def_proc].call(self, src, pri)

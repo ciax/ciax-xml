@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'readline'
 require 'libthreadx'
 
@@ -13,7 +13,9 @@ module CIAX
       end
 
       # Separate initialize part because shell() could be called multiple times
-      def ext_shell
+      def ext_local_shell
+        @cobj.rem.sys.add_empty
+        @cfg[:output] = @stat
         ___init_sh_procs
         @cobj.loc.add_shell
         @cobj.loc.add_jump
@@ -44,11 +46,12 @@ module CIAX
       def prompt
         str = "#{@layer}:#{@id}"
         str += "(#{@mode})" if @mode
+        str += @sv_stat.to_s
         str += @prompt_proc.call if @prompt_proc
         str + '>'
       end
 
-      # * 'shell' is separated from 'ext_shell',
+      # * 'shell' is separated from 'ext_local_shell',
       #    because it will repeat being invoked and exit multiple times.
       # * '^D' gives interrupt
       def shell
@@ -56,8 +59,7 @@ module CIAX
         ___init_readline
         loop do
           line = ___input || break
-          ___exe(___cmds(line))
-          puts @shell_output_proc.call
+          puts ___exe(___cmds(line)) || @shell_output_proc.call
         end
         @terminate_procs.inject(self) { |a, e| e.call(a) }
         Msg.msg('Quit Shell', 3)
@@ -66,15 +68,10 @@ module CIAX
       private
 
       def ___init_sh_procs
-        @shell_input_procs = [] # proc takes args(Array)
         @shell_output_proc ||= proc do
-          if @sv_stat.msg.empty?
-            @cfg[:output].to_s
-          else
-            @sv_stat.msg
-          end
+          @sv_stat.msg.empty? ? @cfg[:output].to_s : @sv_stat.msg
         end
-        @prompt_proc = proc { @sv_stat.to_s }
+        @shell_input_procs = [] # proc takes args(Array)
       end
 
       def ___init_readline
@@ -84,9 +81,9 @@ module CIAX
       end
 
       def ___input
-        verbose { "Threads\n#{Threadx.list}" }
-        verbose { "Valid Commands #{@cobj.valid_keys}" }
-        inp = Readline.readline(prompt, true) || 'interrupt'
+        verbose { "Threads\n#{Threadx.list.view}" }
+        verbose { "Valid Commands #{@cobj.valid_keys.inspect}" }
+        inp = Readline.readline(prompt, true)
         /^q/ =~ inp ? nil : inp
       rescue Interrupt
         'interrupt'
@@ -100,10 +97,9 @@ module CIAX
 
       def ___exe(cmds)
         cmds.each { |s| exe(___input_conv(s), 'shell') }
-      rescue UserError
         nil
-      rescue ServerError
-        show_err
+      rescue UserError, ServerError
+        view_err
       end
 
       def ___input_conv(token)

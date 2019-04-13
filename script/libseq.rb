@@ -1,5 +1,6 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libseqcmds'
+require 'libseqqry'
 
 module CIAX
   # Macro Layer
@@ -10,16 +11,17 @@ module CIAX
       attr_reader :cfg, :record, :qry, :id, :title, :sv_stat
       # &submcr_proc for executing asynchronous submacro,
       #    which must returns hash with ['id']
-      # ent should have [:sequence]'[:dev_list]
-      def initialize(ment, pid = '0', &submcr_proc)
+      # ent should have [:sequence],[:dev_dic],[:pid]
+      def initialize(ment, &submcr_proc)
         @cfg = ment
-        type?(@cfg[:dev_list], CIAX::Wat::List)
-        ___init_record(pid)
-        @sv_stat = @cfg[:sv_stat]
+        @opt = @cfg[:opt]
+        @dev_dic = type?(@cfg[:dev_dic], Wat::ExeDic)
+        ___init_record
+        @sv_stat = type?(@cfg[:sv_stat], Prompt)
         @submcr_proc = submcr_proc
         @depth = 0
         # For Thread mode
-        @qry = Query.new(@record, @sv_stat)
+        @qry = Query.new(@record, @sv_stat, @cfg[:valid_keys] || [])
       end
 
       # For prompt '(stat) [option]'
@@ -33,108 +35,101 @@ module CIAX
 
       # Start the macro
       def play
-        ___upd_sites
-        Thread.current[:query] = @qry
-        _show(@record.start)
-        _sub_macro(@cfg[:sequence], @record.cmt)
-      rescue Verification
-        false
+        ___pre_play
+        _sequencer(@cfg, @record.cmt)
+      rescue CommError, Verification
+        9
       rescue Interrupt
         ___site_interrupt
       ensure
-        _show(@record.finish + "\n")
-      end
-
-      def fork
-        Threadx::Fork.new('Macro', 'seq', @id) { play }
+        ___post_play
       end
 
       private
 
-      def ___upd_sites
-        @cfg[:sites].each { |site| @cfg[:dev_list].get(site) }
-        self
+      def ___pre_play
+        @dev_dic.init_sites if @dev_dic
+        Thread.current[:query] = @qry
+        show_fg @record.start
+        @sv_stat.push(:list, @id).repl(:sid, @id)
+      end
+
+      def ___post_play
+        show_fg @record.finish + "\n"
+        @sv_stat.erase(:list, @id)
+        @record.rmlink(@id) if @opt.mcr_log?
       end
 
       # macro returns result (true=complete /false=error)
-      def _sub_macro(seqary, mstat)
-        ___pre_seq(seqary, mstat)
-        seqary.each { |e| break(true) unless _do_step(e, mstat) }
-      rescue Interlock
-        # For retry
-        false
-      rescue CommError
-        mstat[:result] = 'comerr'
-        false
-      ensure
-        ___post_seq(mstat)
-      end
-
-      # Return false if sequence is broken
-      def _do_step(e, mstat)
-        step = @record.add_step(e, @depth)
-        begin
-          _show step.title
-          return true if ___call_step(e, step, mstat)
-        rescue Retry
-          retry
-        end
-      rescue Interrupt
-        mstat[:result] = 'interrupted'
-        raise
-      end
-
-      # Sub for _do_step()
-      def ___call_step(e, step, mstat)
-        method('_cmd_' + e[:type]).call(e, step, mstat)
-      ensure
-        step.cmt
-      end
-
-      # Sub for macro()
-      def ___pre_seq(seqary, mstat)
+      def _sequencer(cfg, mstat)
+        mstat.result = 'busy'
         @depth += 1
-        @record[:status] = 'run'
-        @record[:total_steps] += type?(seqary, Array).size
-        mstat[:result] = 'busy'
-      end
-
-      def ___post_seq(mstat)
-        mstat[:result] = 'complete' if mstat[:result] == 'busy'
+        # true: exit in the way, false: complete steps
+        ___get_seq(cfg).all? { |e| _new_step(e, mstat) }
+        # 'upd' passes whether commerr or not
+        # result of multiple 'upd' is judged here
+        mstat.result.gsub!('busy', 'complete')
+      rescue Verification
+        mstat.result = 'failed'
+        raise
+      ensure
         @depth -= 1
       end
 
+      # Return false if sequence is broken
+      def _new_step(e, mstat)
+        step = @record.add_step(e, @depth)
+        res = ___step_trial(step, mstat)
+        step.cmt
+        res
+      rescue CommError, Interlock, Interrupt, InvalidARGS
+        mstat.result = __set_err(step)
+        raise
+      end
+
+      # Sub for _new_step()
+      def ___step_trial(step, mstat)
+        show_fg step.title_s
+        # Returns T/F
+        method('_cmd_' + step[:type]).call(step, mstat)
+      rescue Retry
+        retry
+      end
+
+      # Sub for macro()
       def ___site_interrupt
-        runary = @sv_stat.get(:run)
-        msg("\nInterrupt Issued to running devices #{runary}", 3)
-        runary.each do |site|
-          @cfg[:dev_list].get(site).exe(['interrupt'], 'user')
-        end
+        @dev_dic.interrupt(@sv_stat.get(:run)) if @dev_dic
+        @sv_stat.flush(:run).cmt
+        8
       end
 
       # Sub for initialize()
-      def ___init_record(pid)
-        @record = Record.new.ext_local_rsp(@cfg)
-        @record[:pid] = pid
+      def ___init_record
+        @record = Record.new.ext_local_processor(@cfg)
         @id = @record[:id]
-        @title = @record.title
+        @title = @record.title_s
         ___init_record_file
       end
 
       # Do file generation after forked
       def ___init_record_file
+        return unless @opt.mcr_log?
         # ext_file must be after ext_rsp which includes time update
-        @record.ext_local_file.auto_save
+        @record.ext_local.ext_file.ext_save
         @record.mklink # Make latest link
         @record.mklink(@id) # Make link to /json
+      end
+
+      def ___get_seq(cfg)
+        seq = type?(cfg[:sequence], Array)
+        @record[:total_steps] += seq.size
+        seq
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[proj] [cmd] (par)', options: 'eldnr') do |cfg, args|
-        mobj = Index.new(Conf.new(cfg))
-        mobj.add_rem.add_ext
-        ent = mobj.set_cmd(args)
+      ConfOpts.new('[proj] [cmd] (par)', options: 'eldnr') do |cfg|
+        ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(cfg.args)
         Sequencer.new(ent).play
       end
     end

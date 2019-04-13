@@ -7,7 +7,7 @@
       <pattern class="normal" msg="CIAO">^3$</pattern>
       <pattern class="normal" msg="FOCAS">5</pattern>
       <pattern class="normal" msg="COMICS">7</pattern>
-      <pattern class="normal" msg="MC-BOX">10</pattern>
+      <pattern class="normal" msg="MCS">10</pattern>
       <pattern class="normal" msg="SWIMS">11</pattern>
       <pattern class="normal" msg="MOIRCS">12</pattern>
       <pattern class="normal" msg="CIAX3">13</pattern>
@@ -22,10 +22,16 @@
       <pattern class="normal" msg="IRCS">5</pattern>
       <pattern class="normal" msg="N/A">6</pattern>
       <pattern class="normal" msg="MOIRCS">7</pattern>
-      <pattern class="normal" msg="MC-BOX">8</pattern>
+      <pattern class="normal" msg="MCS">8</pattern>
       <pattern class="normal" msg="MP-CS2">9</pattern>
       <pattern class="normal" msg="SWIMS">10</pattern>
       <default class="warn" msg="OTHER"/>
+    </table>
+    <table id="flange">
+      <pattern class="normal" msg="SA">0</pattern>
+      <pattern class="normal" msg="SB">1</pattern>
+      <pattern class="normal" msg="SC">2</pattern>
+      <pattern class="normal" msg="SD">3</pattern>
     </table>
     <table id="normal">
       <pattern class="normal" msg="ON">1</pattern>

@@ -1,6 +1,6 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libvarx'
-
+require 'libconf'
 # Structure
 # {
 #   @binary
@@ -10,21 +10,20 @@ require 'libvarx'
 #   base64: encoded data
 # }
 module CIAX
-  module Frm
+  module Stream
     # Stream treats an individual round trip (send/recieve)
     #   communication which will be done sequentially
-    class Stream < Varx
-      attr_reader :binary
-      attr_accessor :pre_open_proc, :post_open_proc
+    class Driver < Varx
+      attr_reader :base64
       def initialize(id, cfg)
-        iocmd = type?(cfg, Config)[:iocmd]
-        Msg.give_up(' No IO command') unless iocmd
-        super('stream', id, cfg[:version])
+        iocmd = type?(cfg, Config)[:iocmd] || give_up(' No IO command')
+        super('stream', id)
+        @sv_stat = cfg[:sv_stat]
+        _attr_set(cfg[:version])
         update('dir' => '', 'cmd' => '', 'base64' => '')
         verbose { "Initiate [#{iocmd}]" }
         init_time2cmt
         ___init_par(cfg)
-        __reopen
       end
 
       def snd(str, cid)
@@ -34,57 +33,72 @@ module CIAX
         @f.write(str)
         __convert('snd', str, cid).cmt
       rescue Errno::EPIPE
-        @f.close
-        com_err('send failed')
+        __error('Stream: Send failed')
       end
 
       def rcv
-        ___wait_rcv
+        sleep @wait
         __reopen
         str = ___concat_rcv
         verbose { "Data Recieved(#{self['cmd']})\n" + visible(str) }
         __convert('rcv', str).cmt
       end
 
+      def reset
+        ___close_strm
+        cmt
+      end
+
+      # returns self or nil
+      def response(ent)
+        type?(ent, Config)
+        snd(ent[:frame], ent.id) && ent.key?(:response) && rcv
+      end
+
       private
 
-      def __reopen(int = 0)
+      def __reopen
         ___open_strm if !@f || @f.closed?
       rescue SystemCallError
-        int = ___open_fail(int)
-        retry
+        __error('Stream: Open failed')
       end
 
       def __convert(dir, data, cid = nil)
-        @binary = data
+        @base64 = enc64(data)
         self['cmd'] = cid if cid
-        update('dir' => dir, 'base64' => ___encode_base64(data))
+        update('dir' => dir, 'base64' => @base64)
       end
 
       def ___init_par(cfg)
         sp = type?(cfg, Config)[:stream]
-        @iocmd = cfg[:iocmd].split(' ')
+        @iocmd = cfg[:iocmd].split(' ').push(pgroup: 0)
         @wait = (sp[:wait] || 0.01).to_f
         @timeout = (sp[:timeout] || 10).to_i
         @terminator = esc_code(sp[:terminator])
-        @pre_open_proc = proc {}
-        @post_open_proc = proc {}
       end
 
       def ___open_strm
         # SIGINT gets around the child process
         # verbose { 'Stream Opening' }
-        @pre_open_proc.call
-        Signal.trap(:INT, nil)
-        @f = IO.popen(@iocmd, 'r+')
-        Signal.trap(:INT, 'DEFAULT')
+        # Signal.trap(:INT, nil)
+        ___try_open
+        # Signal.trap(:INT, 'DEFAULT')
         verbose { 'Initiate Opened' }
         at_exit { ___close_strm }
-        @post_open_proc.call
         # verbose { 'Stream Open successfully' }
         # Shut off from Ctrl-C Signal to the child process
         # Process.setpgid(@f.pid,@f.pid)
         self
+      end
+
+      def ___try_open
+        @sv_stat.dw(:ioerr).dw(:comerr) if @sv_stat
+        @f = IO.popen(@iocmd, 'r+')
+        3.times do
+          Process.waitpid(@f.pid, Process::WNOHANG) &&
+            __error('Stream: Connection refused')
+          sleep 0.1
+        end
       end
 
       def ___close_strm
@@ -93,28 +107,10 @@ module CIAX
         Process.kill('TERM', @f.pid)
         Process.waitpid(@f.pid)
         @f.close
-        verbose { @f.closed? ? 'Stream Closed' : 'Stream not Closed' }
-      end
-
-      def ___open_fail(int)
-        show_err
-        Msg.str_err('Stream Open failed') if int > 2
-        warning('Try to reopen')
-        sleep int
-        (int + 1) * 2
-      end
-
-      def ___encode_base64(str)
-        [str].pack('m').split("\n").join('')
+        verbose { cfmt('Stream%s Closed', @f.closed? ? '' : ' not') }
       end
 
       # rcv sub methods
-      def ___wait_rcv
-        # verbose { "Wait to Recieve #{@wait} sec" }
-        sleep @wait
-        # verbose { 'Wait for Recieving' }
-      end
-
       def ___concat_rcv(str = '')
         20.times do
           ___select_io
@@ -127,7 +123,7 @@ module CIAX
 
       def ___select_io
         return if IO.select([@f], nil, nil, @timeout)
-        Msg.com_err('Stream:No response')
+        __error('Stream: Timeout: No response')
       end
 
       def ___try_rcv(str)
@@ -135,8 +131,13 @@ module CIAX
         # verbose { "Binary Getting\n" + visible(str) }
       rescue EOFError
         # Jumped at quit
-        @f.close
-        com_err('recv failed')
+        __error('Stream: Recv failed')
+      end
+
+      def __error(str)
+        @f.close if @f
+        @sv_stat.up(:ioerr) if @sv_stat
+        str_err(str)
       end
     end
   end

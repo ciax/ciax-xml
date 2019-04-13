@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Omega Air Pressure Sensor Simulator
 require 'libsim'
 module CIAX
@@ -23,6 +23,8 @@ module CIAX
         end
       end
     end
+
+    @sim_list << Ap
 
     Ap.new.serve if __FILE__ == $PROGRAM_NAME
   end

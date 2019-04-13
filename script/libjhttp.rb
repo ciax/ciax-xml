@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'open-uri'
 
 module CIAX
@@ -14,20 +14,20 @@ module CIAX
         @host = host || 'localhost'
         @dir = format('/%s/', dir || 'json')
         verbose { "Initiate Http (#{@host})" }
-        self[:id] || Msg.cfg_err('ID')
-        @upd_procs << proc { load }
-        load
-        self
+        @id || Msg.cfg_err('ID')
+        @upd_procs.append(self, :http) { load }
+        upd
       end
 
       def load(tag = nil)
         url = format('http://%s%s%s.json', @host, @dir, base_name(tag))
         jstr = ___read_url(url)
         if jstr.empty?
-          warning(" -- json url file (#{url}) is empty at loading")
+          warning(' -- json url file (%s) is empty at loading', url)
         else
-          replace(jread(jstr))
+          ___chkupd(jstr)
         end
+        self
       end
 
       def latest
@@ -35,6 +35,12 @@ module CIAX
       end
 
       private
+
+      def ___chkupd(jstr)
+        lt = self[:time]
+        deep_update(jverify(j2h(jstr)))
+        cmt if self[:time] > lt
+      end
 
       def ___read_url(url)
         jstr = ''
@@ -44,7 +50,8 @@ module CIAX
         end
         jstr
       rescue OpenURI::HTTPError
-        alert("  -- no url file (#{url})")
+        alert('  -- no url file (%s)', url)
+        jstr
       end
     end
   end

@@ -9,13 +9,13 @@
 ## Related to Update
 
   Upd@upd_procs
-    structure: Array[Proc,..]
+    structure: ProcArray[Proc,..]
     args: Hashx(self)
     return: Any
     called: Upd#upd
 
   Upd@cmt_procs
-    structure: Array[Proc,..]
+    structure: ProcArray[Proc,..]
     args: Hashx(self)
     return: Any
     called: Upd#cmt
@@ -28,23 +28,23 @@
     return: Any
     called: Entity#execmd
     methods:
-      (Command,Domain,Group)#def_proc(&) 
-      (Command,Domain,Group)#rem.int.proc(id,&) 
-      (App/Frm/Mcr)::Command#rem.ext.proc(&) 
+      (Command,Domain,Group)#def_proc(&)
+      (Command,Domain,Group)#rem.int.proc(id,&)
+      (App/Frm/Mcr)::Command#rem.ext.proc(&)
 
-## Related to Wat::Rsp(Event)
+## Related to Wat::Conv(Event)
 
-  Rsp@on_act_procs
+  Conv@on_act_procs
     structure: Array[Proc...]
-    args: Rsp(self)
+    args: Conv(self)
     return: Any
-    called: Rsp#upd (depends on Prompt)
+    called: Conv#upd (depends on Prompt)
 
-  Rsp@on_deact_procs
+  Conv@on_deact_procs
     structure: Array[Proc...]
-    args: Rsp(self)
+    args: Conv(self)
     return: Any
-    called: Rsp#upd (depends on Prompt)
+    called: Conv#upd (depends on Prompt)
 
 ## Related to Exe
 
@@ -66,7 +66,7 @@
     args: String(command line)
     return: Array[String...] (command args)
     called: Server(Exe)#ext_local_server
-    
+
   Server@server_output_proc
     structure: Proc
     args: no
@@ -102,20 +102,20 @@
 
 ## Related to Frm
 
-  Field@flush_procs
+  Field@cmt_procs
     structure: Array[Proc,..]
     args: Frm::Field(self)
     called: Frm::Field#flush()
 
 ## Related to Buffer
 
-  Buffer@flush_proc  
+  Buffer@flush_proc
     structure: Proc
     args: Buffer(self)
     return: Any
     called: Buffer#server
 
-  Buffer@recv_proc  
+  Buffer@conv_proc
     structure: Proc
     args: Array(args),String(src)
     return: Any

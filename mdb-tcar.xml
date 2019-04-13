@@ -1,6 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="tcar" version="2" label="CAR Macro" port="55555">
+    <group id="grp_car_1" caption="Initialize" rank="0">
+      <item id="cinit" label="carousel initialize">
+        <check>
+          <equal site="tma" var="pos" form="msg">INIT</equal>
+          <not site="tfp" var="ao" form="msg">OPEN</not>
+        </check>
+        <cfg site="tmc" name="lowspd"/>
+        <sleep>1</sleep>
+        <upd site="tmc"/>
+        <mcr name="tmc_cw" retry="3"/>
+        <mcr name="tmc_gh-cw" async="true"/>
+      </item>
+    </group>
+    <group id="grp_tmc_1" caption="Initial Action" rank="2">
+      <item id="tmc_cw" label="Initialize(CW)">
+        <goal verify="true">
+          <equal site="tmc" var="lcw" form="msg">ON</equal>
+        </goal>
+        <check>
+          <match site="tmc" var="spd" form="msg">LOW</match>
+        </check>
+        <exec site="tmc" name="cw"/>
+        <wait retry="300" label="end of motion">
+          <equal site="tmc" var="bs" form="data">0</equal>
+        </wait>
+      </item>
+      <item id="tmc_ccw" label="Initialize(CCW)">
+        <goal>
+          <equal site="tmc" var="lccw" form="msg">ON</equal>
+        </goal>
+        <check>
+          <match site="tmc" var="spd" form="msg">LOW</match>
+        </check>
+        <exec site="tmc" name="ccw"/>
+        <wait retry="300" label="end of motion">
+          <equal site="tmc" var="bs" form="data">0</equal>
+        </wait>
+        <upd site="tmc"/>
+      </item>
+      <item id="tmc_gh-cw" label="Go to Home from CW end">
+        <goal>
+          <not site="tmc" var="lcw" form="msg">ON</not>
+        </goal>
+        <check>
+          <match site="tmc" var="spd" form="msg">LOW</match>
+          <equal site="tmc" var="lcw" form="msg">ON</equal>
+        </check>
+        <exec site="tmc" name="gh-cw"/>
+        <wait retry="30" label="end of motion">
+          <equal site="tmc" var="bs" form="data">0</equal>
+        </wait>
+        <cfg site="tmc" name="set0"/>
+        <upd site="tmc"/>
+      </item>
+      <item id="tmc_gh-ccw" label="Go to Home from CCW end">
+        <goal>
+          <not site="tmc" var="lccw" form="msg">ON</not>
+        </goal>
+        <check>
+          <match site="tmc" var="spd" form="msg">LOW</match>
+          <equal site="tmc" var="lccw" form="msg">ON</equal>
+        </check>
+        <exec site="tmc" name="gh-ccw"/>
+        <wait retry="240" label="end of motion">
+          <equal site="tmc" var="bs" form="data">0</equal>
+        </wait>
+        <upd site="tmc"/>
+      </item>
+    </group>
     <group id="grp_tmc_2" caption="Action" rank="2">
       <unit id="unit_tmc_2_cw15" title="cw-[1-5]" label="Move [1-5] unit CW">
         <item id="tmc_cw-1" label="Move 1 unit CW">
@@ -45,11 +114,14 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <exec site="tmc" name="cw-4"/>
+          <exec site="tmc" name="cw-2"/>
           <wait retry="48" label="end of motion">
             <equal site="tmc" var="bs" form="data">0</equal>
           </wait>
-          <upd site="tmc"/>
+          <exec site="tmc" name="cw-2"/>
+          <wait retry="48" label="end of motion">
+            <equal site="tmc" var="bs" form="data">0</equal>
+          </wait>
         </item>
         <item id="tmc_cw-5" label="Move 5 unit CW">
           <check>
@@ -107,11 +179,14 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <exec site="tmc" name="ccw-4"/>
+          <exec site="tmc" name="ccw-2"/>
           <wait retry="48" label="end of motion">
             <equal site="tmc" var="bs" form="data">0</equal>
           </wait>
-          <upd site="tmc"/>
+          <exec site="tmc" name="ccw-2"/>
+          <wait retry="48" label="end of motion">
+            <equal site="tmc" var="bs" form="data">0</equal>
+          </wait>
         </item>
         <item id="tmc_ccw-5" label="Move 5 unit CCW">
           <check>
@@ -880,60 +955,6 @@
         </wait>
         <upd site="tmc"/>
       </item>
-      <item id="tmc_cw" label="Initialize(CW)">
-        <goal>
-          <equal site="tmc" var="lcw" form="msg">ON</equal>
-        </goal>
-        <check>
-          <match site="tmc" var="spd" form="msg">LOW</match>
-        </check>
-        <exec site="tmc" name="cw"/>
-        <wait retry="300" label="end of motion">
-          <equal site="tmc" var="bs" form="data">0</equal>
-        </wait>
-        <upd site="tmc"/>
-      </item>
-      <item id="tmc_ccw" label="Initialize(CCW)">
-        <goal>
-          <equal site="tmc" var="lccw" form="msg">ON</equal>
-        </goal>
-        <check>
-          <match site="tmc" var="spd" form="msg">LOW</match>
-        </check>
-        <exec site="tmc" name="ccw"/>
-        <wait retry="300" label="end of motion">
-          <equal site="tmc" var="bs" form="data">0</equal>
-        </wait>
-        <upd site="tmc"/>
-      </item>
-      <item id="tmc_gh-cw" label="Go to Home from CW end">
-        <goal>
-          <not site="tmc" var="lcw" form="msg">ON</not>
-        </goal>
-        <check>
-          <match site="tmc" var="spd" form="msg">LOW</match>
-          <equal site="tmc" var="lcw" form="msg">ON</equal>
-        </check>
-        <exec site="tmc" name="gh-cw"/>
-        <wait retry="30" label="end of motion">
-          <equal site="tmc" var="bs" form="data">0</equal>
-        </wait>
-        <upd site="tmc"/>
-      </item>
-      <item id="tmc_gh-ccw" label="Go to Home from CCW end">
-        <goal>
-          <not site="tmc" var="lccw" form="msg">ON</not>
-        </goal>
-        <check>
-          <match site="tmc" var="spd" form="msg">LOW</match>
-          <equal site="tmc" var="lccw" form="msg">ON</equal>
-        </check>
-        <exec site="tmc" name="gh-ccw"/>
-        <wait retry="240" label="end of motion">
-          <equal site="tmc" var="bs" form="data">0</equal>
-        </wait>
-        <upd site="tmc"/>
-      </item>
       <item id="tmc_slot0_FIN" label="Move to Slot 0">
         <goal>
           <match site="tmc" var="abs" form="msg">S0</match>
@@ -950,21 +971,6 @@
         <upd site="tmc"/>
       </item>
     </group>
-    <group id="grp_car_1" caption="Initialize" rank="0">
-      <item id="cinit" label="carousel initialize">
-        <check>
-          <equal site="tma" var="pos" form="msg">INIT</equal>
-          <not site="tfp" var="ao" form="msg">OPEN</not>
-        </check>
-        <cfg site="tmc" name="lowspd"/>
-        <upd site="tmc"/>
-        <mcr name="tmc_cw"/>
-        <mcr name="tmc_gh-cw"/>
-        <mcr name="tmc_cw"/>
-        <mcr name="tmc_gh-cw"/>
-        <cfg site="tmc" name="set0"/>
-      </item>
-    </group>
     <group id="grp_car_2" caption="Slot" rank="0">
       <unit id="unit_car_2_slot023" title="slot[0-23]" label="Move to Slot[0-23]">
         <item id="slot0" label="carousel">
@@ -975,9 +981,81 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
-          <mcr name="slotX_00"/>
+          <select site="tmc" var="abs" form="msg">
+            <option val="S00">
+              <mcr name="slot00_00"/>
+            </option>
+            <option val="S01">
+              <mcr name="slot01_00"/>
+            </option>
+            <option val="S02">
+              <mcr name="slot02_00"/>
+            </option>
+            <option val="S03">
+              <mcr name="slot03_00"/>
+            </option>
+            <option val="S04">
+              <mcr name="slot04_00"/>
+            </option>
+            <option val="S05">
+              <mcr name="slot05_00"/>
+            </option>
+            <option val="S06">
+              <mcr name="slot06_00"/>
+            </option>
+            <option val="S07">
+              <mcr name="slot07_00"/>
+            </option>
+            <option val="S08">
+              <mcr name="slot08_00"/>
+            </option>
+            <option val="S09">
+              <mcr name="slot09_00"/>
+            </option>
+            <option val="S10">
+              <mcr name="slot10_00"/>
+            </option>
+            <option val="S11">
+              <mcr name="slot11_00"/>
+            </option>
+            <option val="S12">
+              <mcr name="slot12_00"/>
+            </option>
+            <option val="S13">
+              <mcr name="slot13_00"/>
+            </option>
+            <option val="S14">
+              <mcr name="slot14_00"/>
+            </option>
+            <option val="S15">
+              <mcr name="slot15_00"/>
+            </option>
+            <option val="S16">
+              <mcr name="slot16_00"/>
+            </option>
+            <option val="S17">
+              <mcr name="slot17_00"/>
+            </option>
+            <option val="S18">
+              <mcr name="slot18_00"/>
+            </option>
+            <option val="S19">
+              <mcr name="slot19_00"/>
+            </option>
+            <option val="S20">
+              <mcr name="slot20_00"/>
+            </option>
+            <option val="S21">
+              <mcr name="slot21_00"/>
+            </option>
+            <option val="S22">
+              <mcr name="slot22_00"/>
+            </option>
+            <option val="S23">
+              <mcr name="slot23_00"/>
+            </option>
+          </select>
           <mcr name="check_slot00"/>
         </item>
         <item id="slot1" label="carousel">
@@ -988,9 +1066,81 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
-          <mcr name="slotX_01"/>
+          <select site="tmc" var="abs" form="msg">
+            <option val="S00">
+              <mcr name="slot00_01"/>
+            </option>
+            <option val="S01">
+              <mcr name="slot01_01"/>
+            </option>
+            <option val="S02">
+              <mcr name="slot02_01"/>
+            </option>
+            <option val="S03">
+              <mcr name="slot03_01"/>
+            </option>
+            <option val="S04">
+              <mcr name="slot04_01"/>
+            </option>
+            <option val="S05">
+              <mcr name="slot05_01"/>
+            </option>
+            <option val="S06">
+              <mcr name="slot06_01"/>
+            </option>
+            <option val="S07">
+              <mcr name="slot07_01"/>
+            </option>
+            <option val="S08">
+              <mcr name="slot08_01"/>
+            </option>
+            <option val="S09">
+              <mcr name="slot09_01"/>
+            </option>
+            <option val="S10">
+              <mcr name="slot10_01"/>
+            </option>
+            <option val="S11">
+              <mcr name="slot11_01"/>
+            </option>
+            <option val="S12">
+              <mcr name="slot12_01"/>
+            </option>
+            <option val="S13">
+              <mcr name="slot13_01"/>
+            </option>
+            <option val="S14">
+              <mcr name="slot14_01"/>
+            </option>
+            <option val="S15">
+              <mcr name="slot15_01"/>
+            </option>
+            <option val="S16">
+              <mcr name="slot16_01"/>
+            </option>
+            <option val="S17">
+              <mcr name="slot17_01"/>
+            </option>
+            <option val="S18">
+              <mcr name="slot18_01"/>
+            </option>
+            <option val="S19">
+              <mcr name="slot19_01"/>
+            </option>
+            <option val="S20">
+              <mcr name="slot20_01"/>
+            </option>
+            <option val="S21">
+              <mcr name="slot21_01"/>
+            </option>
+            <option val="S22">
+              <mcr name="slot22_01"/>
+            </option>
+            <option val="S23">
+              <mcr name="slot23_01"/>
+            </option>
+          </select>
           <mcr name="check_slot01"/>
         </item>
         <item id="slot2" label="carousel">
@@ -1001,7 +1151,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_02"/>
           <mcr name="check_slot02"/>
@@ -1014,7 +1163,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_03"/>
           <mcr name="check_slot03"/>
@@ -1027,7 +1175,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_04"/>
           <mcr name="check_slot04"/>
@@ -1040,7 +1187,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_05"/>
           <mcr name="check_slot05"/>
@@ -1053,7 +1199,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_06"/>
           <mcr name="check_slot06"/>
@@ -1066,7 +1211,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_07"/>
           <mcr name="check_slot07"/>
@@ -1079,7 +1223,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_08"/>
           <mcr name="check_slot08"/>
@@ -1092,7 +1235,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_09"/>
           <mcr name="check_slot09"/>
@@ -1105,7 +1247,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_10"/>
           <mcr name="check_slot10"/>
@@ -1118,7 +1259,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_11"/>
           <mcr name="check_slot11"/>
@@ -1131,7 +1271,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_12"/>
           <mcr name="check_slot12"/>
@@ -1144,7 +1283,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_13"/>
           <mcr name="check_slot13"/>
@@ -1157,7 +1295,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_14"/>
           <mcr name="check_slot14"/>
@@ -1170,7 +1307,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_15"/>
           <mcr name="check_slot15"/>
@@ -1183,7 +1319,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_16"/>
           <mcr name="check_slot16"/>
@@ -1196,7 +1331,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_17"/>
           <mcr name="check_slot17"/>
@@ -1209,7 +1343,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_18"/>
           <mcr name="check_slot18"/>
@@ -1222,7 +1355,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_19"/>
           <mcr name="check_slot19"/>
@@ -1235,7 +1367,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_20"/>
           <mcr name="check_slot20"/>
@@ -1248,7 +1379,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_21"/>
           <mcr name="check_slot21"/>
@@ -1261,7 +1391,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_22"/>
           <mcr name="check_slot22"/>
@@ -1274,7 +1403,6 @@
             <match site="tmc" var="lcw" form="msg">OFF</match>
             <match site="tmc" var="lccw" form="msg">OFF</match>
           </check>
-          <mcr name="upd"/>
           <cfg site="tmc" name="lowspd"/>
           <mcr name="slotX_23"/>
           <mcr name="check_slot23"/>

@@ -1,212 +1,307 @@
 /**************** Global Style *****************/
-html,body{
-    font-size : medium;
+
+html,
+body {
+    font-size: medium;
     width: 99%;
-    position:relative;
+    position: relative;
     margin-left: auto;
     margin-right: auto;
-    color : black;
-    background-image : url(/json/bg-1.jpg);
-    background-repeat : repeat;
-    background-attachment : fixed;
-    background-color : white;
+    color: black;
+    background-image: url(/json/bg-1.jpg);
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-color: white;
 }
-table{
-    width : 100%;
+
+table {
+    width: 100%;
     overflow: auto;
     white-space: nowrap;
 }
-th{
-    text-align : center;
+
+th {
+    text-align: center;
 }
-td{
+
+td {
     white-space: nowrap;
 }
-button, select{
+
+button,
+select {
     font-weight: bold;
-/*    font-size : large; */
-    border-radius : 10px;
-    border : 4px outset silver;
-    background-color : gainsboro;
-    color : black;
+    /*    font-size : large; */
+    border-radius: 10px;
+    border: 4px outset silver;
+    background-color: gainsboro;
+    color: black;
 }
-div.outline{
+
+div.outline {
     font-weight: bold;
-    border : 5px outset lightgreen;
+    border: 5px outset lightgreen;
     margin-left: 10px;
     margin-right: 0;
-    background-color: rgba(200,200,200,0.5);
+    background-color: rgba(200, 200, 200, 0.5);
 }
-div.title{
-    font-size : x-large;
-    text-align : center;
-    vertical-align : middle;
-    color : lightcyan;
+
+div.title {
+    font-size: x-large;
+    text-align: center;
+    vertical-align: middle;
+    color: lightcyan;
     background-color: lightgreen;
-    padding : 5px;
+    padding: 5px;
 }
-div.bar{
+
+div.bar {
     margin: 5px;
     overflow: auto;
 }
-div.footer{
-    font-size : large;
-    test-align : center;
-    vertical-align : middle;
-    color : navy;
+
+div.footer {
+    font-size: large;
+    test-align: center;
+    vertical-align: middle;
+    color: navy;
     background-color: lightgreen;
-    padding : 5px;
+    padding: 5px;
 }
+
 /*************** For Status Table ****************/
-.item{
-    margin : 2px;
-    border : 2px inset;
+
+.item {
+    margin: 2px;
+    border: 2px inset;
 }
-.label{
-    text-align : center;
-    color : blue;
+
+.label {
+    text-align: center;
+    color: blue;
 }
-.hide{
-    color : black;
+
+.hide {
+    color: black;
 }
-.normal{
-    color : green;
+
+.normal {
+    color: green;
 }
-.alarm{
-    color : red;
+
+.alarm {
+    color: red;
 }
-.warn{
-    color : goldenrod;
+
+.warn {
+    color: goldenrod;
 }
-.active{
-    color : purple;
+
+.active {
+    color: purple;
 }
-.hide{
-    color : gray;
+
+.hide {
+    color: gray;
 }
-.control-label{
-    color : orchid;
+
+.control-label {
+    color: orchid;
     font-size: large;
 }
-.center{
-    text-align :center;
+
+.center {
+    text-align: center;
 }
+
 /****************** For Macro *******************/
+
 /* Frame */
+
 #ol_log {
     position: absolute;
     left: 0;
     width: 30%;
 }
+
 #ol_rec {
     margin-left: 33%;
 }
-.contents{
+
+.contents {
     margin: 5px;
     overflow: auto;
 }
+
 /* contents */
-h4{
+
+h4 {
     margin: 0;
 }
-time{
+
+time {
     color: blue;
 }
-ul{
+
+ul {
     list-style: none;
-    margin-left:1.5em;
-    padding:0;
+    margin-left: 1.5em;
+    padding: 0;
 }
+
 em {
     text-transform: capitalize;
-    color : magenda;
+    color: magenda;
 }
+
 /* Criteria of condition */
+
 code {
-    color : navy;
+    color: navy;
 }
+
 /* var name of condition */
+
 var {
-    width:7em;
-    float:left;
-    color : gray;
+    width: 7em;
+    float: left;
+    color: gray;
 }
+
 /***** Step Line *****/
+
 /* common */
+
 .head {
     text-transform: uppercase;
 }
+
 /*** Title coloring ***/
+
 .cmd {
-    color : blue;
+    color: blue;
 }
-.mcr{
-    color : chocolate;
+
+.mcr {
+    color: chocolate;
 }
-.select{
-    color : gold;
+
+.select {
+    color: gold;
 }
-.exec, .system, .query, .mesg{
-    color : magenta;
+
+.exec,
+.system,
+.query,
+.mesg {
+    color: magenta;
 }
-.upd, .cfg {
-    color :lightgreen;
+
+.upd,
+.cfg {
+    color: lightgreen;
 }
-.check, .goal, .wait, .sleep, .verify, .bypass {
-    color : cyan;
+
+.check,
+.goal,
+.wait,
+.sleep,
+.verify,
+.bypass {
+    color: cyan;
 }
+
 .stop {
-    color : red;
+    color: red;
 }
+
 /*** Result/Status coloring ***/
+
 /* common */
-.true, .complete, .pass, .enter, .skipped, .skip, .approval, .slept, .end, .issued, .accept, .nomask, .ready {
-    color : green;
+
+.true,
+.complete,
+.pass,
+.enter,
+.skipped,
+.skip,
+.approval,
+.slept,
+.end,
+.done,
+.issued,
+.accept,
+.nomask,
+.ready {
+    color: green;
 }
-.false, .timeout, .failed, .error, .comerr {
-    color : red;
+
+.false,
+.timeout,
+.failed,
+.error,
+.comerr {
+    color: red;
 }
-.interrupted, .interrupt {
-    color : gold;
+
+.interrupted,
+.incomplete,
+.interrupt {
+    color: gold;
 }
-.busy,.run {
-    color : purple;
+
+.busy,
+.run {
+    color: purple;
 }
+
 .action {
-    color : darkorange;
+    color: darkorange;
 }
+
 /*** Header/Footer ***/
+
 .tail {
-    float:right;
+    float: right;
 }
+
 .elps {
     color: dodgerblue;
-    width:5em;
+    width: 5em;
 }
+
 #scroll.switch {
-    width : 76px;
+    width: 76px;
 }
+
 #status {
-    width : 100px;
+    width: 100px;
 }
-#interactive{
-    border : 2px outset lightgreen;
-    border-radius : 5px;
+
+#interactive {
+    border: 2px outset lightgreen;
+    border-radius: 5px;
 }
 
 /* Slide Switch */
+
 /*** log list ***/
+
 #log .time {
     width: 4.5em;
     float: left;
     color: dimgray;
 }
-#log li:hover, h4:hover {
+
+#log li:hover,
+h4:hover {
     background-color: silver;
 }
+
 #log li.selected {
-    background-color : pink;
+    background-color: pink;
 }
+
 .dvctl {
     display: none;
 }

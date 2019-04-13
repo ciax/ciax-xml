@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="tpg" label="Pfeiffer Vacuum Gauge TPG262">
-    <spec mfr="Pfeiffer" type="Vacuum Gauge" model="TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf"/>
-    <stream wait="0.3" terminator="\r\n"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <body/>
-    </cmdframe>
+  <frm id="tpg" label="Pfeiffer Vacuum Gauge TPG262">
+    <spec mfr="Pfeiffer" model="TPG262" reference="http://ciax.sum.naoj.org/man/pfeiffer/bg5198be.pdf" type="Vacuum Gauge"/>
+    <stream terminator="\r\n" wait="0.3"/>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <frame>
+        <body/>
+      </frame>
+      <group caption="Status" id="gst">
         <item id="reqstat" label="Request status" response="reqstat" type="stat">
           <string label="Measurment string gauges 1&amp;2">PRX</string>
-          <char length="1" label="Suffix">13</char>
+          <char label="Suffix" length="1">13</char>
         </item>
         <item id="getstat" label="Get status" response="getstat" type="stat">
-          <char length="1" label="ENQ">5</char>
+          <char label="ENQ" length="1">5</char>
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <body/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <body/>
+      </frame>
       <item id="reqstat">
-        <field decode="integer">6</field>
+        <verify decode="integer">6</verify>
       </item>
       <item id="getstat">
-        <array assign="stat" delimiter=",">
-          <index size="2"/>
-          <index size="2"/>
-        </array>
+        <assign decode="string" delimiter="," ref="stat">
+          <index>0:1</index>
+          <index>0:1</index>
+        </assign>
       </item>
     </response>
-  </frame>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <array id="stat">
+        <size>2</size>
+        <size>2</size>
+      </array>
+    </field>
+  </frm>
 </fdb>

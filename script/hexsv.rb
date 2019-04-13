@@ -1,10 +1,12 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 $LOAD_PATH << __dir__
-require 'libhexlist'
+require 'libhexdic'
 require 'libdaemon'
 # CIAX-XML Device Server for V1
 module CIAX
-  Daemon.new('hexsv', 'e') do |cfg, atrb|
-    Hex::List.new(cfg, atrb)
+  ConfOpts.new('[id] ...', options: 'deb') do |cfg|
+    Daemon.new(cfg) do
+      Hex::ExeDic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).run
+    end
   end
 end

@@ -1,6 +1,6 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Common Module
-require 'libmsgfunc'
+require 'libmsgfile'
 require 'libmsgmod'
 # CIAX
 module CIAX
@@ -18,44 +18,48 @@ module CIAX
     #   [val] -> taken from  xml (criteria)
     #   <val> -> taken from status (incoming)
     #   (val) -> calcurated from status
-    def verbose(cond = true)
-      return cond unless ENV['VER'] && cond && !@hide_inside
+
+    # Returns T/F (Displayed or not)
+    def verbose
+      return unless ENV['VER'] && !@hide_inside
       str = type?(yield, String)
       msg = __make_msg(str)
-      __prt_lines(msg) if ___chk_ver(msg)
-      cond
+      return unless ___chk_ver(msg) || (@enclosed ||= []).any?
+      __prt_lines(msg)
+      true
     end
 
-    def info(title)
-      show __make_msg(title, 7)
+    def info(*ary)
+      show __make_msg(cfmt(*ary), 7)
       self
     end
 
-    def warning(title)
-      show __make_msg(title, 3)
+    def warning(*ary)
+      show __make_msg(cfmt(*ary), 3)
       self
     end
 
-    def alert(title)
-      show __make_msg(title, 5)
+    def alert(*ary)
+      show __make_msg(cfmt(*ary), 5)
       self
     end
 
+    # For debugging
     def errmsg
-      show __make_msg("ERROR:#{$ERROR_INFO} at #{$ERROR_POSITION}", 1)
+      show __make_msg("ERROR:#{$ERROR_INFO} at\n", 1) +
+           $ERROR_POSITION.join("\n")
       self
     end
 
     # @hide_inside is flag for hiding inside of enclose
     # returns enclosed contents to have no influence by this
     def enclose(title1, title2)
-      verbose { title1 }
-      @enclosed = @printed
+      (@enclosed ||= []) << verbose { title1 }
       Msg.ver_indent(1)
       res = yield
     ensure
       Msg.ver_indent(-1)
-      __prt_lines(__make_msg(format(title2, res))) if @enclosed
+      __prt_lines(__make_msg(format(title2, res))) if @enclosed.pop
     end
 
     private
@@ -67,13 +71,11 @@ module CIAX
         show Msg.indent(base + ind) + line
         ind = 2
       end
-      @printed = true
     end
 
     def __make_msg(title, c = nil)
-      @printed = false
       return unless title
-      ts = ___make_head + ':'
+      ts = __make_head + ':'
       ts << (c ? Msg.colorize(title.to_s, c) : title.to_s)
     end
 
@@ -88,28 +90,34 @@ module CIAX
       cary << [cls, Msg.cls_color(cls)]
     end
 
-    def ___make_head
+    def __make_head
       Msg.indent(Msg.ver_indent) + ___head_ary.map do |str, color|
         Msg.colorize(str.to_s, color)
       end.join(':')
     end
 
+    # Override libmsgerr error output method
+    # Adding header when error output is redirect to file
+    def _err_text(ary)
+      ary[0] = __make_head + ary[0] unless $stderr.tty?
+      ary.join("\n  ")
+    end
+
     # VER= makes setenv "" to VER otherwise nil
+    # VER example "str1:str2,str3!str4"
     def ___chk_ver(msg)
-      return if !ENV['VER'] || !msg
+      ev = ENV['VER']
+      return unless ev && msg
+      return true if /\*/ =~ ev
       title = msg.split("\n").first.upcase
-      ENV['VER'].upcase.split(',').any? do |s|
-        s.split(':').all? do |e|
-          ___chk_exclude(e, title)
-        end
+      ev.upcase.split(',').any? do |s|
+        ___chk_exp(title, *s.split('!'))
       end
     end
 
-    def ___chk_exclude(e, title)
-      exc = e.split('^')
-      inc = exc.shift
-      return if exc.any? { |x| title.include?(x) }
-      /\*/ =~ inc || title.include?(inc)
+    def ___chk_exp(title, exp, *inv)
+      return false if inv.any? { |x| title.include?(x) }
+      /#{exp.gsub(/:/, '.*')}/ =~ title
     end
 
     module_function

@@ -1,77 +1,82 @@
 <!DOCTYPE html>
 <?xml version="1.0"?><html lang="en-US">
-  <head>
-    <meta charset="utf-8">
-    <title>MCR LOG</title>
-    <link rel="stylesheet" type="text/css" href="style.css?v=0">
-    <link rel="stylesheet" type="text/css" href="ciax-xml.css?v=1">
-    <script type="text/javascript" src="jquery-3.0.0.min.js"></script>
-    <script type="text/javascript" src="ciax-xml.js?v=0"></script>
-    <script type="text/javascript" src="mcr_conf.js?v=1"></script>
-    <script type="text/javascript" src="record.js?v=0"></script>
-    <script type="text/javascript" src="mcr_log.js?v=0"></script>
-    <script type="text/javascript">$(init);</script>
-  </head>
-  <body>
-    <div id="ol_log" class="outline">
-      <div class="title">
-        <span class="mcr">Log</span>
-      </div>
-      <div id="log" class="contents"></div>
-      <div class="footer">
-        <table>
-          <tr>
-            <td class="dvctl">
-              <select id="command" onchange="selmcr(this)">
-                <option>--select--</option>
-              </select>
-              <span class="control-label" id="interactive">Interactive
-                <input type="checkbox" onclick="interactive();">
-              </span>
-            </td>
-          </tr>
-        </table>
-      </div>
+
+<head>
+  <meta charset="utf-8">
+  <title>MCR LOG</title>
+  <link rel="stylesheet" type="text/css" href="style.css?v=0">
+  <link rel="stylesheet" type="text/css" href="ciax-xml.css?v=1">
+  <script type="text/javascript" src="jquery-3.0.0.min.js"></script>
+  <script type="text/javascript" src="ciax-xml.js?v=0"></script>
+  <script type="text/javascript" src="mcr_conf.js?v=1"></script>
+  <script type="text/javascript" src="record.js?v=0"></script>
+  <script type="text/javascript" src="mcr_log.js?v=0"></script>
+  <script type="text/javascript">
+    $(init);
+  </script>
+</head>
+
+<body>
+  <div id="ol_log" class="outline">
+    <div class="title">
+      <span class="mcr">Log</span>
     </div>
-    <div id="ol_rec" class="outline">
-      <!-- HEADER -->
-      <div class="title">
-        <span class="mcr">Macro</span>:
-        <span class="cmd" id="mcrcmd"></span>
-      </div>
-      <div class="bar">
-        <em id="result"></em>
-        <span class="tail">
-          <time id="date"></time>
-          <span class="elps" id="total"></span>
-        </span>
-      </div>
-      <div id="record" class="contents">
-        <ul class="depth1"></ul>
-      </div>
-      <!-- FOOTER -->
-      <div class="footer">
-        <table>
-          <tr>
-            <td>
-              <em id="status" onclick="toggle_dvctl();"></em>
-            </td>
-            <td>
-              <span class="dvctl" id="query"></span>
-              <span class="dvctl" id="msg"></span>
-            </td>
-            <td style="text-align:right;">
-              <button class="stop dvctl" id="stop" onclick="stop();">STOP</button>
-              <span class="control-label">Scroll</span>
-              <label class="switch" id="scroll">
-                <input type="checkbox" class="switch-input" onclick="sticky_bottom('slow');">
-                <span class="switch-label" data-on="Auto" data-off="Manual"></span>
-                <span class="switch-handle"></span>
-              </label>
-            </td>
-          </tr>
-        </table>
-      </div>
+    <div id="log" class="contents"></div>
+    <div class="footer">
+      <table>
+        <tr>
+          <td class="dvctl">
+            <select id="command" onchange="selmcr(this)">
+              <option>--select--</option>
+            </select>
+            <span class="control-label" id="interactive">Interactive
+              <input type="checkbox" onclick="interactive();">
+            </span>
+          </td>
+        </tr>
+      </table>
     </div>
-  </body>
+  </div>
+  <div id="ol_rec" class="outline">
+    <!-- HEADER -->
+    <div class="title">
+      <span class="mcr">Macro</span>:
+      <span class="cmd" id="mcrcmd"></span>
+    </div>
+    <div class="bar">
+      <em id="result"></em>
+      <span class="tail">
+        <time id="date"></time>
+        <span class="elps" id="total"></span>
+      </span>
+    </div>
+    <div id="record" class="contents">
+      <ul class="depth1"></ul>
+    </div>
+    <!-- FOOTER -->
+    <div class="footer">
+      <table>
+        <tr>
+          <td>
+            <em id="status" onclick="toggle_dvctl();"></em>
+          </td>
+          <td>
+            <span class="dvctl" id="query"></span>
+            <span class="dvctl" id="msg"></span>
+          </td>
+          <td style="text-align:right;">
+            <button class="stop dvctl" id="stop" onclick="stop();">STOP</button>
+            <span class="control-label">Scroll</span>
+            <label class="switch" id="scroll">
+              <input type="checkbox" class="switch-input" onclick="sticky_bottom('slow');">
+              <span class="switch-label" data-on="Auto" data-off="Manual"></span>
+              <span class="switch-handle"></span>
+            </label>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+
 </html>

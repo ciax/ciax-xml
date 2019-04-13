@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <head>
-    <meta charset="utf-8"/>
-    <script type="text/javascript" src="jquery-3.0.0.min.js"></script>
-    <script type="text/javascript" src="jquery.flot.min.js"></script>
-    <script type="text/javascript" src="jquery.flot.time.min.js"></script>
-    <script type="text/javascript" src="jquery.flot.navigate.min.js"></script>
-    <script type="text/javascript" src="get_par.js"></script>
-    <script type="text/javascript" src="graph.js"></script>
-  </head>
-  <body>
-    <div id="placeholder" style="width:600px;height:300px;"></div>
-    <div>
-      <input id="date" type="date" onchange="move_date(this)"/>
-      <button class="crnt" id="crnt" onclick="current_graph();">CURRENT</button>
-      <button class="log" id="log" onclick="get_log();">LOG</button>
-    </div>
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="jquery-3.0.0.min.js"></script>
+  <script type="text/javascript" src="jquery.flot.min.js"></script>
+  <script type="text/javascript" src="jquery.flot.time.min.js"></script>
+  <script type="text/javascript" src="jquery.flot.navigate.min.js"></script>
+  <script type="text/javascript" src="get_par.js"></script>
+  <script type="text/javascript" src="graph.js"></script>
+</head>
+
+<body>
+  <div id="placeholder" style="width:600px;height:300px;"></div>
+  <div>
+    <input id="date" type="date" onchange="move_date(this)">
+    <button class="bk" id="bk" onclick="move_bk();">&lt;</button>
+    <button class="fw" id="fw" onclick="move_fw();">&gt;</button>
+    <button class="crnt" id="crnt" onclick="current_graph();">CURRENT</button>
+    <button class="log" id="log" onclick="get_log();">LOG</button>
+  </div>
+</body>
+
 </html>

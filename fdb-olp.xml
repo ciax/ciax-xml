@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="olp" label="OMEGA LN2 Pressure Sensor">
-    <stream wait="1" terminator="\r"/>
+  <frm id="olp" label="OMEGA LN2 Pressure Sensor">
+    <stream terminator="\r" wait="1"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <string label="Prefix">*</string>
-      <body/>
-      <char length="1" label="Suffix">0xd</char>
-    </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <frame>
+        <string label="Prefix">*</string>
+        <body/>
+        <char label="Suffix" length="1">0xd</char>
+      </frame>
+      <group caption="Status" id="gst">
         <item id="getstat" label="Get Status" response="getstat" type="stat">
           <string>00P1</string>
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <field label="Prefix">*</field>
-      <body/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <verify decode="string" label="Prefix">*</verify>
+        <body/>
+      </frame>
       <item id="getstat">
-        <field assign="pres" length="6"/>
+        <assign decode="string" length="6" ref="pres"/>
       </item>
     </response>
-  </frame>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="pres"/>
+    </field>
+  </frm>
 </fdb>

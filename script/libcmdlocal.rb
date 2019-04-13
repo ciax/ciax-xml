@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libcommand'
 
 module CIAX
@@ -9,7 +9,7 @@ module CIAX
     class Index < Index
       # cfg should have [:jump_class]
       attr_reader :loc
-      def initialize(cfg, atrb = Hashx.new)
+      def initialize(spcfg, atrb = Hashx.new)
         super
         @loc = add_dom('Local')
       end
@@ -25,8 +25,7 @@ module CIAX
         end
 
         def add_jump # returns Array(Symbols)
-          @cfg[:jump_groups].each { |grp| append(grp) }
-          %i(jump_site jump_layer).each do |jk|
+          %i(jump_mcr jump_site jump_layer).each do |jk|
             append(@cfg[jk]) if @cfg[jk]
           end
         end
@@ -41,12 +40,12 @@ module CIAX
         include CmdBase
         # Shell Group
         class Group < Group
-          def initialize(cfg, atrb = Hashx.new)
+          def initialize(spcfg, atrb = Hashx.new)
             atrb[:caption] = 'Shell Command'
             atrb[:color] = 1
             super
-            add_dummy('q', 'Quit')
-            add_dummy('^D,^C', 'Interrupt')
+            add_dummy('q,^D', 'Quit')
+            add_dummy('^C', 'Interrupt')
           end
         end
       end
@@ -56,29 +55,29 @@ module CIAX
         deep_include CmdBase
         # Jump Group
         class Group < CmdBase::Group
-          def initialize(cfg, atrb = Hashx.new)
-            name = m2id(cfg[:jump_class], 1).capitalize
+          def initialize(spcfg, atrb = Hashx.new)
+            name = m2id(spcfg[:jump_class], 1).capitalize
             atrb[:caption] = "Switch #{name}s"
             atrb[:color] = 5
             super
             def_proc do |ent|
               # Use shell() of top level class
-              #  (ie. List.new.get(id).shell -> List.new.shell(id) )
+              #  (ie. ExeDic.new.get(id).shell -> ExeDic.new.shell(id) )
               raise(ent[:jump_class], ent.id)
             end
           end
 
-          def number_item(ary)
+          def number_form(ary)
             clear
             i = 0
             type?(ary, Array).each do |str|
-              add_item((i += 1).to_s, str)
+              add_form((i += 1).to_s, str)
             end
             self
           end
 
           def ext_grp
-            @displist = @displist.ext_grp
+            @disp_dic = @disp_dic.ext_grp
             self
           end
         end
@@ -87,15 +86,15 @@ module CIAX
       # Switch View Group
       module View
         deep_include CmdBase
-        # cfg should have [:output]
+        # atrb should have [:output]
         class Group < CmdBase::Group
-          def initialize(cfg, atrb = Hashx.new)
+          def initialize(spcfg, atrb = Hashx.new)
             atrb.update(caption: 'Change View Mode', column: 2, color: 9)
             super
-            add_item('vis', 'Visual mode').def_proc do
+            add_form('vis', 'Visual mode').def_proc do
               @cfg[:output].vmode('v')
             end
-            add_item('raw', 'Raw Print mode').def_proc do
+            add_form('raw', 'Raw Print mode').def_proc do
               @cfg[:output].vmode('o')
             end
           end
@@ -103,14 +102,12 @@ module CIAX
       end
 
       if __FILE__ == $PROGRAM_NAME
-        cfg = Config.new(jump_class: Local::Jump)
-        jg = Jump::Group.new(cfg)
-        jg.add_item('site', 'Jump to site')
-        cfg[:jump_groups] = [jg]
-        loc = Index.new(cfg).loc
-        loc.add_view
-        loc.add_shell
-        puts loc.view_list
+        ConfOpts.new('') do |cfg|
+          loc = Index.new(cfg).loc
+          loc.add_view
+          loc.add_shell
+          puts loc.view_dic
+        end
       end
     end
   end

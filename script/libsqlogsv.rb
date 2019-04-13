@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # For sqlite3
 require 'libthreadx'
 
@@ -6,15 +6,15 @@ require 'libthreadx'
 module CIAX
   # Generate SQL command string
   module SqLog
-    @list = {}
+    @dic = {}
 
-    # @list accessor
+    # @dic accessor
     def self.list
-      @list
+      @dic
     end
 
     def self.new(id)
-      @list[id] ||= Save.new(id)
+      @dic[id] ||= Save.new(id)
     end
     # Execute Sql Command to sqlite3
     class Save
@@ -23,17 +23,16 @@ module CIAX
       include Msg
       def initialize(id)
         @id = id
-        base = "sqlog_#{id}"
-        @sqlcmd = ['sqlite3', vardir('log') + base + '.sq3']
-        @que_sql = Threadx::QueLoop.new('SqLog', 'all', @id, base) do |que|
+        @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
+        @que = Threadx::QueLoop.new('SqLog', 'all', @id) do |que|
           ___log_save(que)
-        end
+        end.que
       end
 
       # Check table existence (ver=0 is invalid)
       def init_table(layer, stat) # returns self
         tbl = Table.new(layer, stat)
-        if stat[:ver].to_i > 0
+        if stat[:data_ver].to_i > 0
           ___create_tbl(tbl)
           ___real_mode(stat, tbl)
         else
@@ -50,8 +49,9 @@ module CIAX
 
       private
 
+      # FIFO
       def ___log_save(que)
-        sql = que.pop
+        sql = que.shift
         IO.popen(@sqlcmd, 'w') { |f| f.puts sql }
         verbose { "Saved for '#{sql}'" }
       rescue
@@ -61,18 +61,20 @@ module CIAX
       # Create table if no table
       def ___create_tbl(tbl)
         return if internal('tables').split(' ').include?(tbl.tid)
-        @que_sql.push tbl.create
+        @que.push tbl.create
         verbose { "'#{tbl.tid}' is created" }
       end
 
       def ___real_mode(stat, tbl)
         # Add to stat.cmt
-        stat.cmt_procs << proc { @que_sql.push tbl.insert }
+        stat.cmt_procs.append(self, :sqlog, 2) { @que.push tbl.insert }
       end
 
       def ___dummy_mode(stat, tbl)
         verbose { 'Invalid Version(0): No Log' }
-        stat.cmt_procs << proc { verbose { "Dummy Insert\n" + tbl.insert } }
+        stat.cmt_procs.append(self, :sqlog, 2) do
+          verbose { "Dummy Insert\n" + tbl.insert }
+        end
       end
     end
   end

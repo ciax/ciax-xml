@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # libcommand includes both Enumx and CmdList
 # alias mar
 require 'optparse'
@@ -7,4 +7,4 @@ abort 'Usage: marshal-view (-r) [marshal_file] (path)' if STDIN.tty? && ARGV.emp
 par = ARGV.getopts('r')
 ARGV.parse!
 obj = Marshal.load(gets(nil)).extend(CIAX::Enumx)
-puts par["r"] ? obj.to_r : obj.path(ARGV)
+puts par['r'] ? obj.to_r : obj.path(ARGV)

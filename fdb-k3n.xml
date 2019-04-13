@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="k3n" label="OMRON K3NR">
+  <frm id="k3n" label="OMRON K3NR">
     <stream ccmethod="bcc" wait="1"/>
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="2"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <char length="1" label="Prefix">2</char>
-      <ccrange>
-        <body/>
-        <char length="1" label="Suffix">3</char>
-      </ccrange>
-      <char length="1">${cc}</char>
-    </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <frame>
+        <char label="Prefix" length="1">2</char>
+        <ccrange>
+          <body/>
+          <char label="Suffix" length="1">3</char>
+        </ccrange>
+        <cc length="1"/>
+      </frame>
+      <group caption="Status" id="gst">
         <item id="getstat" label="Get Status" response="getstat" type="stat">
           <string label="Node No.">00</string>
           <string label="Sub Address">00</string>
@@ -26,22 +26,28 @@
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <field decode="integer" label="Prefix" length="1">2</field>
-      <ccrange>
-        <field label="Node">0000</field>
-        <field assign="ecode" label="Exit Code" length="2">00</field>
-        <body/>
-        <field decode="integer" label="Suffix" length="1">3</field>
-      </ccrange>
-      <field assign="cc" decode="integer" label="BCC" length="1"/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <verify decode="integer" label="Prefix" length="1">2</verify>
+        <ccrange>
+          <verify decode="string" label="Node">0000</verify>
+          <assign decode="string" label="Exit Code" length="2" ref="ecode"/>
+          <body/>
+          <verify decode="integer" label="Suffix" length="1">3</verify>
+        </ccrange>
+        <assign decode="integer" label="BCC" length="1" ref="cc"/>
+      </frame>
       <item id="getstat">
-        <field label="MRC SRC">0101</field>
-        <field assign="rcode" label="Response Code" length="4"/>
-        <field assign="stat" label="Status" decode="decstr" length="8"/>
+        <verify decode="string" label="MRC SRC">0101</verify>
+        <assign decode="string" label="Response Code" length="4" ref="rcode"/>
+        <assign decode="decstr" label="Status" length="8" ref="stat"/>
       </item>
     </response>
-  </frame>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="ecode" label="Exit Code">00</var>
+      <var id="cc" label="BCC"/>
+      <var id="rcode" label="Response Code"/>
+      <var id="stat" label="Status"/>
+    </field>
+  </frm>
 </fdb>

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libwatview'
 
 module CIAX
@@ -16,14 +16,13 @@ module CIAX
         end
 
         def to_v
-          upd
           vw = ''
           ___view_time(vw)
-          vw << __itemize('Issuing', self[:exec])
+          ___view_exe(vw)
           return vw if self[:stat].empty?
           ___view_cond(vw)
-          vw << __itemize('Interrupt', self[:int])
-          vw << __itemize('Blocked', self[:block])
+          vw << __itemize('Interrupt', self[:int].inspect)
+          vw << __itemize('Blocked', self[:block].inspect)
         end
 
         def to_o
@@ -33,15 +32,23 @@ module CIAX
         private
 
         def ___view_time(vw)
-          vw << __itemize('Elapsed', elps_date(self[:time], now_msec))
-          vw << __itemize('ActiveTime', elps_sec(*self[:act_time]))
+          vw << __itemize('Elapsed', elps_date(self[:time]))
+          s, e = self[:act_time]
+          vw << __itemize('ActiveTime', elps_sec(s, e))
           vw << __itemize('ToNextUpdate', elps_sec(now_msec, self[:upd_next]))
+        end
+
+        def ___view_exe(vw)
+          vw << __itemize('Issuing')
+          self[:exec].each do |i| # each event
+            vw << cfmt("    %S\n", i)
+          end
         end
 
         def ___view_cond(vw)
           vw << __itemize('Conditions')
           self[:stat].values.each do |i| # each event
-            vw << cformat("    %:6s\t: %s\n", i[:label], __result(i[:active]))
+            vw << cfmt("    %:6s\t: %s\n", i[:label], __result(i[:active]))
             ___view_event(vw, i[:cond])
           end
         end
@@ -60,22 +67,22 @@ module CIAX
         def ___make_cmp(j)
           fmt = "      %s compare %s [%s]\n"
           inv = j[:inv] ? 'not' : ''
-          cformat(fmt, __result(j[:res]), inv, j[:vals].join(', '))
+          cfmt(fmt, __result(j[:res]), inv, j[:vals].join(', '))
         end
 
         def ___make_cond(j)
           fmt = "      %s %:3s  (%s: %s)\n"
-          cformat(fmt, __result(j[:res]), j[:var], j[:type], ___make_exp(j))
+          cfmt(fmt, __result(j[:res]), j[:var], j[:type], ___make_exp(j))
         end
 
         def ___make_exp(j)
-          cri = j[:cri]
+          ref = j[:ref]
           val = j[:val]
           if j[:type] == 'onchange'
-            format('%s => %s', cri, val)
+            format('%s => %s', ref, val)
           else
             ope = j[:inv] ? '!' : '='
-            format('/%s/ %s~ %s', cri, ope, val)
+            format('/%s/ %s~ %s', ref, ope, val)
           end
         end
 
@@ -84,16 +91,16 @@ module CIAX
         end
 
         def __itemize(str, res = nil)
-          cformat("  %:2s\t: %s\n", str, res)
+          cfmt("  %:2s\t: %s\n", str, res)
         end
       end
 
       if __FILE__ == $PROGRAM_NAME
         require 'libinsdb'
-        GetOpts.new('[site] | < event_file', options: 'r') do |_opt, args|
+        Opt::Get.new('[site] | < event_file', options: 'r') do |_opt, args|
           event = Event.new(args.shift)
           wview = View.new(event).ext_prt
-          event.ext_local_file if STDIN.tty?
+          event.ext_local if STDIN.tty?
           puts wview
         end
       end

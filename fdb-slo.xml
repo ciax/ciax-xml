@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="slo" label="SLOSYN SS6000i" version="1">
+  <frm id="slo" label="SLOSYN SS6000i" version="2">
     <spec mfr="slosyn" type="motor driver" model="SS6000i" reference="http://ciax.sum.naoj.org/man/slosyn/slosyn-ss200d6i.pdf"/>
-    <stream wait="0.1" terminator="\r\n"/>
+    <stream terminator="\r\n" wait="0.1"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <body/>
-      <char length="1">0xd</char>
-      <char length="1">0xa</char>
-    </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <frame>
+        <body/>
+        <char length="1">0xd</char>
+        <char length="1">0xa</char>
+      </frame>
+      <group caption="Status" id="gst">
         <item id="getstat" label="Error Status" response="getstat" type="stat">
           <string>err</string>
         </item>
@@ -31,11 +31,11 @@
         <item id="spd" label="Spped Number" response="spd" type="stat">
           <string>spd</string>
         </item>
-        <item id="reset" label="Reset" response="default" type="config">
+        <item id="mres" label="Reset" response="default" type="config">
           <string>reset</string>
         </item>
       </group>
-      <group id="gcfg" caption="Configuration">
+      <group caption="Configuration" id="gcfg">
         <item id="hl" label="Hard Limit ON/OFF" response="default" type="config">
           <par_num>0:1</par_num>
           <string>hl</string>
@@ -71,7 +71,7 @@
           <string format="%5.2f">$1</string>
         </item>
       </group>
-      <group id="gact" caption="Action">
+      <group caption="Action" id="gact">
         <item id="stop" label="Stop Running" response="default" type="action">
           <string>stop</string>
         </item>
@@ -96,35 +96,44 @@
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <body/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <body/>
+      </frame>
       <item id="getstat">
-        <field assign="err" label="ErrorCode"/>
+        <assign decode="string" label="ErrorCode" ref="err"/>
       </item>
       <item id="drv">
-        <field assign="drv" label="Drive"/>
+        <assign decode="string" label="Drive" ref="drv"/>
       </item>
       <item id="bs">
-        <field assign="bs" label="Moving"/>
+        <assign decode="string" label="Moving" ref="bs"/>
       </item>
       <item id="p">
-        <field assign="p" valid="^[-.0-9]+$" label="Pulse"/>
+        <assign decode="string" label="Pulse" ref="p" valid="^[-.0-9]+$"/>
       </item>
       <item id="spd">
-        <field assign="spd" label="Speed"/>
+        <assign decode="string" label="Speed" ref="spd"/>
       </item>
       <item id="in">
-        <!-- IN(3) = +Limit -->
-        <!-- IN(4) = -Limit -->
-        <array assign="in" label="Input">
-          <index range="$1-1" size="5"/>
-        </array>
+        <assign decode="string" label="Input" ref="in">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="default">
-        <field>&gt;</field>
+        <verify decode="string">&gt;</verify>
       </item>
     </response>
-  </frame>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="err" label="ErrorCode"/>
+      <var id="drv" label="Drive"/>
+      <var id="bs" label="Moving"/>
+      <var id="p" label="Pulse"/>
+      <var id="spd" label="Speed"/>
+      <array id="in" label="Input">
+        <!-- IN(3) = +Limit, IN(4) = -Limit -->
+        <size>5</size>
+      </array>
+    </field>
+  </frm>
 </fdb>

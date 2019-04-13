@@ -1,34 +1,38 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libvarx'
 require 'libdb'
 
 module CIAX
   # Status Data by using Db
-  # Need Header(Dbi)
+  #  STDIN function is availabie
+  #  Need Header(Dbx::Item)
   class Statx < Varx
     attr_reader :dbi
-    def initialize(type, obj, mod = Db)
-      @dbi = type?(___get_dbi(obj, mod), Dbi)
-      super(type, @dbi[:site_id] || @dbi[:id], @dbi[:version].to_i, @dbi[:host])
+    def initialize(type, obj, mod = Dbx::Index)
+      super(type, ___get_id(obj))
+      @dbi ||= mod.new.get(@id)
+      _attr_set(@dbi[:version].to_i, @dbi[:host])
       @layer = @dbi[:layer]
-    end
-
-    def ext_local_file
-      super.load_partial
     end
 
     private
 
     # Set dbi, otherwise generate by stdin info
-    def ___get_dbi(obj, mod)
-      if obj.is_a? Dbi
-        obj
-      elsif obj.is_a? String
-        mod.new.get(obj)
-      elsif STDIN.tty?
-        mod.new.get(nil)
+    # When input from TTY
+    #  obj == Dbx::Item    : return obj
+    #  obj == String : id <= obj
+    #  obj == Array  : id <= obj.shift
+    # -----------------
+    # Get Dbx::Item with id from Db
+    def ___get_id(obj)
+      case obj
+      when Dbx::Item
+        @dbi = obj
+        @dbi[:site_id] || @dbi[:id]
+      when Array
+        obj.shift
       else
-        mod.new.get(jmerge[:id])
+        obj
       end
     end
   end

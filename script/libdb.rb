@@ -1,136 +1,102 @@
-#!/usr/bin/ruby
-require 'libenumx'
+#!/usr/bin/env ruby
 require 'libxmldoc'
-
+require 'libdbcache'
 module CIAX
-  # Db class is for read only databases, which holds all items of database.
-  # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list ..)
+  # Dbx::Index class is for read only databases
+  #   which holds all the items of database.
+  # Key for sub structure(Hash,Array) will be symbol (i.e. :data, :list, :dic..)
   # set() generates HashDb
   # Cache is available
-  class Dbi < Hashx # DB Item
-    def pick(ary = [])
-      super(%i(layer version command) + ary)
-    end
-  end
-
-  # DB class
-  class Db < Hashx
-    attr_reader :displist
-    def initialize(type, proj = nil)
-      super()
-      @type = type
-      @proj = proj
-      @dbid = [type, proj].compact.join(',')
-      # @displist is Display
-      lid = proj ? "list_#{proj}" : 'list'
-      # Show site list
-      @displist = _get_cache(lid) || __get_db(lid, &:displist) # site list
-      @argc = 0
-    end
-
-    def get(id)
-      ref(id) || id_err(id, @type, @displist)
-    end
-
-    # return Dbi
-    # Order of file reading: type-id.mar -> type-id.xml (processing)
-    def ref(id)
-      if @displist.valid?(id)
-        self[id] || _get_cache(id) ||
-          __get_db(id) { |docs| _doc_to_db(docs.get(id)) }
-      else
-        warning("No such ID [#{id}]")
-        false
+  module Dbx
+    class Item < Hashx # DB Item
+      def pick(*keyary)
+        super(:layer, :version, *keyary).update(dbi: self)
       end
     end
 
-    private
-
-    # Returns Hash
-    def _doc_to_db(doc)
-      Dbi.new(doc[:attr]).update(layer: layer_name)
-    end
-
-    # Returns Dbi(command list) or Disp(site list)
-    def _get_cache(id)
-      @cbase = "#{@type}-#{id}"
-      @cachefile = vardir('cache') + "#{@cbase}.mar"
-      return ___load_cache(id) if ___use_cache?
-    end
-
-    def __get_db(id)
-      sv = ___load_docs(id)
-      verbose { "Building DB (#{id})" }
-      res = ___validate_repl(yield(@docs))
-      ___save_cache(res) if sv
-      self[id] = res
-    end
-
-    def ___load_cache(id)
-      verbose { "Cache Loading (#{@cbase})" }
-      return self[id] if key?(id)
-      begin
-        # Used Marshal for symbol keys
-        Marshal.load(IO.read(@cachefile))
-      rescue ArgumentError # if empty
-        Hashx.new
+    # DB Index
+    class Index < Hashx
+      attr_reader :disp_dic
+      def initialize(type)
+        super()
+        verbose { 'Initiate Dbx' }
+        @type = type
+        @cache = Cache.new(type)
+        _get_disp_dic
+        @argc = 0
       end
-    end
 
-    def ___save_cache(res)
-      open(@cachefile, 'w') do |f|
-        f << Marshal.dump(res)
-        verbose { "Cache Saved (#{@cbase})" }
+      def list
+        @disp_dic.valid_keys
       end
-    end
 
-    def ___load_docs(id)
-      verbose { "Cache/Checking @docs (#{@dbid})" }
-      if @docs
-        verbose { "Cache/XML files are Already read (#{id}) [#{@dbid}]" }
-        false
-      else
-        verbose { "Reading XML (#{@type}-#{id})" }
-        @docs = Xml::Doc.new(@type, @proj)
+      # Reduce valid_keys with parameter Array
+      def reduce(ary = [])
+        unless ary.empty?
+          ary &= list
+          list.replace(ary)
+        end
+        self
       end
-    end
 
-    # counter must not remain
-    def ___validate_repl(db)
-      res = db.deep_search('\$[_a-z]')
-      return db if res.empty?
-      cfg_err("Counter remained at [#{res.join('/')}]")
-    end
-
-    def ___use_cache?
-      !(___envnocache? || ___marexist? || ___xmlnewer? || ___rbnewer?)
-    end
-
-    def ___envnocache?
-      verbose(ENV['NOCACHE']) do
-        "#{@type}/Cache ENV['NOCACHE'] is set"
+      def get(id)
+        ref(id) || id_err(id, @type, @disp_dic)
       end
-    end
 
-    def ___marexist?
-      verbose(!test('e', @cachefile)) do
-        "#{@type}/Cache MAR file(#{@cbase}) not exist"
+      # return Dbx::Item
+      # Order of file reading: type-id.mar -> type-id.xml (processing)
+      def ref(id)
+        if @disp_dic.valid?(id)
+          self[id] || __get_db(id) { |docs| _doc_to_db(docs.get(id)) }
+        else
+          warning('No such ID [%s]', id)
+          false
+        end
       end
-    end
 
-    def ___xmlnewer?
-      __file_newer?('Xml', Msg.xmlfiles(@type))
-    end
+      private
 
-    def ___rbnewer?
-      __file_newer?('Rb', $LOADED_FEATURES.grep(/#{__dir__}/))
-    end
+      # Returns Hash
+      def _doc_to_db(doc)
+        Item.new(doc[:attr]).update(layer: layer_name)
+      end
 
-    def __file_newer?(cap, ary)
-      latest = ary.max_by { |f| File.mtime(f) }
-      verbose(test('>', latest, @cachefile)) do
-        format('%s/Cache %s(%s) is newer than (%s)',
-               @type, cap, latest.split('/').last, @cbase)
+      def _get_disp_dic(sufx = nil)
+        # @disp_dic is Display
+        lid = ['list', sufx].compact.join('_')
+        # Show site list
+        # &:disp_dic = { |e| e.disp_dic }
+        @disp_dic = __get_db(lid, &:disp_dic)
+      end
+
+      def __get_db(id)
+        @cache.get(id) do
+          ___load_docs(id)
+          verbose { "Building DB (#{id})" }
+          self[id] = ___validate_repl(yield(@docs))
+        end
+      end
+
+      # counter must not remain
+      def ___validate_repl(db)
+        res = db.deep_search('\$[_a-z]')
+        return db if res.empty?
+        cfg_err("Counter remained at [#{res.join('/')}]")
+      end
+
+      def ___load_docs(id)
+        verbose { "Cache/Checking @docs (#{@type})" }
+        if @docs
+          verbose { "Cache/XML files are Already read (#{id}) [#{@type}]" }
+          false
+        else
+          verbose { "Reading XML (#{@type}-#{id})" }
+          @docs = _new_docs
+        end
+      end
+
+      def _new_docs
+        Xml::Doc.new(@type)
       end
     end
   end

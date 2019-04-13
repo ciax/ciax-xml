@@ -1,39 +1,39 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libdbtree'
 module CIAX
   # Macro Layer
   module Mcr
-    # list for web select command
-    module CmdList
-      def list
-        list = Hashx.new
+    # dic for web select command
+    module CmdDic
+      def web_select
+        dic = Hashx.new
         self[:command][:group].each_value do |val|
           # Show only main macro commands (submacro is skipped)
           if val[:rank].to_i.zero?
-            (list[val[:caption]] ||= []).concat val[:members]
+            (dic[val[:caption]] ||= []).concat val[:members]
           end
         end
-        list
+        dic
       end
 
       def label
-        list = Hashx.new
+        dic = Hashx.new
         self[:command][:index].each do |id, val|
-          list[id] = val[:label]
+          dic[id] = val[:label]
         end
-        list
+        dic
       end
     end
 
     # Macro Db
-    class Db < DbTree
+    class Db < Dbx::Tree
       def initialize
         super('mdb')
       end
 
-      # Allows nil, get Dbi
+      # Allows nil, get Dbx::Item
       def get(id = nil)
-        super.extend(CmdList)
+        super.extend(CmdDic)
       end
 
       private
@@ -43,12 +43,13 @@ module CIAX
         @sites = []
         _init_command_db(dbi, doc[:group])
         dbi[:sites] = @sites.uniq
+        dbi[:proj] = dbi[:id]
         dbi
       end
 
-      def _add_item(e0, gid)
+      def _add_form(e0, gid)
         id, itm = super
-        verbose { "MACRO:[#{id}]" }
+        verbose { "Command[#{id}]" }
         @body = itm.get(:body) { [] }
         @vstep = Hashx.new
         ___add_steps(e0, itm)
@@ -61,7 +62,7 @@ module CIAX
           atrb = Hashx.new(type: e1.name)
           atrb.update(e1.to_h)
           ___get_sites(atrb)
-          _par2item(e1, itm) && next
+          _par2form(e1, itm) && next
           ___step_by_name(e1, atrb)
           ___make_verify_step(e1, atrb)
           @body << atrb
@@ -125,9 +126,10 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[id] (key) ..', options: 'j') do |opt, args|
-        dbi = Db.new.get(ENV['PROJ'] ||= args.shift)
-        puts opt[:j] ? dbi.list.to_j : dbi.path(args)
+      require 'libconf'
+      ConfOpts.new('[id] (key) ..', options: 'j') do |cfg|
+        dbi = Db.new.get(cfg.proj || cfg.args.shift)
+        puts cfg.opt[:j] ? dbi.web_select.to_j : dbi.path(cfg.args)
       end
     end
   end

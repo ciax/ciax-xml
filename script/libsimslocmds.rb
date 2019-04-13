@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'libsimaxis'
 
 module CIAX
@@ -38,10 +38,6 @@ module CIAX
         # Simulate Invalid String (Probability 0.3%)
         str = str[0..2] + '?' if rand < 0.003
         str
-      end
-
-      def _cmd_help
-        _get_cmd_list.join($INPUT_RECORD_SEPARATOR)
       end
 
       # Config Command

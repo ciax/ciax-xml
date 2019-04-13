@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="srm" version="1" label="OMRON SRM1">
-    <stream ccmethod="bcc" wait="0.3" terminator="\r"/>
+  <frm id="srm" label="OMRON SRM1" version="1">
+    <stream ccmethod="bcc" terminator="\r" wait="0.3"/>
     <serial databit="7" flowctl="NONE" parity="EVEN" speed="9600" stopbit="1"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <ccrange>
-        <string label="Prefix">@</string>
-        <string label="Device No.">00</string>
-        <body/>
-      </ccrange>
-      <string format="%02X">${cc}</string>
-      <string label="Suffix">*</string>
-      <char length="1" label="Delimiter">0xd</char>
-    </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <frame>
+        <ccrange>
+          <string label="Prefix">@</string>
+          <string label="Device No.">00</string>
+          <body/>
+        </ccrange>
+        <cc format="%02X"/>
+        <string label="Suffix">*</string>
+        <char label="Delimiter" length="1">0xd</char>
+      </frame>
+      <group caption="Status" id="gst">
         <item id="getmodel" label="Get Model Code" response="getmodel" type="stat">
           <string label="Header Code">MM</string>
         </item>
@@ -24,7 +24,7 @@
           <string label="length">0001</string>
         </item>
       </group>
-      <group id="gact" caption="Action">
+      <group caption="Action" id="gact">
         <item id="fset" label="Multiple Forced Set [D*16]" response="fset" type="action">
           <par_num>0:500000</par_num>
           <string label="Header Code">FK</string>
@@ -35,33 +35,43 @@
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <ccrange>
-        <field label="Prefix">@</field>
-        <body/>
-      </ccrange>
-      <field assign="cc" decode="hexstr" label="BCC" length="2"/>
-      <field label="Terminater">*</field>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <ccrange>
+          <verify decode="string" label="Prefix">@</verify>
+          <body/>
+        </ccrange>
+        <assign decode="hexstr" label="BCC" length="2" ref="cc"/>
+        <verify decode="string" label="Terminater">*</verify>
+      </frame>
       <item id="getmodel">
-        <field label="Command Code">00MM</field>
-        <field label="Response Code" length="2" assign="cod"/>
-        <field assign="model" label="Model Number" length="2"/>
+        <verify decode="string" label="Command Code">00MM</verify>
+        <assign decode="string" label="Response Code" length="2" ref="cod"/>
+        <assign decode="string" label="Model Number" length="2" ref="model"/>
       </item>
       <item id="getstat">
-        <field label="Command Code">00RR</field>
-        <field label="Response Code" length="2" assign="cod"/>
+        <verify decode="string" label="Command Code">00RR</verify>
+        <assign decode="string" label="Response Code" length="2" ref="cod"/>
         <!--Big endian-->
-        <field assign="c1d3" label="CH1 bit12-15" length="1"/>
-        <field assign="c1d2" label="CH1 bit8-11" length="1"/>
-        <field assign="c1d1" label="CH1 bit4-7" length="1"/>
-        <field assign="c1d0" label="CH1 bit0-3" length="1"/>
+        <assign decode="string" label="CH1 bit12-15" length="1" ref="c1d3"/>
+        <assign decode="string" label="CH1 bit8-11" length="1" ref="c1d2"/>
+        <assign decode="string" label="CH1 bit4-7" length="1" ref="c1d1"/>
+        <assign decode="string" label="CH1 bit0-3" length="1" ref="c1d0"/>
       </item>
       <item id="fset">
-        <field label="Command Code">00FK</field>
-        <field label="Exit Code" length="2" assign="cod"/>
+        <verify decode="string" label="Command Code">00FK</verify>
+        <assign decode="string" label="Exit Code" length="2" ref="cod"/>
       </item>
     </response>
-  </frame>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="cc" label="BCC"/>
+      <var id="cod" label="Response Code"/>
+      <var id="model" label="Model Number"/>
+      <!--Big endian-->
+      <var id="c1d3" label="CH1 bit12-15"/>
+      <var id="c1d2" label="CH1 bit8-11"/>
+      <var id="c1d1" label="CH1 bit4-7"/>
+      <var id="c1d0" label="CH1 bit0-3"/>
+    </field>
+  </frm>
 </fdb>

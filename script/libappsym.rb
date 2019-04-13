@@ -1,5 +1,5 @@
-#!/usr/bin/ruby
-require 'libstatus'
+#!/usr/bin/env ruby
+require 'libappconv'
 require 'libsymdb'
 
 # Status to App::Sym (String with attributes)
@@ -8,50 +8,39 @@ module CIAX
   module App
     # Status class
     class Status
-      def ext_local_sym(sdb = Sym::Db.new)
-        extend(Symbol).ext_local_sym(sdb)
+      # Access from Conv
+      module Conv
+        def ext_sym(sdb = nil)
+          extend(Symbol).ext_sym(sdb || Sym::Db.new)
+        end
       end
       # Symbol Converter
       module Symbol
         def self.extended(obj)
-          Msg.type?(obj, Status)
+          Msg.type?(obj, Conv)
         end
 
-        # key format: category + ':' followed by key "data:key, msg:key..."
-        # default category is :data if no colon
-        def pick(keylist, atrb = {})
-          keylist.each_with_object(Hashx.new(atrb)) do |str, h|
-            cat, key = ___get_key(str)
-            h.get(cat) { Hashx.new }[key] = get(cat)[key]
-          end
-        end
-
-        def ext_local_sym(sdb)
-          adbs = @dbi[:status]
-          @symdb = type?(sdb, Sym::Db).get_dbi(['share'] + adbs[:symtbl])
-          @symbol = adbs[:symbol] || {}
-          self[:class] = {}
-          self[:msg] = {}
-          ___init_procs(adbs)
+        def ext_sym(sdb)
+          @symdb = type?(sdb, Sym::Db).get_dbi(['share'] + @adbs[:symtbl])
+          @symbol = @adbs[:symbol] || {}
+          @index = @adbs[:index].dup.update(@adbs[:alias] || {})
           self
         end
 
-        def ___init_procs(adbs)
-          @cmt_procs << proc do # post process
-            verbose { 'Propagate Status#cmt -> Symbol#store_sym' }
-            store_sym(adbs[:index].dup.update(adbs[:alias] || {}))
-          end
-        end
-
-        def store_sym(index)
-          index.each do |key, hash|
+        def conv
+          super
+          @index.each do |key, hash|
             sid = hash[:symbol] || next
             tbl = ___chk_tbl(sid) || next
             verbose { "ID=#{key},Table=#{sid}" }
             val = self[:data][hash[:ref] || key]
             ___match_items(tbl, key, val)
           end
+          verbose { _conv_text('Status -> Symbol', @id, time_id) }
+          self
         end
+
+        private
 
         def ___match_items(tbl, key, val)
           res = nil
@@ -98,7 +87,7 @@ module CIAX
         def ___chk_tbl(sid)
           tbl = @symdb[sid]
           return tbl if tbl
-          alert("Table[#{sid}] not exist")
+          alert('Table[%s] not exist', sid)
           nil
         end
 
@@ -106,23 +95,16 @@ module CIAX
           cri += ">#{tol}" if tol
           ReRange.new(cri) == val
         end
-
-        def ___get_key(str)
-          cat, key = str =~ /:/ ? str.split(':') : [:data, str]
-          cat = cat.to_sym
-          par_err("Invalid category (#{cat})") unless key?(cat)
-          par_err("Invalid key (#{cat}:#{key})") if !key || !get(cat).key?(key)
-          [cat, key]
-        end
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      GetOpts.new('[site] | < status_file') do |_o, args|
-        stat = Status.new(args.shift)
-        stat.ext_local_sym
-        stat.ext_local_file if STDIN.tty?
-        puts stat.cmt
+      require 'libfrmstat'
+      Opt::Get.new('[site] | < field_file', options: 'r') do |opt, args|
+        field = Frm::Field.new(args).ext_local
+        stat = Status.new(field[:id], field).ext_local
+        stat.ext_conv.ext_sym.cmt
+        puts opt[:r] ? stat.to_v : stat.path(args)
       end
     end
   end

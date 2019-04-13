@@ -3,27 +3,56 @@
 // ********* Steps **********
 // step header section
 function make_step(step) {
+  // title section
   function _title() {
     var type = step.type;
-    var ary = [];
     html.push('<span title="' + json_view(step));
     html.push('" class="head ' + type + '">' + type + '</span>');
     html.push('<span class="cmd"');
+    if (type == 'mcr') {
+      __popup_title(step.args);
+    }else if (type == 'select') {
+      var obj = __test_sel();
+      if (obj) {
+        __popup_title(obj.args);
+      } else {
+        __regular_step();
+      }
+    } else {
+      __regular_step();
+    }
+    html.push('</span>');
+  }
+
+  function __test_sel() {
+    var keys = Object.keys(step.select);
+    if (keys.length == 1) {
+      var key = keys[0];
+      return ({ 'id' : key, 'args' : step.select[key] });
+    }
+  }
+
+  function __popup_title(args) {
+    html.push(' title="' + args.join(':') + '">');
+    html.push(': ' + config.label[args[0]]);
+  }
+
+  function __regular_step() {
+    var ary = [];
     if (step.site) {
       ary.push(step.site);
       html.push(_devlink(step.site));
     }
-    if (step.args) { ary = ary.concat(step.args); }
-    if (step.val) { ary.push(step.val); }
-    if (type == 'mcr') {
-      html.push(' title="' + ary.join(':') + '">');
-      html.push(': ' + config.label[ary[0]]);
-    } else {
-      html.push('>');
-      if (step.label) html.push(': ' + step.label);
-      if (ary.length > 0) {html.push(': [' + ary.join(':') + ']');}
+    if (step.args) {
+      ary = ary.concat(step.args);
+    } else if (step['var']) {
+      ary = ary.concat(step['var']);
     }
-    html.push('</span>');
+    html.push('>');
+    if (step.label) html.push(': ' + step.label);
+    if (ary.length > 0) {
+      html.push(': [' + ary.join(':') + ']');
+    }
   }
   // result section
   function _result() {
@@ -32,11 +61,12 @@ function make_step(step) {
     html.push(' -> ');
     html.push('<em class="' + res + '">' + res + '</em>');
   }
+
   function _action() {
     if (!step.action) return;
     html.push(' <span class="action">(');
-        html.push(step.action);
-        html.push(')</span>');
+    html.push(step.action);
+    html.push(')</span>');
   }
   // elapsed time section
   function _time() {
@@ -51,6 +81,7 @@ function make_step(step) {
     if (step.retry) html.push('low="70" high="99"');
     html.push('>(' + step.count + '/' + max + ')</meter>');
   }
+
   function _count() {
     if (!step.count) return;
     var max = step.retry || step.val;
@@ -72,10 +103,18 @@ function make_step(step) {
   // condition step
   function _operator(ope, cri) {
     switch (ope) {
-      case 'equal': return ('== ' + cri); break;
-      case 'not' : return ('!= ' + cri); break;
-      case 'match' : return ('=~ /' + cri + '/'); break;
-      case 'unmatch' : return ('!~ /' + cri + '/'); break;
+      case 'equal':
+        return ('== ' + cri);
+        break;
+      case 'not':
+        return ('!= ' + cri);
+        break;
+      case 'match':
+        return ('=~ /' + cri + '/');
+        break;
+      case 'unmatch':
+        return ('!~ /' + cri + '/');
+        break;
       default:
     }
   }
@@ -84,8 +123,25 @@ function make_step(step) {
   function _devlink(site) {
     return ('onclick="open_table(\'' + site + '\');"');
   }
+
   function _graphlink(site, vid, time) {
     return ('onclick="open_graph(\'' + site + '\',\'' + vid + '\',\'' + time + '\');"');
+  }
+
+  function _select() {
+    if (step.type != 'select') return;
+    html.push('<ul><li>');
+    html.push('<var ' + _devlink(step.site) + '>');
+    html.push(step.site + ':' + step['var']); // step.var expression gives error at yui-compressor
+    html.push('(' + step.form + ')</var>');
+    html.push('<code> == </code>  ');
+    html.push('<span class="true" ');
+    html.push(_graphlink(step.site, step['var'], step.time));
+    obj = __test_sel();
+    html.push('> (' + (obj ? obj.id : step.result) + ')</span>');
+    html.push('</li></ul>');
+    html.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
+    return true;
   }
 
   function _conditions() {
@@ -97,30 +153,29 @@ function make_step(step) {
       html.push('<var ' + _devlink(cond.site) + '>');
       html.push(cond.site + ':' + cond['var']); // cond.var expression gives error at yui-compressor
       html.push('(' + cond.form + ')</var>');
-    html.push('<code>' + _operator(cond.cmp, cond.cri) + '?</code>  ');
-    if (cond['skip']) {
-      html.push('<span class="skip">(Ignored)</skip>');
-    } else {
-      if ((step.type == 'goal' || step.type == 'bypass' ) && res == false) res = 'warn';
-      html.push('<span class="' + res + '" ');
-      html.push(_graphlink(cond.site, cond['var'], step.time));
-      html.push('> (' + cond.real + ')</span>');
-    }
-    html.push('</li>');
+      html.push('<code>' + _operator(cond.cmp, cond.cri) + '?</code>  ');
+      if (cond['skip']) {
+        html.push('<span class="skip">(Ignored)</skip>');
+      } else {
+        if ((step.type == 'goal' || step.type == 'bypass') && res == false) res = 'warn';
+        html.push('<span class="' + res + '" ');
+        html.push(_graphlink(cond.site, cond['var'], step.time));
+        html.push('> (' + cond.real + ')</span>');
+      }
+      html.push('</li>');
     });
     html.push('</ul>');
     return true;
   }
+
   function _sub_mcr() {
     if (step.type != 'mcr') return;
     html.push('<ul class="depth' + (step.depth - 0 + 1) + '"></ul>');
   }
 
-  var html = ['<li'];
-  if (step.type != 'mcr') html.push(' class="step"');
-  html.push('>');
+  var html = ['<li id="' + step.time + '">'];
   _header();
-  _conditions() || _sub_mcr();
+  _select() || _conditions() || _sub_mcr();
   html.push('</li>');
   return html.join('');
 }
@@ -147,9 +202,11 @@ function record_page(data) {
   }
   record_status(data);
 }
+
 function record_status(data) {
   replace('#status', data.status);
 }
+
 function record_result(data) { // Do at the end
   replace('#result', data.result);
   replace('#' + data.id + ' em', data.result);
@@ -174,7 +231,7 @@ function func_update_record() {
         return ([cmd, data.id]);
       });
       make_radio(sel, cmdary);
-    }else {
+    } else {
       $('#query').empty();
     }
   }
@@ -190,6 +247,7 @@ function func_update_record() {
     sticky_bottom('slow');
     record_status(data);
   }
+
   function _update_step(data) {
     var crnt = data.steps.length;
     if (steps_length == crnt) {
@@ -197,15 +255,15 @@ function func_update_record() {
         // When Step doesn't increase.
         var step = data.steps[crnt - 1];
         // Update Step
-        $('.step:last').html(make_step(step));
+        $('#' + step.time).html(make_step(step));
       }
       suspend = true;
-    }else if (suspend) {
+    } else if (suspend) {
       // Refresh All Page at resume
       record_page(data);
       steps_length = crnt;
       suspend = false;
-    }else {
+    } else {
       // Add Step
       _append_step(data);
     }
@@ -222,6 +280,7 @@ function func_update_record() {
     delete upd_list.record;
     return true;
   }
+
   function _mcr_start() {
     if (upd_list.record) return;
     upd_list.record = _update;
@@ -237,18 +296,20 @@ function func_update_record() {
     _mcr_start();
     steps_length = data.steps.length;
   }
+
   function _next_page(data) {
     if (_mcr_end(data)) return;
     _make_query(data);
     _update_step(data); // Make record one by one
   }
+
   function _upd_page(data, status) {
     if (status == 'notmodified') return;
     if (rec_id != data.id) { // Do only the first one for new macro
       port = data.port;
       _first_page(data);
       rec_id = data.id;
-    }else if (data.time != last_time) { // Do every time for updated record
+    } else if (data.time != last_time) { // Do every time for updated record
       _next_page(data);
       last_time = data.time;
     }
@@ -258,16 +319,16 @@ function func_update_record() {
   function _update(tag) {
     if (tag) { // Show past record (not updated)
       ajax_static('/record/record_' + tag + '.json').done(_upd_page);
-    }else if (rec_id) { // Update and show current record
+    } else if (rec_id) { // Update and show current record
       ajax_update('/record/record_' + rec_id + '.json').done(_upd_page);
-    }else {
+    } else {
       ajax_static('/json/record_latest.json').done(_upd_page);
     }
   }
 
   // **** Updating Page ****
   var rec_id; // Record ID for first call at a new macro;
-  var last_time = '';  // For detecting update
+  var last_time = ''; // For detecting update
   var steps_length = 0;
   var suspend = false;
   return _update;
@@ -289,7 +350,9 @@ function init_page() {
   set_acordion('#record');
   set_auto_release('#record');
   $('#query').on('change', 'input[name="query"]:radio', function() {
-    exec($(this).val(), function() {$('#query').empty(); });
+    exec($(this).val(), function() {
+      $('#query').empty();
+    });
   });
   height_adjust();
 }

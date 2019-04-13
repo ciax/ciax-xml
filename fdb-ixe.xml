@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="ixe" label="Phytron IXEa-A" version="2">
+  <frm id="ixe" label="Phytron IXEa-A" version="2">
     <spec mfr="Phytron" model="IXEa-A" reference="http://ciax.sum.naoj.org/man/phytron/phytron-ixe.pdf"/>
-    <stream maxlength="31" wait="0.001" timeout="30" terminator="\r\n"/>
+    <stream maxlength="31" terminator="\r\n" timeout="30" wait="0.001"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="9600" stopbit="1"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <char length="1" label="Prefix">2</char>
-      <body/>
-      <char length="1" label="Suffix">3</char>
-      <char length="1">13</char>
-      <char length="1">10</char>
-    </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <frame>
+        <char label="Prefix" length="1">2</char>
+        <body/>
+        <char label="Suffix" length="1">3</char>
+        <char length="1">13</char>
+        <char length="1">10</char>
+      </frame>
+      <group caption="Status" id="gst">
         <!--String Length must be <32-->
         <item id="dummy" label="Dummy Command" response="dummy" type="stat">
           <string>ST</string>
@@ -41,7 +41,7 @@
           <string>P20R</string>
         </item>
       </group>
-      <group id="gcfg" caption="Configuration">
+      <group caption="Configuration" id="gcfg">
         <item id="initrot" label="Parameter set for rotation" response="default" type="config">
           <par_num>1:6</par_num>
           <string>$1</string>
@@ -157,7 +157,7 @@
           <string format="%d">${p@$1-1} % 96000</string>
         </item>
       </group>
-      <group id="gact" caption="Action">
+      <group caption="Action" id="gact">
         <item id="act" label="Activate (Servo) [1-6]" response="default" type="action">
           <par_num>1:6</par_num>
           <string>$1</string>
@@ -213,83 +213,125 @@
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <!--Acknowlege message: STX ACK ETX CR LF (Manual Section 12.5)-->
-      <field decode="integer" label="Prefix" length="1">2</field>
-      <field decode="integer" label="ResponseCode" length="1">6</field>
-      <body suffix="\x03"/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <!--Acknowlege message: STX ACK ETX CR LF (Manual Section 12.5)-->
+        <verify decode="integer" label="Prefix" length="1">2</verify>
+        <verify decode="integer" label="ResponseCode" length="1">6</verify>
+        <body suffix="\x03"/>
+      </frame>
       <item id="getstat">
-        <field assign="stat" label="StatusCode"/>
+        <assign decode="string" label="StatusCode" ref="stat"/>
       </item>
       <item id="chkrun">
-        <array assign="run" label="Moving">
-          <index range="$1-1" size="6"/>
-        </array>
+        <assign decode="string" label="Moving" ref="run">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="chkems">
-        <array assign="ems" label="Emergency">
-          <index range="$1-1" size="6"/>
-        </array>
+        <assign decode="string" label="Emergency" ref="ems">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="chkpse">
-        <array assign="pse" label="Power Stage Err">
-          <index range="$1-1" size="6"/>
-        </array>
+        <assign decode="string" label="Power Stage Err" ref="pse">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="getp">
-        <array assign="p" label="Pulse">
-          <index range="$1-1" size="6"/>
-        </array>
+        <assign decode="string" label="Pulse" ref="p">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="getmp">
-        <array assign="mp" label="Mechanical Pulse">
-          <index range="$1-1" size="6"/>
-        </array>
+        <assign decode="string" label="Mechanical Pulse" ref="mp">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="getspd">
-        <array assign="spd" label="Speed">
-          <index range="$1-1" size="6"/>
-        </array>
+        <assign decode="string" label="Speed" ref="spd">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="getrmp">
-        <array assign="rmp" label="Ramp Speed">
-          <index range="$1-1" size="6"/>
-        </array>
+        <assign decode="string" label="Ramp Speed" ref="rmp">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="getmspd">
-        <array assign="mspd" label="Mechanical Speed">
-          <index range="$1-1" size="6"/>
-        </array>
+        <assign decode="string" label="Mechanical Speed" ref="mspd">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="getmrmp">
-        <array assign="mrmp" label="Mechanical Ramp Speed">
-          <index range="$1-1" size="6"/>
-        </array>
+        <assign decode="string" label="Mechanical Ramp Speed" ref="mrmp">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="getispd">
-        <array assign="ispd" label="Init Return Speed">
-          <index range="$1-1" size="6"/>
-        </array>
+        <assign decode="string" label="Init Return Speed" ref="ispd">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="getofs">
-        <array assign="ofs" label="Mechanical Offset">
-          <index range="$1-1" size="6"/>
-        </array>
+        <assign decode="string" label="Mechanical Offset" ref="ofs">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="getrtm">
-        <array assign="rtm" label="Recovery Time(ms)">
-          <index range="$1-1" size="6"/>
-        </array>
+        <assign decode="string" label="Recovery Time(ms)" ref="rtm">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="getmrtm">
-        <array assign="mrtm" label="Mech Recovery Time(ms)">
-          <index range="$1-1" size="6"/>
-        </array>
+        <assign decode="string" label="Mech Recovery Time(ms)" ref="mrtm">
+          <index>$1-1</index>
+        </assign>
       </item>
       <item id="default"/>
       <item id="dummy" noaffix="true"/>
     </response>
-  </frame>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="stat" label="StatusCode"/>
+      <array id="run" label="Moving">
+        <size>6</size>
+      </array>
+      <array id="ems" label="Emergency">
+        <size>6</size>
+      </array>
+      <array id="pse" label="Power Stage Err">
+        <size>6</size>
+      </array>
+      <array id="p" label="Pulse">
+        <size>6</size>
+      </array>
+      <array id="mp" label="Mechanical Pulse">
+        <size>6</size>
+      </array>
+      <array id="spd" label="Speed">
+        <size>6</size>
+      </array>
+      <array id="rmp" label="Ramp Speed">
+        <size>6</size>
+      </array>
+      <array id="mspd" label="Mechanical Speed">
+        <size>6</size>
+      </array>
+      <array id="mrmp" label="Mechanical Ramp Speed">
+        <size>6</size>
+      </array>
+      <array id="ispd" label="Init Return Speed">
+        <size>6</size>
+      </array>
+      <array id="ofs" label="Mechanical Offset">
+        <size>6</size>
+      </array>
+      <array id="rtm" label="Recovery Time(ms)">
+        <size>6</size>
+      </array>
+      <array id="mrtm" label="Mech Recovery Time(ms)">
+        <size>6</size>
+      </array>
+    </field>
+  </frm>
 </fdb>

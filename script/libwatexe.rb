@@ -1,75 +1,92 @@
-#!/usr/bin/ruby
-require 'libapplist'
+#!/usr/bin/env ruby
+require 'libappdic'
 require 'libwatprt'
 
 module CIAX
   # Watch Layer
   module Wat
     deep_include(CmdTree)
-    # cfg must have [:dbi], [:sub_list]
+    # atrb must have [:dbi], [:sub_dic]
     class Exe < Exe
       attr_reader :sub, :stat
-      def initialize(cfg, atrb = Hashx.new)
+      def initialize(spcfg, atrb = Hashx.new)
         super
-        _init_dbi2cfg
-        ___init_sub
-        @stat = Event.new(@sub.id)
+        dbi = _init_dbi2cfg
+        @stat = Event.new(dbi, ___init_sub)
         @host = @sub.host
         _opt_mode
       end
 
-      def ext_shell
-        super
-        @cfg[:output] = View.new(@stat).ext_prt
-        @cobj.loc.add_view
-        input_conv_set
-        self
-      end
-
-      def ext_local_test
-        @post_exe_procs << proc { @stat.update? }
-        super
-      end
-
-      def ext_local_driver
-        require 'libwatdrv'
-        super
+      # wait for busy end or status changed
+      def wait_ready
+        verbose { 'Waiting Busy Device' }
+        100.times do
+          sleep 0.1
+          next if @sv_stat.upd.up?(:busy) # event from buffer
+          return 'done' unless @sv_stat.up?(:comerr)
+          com_err('Busy Device not responding')
+        end
+        com_err('Timeout for Busy Device')
       end
 
       private
 
-      # Mode Extention by Option
-      def _ext_local
-        ___init_upd
-        @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
-        @stat.ext_local_rsp(@sub.stat, @sv_stat)
-        super
+      def _ext_local_shell
+        super.input_conv_set
+        @cfg[:output] = View.new(@stat).ext_prt.upd
+        @cobj.loc.add_view
+        self
       end
 
       # Sub methods for Initialize
       def ___init_sub
-        @sub = @cfg[:sub_list].get(@id)
+        @sub = @cfg[:sub_dic].get(@id)
         @sv_stat = @sub.sv_stat.init_flg(auto: '&', event: '@')
         @cobj.add_rem(@sub.cobj.rem)
         @mode = @sub.mode
         @post_exe_procs.concat(@sub.post_exe_procs)
+        @sub.stat
       end
 
-      def ___init_upd
-        @stat.cmt_procs << proc do |ev|
-          verbose { 'Propagate Event#cmt -> Watch#(set blocking command)' }
-          block = ev.get(:block).map { |id, par| par ? nil : id }.compact
-          @cobj.rem.ext.valid_sub(block)
+      # Local mode
+      module Local
+        include CIAX::Exe::Local
+        def self.extended(obj)
+          Msg.type?(obj, Exe)
+        end
+
+        # Mode Extention by Option
+        def ext_local
+          @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
+          super
+        end
+
+        private
+
+        def _ext_local_test
+          @post_exe_procs << proc { @stat.update? }
+          super
+        end
+
+        def _ext_local_driver
+          super
+          require 'libwatdrv'
+          extend(Driver).ext_local_driver
         end
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', options: 'cehlts') do |cfg, args|
+      ConfOpts.new('[id]', options: 'cehlts') do |cfg|
         db = cfg[:db] = Ins::Db.new
-        dbi = db.get(args.shift)
-        atrb = { dbi: dbi, sub_list: App::List.new(cfg) }
-        Exe.new(cfg, atrb).ext_shell.shell
+        dbi = db.get(cfg.args.shift)
+        atrb = { dbi: dbi, sub_dic: App::ExeDic.new(cfg) }
+        eobj = Exe.new(cfg, atrb)
+        if cfg.opt.sh?
+          eobj.shell
+        else
+          puts eobj.exe(cfg.args).stat
+        end
       end
     end
   end

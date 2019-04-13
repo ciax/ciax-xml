@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frame id="psp" label="Power Supply Instek PSP-603">
-    <spec type="Power Supply" mfr="Instek" model="PSP-603" reference="http://www.bellnw.com/images/man/0685.pdf"/>
-    <stream wait="0.3" terminator="\r\n"/>
+  <frm id="psp" label="Power Supply Instek PSP-603">
+    <spec mfr="Instek" model="PSP-603" reference="http://www.bellnw.com/images/man/0685.pdf" type="Power Supply"/>
+    <stream terminator="\r\n" wait="0.3"/>
     <serial databit="8" flowctl="NONE" parity="NONE" speed="2400" stopbit="1"/>
-    <cmdframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <body/>
-      <char length="1">0xd</char>
-    </cmdframe>
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
-      <group id="gst" caption="Status">
+      <frame>
+        <body/>
+        <char length="1">0xd</char>
+      </frame>
+      <group caption="Status" id="gst">
         <item id="getstat" label="Get Status" response="getstat" type="stat">
           <string>L</string>
         </item>
       </group>
-      <group id="gcfg" caption="Configuration">
+      <group caption="Configuration" id="gcfg">
         <item id="setvl" label="Set Voltage Limit [DD]" type="config">
           <par_num>0:20</par_num>
           <string>SU </string>
@@ -31,7 +31,7 @@
           <string format="%03d">$1</string>
         </item>
       </group>
-      <group id="gact" caption="Action">
+      <group caption="Action" id="gact">
         <item id="setv" label="Set Voltage [DD.DD]" type="config">
           <par_num>0:&lt;100</par_num>
           <string>SV </string>
@@ -45,31 +45,45 @@
         </item>
       </group>
     </command>
-    <rspframe xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
-      <body/>
-    </rspframe>
     <response xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <frame>
+        <body/>
+      </frame>
       <item id="getstat">
-        <field>V</field>
-        <field assign="v" label="Output(V)" length="5"/>
-        <field>A</field>
-        <field assign="a" label="Output(A)" length="5"/>
-        <field>W</field>
-        <field assign="w" label="Output(W)" length="5"/>
-        <field>U</field>
-        <field assign="u" label="Limit(V)" length="2"/>
-        <field>I</field>
-        <field assign="i" label="Limit(A)" length="4"/>
-        <field>P</field>
-        <field assign="p" label="Limit(W)" length="3"/>
-        <field>F</field>
-        <field assign="f1" label="Output(ON/OFF)" length="1"/>
-        <field assign="f2" label="OverHeat" length="1"/>
-        <field assign="f3" label="ADJ Fine" length="1"/>
-        <field assign="f4" label="ADJ Unlock" length="1"/>
-        <field assign="f5" label="Remote" length="1"/>
-        <field assign="f6" label="Local Lock" length="1"/>
+        <verify decode="string">V</verify>
+        <assign decode="string" label="Output(V)" length="5" ref="v"/>
+        <verify decode="string">A</verify>
+        <assign decode="string" label="Output(A)" length="5" ref="a"/>
+        <verify decode="string">W</verify>
+        <assign decode="string" label="Output(W)" length="5" ref="w"/>
+        <verify decode="string">U</verify>
+        <assign decode="string" label="Limit(V)" length="2" ref="u"/>
+        <verify decode="string">I</verify>
+        <assign decode="string" label="Limit(A)" length="4" ref="i"/>
+        <verify decode="string">P</verify>
+        <assign decode="string" label="Limit(W)" length="3" ref="p"/>
+        <verify decode="string">F</verify>
+        <assign decode="string" label="Output(ON/OFF)" length="1" ref="f1"/>
+        <assign decode="string" label="OverHeat" length="1" ref="f2"/>
+        <assign decode="string" label="ADJ Fine" length="1" ref="f3"/>
+        <assign decode="string" label="ADJ Unlock" length="1" ref="f4"/>
+        <assign decode="string" label="Remote" length="1" ref="f5"/>
+        <assign decode="string" label="Local Lock" length="1" ref="f6"/>
       </item>
     </response>
-  </frame>
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="v" label="Output(V)"/>
+      <var id="a" label="Output(A)"/>
+      <var id="w" label="Output(W)"/>
+      <var id="u" label="Limit(V)"/>
+      <var id="i" label="Limit(A)"/>
+      <var id="p" label="Limit(W)"/>
+      <var id="f1" label="Output(ON/OFF)"/>
+      <var id="f2" label="OverHeat"/>
+      <var id="f3" label="ADJ Fine"/>
+      <var id="f4" label="ADJ Unlock"/>
+      <var id="f5" label="Remote"/>
+      <var id="f6" label="Local Lock"/>
+    </field>
+  </frm>
 </fdb>

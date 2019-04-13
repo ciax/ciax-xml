@@ -8,9 +8,9 @@ app: watch layer will be separated as "Event" including interlock and skip
 ***SOLVED
 debug:error "no such command 'exe'" in dsi
 station:OPT side = charging can be on under auto mode
-        IR side = carging will be off under auto mode 
+        IR side = carging will be off under auto mode
         --> Fixed, for no special reason. [4/17-4/21]
-dso:bolt stat is N/A with cramp -> macro interlock 
+dso:bolt stat is N/A with cramp -> macro interlock
          status corrected by farther push button [4/17-4/21]
 debug:VER=all getilk dsi fhook - makes Socket error [4/21]
       refered dzi status in idb; connect to dzi makes error
@@ -26,7 +26,7 @@ interrupt: interrupt handling (add new error class)[5/23]
 grouping: sort function, move circular from libinssh[5/31]
 mcr: cart run1 at tag 9 with comics gives error with "No such key 'n'" [4/17]
     -> mcr converted %r to n/a came from "ion"
-   --> ion symbol changed (0=OFF f=ON DEF=N/A -> DEF=ON) [4/21] 
+   --> ion symbol changed (0=OFF f=ON DEF=N/A -> DEF=ON) [4/21]
    ---> change both crt and dct (was crt only) [6/9]
 more variation:fdb//values/int@decode (sined/unsined, hexstr16,...) [6/13]
 libdb: chache function[8/15]
@@ -58,13 +58,13 @@ crt: tag_table readout(12/1/6) fixed by watanabe[1/20]
 crt/hexint:reset doesn't work(1/23/12) [1/26]
 dso/hexint:reset doesn't work(1/31)[2/3]
 dso/hexint:return immediately after pnumatic command isued (1/31)[2/8]
-frmcl,appcl: client should accept internal commands 
+frmcl,appcl: client should accept internal commands
  xx -> validate internal commands in Frm::Sh or App::Sh
- -> no validation in client [2/9/12] 
+ -> no validation in client [2/9/12]
 cart:attach at tag11 gives overload error by corn load unbalance [4/17]
   -> Reduce Lv1 height of each jack that will be 27mm at #3 Jack. [6/9]
   -> Lv1 height is set that is little bit higher than grounding[12/1/?]
-crt: not clear command trigger after running command issued(12/1/6) 
+crt: not clear command trigger after running command issued(12/1/6)
 crt:too short timeout for cart unnint (tag11-3) 1->12 OK
 AppPrt: make @view with item,label,caption etc. -> data name is pending
 Shell,Server: will become module and every int object will have this feature[4/14]
@@ -75,7 +75,7 @@ update:add ext_???() method including add new method instead of extend(Module)
 intapp,intfrm/ set command should work at test (-t) mode
 more intelligent chache system with detecting file update like as Makefile
 Command: should includes procs
-libfrmrsp takes raw data -> Stream w/o IO (data+date) (2/15/13)
+libfrmconv takes raw data -> Stream w/o IO (data+date) (2/15/13)
 Var::Val -> Var+module Upd(2/27/13)
 hexpack: too short return on exec (12/9/27)
 crt/hexint:return after command issued  without exe flag(12/1/6)

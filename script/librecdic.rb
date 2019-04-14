@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'librecarcview'
+require 'librecarclist'
 require 'libcmdremote'
 
 module CIAX
@@ -11,7 +11,7 @@ module CIAX
     #   @cache: Dic of Record
     # Alives Array => R/O here
     #   Parameter[:list] = Prompt[:list](@par.list)
-    # RecArc::View(Index) > RecDic(Records)
+    # RecArc::List(Index) > RecDic(Records)
     # RecDic : Client Side (Picked at Client)
     # Alives : Server Side
     #
@@ -25,7 +25,7 @@ module CIAX
         super()
         @current_page = 0
         self[:dic] = @cache = Hashx.new
-        @rec_view = RecArc::View.new(type?(arc, RecArc)) { |id| get(id) }
+        @rec_view = RecArc::List.new(type?(arc, RecArc)) { |id| get(id) }
         propagation(@rec_view)
         # When new macro is generated
         @par = type?(par, CmdBase::Parameter)

@@ -6,9 +6,9 @@ module CIAX
   module Mcr
     # Reccord Archive
     class RecArc
-      # Record View (Front Page)
+      # Record List (Front Page)
       # Show part of RecArc
-      class View < Upd
+      class List < Upd
         attr_reader :rec_arc
         def initialize(rec_arc, &get_proc)
           super()
@@ -108,7 +108,7 @@ module CIAX
         Opt::Get.new('[num]', options: 'chr') do |opts, args|
           Msg.args_err if args.empty?
           ra = RecArc.new.cmode(opts.host)
-          puts View.new(ra).inc(args[0])
+          puts List.new(ra).inc(args[0])
         end
       end
     end

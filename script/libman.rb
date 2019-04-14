@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'libexe'
 require 'libmcrcmd'
-require 'librecarcview'
+require 'librecarclist'
 require 'libwatdic' # deprecated
 
 module CIAX
@@ -40,7 +40,7 @@ module CIAX
       def _ext_shell
         super
         @cobj.loc.add_view
-        @cfg[:output] = RecArc::View.new(@stat)
+        @cfg[:output] = RecArc::List.new(@stat)
         @prompt_proc = proc do
           @int_par.def_par
           ''

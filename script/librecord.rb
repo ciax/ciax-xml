@@ -14,6 +14,7 @@ module CIAX
         super('record', id)
         _attr_set('0', nil, 'record')
         @id = self[:id] = self[:time].to_s unless @id
+        type?(@id, String)
         update(port: 55_555, cid: nil, label: nil, pid: '0')
         update(mode: 'test', status: 'ready', result: 'busy')
         # :status = ready,run,query,end
@@ -60,8 +61,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      Opt::Get.new('[record_id] | < record_file', options: 'r') do |opt,args|
-        puts Record.new(args)
+      Opt::Get.new('[record_id] | < record_file', options: 'r') do |_opt, args|
+        puts Record.new(args.shift)
       end
     end
   end

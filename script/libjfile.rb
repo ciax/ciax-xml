@@ -26,8 +26,7 @@ module CIAX
       verbose { "Initiate File Feature [#{base_name}]" }
       @id || cfg_err('No ID')
       @jsondir = vardir(dir || 'json')
-      @cfile = base_name # Current file name
-      @tag_list = TagList.new(@jsondir + __file_name('*'))
+      @tag_list = TagList.new(__file_path('*'))
       @upd_procs.append(self, :file) { load }
       ___init_load
     end
@@ -48,28 +47,31 @@ module CIAX
       base_name(tag) + '.json'
     end
 
+    def __file_path(tag = nil)
+      @jsondir + __file_name(tag)
+    end
+
     # Use @preload (STDIN data) if exists
     #  i.e. Initialy, data get from STDIN (@preload)
     #       -> get id from @preload
     #       -> make skeleton with dbi
     #       -> deep_update by @preload
     def ___init_load
-      fname = @jsondir + __file_name
+      fname = __file_path
       return self unless test('r', fname)
       deep_update(__veri_load(fname))
     end
 
     def __tag_load(tag = nil)
-      @cfile = ___chk_tag(tag)
-      __veri_load(@jsondir + @cfile)
+      __veri_load(___chk_tag(tag))
     rescue CommError
       show_err
       self
     end
 
     def ___chk_tag(tag = nil)
-      return __file_name unless tag
-      return __file_name(tag) if tag_list.include?(tag)
+      return __file_path unless tag
+      return __file_path(tag) if tag_list.include?(tag)
       par_err("No such Tag [#{tag}]")
       nil
     end
@@ -112,9 +114,8 @@ module CIAX
 
     def mklink(tag = 'latest')
       # Making 'latest' link
-      save
       sname = rmlink(tag)
-      ::File.symlink(@jsondir + __file_name, sname)
+      ::File.symlink(__file_path, sname)
       verbose { "File Symboliclink to [#{sname}]" }
       self
     end
@@ -129,11 +130,10 @@ module CIAX
 
     def __write_json(jstr, tag = nil)
       ___write_notice(jstr)
-      @cfile = __file_name(tag)
-      open(@jsondir + @cfile, 'w') do |f|
+      open(__file_path(tag), 'w') do |f|
         f.flock(::File::LOCK_EX)
         f << jstr
-        ___saved_notice(f.size)
+        ___saved_notice(tag, f.size)
       end
       self
     end
@@ -144,10 +144,10 @@ module CIAX
       verbose { 'File Saving from Multiple Threads' }
     end
 
-    def ___saved_notice(size)
+    def ___saved_notice(tag, size)
       verbose do
         fmt = 'File Saved [%s/%s](%d) at %d'
-        cfmt(fmt, @cfile, self[:data_ver], size, self[:time])
+        cfmt(fmt, __file_name(tag), self[:data_ver], size, self[:time])
       end
     end
   end

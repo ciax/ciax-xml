@@ -24,16 +24,13 @@ module CIAX
 
     # For loading file manipulation module
     def ext_local
-      mod = context_module('Local')
-      return self if is_a?(mod)
-      extend(mod).ext_local
+      ext_mod(:Local, &:ext_local)
     end
 
     # Read only as a client
     def ext_remote(host = nil)
       require 'libjhttp'
-      return self if is_a? JHttp
-      extend(JHttp).ext_remote(host, @dir)
+      ext_mod(:JHttp) { |o| o.ext_remote(host, @dir) }
     end
 
     # Control mode (Local or Remote) by host
@@ -89,14 +86,12 @@ module CIAX
       # independent from ext_file
       def ext_log
         require 'libjslog'
-        return self if is_a? JsLog
-        extend(JsLog).ext_log
+        ext_mod(:JsLog, &:ext_log)
       end
 
       def ext_file
         require 'libjfile'
-        return self if is_a? JFile
-        extend(JFile).ext_file(@dir)
+        ext_mod(:JFile) { |o| o.ext_file(@dir) }
       end
     end
   end

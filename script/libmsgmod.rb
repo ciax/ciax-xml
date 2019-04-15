@@ -49,10 +49,17 @@ module CIAX
 
     module_function
 
+    ## Extend by inherited module
+    def ext_mod(name)
+      mod = context_module(name)
+      return self if is_a?(mod)
+      yield extend(mod)
+    end
+
     ## class name handling
     # Full path class name in same namespace
     def context_module(name, mod = nil)
-      type?(name, String)
+      name = name.to_s
       mod ||= self.class
       mary = mod.to_s.split('::')
       chk_module(mary, name)

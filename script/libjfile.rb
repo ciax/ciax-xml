@@ -39,8 +39,7 @@ module CIAX
     end
 
     def ext_save
-      return self if is_a?(JSave)
-      extend(JSave).ext_save
+      ext_mod(:JSave, &:ext_save)
     end
 
     private
@@ -147,7 +146,7 @@ module CIAX
 
     def ___saved_notice(size)
       verbose do
-        fmt = 'Saved [%s/%s](%d) at %d'
+        fmt = 'File Saved [%s/%s](%d) at %d'
         cfmt(fmt, @cfile, self[:data_ver], size, self[:time])
       end
     end

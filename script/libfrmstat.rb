@@ -77,11 +77,6 @@ module CIAX
         cmt
       end
 
-      def ext_log
-        @frame.ext_log
-        self
-      end
-
       private
 
       def ___init_field
@@ -127,6 +122,14 @@ module CIAX
           else
             r.shift || i
           end
+        end
+      end
+
+      module Local
+        include Varx::Local
+        def ext_log
+          @frame.ext_log
+          self
         end
       end
     end

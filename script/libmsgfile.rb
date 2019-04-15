@@ -5,12 +5,11 @@ require 'fileutils'
 module CIAX
   ### Checking Methods ###
   module Msg
-
     # Json read with contents conversion
     # Invalid json str including nil gives error
-    #  Used for initial reading
+    #  Used for initial reading to get id
     def jread(jstr = nil)
-      if ! jstr
+      unless jstr
         data_err("No data in file(#{ARGV})") unless (jstr = gets(nil))
         show('Getting Data from STDIN')
       end

@@ -51,7 +51,7 @@ module CIAX
           format(":%s (%s) [%s]\n", self[:label], self[:cid], date)
       end
 
-      def jread(str = nil)
+      def jverify(hash = {})
         res = super
         res[:steps].map! do |i|
           Step.new(res[:start]).update(i)

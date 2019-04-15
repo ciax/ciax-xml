@@ -24,7 +24,7 @@ module CIAX
 
     # For loading file manipulation module
     def ext_local
-      ext_mod(:Local, &:ext_local)
+      ext_mod(:Local)
     end
 
     # Read only as a client
@@ -86,7 +86,7 @@ module CIAX
       # independent from ext_file
       def ext_log
         require 'libjslog'
-        ext_mod(:JsLog, &:ext_log)
+        ext_mod(:JsLog)
       end
 
       def ext_file

@@ -38,7 +38,7 @@ module CIAX
     end
 
     def ext_save
-      ext_mod(:JSave, &:ext_save)
+      ext_mod(:JSave)
     end
 
     private

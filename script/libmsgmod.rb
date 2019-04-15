@@ -50,10 +50,15 @@ module CIAX
     module_function
 
     ## Extend by inherited module
-    def ext_mod(name)
+    def ext_mod(name, &init_proc)
       mod = context_module(name)
       return self if is_a?(mod)
-      yield extend(mod)
+      if init_proc
+        yield extend(mod)
+      else
+        cm = caller(1..1).first.split('`').last.chop
+        extend(mod).method(cm).call
+      end
     end
 
     ## class name handling

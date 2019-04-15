@@ -41,6 +41,7 @@ module CIAX
 
         def ext_conv(cfg)
           @stream = Stream::Driver.new(@id, cfg)
+          propagation(@stream)
           self
         end
 

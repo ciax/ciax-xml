@@ -136,7 +136,7 @@ module CIAX
         open(@jsondir + @cfile, 'w') do |f|
           f.flock(::File::LOCK_EX)
           f << jstr
-          verbose { "File [#{@cfile}](#{f.size}) is Saved at #{self[:time]}" }
+          ___saved_notice(f.size)
         end
         self
       end
@@ -145,6 +145,13 @@ module CIAX
         verbose { " -- json data (#{jstr}) is empty at saving" } if jstr.empty?
         return if @thread == Thread.current
         verbose { 'File Saving from Multiple Threads' }
+      end
+
+      def ___saved_notice(size)
+        verbose do
+          fmt = 'Saved [%s/%s](%d) at %d'
+          cfmt(fmt, @cfile, self[:data_ver], size, self[:time])
+        end
       end
     end
   end

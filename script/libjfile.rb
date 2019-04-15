@@ -36,7 +36,7 @@ module CIAX
 
       def load(tag = nil)
         verbose { cfmt('Loading File %s', __file_name(tag)) }
-        deep_update(__read_json(tag))
+        deep_update(__tag_load(tag))
         cmt
       end
 
@@ -46,6 +46,10 @@ module CIAX
       end
 
       private
+
+      def __file_name(tag = nil)
+        base_name(tag) + '.json'
+      end
 
       # Use @preload (STDIN data) if exists
       #  i.e. Initialy, data get from STDIN (@preload)
@@ -58,8 +62,12 @@ module CIAX
         deep_update(__veri_load(fname))
       end
 
-      def __file_name(tag = nil)
-        base_name(tag) + '.json'
+      def __tag_load(tag = nil)
+        @cfile = ___chk_tag(tag)
+        __veri_load(@jsondir + @cfile)
+      rescue CommError
+        show_err
+        self
       end
 
       def ___chk_tag(tag = nil)
@@ -71,14 +79,6 @@ module CIAX
 
       def __veri_load(fname)
         jverify(jload(fname))
-      end
-
-      def __read_json(tag = nil)
-        @cfile = ___chk_tag(tag)
-        __veri_load(@jsondir + @cfile)
-      rescue CommError
-        show_err
-        self
       end
     end
 
@@ -109,7 +109,7 @@ module CIAX
 
       # Load without Header which can be remain forever on the saving feature
       def load_partial(tag = nil)
-        deep_update(__read_json(tag))
+        deep_update(__tag_load(tag))
         cmt
       end
 

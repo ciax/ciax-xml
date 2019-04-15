@@ -61,8 +61,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      Opt::Get.new('[record_id] | < record_file', options: 'r') do |_opt, args|
-        puts Record.new(args.shift)
+      Opt::Get.new('[record_id] | < record_file', options: 'rh') do |opt, args|
+        puts Record.new(args.shift).cmode(opt.host)
       end
     end
   end

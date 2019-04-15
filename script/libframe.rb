@@ -26,6 +26,11 @@ module CIAX
         def ext_conv(cfg)
           extend(Conv).ext_conv(cfg)
         end
+
+        def ext_log
+          warning('Do nothing')
+          self
+        end
       end
 
       # Converting module
@@ -36,6 +41,11 @@ module CIAX
 
         def ext_conv(cfg)
           @stream = Stream::Driver.new(@id, cfg)
+          self
+        end
+
+        def ext_log
+          @stream.ext_local.ext_log
           self
         end
 

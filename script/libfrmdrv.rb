@@ -10,16 +10,19 @@ module CIAX
         include CIAX::Exe::Driver
 
         def ext_driver
-          super
-          ___init_stream
+          ___init_frame
           ___init_processor_ext
           ___init_processor_int
-          self
+          super
         end
 
         private
 
-        def ___init_stream
+        def _init_log_mode
+          super && @frame.ext_log
+        end
+
+        def ___init_frame
           @stat.ext_conv
           @frame.ext_local.ext_conv(@cfg).ext_save
         end

@@ -124,14 +124,6 @@ module CIAX
           end
         end
       end
-
-      module Local
-        include Varx::Local
-        def ext_log
-          @frame.ext_log
-          self
-        end
-      end
     end
 
     if __FILE__ == $PROGRAM_NAME

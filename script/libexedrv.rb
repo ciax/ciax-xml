@@ -11,7 +11,7 @@ module CIAX
       # type of usage: shell/command line
       # type of semantics: execution/test
       def ext_driver
-        ___init_log_mode
+        _init_log_mode
         ___init_processor_save
         ___init_processor_load
         self
@@ -19,7 +19,7 @@ module CIAX
 
       private
 
-      def ___init_log_mode
+      def _init_log_mode
         return unless @opt.drv?
         @stat.ext_log
         @cobj.rem.ext_input_log

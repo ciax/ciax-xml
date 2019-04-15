@@ -42,10 +42,8 @@ module CIAX
       deep_update(jread(jstr))
     end
 
-    module_function
-
     def jread(jstr = nil)
-      Msg.jread(jstr).extend(Enumx)
+      super(jstr).extend(Enumx)
     end
 
     private

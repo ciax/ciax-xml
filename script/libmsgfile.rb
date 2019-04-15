@@ -5,6 +5,30 @@ require 'fileutils'
 module CIAX
   ### Checking Methods ###
   module Msg
+
+    # Json read with contents conversion
+    # Invalid json str including nil gives error
+    #  Used for initial reading
+    def jread(jstr = nil)
+      if ! jstr
+        data_err("No data in file(#{ARGV})") unless (jstr = gets(nil))
+        show('Getting Data from STDIN')
+      end
+      @preload = j2h(jstr)
+    end
+
+    # OK for bad file
+    #  Used for jverify() input
+    def jload(fname)
+      return j2h(loadfile(fname)) unless (res = @preload)
+      verbose { 'Loading from Preloading' }
+      @preload = nil
+      res
+    rescue InvalidData
+      show_err
+      Hashx.new
+    end
+
     module_function
 
     ## File related ##
@@ -31,28 +55,6 @@ module CIAX
       end
     rescue Errno::ENOENT
       verbose { "  -- no json file (#{fname})" }
-    end
-
-    # Json read with contents conversion
-    # Invalid json str including nil gives error
-    #  Used for initial reading
-    def jread(jstr = nil)
-      return j2h(jstr) if jstr
-      data_err("No data in file(#{ARGV})") unless (jstr = gets(nil))
-      show('Getting Data from STDIN')
-      @preload = j2h(jstr)
-    end
-
-    # OK for bad file
-    #  Used for jverify() input
-    def jload(fname)
-      return j2h(loadfile(fname)) unless (res = @preload)
-      verbose { 'Loading from Preloading' }
-      @preload = nil
-      res
-    rescue InvalidData
-      show_err
-      Hashx.new
     end
   end
 end

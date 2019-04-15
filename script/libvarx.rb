@@ -86,7 +86,7 @@ module CIAX
         self
       end
 
-      # independent from ext_local_file
+      # independent from ext_file
       def ext_log
         require 'libjslog'
         return self if is_a? JsLog

@@ -106,7 +106,7 @@ module CIAX
         if cfg.opt.sh?
           eobj.shell
         else
-          puts eobj.exe(cfg.args).stat
+          puts [eobj.exe(cfg.args), eobj.stat]
         end
       end
     end

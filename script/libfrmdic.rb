@@ -16,8 +16,13 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', options: 'cehls') do |cfg|
-        ExeDic.new(cfg, db: Ins::Db.new(cfg.proj), sites: cfg.args).shell
+      ConfOpts.new('[id]', options: 'cehli') do |cfg|
+        eobj = ExeDic.new(cfg, db: Ins::Db.new(cfg.proj)).get(cfg.args.shift)
+        if cfg.opt.sh?
+          eobj.shell
+        else
+          puts [eobj.exe(cfg.args), eobj.stat]
+        end
       end
     end
   end

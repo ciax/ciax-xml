@@ -102,8 +102,10 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      Opt::Get.new('', options: 'ch') do |opts|
-        puts RecArc.new.cmode(opts.host)
+      Opt::Get.new('', options: 'chs') do |opts|
+        ra = RecArc.new.cmode(opts.host)
+        ra.ext_save.refresh if opts[:s]
+        puts ra
       end
     end
   end

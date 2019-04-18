@@ -19,7 +19,8 @@ module CIAX
         !cl? && !drv?
       end
 
-      def int?
+      # Interactive(Shell) mode ( <-> Batch mode)
+      def sh?
         key?(:i) && true
       end
 
@@ -192,7 +193,7 @@ module CIAX
 
       # System mode
       def ___optdb_system
-        db = { s: 'server', b: 'back ground' }
+        db = { s: 'server', b: 'back ground', i: 'interactive' }
         __add_optdb(db, '%s mode')
       end
 

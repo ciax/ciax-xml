@@ -111,7 +111,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', options: 'cehls') do |cfg|
+      ConfOpts.new('[id]', options: 'cehli') do |cfg|
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(cfg.args.shift)
         atrb = { dbi: dbi, sub_dic: Frm::ExeDic.new(cfg) }

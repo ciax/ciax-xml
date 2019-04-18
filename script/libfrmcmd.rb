@@ -97,12 +97,12 @@ module CIAX
       require 'libfrmconv'
       require 'libdevdb'
       cap = '[dev] [cmd] (par) < field_file'
-      ConfOpts.new(cap, options: 'r') do |cfg|
-        if STDIN.tty?
-          dbi = Dev::Db.new.get(cfg.args.shift)
-          cfg[:field] = Field.new(dbi[:id])
+      ConfOpts.new(cap, options: 'rf') do |cfg|
+        if cfg.opt[:f]
+          dbi = Db.new.get(cfg.args.shift)
+          cfg[:field] = Field.new(dbi)
         else
-          dbi = (cfg[:field] = Field.new).dbi
+          dbi = (cfg[:field] = Field.new(cfg.args)).dbi
         end
         # dbi.pick alreay includes :layer, :command, :version
         cobj = Index.new(cfg, dbi.pick(:stream))

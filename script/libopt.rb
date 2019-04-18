@@ -19,8 +19,8 @@ module CIAX
         !cl? && !drv?
       end
 
-      def sh?
-        key?(:s) && true
+      def int?
+        key?(:i) && true
       end
 
       def bg?
@@ -106,7 +106,7 @@ module CIAX
       # -e   : drive all layers       [drv]
       # -c   : client all layers      [cl]
       # -l   : client to lower layers [drv:cl]
-      # -s   : shell
+      # -s   : server
 
       # Mode (Macro)
       # none : test
@@ -114,7 +114,7 @@ module CIAX
       # -e   : with device driver
       # -c   : client to macro server
       # -l   : client to device server
-      # -s   : shell
+      # -s   : server
       private
 
       def ___set_opt(str)
@@ -192,7 +192,7 @@ module CIAX
 
       # System mode
       def ___optdb_system
-        db = { s: 'shell', b: 'back ground' }
+        db = { s: 'server', b: 'back ground' }
         __add_optdb(db, '%s mode')
       end
 
@@ -210,7 +210,7 @@ module CIAX
 
       # Layer option
       def ___optdb_layer
-        @layers = { m: 'mcr', w: 'wat', f: 'frm', x: 'hex', a: 'app', i: 'ins' }
+        @layers = { m: 'mcr', w: 'wat', f: 'frm', x: 'hex', a: 'app' }
         __add_optdb(@layers, '%s layer')
       end
 

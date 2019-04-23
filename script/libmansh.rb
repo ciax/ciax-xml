@@ -82,8 +82,8 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Conf.new('[proj] [cmd] (par)', options: 'cenlr') do |cfg|
-        Man.new(cfg, Atrb.new(cfg)).shell
-      end
+        Man.new(cfg, Atrb.new(cfg))
+      end.cui
     end
   end
 end

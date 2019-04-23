@@ -108,8 +108,8 @@ module CIAX
 
       if __FILE__ == $PROGRAM_NAME
         Opt::Conf.new('[id]', options: 'cehlns') do |cfg|
-          ExeDic.new(cfg, Atrb.new(cfg)).shell
-        end
+          ExeDic.new(cfg, Atrb.new(cfg))
+        end.cui('man')
       end
     end
   end

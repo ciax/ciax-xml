@@ -82,8 +82,8 @@ module CIAX
       end
 
       # Shell or Command Line. Add after block.
-      def cui
-        @obj = @obj.get(@argv.shift) if @obj.is_a?(ExeDic)
+      def cui(id = nil)
+        @obj = @obj.get(id || @argv.shift) if @obj.is_a?(ExeDic)
         type?(@obj, Exe)
         if @argv.empty?
           @obj.shell

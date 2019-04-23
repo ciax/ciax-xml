@@ -69,6 +69,26 @@ module CIAX
         cfg_err("No #{mod} module") unless CIAX.const_defined?(mod)
         CIAX.const_get(mod)
       end
+    end
+
+    # Global options
+    class Get < Hash
+      include Msg
+      include Chk
+      # Contents of optarg (Hash)
+      # :options: valid option list (i.e. "afch:")
+      # :default: default(implicit) option string (i.e "abc")
+      # etc. : additional option db (i.e. { ? : "description" })
+      attr_reader :init_layer
+      def initialize(ustr = '', optarg = {}, &opt_proc)
+        ustr = '(opt) ' + ustr unless optarg.empty?
+        @defopt = optarg.delete(:default).to_s
+        @optdb = Db.new(optarg)
+        ___set_opt(optarg.delete(:options))
+        getarg(ustr, &opt_proc)
+      rescue InvalidARGS
+        usage(ustr)
+      end
 
       def getarg(ustr)
         @obj = yield(self, @argv)
@@ -94,26 +114,8 @@ module CIAX
       rescue InvalidARGS
         usage
       end
-    end
 
-    # Global options
-    class Get < Hash
-      include Msg
-      include Chk
-      # Contents of optarg (Hash)
-      # :options: valid option list (i.e. "afch:")
-      # :default: default(implicit) option string (i.e "abc")
-      # etc. : additional option db (i.e. { ? : "description" })
-      attr_reader :init_layer
-      def initialize(ustr = '', optarg = {}, &opt_proc)
-        ustr = '(opt) ' + ustr unless optarg.empty?
-        @defopt = optarg.delete(:default).to_s
-        @optdb = Db.new(optarg)
-        ___set_opt(optarg.delete(:options))
-        getarg(ustr, &opt_proc)
-      rescue InvalidARGS
-        usage(ustr)
-      end
+      private
 
       # Mode (Device) [prompt]
       # none : test all layers        [test]
@@ -129,7 +131,6 @@ module CIAX
       # -c   : client to macro server
       # -l   : client to device server
       # -s   : server
-      private
 
       def ___set_opt(str)
         ops = ___add_colon(str)

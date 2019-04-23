@@ -102,13 +102,8 @@ module CIAX
       Opt::Conf.new('[id]', options: 'cehl') do |cfg|
         db = cfg[:db] = Dev::Db.new
         dbi = db.get(cfg.args.shift)
-        eobj = Exe.new(cfg, dbi: dbi)
-        if cfg.args.empty?
-          eobj.shell
-        else
-          puts [eobj.exe(cfg.args), eobj.stat]
-        end
-      end
+        Exe.new(cfg, dbi: dbi)
+      end.cui
     end
   end
 end

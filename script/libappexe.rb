@@ -115,13 +115,8 @@ module CIAX
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(cfg.args.shift)
         atrb = { dbi: dbi, sub_dic: Frm::ExeDic.new(cfg) }
-        eobj = Exe.new(cfg, atrb)
-        if cfg.args.empty?
-          eobj.shell
-        else
-          puts [eobj.exe(cfg.args), eobj.stat]
-        end
-      end
+        Exe.new(cfg, atrb)
+      end.cui
     end
   end
 end

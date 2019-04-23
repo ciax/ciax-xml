@@ -67,7 +67,7 @@ module CIAX
       end
 
       def getarg(ustr)
-        yield(self, @argv)
+        @obj = yield(self, @argv)
         self
       rescue InvalidARGS
         usage(ustr)
@@ -75,6 +75,18 @@ module CIAX
 
       def usage(ustr = @usagestr, code = 2)
         super("#{ustr}\n" + columns(@index), code)
+      end
+
+      # Shell or Command Line. Add after block.
+      def cui
+        if @argv.empty?
+          @obj.shell
+        else
+          puts [@obj.exe(@argv), @obj.stat]
+        end
+        self
+      rescue InvalidARGS
+        usage
       end
     end
 

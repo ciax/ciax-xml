@@ -21,13 +21,8 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Conf.new('[id]', options: 'cehl') do |cfg|
-        eobj = ExeDic.new(cfg, db: Ins::Db.new(cfg.proj)).get(cfg.args.shift)
-        if cfg.args.empty?
-          eobj.shell
-        else
-          puts [eobj.exe(cfg.args), eobj.stat]
-        end
-      end
+        ExeDic.new(cfg, db: Ins::Db.new(cfg.proj)).get(cfg.args.shift)
+      end.cui
     end
   end
 end

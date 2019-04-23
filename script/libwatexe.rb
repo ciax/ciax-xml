@@ -77,12 +77,12 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', options: 'cehlti') do |cfg|
+      ConfOpts.new('[id]', options: 'cehlt') do |cfg|
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(cfg.args.shift)
         atrb = { dbi: dbi, sub_dic: App::ExeDic.new(cfg) }
         eobj = Exe.new(cfg, atrb)
-        if cfg.opt.sh?
+        if cfg.args.empty?
           eobj.shell
         else
           puts [eobj.exe(cfg.args), eobj.stat]

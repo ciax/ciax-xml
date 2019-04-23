@@ -19,11 +19,6 @@ module CIAX
         !cl? && !drv?
       end
 
-      # Interactive(Shell) mode ( <-> Batch mode)
-      def sh?
-        key?(:i) && true
-      end
-
       def bg?
         key?(:b) && true
       end
@@ -178,15 +173,18 @@ module CIAX
       private
 
       # Remained Options
-      #  g,k,o,p,q,t,u,w,y,z
+      #  g,i,k,m,o,p,q,t,u,w,y,z
       def ___mk_optdb
         ___optdb_client
         ___optdb_system
-        ___optdb_motion
         ___optdb_view
+        ___optdb_cui
         ___optdb_layer
+        ___optdb_mcr
+        ___optdb_dev
       end
 
+      ## Common in Macro and Device
       # Client option
       def ___optdb_client
         db = { c: 'default', l: 'lower-layer', h: '[host]' }
@@ -195,25 +193,37 @@ module CIAX
 
       # System mode
       def ___optdb_system
-        db = { s: 'server', b: 'back ground', i: 'interactive' }
-        __add_optdb(db, '%s mode')
-      end
-
-      # Motion mode
-      def ___optdb_motion
-        db = { e: 'execution', d: 'dryrun', n: 'non-stop' }
+        db = { s: 'server', b: 'back ground', e: 'execution' }
         __add_optdb(db, '%s mode')
       end
 
       # For data appearance
       def ___optdb_view
-        db = { r: 'raw', j: 'json' }
+        db = { r: 'raw', j: 'json', v: 'csv' }
         __add_optdb(db, '%s data output')
+      end
+
+      # For input interface (Shell or Command Line)
+      def ___optdb_cui
+        db = { i: 'interactive' }
+        __add_optdb(db, '%s mode')
+      end
+
+      ## For Macro
+      def ___optdb_mcr
+        db = { d: 'dryrun', n: 'non-stop' }
+        __add_optdb(db, '%s mode')
+      end
+
+      ## For Device
+      def ___optdb_dev
+        db = { t: '[key=val,..]' }
+        __add_optdb(db, 'test conditions %s')
       end
 
       # Layer option
       def ___optdb_layer
-        @layers = { m: 'mcr', w: 'wat', f: 'frm', x: 'hex', a: 'app' }
+        @layers = { w: 'wat', f: 'frm', x: 'hex', a: 'app' }
         __add_optdb(@layers, '%s layer')
       end
 

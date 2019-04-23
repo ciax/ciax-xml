@@ -21,7 +21,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Conf.new('[id]', options: 'cehl') do |cfg|
-        ExeDic.new(cfg, db: Ins::Db.new(cfg.proj)).get(cfg.args.shift)
+        ExeDic.new(cfg, db: Ins::Db.new(cfg.proj))
       end.cui
     end
   end

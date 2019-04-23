@@ -79,6 +79,8 @@ module CIAX
 
       # Shell or Command Line. Add after block.
       def cui
+        @obj = @obj.get(@argv.shift) if @obj.is_a?(ExeDic)
+        type?(@obj, Exe)
         if @argv.empty?
           @obj.shell
         else

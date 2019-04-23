@@ -85,7 +85,7 @@ module CIAX
         to_h.each do |k, v|
           atrb[k] = at_proc ? yield(v) : v
         end
-        key = atrb.delete(id) || give_up("No such key (#{id})")
+        key = atrb.delete(id) || args_err("No such key (#{id})")
         [key, atrb]
       end
 

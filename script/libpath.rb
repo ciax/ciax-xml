@@ -8,7 +8,7 @@ module CIAX
       def path(ary = [])
         enum = ary.inject(self) do |prev, a|
           ___values_by_type(prev, a)
-        end || Msg.give_up('No such key')
+        end || Msg.args_err('No such key')
         ___view_branch(enum.dup)
       end
 

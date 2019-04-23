@@ -6,7 +6,7 @@ require 'libdaemon'
 module CIAX
   # Macro module
   module Mcr
-    ConfOpts.new('[id] ...', options: 'denxb') do |cfg|
+    Opt::Conf.new('[id] ...', options: 'denxb') do |cfg|
       Daemon.new(cfg) do |layer|
         md = ExeDic.new(cfg, Atrb.new(cfg)).run
         # For hex layer

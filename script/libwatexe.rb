@@ -77,7 +77,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', options: 'cehlt') do |cfg|
+      Opt::Conf.new('[id]', options: 'cehlt') do |cfg|
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(cfg.args.shift)
         atrb = { dbi: dbi, sub_dic: App::ExeDic.new(cfg) }

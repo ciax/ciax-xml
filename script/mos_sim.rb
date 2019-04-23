@@ -27,7 +27,7 @@ require 'libsimfp'
 module CIAX
   # Simulator
   module Simulator
-    ConfOpts.new('-(d)', options: 'd') do |cfg|
+    Opt::Conf.new('-(d)', options: 'd') do |cfg|
       require 'libsimcar' unless cfg.opt.dry?
       Daemon.new(cfg, 54_301) do
         @sim_list.gen.run

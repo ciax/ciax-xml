@@ -102,7 +102,7 @@ module CIAX
       end
 
       if __FILE__ == $PROGRAM_NAME
-        ConfOpts.new('') do |cfg|
+        Opt::Conf.new('') do |cfg|
           loc = Index.new(cfg).loc
           loc.add_view
           loc.add_shell

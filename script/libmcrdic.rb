@@ -107,7 +107,7 @@ module CIAX
       class Jump < LongJump; end
 
       if __FILE__ == $PROGRAM_NAME
-        ConfOpts.new('[id]', options: 'cehlns') do |cfg|
+        Opt::Conf.new('[id]', options: 'cehlns') do |cfg|
           ExeDic.new(cfg, Atrb.new(cfg)).shell
         end
       end

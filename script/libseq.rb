@@ -128,7 +128,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[proj] [cmd] (par)', options: 'eldnr') do |cfg|
+      Opt::Conf.new('[proj] [cmd] (par)', options: 'eldnr') do |cfg|
         ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(cfg.args)
         Sequencer.new(ent).play
       end

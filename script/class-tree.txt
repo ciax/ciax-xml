@@ -1,6 +1,6 @@
 Hash
   |-Opt::Get
-  |  |-ConfOpts
+  |  |-Opt::Conf
   |
   |-Hashx
      |-Disp::Index

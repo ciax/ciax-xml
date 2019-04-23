@@ -50,7 +50,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libconf'
       # No option -> :command, -r: :response
-      ConfOpts.new('[id] [cmd]', options: 'h', r: 'response') do |cfg|
+      Opt::Conf.new('[id] [cmd]', options: 'h', r: 'response') do |cfg|
         mode = cfg.opt.delete(:r) ? :response : :command
         dbi = Db.new.get(cfg.args.shift)
         sel = Select.new(dbi, mode)

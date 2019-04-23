@@ -171,7 +171,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id] [cmd] (par)') do |cfg|
+      Opt::Conf.new('[id] [cmd] (par)') do |cfg|
         id = cfg.args.shift
         dbi = Db.new.get(id)
         # dbi.pick already includes :layer, :command, :version

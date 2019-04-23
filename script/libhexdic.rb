@@ -30,7 +30,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]', options: 'cehl') do |cfg|
+      Opt::Conf.new('[id]', options: 'cehl') do |cfg|
         eobj = ExeDic.new(cfg, db: Ins::Db.new(cfg.proj)).get(cfg.args.shift)
         if cfg.args.empty?
           eobj.shell

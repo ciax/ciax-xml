@@ -133,7 +133,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmcmd'
-      ConfOpts.new('[id] [cmd]', options: 'h') do |cfg|
+      Opt::Conf.new('[id] [cmd]', options: 'h') do |cfg|
         field = Field.new(cfg.args).ext_local.ext_conv
         field.frame.cmode(cfg.opt.host)
         atrb = field.dbi.pick(:stream).update(field: field)

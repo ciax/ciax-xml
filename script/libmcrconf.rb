@@ -46,7 +46,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[id]') do |cfg|
+      Opt::Conf.new('[id]') do |cfg|
         puts Atrb.new(cfg).path(cfg.args)
       end
     end

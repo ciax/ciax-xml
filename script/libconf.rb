@@ -95,12 +95,14 @@ module CIAX
       end
     end
   end
-  # Option parser with Config
-  class ConfOpts < Config
-    def initialize(ustr = '', optargs = {})
-      Opt::Get.new(ustr, optargs) do |opt, args|
-        super(args: args, opt: opt, proj: ENV['PROJ'])
-        yield(self)
+
+  module Opt
+    # Option parser with Config
+    class Conf < Get
+      def initialize(ustr = '', optargs = {})
+        super do |opt, args|
+          yield(Config.new(args: args, opt: opt, proj: ENV['PROJ']))
+        end
       end
     end
   end

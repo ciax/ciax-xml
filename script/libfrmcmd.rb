@@ -97,7 +97,7 @@ module CIAX
       require 'libfrmconv'
       require 'libdevdb'
       cap = '[dev] [cmd] (par) < field_file'
-      ConfOpts.new(cap, options: 'rf') do |cfg|
+      Opt::Conf.new(cap, options: 'rf') do |cfg|
         if cfg.opt[:f]
           dbi = Db.new.get(cfg.args.shift)
           cfg[:field] = Field.new(dbi)

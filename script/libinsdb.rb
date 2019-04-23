@@ -121,7 +121,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libconf'
-      ConfOpts.new('[id] (key) ..', options: 'r') do |cfg|
+      Opt::Conf.new('[id] (key) ..', options: 'r') do |cfg|
         db = Db.new(cfg.proj)
         puts "Ins list = #{db.valid_ins.inspect}"
         puts "Dev list = #{db.valid_devs.inspect}"

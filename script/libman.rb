@@ -83,7 +83,7 @@ module CIAX
       end
     end
     if __FILE__ == $PROGRAM_NAME
-      ConfOpts.new('[proj] [cmd] (par)', options: 'cedhlnr') do |cfg|
+      Opt::Conf.new('[proj] [cmd] (par)', options: 'cedhlnr') do |cfg|
         Man.new(cfg, Atrb.new(cfg)).shell
       end
     end

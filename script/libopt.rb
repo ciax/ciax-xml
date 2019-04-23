@@ -19,6 +19,10 @@ module CIAX
         !cl? && !drv?
       end
 
+      def sv?
+        key?(:s) && true
+      end
+
       def bg?
         key?(:b) && true
       end

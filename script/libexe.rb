@@ -153,6 +153,7 @@ module CIAX
       # Option handling
       def opt_mode
         @opt.drv? ? _ext_driver : _ext_test
+        run if @opt.sv?
       end
 
       private

@@ -58,8 +58,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       Opt::Conf.new('[proj] [cmd] (par)', options: 'edlnr') do |cfg|
         ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(cfg.args)
-        mexe = Exe.new(ent)
-        cfg.args.empty? ? mexe.run.shell : mexe.seq.play
+        Exe.new(ent).seq.play
       end
     end
   end

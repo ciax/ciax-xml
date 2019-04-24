@@ -21,11 +21,11 @@ module CIAX
       clear
     end
 
-    def call(title = 'ProcArray')
-      verbose { cfmt("%s in %s (%s)\n", title, @name, @obj.time_id) + to_s }
-      @list.each do |a|
+    def call(title = 'ProcArray', pri = nil)
+      verbose { cfmt("%s in %s P%S\n", title, @name, pri) + to_s }
+      (pri ? [@list[pri.to_i]] : @list).each do |a|
         a.each do |k, p|
-          verbose { cfmt("Calling %s in (%s)\n", k, @name) + to_s }
+          verbose { cfmt("Calling %s in (%s) P%S\n", k, @name, pri) + to_s }
           p.call(@obj)
         end
       end
@@ -46,7 +46,7 @@ module CIAX
       verbose { cfmt('Appending in %s [%s]', @name, __mk_id(obj, id)) }
       return self unless (id = __chk_id(obj, id))
       @list[pri][id] = prc
-      verbose { cfmt("Appended in %s\n", @name) + to_s }
+      verbose { cfmt("Appended in %s P%S\n", @name, pri) + to_s }
       self
     end
 

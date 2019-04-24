@@ -17,9 +17,10 @@ module CIAX
     end
 
     # Add cmt for self return method
+    # Only drives upper layer (No converting, saving)
     def deep_update(ope, concat = false)
       super
-      cmt
+      cmt(3)
     end
 
     # Time setting, Loading file at client
@@ -38,8 +39,8 @@ module CIAX
     #  - Save File
     #  - Logging
     #  - Exec Upper data cmt
-    def cmt
-      @cmt_procs.call('Committing')
+    def cmt(pri = nil)
+      @cmt_procs.call('Committing', pri)
       self
     end
 

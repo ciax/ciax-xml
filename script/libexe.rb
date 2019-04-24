@@ -64,7 +64,7 @@ module CIAX
     #         Access to local file (R/W)
     #       Local log     : ext_local_log
     #           Add logging feature to local file
-    #       Local server   : ext_local_server
+    #       Local server   : ext_server
     #           Add network command input feature
 
     def shell
@@ -147,7 +147,7 @@ module CIAX
         return self if @opt.cl?
         require 'libserver'
         return self if is_a?(Server)
-        extend(Server).ext_local_server
+        extend(Server).ext_server
       end
 
       # Option handling

@@ -65,13 +65,13 @@
     structure: Proc
     args: String(command line)
     return: Array[String...] (command args)
-    called: Server(Exe)#ext_local_server
+    called: Server(Exe)#ext_server
 
   Server@server_output_proc
     structure: Proc
     args: no
     return: String (response str)
-    called: Server(Exe)#ext_local_server
+    called: Server(Exe)#ext_server
 
   # Shell
   Shell@shell_input_procs

@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'libudp'
+require 'libthreadx'
 
 # Provide Server
 module CIAX
@@ -12,7 +13,7 @@ module CIAX
       end
 
       # JSON expression of server stat will be sent.
-      def ext_local_server
+      def ext_server
         return self unless @port
         @mode += ':SV'
         @cobj.rem.sys.add_empty

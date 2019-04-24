@@ -22,22 +22,22 @@ module CIAX
     end
 
     def call(title = 'ProcArray')
-      verbose { cfmt('%s in %s (%s) %S', title, @name, @obj.time_id, view) }
+      verbose { cfmt("%s in %s (%s)\n", title, @name, @obj.time_id) + to_s }
       @list.each do |a|
         a.each do |k, p|
-          verbose { cfmt('Calling %s in (%s)', k, @name) }
+          verbose { cfmt("Calling %s in (%s)\n", k, @name) + to_s }
           p.call(@obj)
         end
       end
       self
     end
 
-    def view
-      @list.map(&:keys).flatten
+    def to_s
+      @list.map { |l| l.keys.inspect }.join("\n")
     end
 
     def clear
-      @list = Array.new(5) { {} }
+      @list = Array.new(4) { {} }
       self
     end
 
@@ -46,7 +46,7 @@ module CIAX
       verbose { cfmt('Appending in %s [%s]', @name, __mk_id(obj, id)) }
       return self unless (id = __chk_id(obj, id))
       @list[pri][id] = prc
-      verbose { cfmt('Appended in %s %S', @name, view) }
+      verbose { cfmt("Appended in %s\n", @name) + to_s }
       self
     end
 

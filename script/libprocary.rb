@@ -22,7 +22,7 @@ module CIAX
     end
 
     def call(title = 'ProcArray')
-      verbose { cfmt('%s (%s) %S', title, @obj.time_id, view) }
+      verbose { cfmt('%s in %s (%s) %S', title, @name, @obj.time_id, view) }
       @list.each do |a|
         a.each do |k, p|
           verbose { cfmt('Calling %s in (%s)', k, @name) }

@@ -10,8 +10,8 @@ module CIAX
     class Step
       # Extension method
       module Processor
-        def ext_local_dev(dev_dic)
-          extend(Device).ext_local_dev(dev_dic)
+        def ext_device(dev_dic)
+          extend(Device).ext_device(dev_dic)
         end
       end
       # Check Device Status
@@ -21,7 +21,7 @@ module CIAX
         end
 
         # exes: eobj list that is used for macro
-        def ext_local_dev(dev_dic)
+        def ext_device(dev_dic)
           @dev_dic = type?(dev_dic, Wat::ExeDic)
           # App::Exe dic used in this Step
           if (condb = delete(:cond))

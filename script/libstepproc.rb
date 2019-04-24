@@ -5,8 +5,8 @@ module CIAX
   module Mcr
     # Element of Record
     class Step
-      def ext_local_processor(db, depth, opt)
-        extend(Processor).ext_local_processor(db, depth, opt)
+      def ext_processor(db, depth, opt)
+        extend(Processor).ext_processor(db, depth, opt)
       end
 
       # Step Processor
@@ -15,7 +15,7 @@ module CIAX
           Msg.type?(obj, Step)
         end
 
-        def ext_local_processor(db, depth, opt)
+        def ext_processor(db, depth, opt)
           update db
           self[:depth] = depth
           @opt = opt

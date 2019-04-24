@@ -33,7 +33,6 @@ module CIAX
     def load(tag = nil)
       verbose { cfmt('Loading File %s', __file_name(tag)) }
       deep_update(__tag_load(tag))
-      cmt
     end
 
     def ext_save
@@ -108,7 +107,6 @@ module CIAX
     # Load without Header which can be remain forever on the saving feature
     def load_partial(tag = nil)
       deep_update(__tag_load(tag))
-      cmt
     end
 
     def mklink(tag = 'latest')

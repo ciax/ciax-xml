@@ -84,10 +84,12 @@
           <item id="chook" label="InR Hook">
             <frmcmd name="rhook"/>
             <frmcmd name="inrang"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="cunhk" label="InR UnHook">
             <frmcmd name="runhk"/>
             <frmcmd name="inrang"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="rstop" label="InR Stop">
             <frmcmd name="rstop"/>
@@ -98,10 +100,12 @@
           <item id="cjup" label="All EJB Up">
             <frmcmd name="ajup"/>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="cjdw" label="All EJB Down">
             <frmcmd name="ajdw"/>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="cjstop" label="All EJB Stop">
             <frmcmd name="ajstop"/>
@@ -114,96 +118,112 @@
               <argv>1</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup02" label="EJB Up 02">
             <frmcmd name="jup">
               <argv>2</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup03" label="EJB Up 03">
             <frmcmd name="jup">
               <argv>3</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup04" label="EJB Up 04">
             <frmcmd name="jup">
               <argv>4</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup05" label="EJB Up 05">
             <frmcmd name="jup">
               <argv>5</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup06" label="EJB Up 06">
             <frmcmd name="jup">
               <argv>6</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup07" label="EJB Up 07">
             <frmcmd name="jup">
               <argv>7</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup08" label="EJB Up 08">
             <frmcmd name="jup">
               <argv>8</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup09" label="EJB Up 09">
             <frmcmd name="jup">
               <argv>9</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup10" label="EJB Up 10">
             <frmcmd name="jup">
               <argv>10</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup11" label="EJB Up 11">
             <frmcmd name="jup">
               <argv>11</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup12" label="EJB Up 12">
             <frmcmd name="jup">
               <argv>12</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup13" label="EJB Up 13">
             <frmcmd name="jup">
               <argv>13</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup14" label="EJB Up 14">
             <frmcmd name="jup">
               <argv>14</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup15" label="EJB Up 15">
             <frmcmd name="jup">
               <argv>15</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jup16" label="EJB Up 16">
             <frmcmd name="jup">
               <argv>16</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
         </unit>
         <unit id="ujdwind" title="jdw[01-16]" label="EJB Down">
@@ -212,96 +232,112 @@
               <argv>1</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw02" label="EJB Dw 02">
             <frmcmd name="jdw">
               <argv>2</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw03" label="EJB Dw 03">
             <frmcmd name="jdw">
               <argv>3</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw04" label="EJB Dw 04">
             <frmcmd name="jdw">
               <argv>4</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw05" label="EJB Dw 05">
             <frmcmd name="jdw">
               <argv>5</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw06" label="EJB Dw 06">
             <frmcmd name="jdw">
               <argv>6</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw07" label="EJB Dw 07">
             <frmcmd name="jdw">
               <argv>7</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw08" label="EJB Dw 08">
             <frmcmd name="jdw">
               <argv>8</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw09" label="EJB Dw 09">
             <frmcmd name="jdw">
               <argv>9</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw10" label="EJB Dw 10">
             <frmcmd name="jdw">
               <argv>10</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw11" label="EJB Dw 11">
             <frmcmd name="jdw">
               <argv>11</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw12" label="EJB Dw 12">
             <frmcmd name="jdw">
               <argv>12</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw13" label="EJB Dw 13">
             <frmcmd name="jdw">
               <argv>13</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw14" label="EJB Dw 14">
             <frmcmd name="jdw">
               <argv>14</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw15" label="EJB Dw 15">
             <frmcmd name="jdw">
               <argv>15</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
           <item id="jdw16" label="EJB Dw 16">
             <frmcmd name="jdw">
               <argv>16</argv>
             </frmcmd>
             <frmcmd name="jakstat"/>
+            <frmcmd name="getpid"/>
           </item>
         </unit>
       </group>

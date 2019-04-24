@@ -54,6 +54,7 @@ module CIAX
       end
     rescue Errno::ENOENT
       verbose { "  -- no json file (#{fname})" }
+      nil
     end
   end
 end

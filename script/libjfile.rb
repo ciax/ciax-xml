@@ -27,6 +27,7 @@ module CIAX
       @id || cfg_err('No ID')
       @jsondir = vardir(dir || 'json')
       @tag_list = TagList.new(__file_path('*'))
+      # @upd_procs.append(self, :file) { load }
       ___init_load
     end
 

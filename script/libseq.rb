@@ -55,7 +55,7 @@ module CIAX
       end
 
       def ___post_play
-        show_fg @record.finish + "\n"
+        show_fg format("%s\n", @record.finish)
         @sv_stat.erase(:list, @id)
         @record.rmlink(@id) if @opt.mcr_log?
       end
@@ -98,7 +98,7 @@ module CIAX
       def ___site_interrupt
         @dev_dic.interrupt(@sv_stat.get(:run)) if @dev_dic
         @sv_stat.flush(:run).cmt
-        8
+        raise
       end
 
       # Sub for initialize()

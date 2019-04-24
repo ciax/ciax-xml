@@ -53,7 +53,7 @@ module CIAX
 
       def jverify(hash = {})
         res = super
-        res[:steps].map! do |i|
+        (res[:steps] || []).map! do |i|
           Step.new(res[:start]).update(i)
         end
         res

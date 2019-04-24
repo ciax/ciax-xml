@@ -100,12 +100,12 @@ module CIAX
 
     def usage(str)
       warn("Usage: #{$PROGRAM_NAME.split('/').last} #{str}")
+      show_err
       safe_exit
     end
 
     def safe_exit
       exit 2 unless $ERROR_INFO
-      show_err
       es = $ERROR_INFO.class.to_s.sub('CIAX::', '').to_sym
       exit Errors.index(es) + 3
     end

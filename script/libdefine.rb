@@ -42,18 +42,18 @@ module CIAX
   # When Parameter Shortage, continue in shell/server
   class ParShortage < InvalidPAR; end
 
-  ### Macro Related Error ###
-  class Verification < RuntimeError; end
-  class Interlock < Verification; end
-  class Retry < LongJump; end
-  class NoMcrCmd < ConfigError; end
-
   ### Mangaged Exception(Long Jump) ###
   class LongJump < RuntimeError; end
   # Switching Shell
   class SiteJump < LongJump; end
   # Switching Layer
   class LayerJump < LongJump; end
+
+  ### Macro Related Error ###
+  class Verification < RuntimeError; end
+  class Interlock < Verification; end
+  class Retry < LongJump; end
+  class NoMcrCmd < ConfigError; end
 
   # Array of Error Name
   Errors = constants.select { |o| const_get(o).is_a? Module }

@@ -10,7 +10,24 @@ module CIAX
   PROGRAM = $PROGRAM_NAME.split('/').pop
   # Initial View Mode
   VMODE = 'v'.freeze
-  # User input Error
+
+  ### Data Error ###
+  # Server error (Handled in Server)
+  class ServerError < RuntimeError; end
+  # Configuration Error (Exit from server)
+  class ConfigError < ServerError; end
+  # Device Communication Error (No stop on server)
+  class CommError < ServerError; end
+  # Stream Open Error
+  class StreamError < CommError; end
+  # CC Verification Error
+  class CheckCodeError < CommError; end
+  # Invalid Data in Field for Status
+  class InvalidData < CommError; end
+  # File Format Version Mismatch
+  class VerMismatch < CommError; end
+
+  ### User input Error ###
   class UserError < RuntimeError; end
   # When invalid Argument, exit from shell/server
   class InvalidARGS < UserError; end
@@ -25,37 +42,21 @@ module CIAX
   # When Parameter Shortage, continue in shell/server
   class ParShortage < InvalidPAR; end
 
-  # Mangaged Exception(Long Jump)
+  ### Macro Related Error ###
+  class Verification < RuntimeError; end
+  class Interlock < Verification; end
+  class Retry < LongJump; end
+  class NoMcrCmd < ConfigError; end
+
+  ### Mangaged Exception(Long Jump) ###
   class LongJump < RuntimeError; end
   # Switching Shell
   class SiteJump < LongJump; end
   # Switching Layer
   class LayerJump < LongJump; end
 
-  # Server error (Handled in Server)
-  class ServerError < RuntimeError; end
+  # Array of Error Name
+  Errors = constants.select { |o| const_get(o).is_a? Module }
 
-  # Configuration Error (Exit from server)
-  class ConfigError < ServerError; end
-
-  # Device Communication Error (No stop on server)
-  class CommError < ServerError; end
-
-  # Stream Open Error
-  class StreamError < CommError; end
-
-  # CC Verification Error
-  class CheckCodeError < CommError; end
-
-  # Invalid Data in Field for Status
-  class InvalidData < CommError; end
-
-  # File Format Version Mismatch
-  class VerMismatch < CommError; end
-
-  # Macro
-  class Verification < RuntimeError; end
-  class Interlock < Verification; end
-  class Retry < LongJump; end
-  class NoMcrCmd < ConfigError; end
+  puts Errors if __FILE__ == $PROGRAM_NAME
 end

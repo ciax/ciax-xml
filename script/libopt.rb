@@ -97,8 +97,8 @@ module CIAX
         usage(ustr)
       end
 
-      def usage(ustr = @usagestr, code = 2)
-        super("#{ustr}\n" + columns(@index), code)
+      def usage(ustr = @usagestr)
+        super("#{ustr}\n" + columns(@index))
       end
 
       # Shell or Command Line. Add after block.

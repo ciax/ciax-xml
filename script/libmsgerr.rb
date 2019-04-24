@@ -98,14 +98,16 @@ module CIAX
       Kernel.abort(_err_text(ary))
     end
 
-    def usage(str, code = 2)
+    def usage(str)
       warn("Usage: #{$PROGRAM_NAME.split('/').last} #{str}")
-      if $ERROR_INFO
-        show_err
-        eid = $ERROR_INFO.class.to_s.sub('CIAX::Invalid', '')
-        code = %w(ARGS OPT ID CMD PAR).index(eid).to_i + 2
-      end
-      exit code
+      safe_exit
+    end
+
+    def safe_exit
+      exit 2 unless $ERROR_INFO
+      show_err
+      es = $ERROR_INFO.class.to_s.sub('CIAX::', '').to_sym
+      exit Errors.index(es) + 3
     end
 
     def _err_text(ary)

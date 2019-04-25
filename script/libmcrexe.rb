@@ -42,7 +42,7 @@ module CIAX
       def ___init_cmd
         rem = @cobj.add_rem
         rem.cfg[:def_msg] = 'ACCEPT'
-        rem.add_sys
+        rem.add_sys.add_form('run', 'seqence', def_msg: 'RUN').def_proc { run }
         @int = rem.add_int
         @cfg[:valid_keys] = @int.valid_keys.clear
       end
@@ -58,7 +58,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       Opt::Conf.new('[proj] [cmd] (par)', options: 'edlnr') do |cfg|
         ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(cfg.args)
-        Exe.new(ent).seq.play
+        Exe.new(ent).shell
       end
     end
   end

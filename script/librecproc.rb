@@ -7,8 +7,12 @@ module CIAX
   module Mcr
     # Add extend method in Record
     class Record
-      def ext_processor(cfg)
-        extend(Processor).ext_processor(cfg)
+      # Local mode
+      module Local
+        include Varx::Local
+        def ext_processor(cfg)
+          extend(Processor).ext_processor(cfg)
+        end
       end
       # Macro Response Module
       module Processor

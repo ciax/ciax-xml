@@ -103,7 +103,7 @@ module CIAX
 
       # Sub for initialize()
       def ___init_record
-        @record = Record.new.ext_processor(@cfg)
+        @record = Record.new.ext_local.ext_processor(@cfg)
         @id = @record[:id]
         @title = @record.title_s
         ___init_record_file

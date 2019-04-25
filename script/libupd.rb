@@ -11,9 +11,9 @@ module CIAX
       super()
       time_upd
       # Proc Array for Pre-Process of Update Propagation to the upper Layers
-      @upd_procs = ProcArray.new(self, :upd)
+      @upd_procs = ProcArray.new(self, :upd, 'Updating')
       # Proc Array for Commit Propagation to the upper Layers
-      @cmt_procs = ProcArray.new(self, :cmt)
+      @cmt_procs = ProcArray.new(self, :cmt, 'Committing')
     end
 
     # Add cmt for self return method
@@ -27,7 +27,7 @@ module CIAX
     # For loading with propagation
     # Should be done when pulling data
     def upd
-      @upd_procs.call('Updating')
+      @upd_procs.call
       self
     end
 
@@ -40,7 +40,7 @@ module CIAX
     #  - Logging
     #  - Exec Upper data cmt
     def cmt(pri = nil)
-      @cmt_procs.call('Committing', pri)
+      @cmt_procs.call(pri)
       self
     end
 

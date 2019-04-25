@@ -14,15 +14,16 @@ module CIAX
   #  0: loading/status query/propagation to lower layer
   class ProcArray
     include Msg
-    def initialize(obj, name = nil)
+    def initialize(obj, name, title = 'ProcArray')
       super()
       @obj = type?(obj, Upd)
       @name = __mk_id(@obj, name)
+      @title = title
       clear
     end
 
-    def call(title = 'ProcArray', pri = nil)
-      verbose { cfmt("%s in %s P%S\n", title, @name, pri) + to_s }
+    def call(pri = nil)
+      verbose { cfmt("%s in %s P%S\n", @title, @name, pri) + to_s }
       (pri ? [@list[pri.to_i]] : @list).each do |a|
         a.each do |k, p|
           verbose { cfmt("Calling %s in (%s) P%S\n", k, @name, pri) + to_s }

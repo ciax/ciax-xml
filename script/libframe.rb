@@ -11,7 +11,8 @@ module CIAX
       include Dic
       def initialize(dbi = nil)
         super('frame', dbi, Dev::Db)
-        ext_dic(:data) { Hashx.new(@dbi[:response][:index]).skeleton }
+        @rdb = @dbi[:response][:index]
+        ext_dic(:data) { Hashx.new(@rdb).skeleton }
         # For stream log reading from stdin
         put(delete(:cmd), delete(:base64)) if key?(:cmd)
       end
@@ -40,6 +41,7 @@ module CIAX
         end
 
         def ext_conv(cfg)
+          @cache = {}
           @stream = Stream::Driver.new(@id, cfg)
           propagation(@stream)
           self
@@ -58,7 +60,7 @@ module CIAX
           return unless res
           # Time update from Stream
           time_upd(res)
-          cid = res['cmd']
+          cid = ___index_cid(res['cmd'])
           _dic.update(cid => res['base64'])
           verbose { _conv_text('Stream -> Frame', cid, time_id) }
           self
@@ -73,6 +75,28 @@ module CIAX
         def reset
           @stream.reset
           verbose { 'Reset Stream' }
+        end
+
+        private
+
+        # Modify cid having only index (distinct from free number)
+        def ___index_cid(cid)
+          return cid if cid !~ /:/
+          argv = cid.split(':')
+          argv[0..___idx_num(argv)].join(':')
+        end
+
+        def ___idx_num(argv)
+          id = argv.first
+          return @cache[id] if @cache.key?(id)
+          @cache[id] = ___get_idx(id).select { |s| s =~ /\$/ }.size
+        end
+
+        def ___get_idx(id)
+          rid = @dbi[:command][:index][id][:response]
+          return [] unless (bary = @rdb[rid][:body])
+          pars = bary.select { |h| h[:type] == 'assign' }.first || {}
+          pars[:index] || []
         end
       end
     end

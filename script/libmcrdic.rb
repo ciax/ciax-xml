@@ -48,6 +48,7 @@ module CIAX
         rem.ext.def_proc { |ent| ___gen_cmd(ent) }
         rem.int.def_proc { |ent| ___man_cmd(ent) }
         rem.get('interrupt').def_proc do
+          # k = mcr id (unix time)
           _dic.each { |k, v| k =~ /[\d]+/ && v.interrupt }
         end
       end

@@ -15,17 +15,12 @@ module CIAX
         verbose { 'Initiate New Macro' }
         ___init_cmd
         @sv_stat = type?(@cfg[:sv_stat], Prompt)
-        @cobj.get('interrupt').def_proc { interrupt }
         ___init_seq(submcr_proc)
+        _ext_local
       end
 
       def interrupt
-        @thread.raise(Interrupt)
-        self
-      end
-
-      def run
-        @thread = Threadx::Fork.new('Macro', 'seq', @id) { @seq.play }
+        exe(['interrupt'], 'local', 0)
         self
       end
 
@@ -42,8 +37,9 @@ module CIAX
       def ___init_cmd
         rem = @cobj.add_rem
         rem.cfg[:def_msg] = 'ACCEPT'
-        rem.add_sys.add_form('run', 'seqence', def_msg: 'RUN').def_proc { run }
+        @sys = rem.add_sys
         @int = rem.add_int
+        @sys.add_form('run', 'seqence').def_proc { run }
         @cfg[:valid_keys] = @int.valid_keys.clear
       end
 
@@ -52,6 +48,28 @@ module CIAX
         @id = @seq.id
         @int.def_proc { |ent| @seq.reply(ent.id) }
         @stat = @seq.record
+      end
+
+      # To inhelit CIAX::Exe::Local
+      module Local
+        include CIAX::Exe::Local
+        def self.extended(obj)
+          Msg.type?(obj, Exe)
+        end
+
+        # Mode Extension by Option
+        def ext_local
+          @cobj.get('interrupt').def_proc { @thread.raise(Interrupt) }
+          super
+        end
+
+        def run
+          @thread = Threadx::Fork.new('Macro', 'seq', @id) do
+            @sys.valid_keys.delete('run')
+            @seq.play
+          end
+          self
+        end
       end
     end
 

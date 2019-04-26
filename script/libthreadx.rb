@@ -65,6 +65,8 @@ module CIAX
         Thread.pass
         verbose { "Initiate Thread #{id}" }
         yield
+      rescue StandardError, Interrupt
+        show_err
       rescue Exception
         errmsg
       end

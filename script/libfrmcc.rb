@@ -62,10 +62,12 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libopt'
-      Opt::Get.new('[str]') do |_opt, args|
-        cc = CheckCode.new('bcc')
+      odb = { l: 'len', b: 'bcc', s: 'sum' }
+      Opt::Get.new('[str]', odb) do |opt, args|
+        Msg.args_err if args.empty?
+        cc = CheckCode.new(odb[opt.keys.first || :b])
         cc << args.shift.to_s
-        puts cc.ccc
+        puts format('%02X', cc.ccc)
       end
     end
   end

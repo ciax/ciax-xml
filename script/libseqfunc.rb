@@ -18,7 +18,7 @@ module CIAX
       private
 
       def ___mcr_exe(args, mstep)
-        ment = @cfg[:index].set_cmd(args)
+        ment = @cfg[:index].set_cmd(args.dup)
         ___mcr_bg(ment, mstep) || ___mcr_fg(ment, mstep)
         true
       end

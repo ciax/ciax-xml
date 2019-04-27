@@ -36,7 +36,7 @@ module CIAX
 
       # Calculate Check Code
       def ccc
-        verbose { cfmt('Cc Range [%s]', self) }
+        verbose { cfmt('Cc Range [%S]', self) }
         res = method("_cc_#{@method}").call.to_s
         verbose { cfmt('Cc Calc [%s] -> (%02X/%d)', @method.upcase, res, res) }
         res

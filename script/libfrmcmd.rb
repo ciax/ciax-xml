@@ -51,14 +51,17 @@ module CIAX
               dbc.is_a?(Array) ? ___cc_frame(dbc) : ___single_frame(dbc)
             end
             # Replace check code with ${cc}
-            @frame[1] = __mk_code(@cc.ccc, @frame[1]) if @cc
-            @frame.join
+            @frame.map do |v|
+              v.is_a?(String) ? v : __mk_code(@cc.ccc, v)
+            end.join
           end
 
           def ___cc_frame(array)
-            @cc = CheckCode.new(@sp[:ccmethod]) do
-              array.map { |dbc| ___single_frame(dbc) }.join
-            end
+            verbose { cfmt('CC Start %S', array) }
+            @frame.push('')
+            array.map { |dbc| ___single_frame(dbc) }.join
+            @cc = CheckCode.new(@sp[:ccmethod]) { @frame.last }
+            verbose { cfmt('CC End %S', @cc) }
           end
 
           def ___single_frame(dbc)

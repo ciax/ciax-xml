@@ -104,7 +104,9 @@ module CIAX
     def ___ppg_text(src, dst)
       fmt = 'Propagate %s -> %s from %s'
       # Cant use grep_v on Ver 2.0.0
-      ca = caller.select{ |s| /lib(upd|msg)/ !~ s }.first.split('/').last.tr("'`", '')
+      ca = caller.reject do |s|
+        /lib(upd|msg)/ =~ s
+      end.first.split('/').last.tr("'`", '')
       format(fmt, src.base_class, dst.base_class, ca)
     end
   end

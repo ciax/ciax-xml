@@ -36,8 +36,9 @@ module CIAX
 
       # Calculate Check Code
       def ccc
+        verbose { cfmt('Cc Range [%s]', self) }
         res = method("_cc_#{@method}").call.to_s
-        verbose { "Cc Calc [#{@method.upcase}] -> (#{res})" }
+        verbose { cfmt('Cc Calc [%s] -> (%02X/%d)', @method.upcase, res, res) }
         res
       rescue NameError
         Msg.cfg_err("No such CC method #{@method}")
@@ -67,7 +68,7 @@ module CIAX
         Msg.args_err if args.empty?
         cc = CheckCode.new(odb[opt.keys.first || :b])
         cc << args.shift.to_s
-        puts format('%02X', cc.ccc)
+        puts format('%02X/%d', cc.ccc, cc.ccc)
       end
     end
   end

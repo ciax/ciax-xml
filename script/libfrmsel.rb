@@ -31,10 +31,8 @@ module CIAX
           case e[:type]
           when 'ccrange'
             a << ___mk_ccr(dbe, body)
-          when 'body'
-            a + body
           else
-            a << e
+            a + __mk_body(e, body)
           end
         end
       end
@@ -42,8 +40,12 @@ module CIAX
       def ___mk_ccr(dbe, body)
         return unless dbe[:ccrange]
         dbe[:ccrange].inject([]) do |a, e|
-          a + (e[:type] == 'body' ? body : [e])
+          a + __mk_body(e, body)
         end
+      end
+
+      def __mk_body(e, body)
+        e[:type] == 'body' ? body.map { |h| h.update(e) } : [e]
       end
     end
 

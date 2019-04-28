@@ -8,7 +8,7 @@ module CIAX
       # type = //response or //command
       def initialize(dbi, type)
         super()
-        dbe = type?(dbi, Dbx::Item)[type]
+        dbe = type?(dbi, Dbx::Item)[type].freeze
         # Ent is needed which includes response_id and cmd_parameters
         ___mk_dic(dbe[:frame], dbe[:index])
       end
@@ -22,30 +22,32 @@ module CIAX
       end
 
       def ___get_struct(dbe, item)
-        body = item[:body] || []
-        item[:noaffix] ? body : ___mk_main(dbe, body)
+        selb = item[:body] || []
+        item[:noaffix] ? selb : ___mk_main(dbe, selb)
       end
 
-      def ___mk_main(dbe, body)
+      def ___mk_main(dbe, selb)
         dbe[:main].inject([]) do |a, e|
           case e[:type]
           when 'ccrange'
-            a << ___mk_ccr(dbe, body)
+            a << ___mk_ccr(dbe, selb)
           else
-            a + __mk_body(e, body)
+            a + __mk_body(e.dup, selb)
           end
         end
       end
 
-      def ___mk_ccr(dbe, body)
+      def ___mk_ccr(dbe, selb)
         return unless dbe[:ccrange]
         dbe[:ccrange].inject([]) do |a, e|
-          a + __mk_body(e, body)
+          a + __mk_body(e.dup, selb)
         end
       end
 
-      def __mk_body(e, body)
-        e[:type] == 'body' ? body.map { |h| h.update(e) } : [e]
+      def __mk_body(e, selb)
+        return [e] if e[:type] != 'body'
+        e.delete(:type)
+        selb.map { |h| h.update(e) }
       end
     end
 

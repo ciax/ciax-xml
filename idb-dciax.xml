@@ -7,6 +7,7 @@
       <site id="tsi" dev_id="tsi" app_id="cj2" host="localhost" port="25192" label="IR Stand-by"/>
       <site id="tso" dev_id="tso" app_id="cj2" host="localhost" port="25193" label="OPT Stand-by"/>
       <site id="tts" dev_id="tts" app_id="oss" host="localhost" port="25195" label="OSS Telescope"/>
+      <site id="tst" dev_id="tst" app_id="ist" host="localhost" port="53051" label="Current Instrument"/>
     </group>
   </project>
 </idb>

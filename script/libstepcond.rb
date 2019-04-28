@@ -24,24 +24,13 @@ module CIAX
           end
         end
 
-        # Getting real value in [data:id]
-        def pick_val(stat, ref)
-          warning('No form specified') unless ref[:form]
-          # form = 'data', 'class' or 'msg' in Status
-          form = (ref[:form] || :data).to_sym
-          var = ref[:var]
-          data = stat[form]
-          warning('No [%s] in Status[%s]', var, form) unless data.key?(var)
-          data[var]
-        end
-
         private
 
         def ___condition(stat, ref)
           c = {}
           %i(site var form cmp cri skip).each { |k| c[k] = ref[k] }
           unless c[:skip]
-            real = pick_val(stat, c)
+            real = stat.pick_val(c)
             res = method('_ope_' + c[:cmp]).call(c[:cri], real)
             c.update(real: real, res: res)
             verbose { c.map { |k, v| format('%s=%s', k, v) }.join(',') }

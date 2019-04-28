@@ -35,6 +35,18 @@ module CIAX
         self
       end
 
+      ## For macro step
+      # Getting real value in [data:id]
+      def pick_val(ref)
+        warning('No form specified') unless ref[:form]
+        # form = 'data', 'class' or 'msg' in Status
+        form = (ref[:form] || :data).to_sym
+        var = ref[:var]
+        data = self[form]
+        warning('No [%s] in Status[%s]', var, form) unless data.key?(var)
+        data[var]
+      end
+
       private
 
       # For element of SubStat

@@ -6,7 +6,7 @@ module CIAX
     # Enumurable Data Handling
     module Enum
       # Array handling
-      def __show_ary(data, col)
+      def ___show_ary(data, col)
         if data.any? { |v| v.is_a?(Enumerable) }
           data.each_with_index { |v, i| __recursive(v, i) }
           @lines << __indent
@@ -28,7 +28,7 @@ module CIAX
       end
 
       # Hash handling
-      def __show_hash(data, tag)
+      def ___show_hash(data, tag)
         if data.values.any? { |v| v.is_a?(Enumerable) }
           data.each { |k, v| __recursive(v, k) }
         else
@@ -143,10 +143,10 @@ module CIAX
         case data
         when Array
           @lines.last << ' ['
-          __show_ary(data, @cfg[:column])
+          ___show_ary(data, @cfg[:column])
           @lines.last << ']'
         when Hash
-          __show_hash(data, tag)
+          ___show_hash(data, tag)
         else
           # Show String, Numerical ...
           @lines.last << ' ' + __mk_elem(data)

@@ -42,11 +42,11 @@ module CIAX
             @sp = type?(@cfg[:stream], Hash)
             @codec = Codec.new(@sp[:endian])
             @frame = ['']
-            ent[:frame] = __mk_frame(ent.deep_subst(@sel[:struct]))
+            ent[:frame] = ___mk_frame(ent.deep_subst(@sel[:struct]))
           end
 
           # instance var frame,sel,field,fstr
-          def __mk_frame(array)
+          def ___mk_frame(array)
             array.each do |dbc|
               dbc.is_a?(Array) ? ___cc_frame(dbc) : __single_frame(dbc)
             end

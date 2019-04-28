@@ -21,7 +21,7 @@
   - Status key which could be written out to a file : String.
  #local var
    args: Command(Array) [cmd,par,par...].
-   cid: Command ID(String) "cmd:par:par".
+   cid: Compound ID(String) "key:par:par".
    bat: Batch Array of Commands(Array of Array) [args,args,...].
    f*: Associated with Frm (i.e. fargs, fstat ..).
    a*: Associated with App (i.e. aargs, astat ..).

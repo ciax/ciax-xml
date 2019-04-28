@@ -11,6 +11,7 @@ module CIAX
       include Dic
       def initialize(dbi = nil)
         super('frame', dbi, Dev::Db)
+        args_err('No response DB') unless @dbi.key?(:response)
         @rdb = @dbi[:response][:index]
         ext_dic(:data) { Hashx.new(@rdb).skeleton }
         # For stream log reading from stdin

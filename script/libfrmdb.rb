@@ -17,7 +17,7 @@ module CIAX
         dbi[:stream] = doc[:stream] || Hashx.new
         _init_command_db(dbi, doc[:command])
         ___init_field(dbi, doc[:field])
-        ___init_response(dbi, doc[:response])
+        ___init_response(dbi, doc[:response]) if doc[:response]
         dbi
       end
 

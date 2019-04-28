@@ -23,7 +23,7 @@ module CIAX
 
         private
 
-        def ___init_log_mode
+        def _init_log_mode
           super && @stat.ext_sqlog
         end
 

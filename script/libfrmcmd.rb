@@ -48,7 +48,7 @@ module CIAX
           # instance var frame,sel,field,fstr
           def __mk_frame(array)
             array.each do |dbc|
-              dbc.is_a?(Array) ? ___cc_frame(dbc) : ___single_frame(dbc)
+              dbc.is_a?(Array) ? ___cc_frame(dbc) : __single_frame(dbc)
             end
             # Replace check code with ${cc}
             @frame.map do |v|
@@ -59,12 +59,12 @@ module CIAX
           def ___cc_frame(array)
             verbose { cfmt('CC Start %S', array) }
             @frame.push('')
-            array.map { |dbc| ___single_frame(dbc) }.join
+            array.map { |dbc| __single_frame(dbc) }.join
             @cc = CheckCode.new(@sp[:ccmethod]) { @frame.last }
             verbose { cfmt('CC End %S', @cc) }
           end
 
-          def ___single_frame(dbc)
+          def __single_frame(dbc)
             word = ___chk_cc(dbc)
             return('') unless word
             # Replace status with ${status_id}

@@ -13,17 +13,17 @@ module CIAX
         elsif data.size > col
           ___ary_fold(data, col)
         else
-          @lines.last << ___ary_line(data) + ' ' unless data.empty?
+          @lines.last << __ary_line(data) + ' ' unless data.empty?
         end
       end
 
       def ___ary_fold(data, col)
         @lines << data.each_slice(col).map do |a|
-          __indent(___ary_line(a), 2)
+          __indent(__ary_line(a), 2)
         end.join(",\n") << __indent
       end
 
-      def ___ary_line(a)
+      def __ary_line(a)
         ' ' + a.map(&:inspect).join(', ')
       end
 

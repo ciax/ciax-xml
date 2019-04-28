@@ -84,7 +84,7 @@ module CIAX
         ustr = '(opt) ' + ustr unless optarg.empty?
         @defopt = optarg.delete(:default).to_s
         @optdb = Db.new(optarg)
-        ___set_opt(optarg.delete(:options))
+        _set_opt(optarg.delete(:options))
         getarg(ustr, &opt_proc)
       rescue InvalidARGS
         usage(ustr)
@@ -132,7 +132,7 @@ module CIAX
       # -l   : client to device server
       # -s   : server
 
-      def ___set_opt(str)
+      def _set_opt(str)
         ops = ___add_colon(str)
         ___make_usage(ops)
         ___parse(ops)

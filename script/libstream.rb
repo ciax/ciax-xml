@@ -45,7 +45,7 @@ module CIAX
       end
 
       def reset
-        ___close_strm
+        __close_strm
         cmt
       end
 
@@ -84,7 +84,7 @@ module CIAX
         ___try_open
         # Signal.trap(:INT, 'DEFAULT')
         verbose { 'Initiate Opened' }
-        at_exit { ___close_strm }
+        at_exit { __close_strm }
         # verbose { 'Stream Open successfully' }
         # Shut off from Ctrl-C Signal to the child process
         # Process.setpgid(@f.pid,@f.pid)
@@ -101,7 +101,7 @@ module CIAX
         end
       end
 
-      def ___close_strm
+      def __close_strm
         return if @f.closed?
         verbose { 'Closing Stream' }
         Process.kill('TERM', @f.pid)

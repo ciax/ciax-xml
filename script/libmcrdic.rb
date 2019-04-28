@@ -45,7 +45,7 @@ module CIAX
 
       def ___init_cmd(rem)
         rem.ext_input_log if @opt.mcr_log?
-        rem.ext.def_proc { |ent| ___gen_cmd(ent) }
+        rem.ext.def_proc { |ent| __gen_cmd(ent) }
         rem.int.def_proc { |ent| ___man_cmd(ent) }
         rem.get('interrupt').def_proc do
           # k = mcr id (unix time)
@@ -54,8 +54,8 @@ module CIAX
       end
 
       # Macro Generator
-      def ___gen_cmd(ent)
-        mobj = Exe.new(ent) { |e| ___gen_cmd(e) }
+      def __gen_cmd(ent)
+        mobj = Exe.new(ent) { |e| __gen_cmd(e) }
         put(mobj.id, mobj.run)
         @rec_arc.push(mobj.stat)
       end

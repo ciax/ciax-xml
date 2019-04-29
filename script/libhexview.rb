@@ -41,9 +41,11 @@ module CIAX
       private
 
       def ___init_stats
-        field = type?(@stat.field, Frm::Field)
-        frame = type?(field.frame, Stream::Frame)
-        sdic = { status: @stat, field: field, frame: frame }
+        sdic = { status: @stat }
+        if @stat.field
+          field = sdic[:field] = type?(@stat.field, Frm::Field)
+          sdic[:frame] = type?(field.frame, Stream::Frame) if field.frame
+        end
         @skeys = sdic.keys
         update(sdic)
       end

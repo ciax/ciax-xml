@@ -113,4 +113,12 @@
     <field ref="field:iid" label="Instrument ID" length="4" type="int"/>
     <field ref="frame:logstat" label="LOGIN Statu" type="str"/>
   </hexpack>
+  <hexpack id="ist" label="INST ID">
+    <field ref="msg:cis" label="CURRENT INST" length="6"/>
+    <field ref="msg:sa" label="INST ON A-FL" length="6"/>
+    <field ref="msg:sb" label="INST ON B-FL" length="6"/>
+    <field ref="msg:sc" label="INST ON C-FL" length="6"/>
+    <field ref="msg:sd" label="INST ON D-FL" length="6"/>
+    <field ref="msg:cf" label="HOME POSITION" length="2"/>
+  </hexpack>
 </hdb>

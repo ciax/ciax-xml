@@ -9,12 +9,11 @@ module CIAX
         include CIAX::Exe::Driver
 
         def ext_local_driver
-          super
           ___init_frame
           ___init_processor_ext
           ___init_processor_flush
           ___init_processor_reset
-          self
+          super
         end
 
         private

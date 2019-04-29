@@ -32,40 +32,40 @@
         <item id="sa" label="SA">
           <frmcmd name="set">
             <argv>cis</argv>
-            <argv>${cf@0}</argv>
+            <argv>${fla@0}</argv>
           </frmcmd>
           <frmcmd name="set">
-            <argv>cf</argv>
+            <argv>cfl</argv>
             <argv>0</argv>
           </frmcmd>
         </item>
         <item id="sb" label="SB">
           <frmcmd name="set">
             <argv>cis</argv>
-            <argv>${cf@1}</argv>
+            <argv>${fla@1}</argv>
           </frmcmd>
           <frmcmd name="set">
-            <argv>cf</argv>
+            <argv>cfl</argv>
             <argv>1</argv>
           </frmcmd>
         </item>
         <item id="sc" label="SC">
           <frmcmd name="set">
             <argv>cis</argv>
-            <argv>${cf@2}</argv>
+            <argv>${fla@2}</argv>
           </frmcmd>
           <frmcmd name="set">
-            <argv>cf</argv>
+            <argv>cfl</argv>
             <argv>2</argv>
           </frmcmd>
         </item>
         <item id="sd" label="SD">
           <frmcmd name="set">
             <argv>cis</argv>
-            <argv>${cf@3}</argv>
+            <argv>${fla@3}</argv>
           </frmcmd>
           <frmcmd name="set">
-            <argv>cf</argv>
+            <argv>cfl</argv>
             <argv>3</argv>
           </frmcmd>
         </item>
@@ -73,12 +73,24 @@
     </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" caption="">
-        <integer id="cis" label="Current Instrument" symbol="iid_ac"/>
-        <integer id="sa" label="Instrument Assigned SA" symbol="iid_ac"/>
-        <integer id="sb" label="Instrument Assigned SB" symbol="iid_ac"/>
-        <integer id="sc" label="Instrument Assigned SC" symbol="iid_ac"/>
-        <integer id="sd" label="Instrument Assigned SD" symbol="iid_ac"/>
-        <integer id="cf" label="Current Flange" symbol="flange"/>
+        <integer id="cis" label="Current Instrument" symbol="iid_ac">
+          <field ref="cis"/>
+        </integer>
+        <integer id="sa" label="Instrument Assigned SA" symbol="iid_ac">
+          <field ref="fla" index="0"/>
+        </integer>
+        <integer id="sb" label="Instrument Assigned SB" symbol="iid_ac">
+          <field ref="fla" index="1"/>
+        </integer>
+        <integer id="sc" label="Instrument Assigned SC" symbol="iid_ac">
+          <field ref="fla" index="2"/>
+        </integer>
+        <integer id="sd" label="Instrument Assigned SD" symbol="iid_ac">
+          <field ref="fla" index="3"/>
+        </integer>
+        <integer id="cf" label="Current Flange" symbol="flange">
+          <field ref="cfl"/>
+        </integer>
       </group>
     </status>
   </app>

@@ -79,6 +79,7 @@
           </event>
         </watch>
       </site>
+      <site id="tst" dev_id="tst" app_id="ist" host="localhost" port="53051" label="Current Instrument"/>
     </group>
   </project>
 </idb>

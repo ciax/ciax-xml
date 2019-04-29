@@ -4,7 +4,7 @@
     <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
       <var id="cis" label="Current Instrument"/>
       <var id="cfl" label="Current Flange"/>
-      <array id="fra" label="Frange Array">
+      <array id="fla" label="Flange Array">
         <size>4</size>
       </array>
     </field>

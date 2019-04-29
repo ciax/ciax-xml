@@ -91,6 +91,7 @@ module CIAX
     end
 
     def _ext_local
+      require 'libexelocal'
       extend(context_module('Local')).ext_local
     end
 
@@ -126,50 +127,6 @@ module CIAX
       @host = @opt.host || @cfg[:host]
       @port = @cfg[:port]
       self
-    end
-
-    # Local mode
-    module Local
-      def self.extended(obj)
-        Msg.type?(obj, Exe)
-      end
-
-      # Local operation included in ext_test, ext_driver
-      # (non_client)
-      def ext_local
-        @stat.ext_local.ext_file
-        @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
-        self
-      end
-
-      # UDP Listen
-      def run
-        return self if @opt.cl?
-        require 'libserver'
-        return self if is_a?(Server)
-        extend(Server).ext_server
-      end
-
-      # Option handling
-      def opt_mode
-        @opt.drv? ? _ext_driver : _ext_test
-        run if @opt.sv?
-      end
-
-      private
-
-      # No save any data
-      def _ext_test
-        @mode = 'TEST'
-        self
-      end
-
-      # Generate and Save Data
-      def _ext_driver
-        @mode = 'DRV'
-        @stat.ext_save
-        self
-      end
     end
   end
 end

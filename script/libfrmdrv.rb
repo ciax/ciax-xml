@@ -10,16 +10,19 @@ module CIAX
         include CIAX::Exe::Driver
 
         def ext_driver
-          ___init_frame
-          ___init_processor_ext
-          ___init_processor_int
+          if @frame
+            ___init_frame
+            ___init_processor_ext
+            ___init_processor_int
+          end
           super
         end
 
         private
 
         def _init_log_mode
-          super && @frame.ext_log
+          return unless super
+          @frame.ext_log if @frame
         end
 
         def ___init_frame

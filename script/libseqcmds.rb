@@ -13,7 +13,8 @@ module CIAX
       private
 
       def _cmd_mesg(step, _mstat)
-        @qry.query(['ok'], step)
+        # If nonstop, add return after query line
+        show_fg if @qry.query(['ok'], step).is_a?(Step)
         true
       end
 

@@ -10,7 +10,7 @@ module CIAX
         super()
         dbe = type?(dbi, Dbx::Item)[type].freeze
         # Ent is needed which includes response_id and cmd_parameters
-        ___mk_dic(dbe[:frame], dbe[:index])
+        ___mk_dic(dbe[:frame], dbe[:index]) if dbe
       end
 
       private

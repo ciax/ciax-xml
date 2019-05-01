@@ -36,7 +36,7 @@
    It is also variable in some case.
  Valid commands are picked up from the sum of their lists.
 
-## Item(Hash)
+## Form(Hash)
  Tagged by command name.
  This has parameter setting method which generates Entity.
 

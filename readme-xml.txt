@@ -80,6 +80,12 @@
                   idx can be equation (i.e. $_+1 )
     available: fdb//command/[char,string]
 
+ ${*:*/*}
+    description : substitute status ${token}
+                  token is layer:category/key => var[layer][category][key]
+                  content should be string
+    available: adb//command/argv
+
  $#
     description : formula parameter
     available: adb//status/value@formula

@@ -13,7 +13,23 @@ module CIAX
       @dbi ||= mod.new.get(@id)
       _attr_set(@dbi[:version].to_i, @dbi[:host])
       @layer = @dbi[:layer]
-      @stat_dic = Hashx.new
+      @stat_dic = Hashx.new(@type => self)
+    end
+
+    # Substitute str by self data
+    # - str format: ${key}
+    def subst(str)
+      return str unless /\$\{/ =~ str
+      enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
+        str.gsub(/\$\{(.+)\}/) do
+          subst_val(Regexp.last_match(1))
+        end
+      end
+    end
+
+    # Substitute value (used for subst)
+    def subst_val(key)
+      get(key.sub(/#{@type}:/, ''))
     end
 
     private

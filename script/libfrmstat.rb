@@ -16,25 +16,9 @@ module CIAX
         #  (Set upper layer's update)
         self[:comerr] = false
         ext_dic(:data) { ___init_field }
-        @stat_dic[:field] = self
         return unless @dbi.key?(:response)
         @frame = Stream::Frame.new(@dbi)
-        @stat_dic[:frame] = @frame
-      end
-
-      # Substitute str by Field data
-      # - str format: ${key}
-      # - output csv if array
-      def subst(str) # subst by field
-        return str unless /\$\{/ =~ str
-        enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
-          str.gsub(/\$\{(.+)\}/) do
-            key = Regexp.last_match(1)
-            ary = [*get(key)].map! { |i| expr(i) }
-            cfg_err("No value for subst [#{key}]") if ary.empty?
-            ary.join(',')
-          end
-        end
+        @stat_dic['frame'] = @frame
       end
 
       # First id is taken as is (id@x@y) or ..
@@ -78,6 +62,15 @@ module CIAX
       def comerr
         self[:comerr] = true
         cmt
+      end
+
+      # Substitute str by Field data
+      # - str format: ${key}
+      # - output csv if array
+      def subst_val(key)
+        ary = [*super].map! { |i| expr(i) }
+        cfg_err("No value for subst [#{key}]") if ary.empty?
+        ary.join(',')
       end
 
       private

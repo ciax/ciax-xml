@@ -47,13 +47,20 @@ module CIAX
         data[var]
       end
 
+      # Substitute str by Status data
+      # - str format: ${key}
+      def subst_val(key)
+        return super if /:/ !~ key
+        @field.subst_val(key)
+      end
+
       private
 
       # For element of SubStat
       def ___init_field(field)
         return unless @dbi[:dev_id]
         @field = type_gen(field, Frm::Field) { |mod| mod.new(@dbi[:dev_id]) }
-        @stat_dic.update(@field.stat_dic)[:status] = self
+        @stat_dic.update(@field.stat_dic)
       end
     end
 

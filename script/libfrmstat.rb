@@ -16,7 +16,10 @@ module CIAX
         #  (Set upper layer's update)
         self[:comerr] = false
         ext_dic(:data) { ___init_field }
-        @frame = Stream::Frame.new(@dbi) if @dbi.key?(:response)
+        @stat_dic[:field] = self
+        return unless @dbi.key?(:response)
+        @frame = Stream::Frame.new(@dbi)
+        @stat_dic[:frame] = @frame
       end
 
       # Substitute str by Field data

@@ -69,6 +69,7 @@ module CIAX
 
       def ___init_status(status)
         @status = type_gen(status, App::Status) { |mod| mod.new(@dbi) }
+        @stat_dic.update(@status.stat_dic)[:event] = self
         propagation(@status)
       end
     end
@@ -76,7 +77,9 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libinsdb'
       Opt::Get.new('[site]', options: 'h') do |opt, args|
-        puts Event.new(args.shift).cmode(opt.host)
+        ev = Event.new(args.shift).cmode(opt.host)
+        puts ev
+        puts ev.stat_dic.path(args)
       end
     end
   end

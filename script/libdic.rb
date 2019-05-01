@@ -34,7 +34,7 @@ module CIAX
     end
   end
 
-  # Key is Token
+  # Key is Token (key1:key2:...)
   module DicToken
     include Dic
     def self.extended(obj)

@@ -7,12 +7,13 @@ module CIAX
   #  STDIN function is availabie
   #  Need Header(Dbx::Item)
   class Statx < Varx
-    attr_reader :dbi
+    attr_reader :dbi, :stat_dic
     def initialize(type, obj, mod = Dbx::Index)
       super(type, ___get_id(obj))
       @dbi ||= mod.new.get(@id)
       _attr_set(@dbi[:version].to_i, @dbi[:host])
       @layer = @dbi[:layer]
+      @stat_dic = Hashx.new
     end
 
     private

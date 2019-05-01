@@ -53,6 +53,7 @@ module CIAX
       def ___init_field(field)
         return unless @dbi[:dev_id]
         @field = type_gen(field, Frm::Field) { |mod| mod.new(@dbi[:dev_id]) }
+        @stat_dic.update(@field.stat_dic)[:status] = self
       end
     end
 

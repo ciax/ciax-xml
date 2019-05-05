@@ -21,7 +21,7 @@ module CIAX
         @stat_dic['frame'] = @frame
       end
 
-      # First id is taken as is (id@x@y) or ..
+      # First token is taken as is (id@x@y) or ..
       # Get value for id with multiple dimention
       # - index should be numerical or formula
       # - ${id@idx1@idx2} => hash[id][idx1][idx2]

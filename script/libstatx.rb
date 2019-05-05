@@ -3,6 +3,24 @@ require 'libvarx'
 require 'libdb'
 
 module CIAX
+  # Layer status container
+  class StatDic < Hashx
+    def initialize(type, obj)
+      # Default layer status name
+      @type = type
+      @obj = obj
+      self[type] = @obj
+    end
+
+    def get(token)
+      token.sub!(/#{@type}:/, '')
+      return @obj.get(token) if /:/ !~ token
+      layer = $LAST_MATCH_INFO
+      cfg_err("No such entry #{layer}") unless key?(layer)
+      self[layer].get($')
+    end
+  end
+
   # Status Data by using Db
   #  STDIN function is availabie
   #  Need Header(Dbx::Item)
@@ -13,7 +31,7 @@ module CIAX
       @dbi ||= mod.new.get(@id)
       _attr_set(@dbi[:version].to_i, @dbi[:host])
       @layer = @dbi[:layer]
-      @stat_dic = Hashx.new(@type => self)
+      @stat_dic = StatDic.new(@type, self)
     end
 
     # Substitute str by self data
@@ -27,9 +45,8 @@ module CIAX
       end
     end
 
-    # Substitute value (used for subst)
     def subst_val(key)
-      get(key.sub(/#{@type}:/, ''))
+      @stat_dic.get(key)
     end
 
     private

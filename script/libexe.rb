@@ -48,7 +48,7 @@ module CIAX
     end
 
     def no_cmd
-      cmd_err @cobj.view_dic
+      cmd_err { @cobj.view_dic }
     end
 
     #  Modes

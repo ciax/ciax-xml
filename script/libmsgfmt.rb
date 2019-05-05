@@ -28,7 +28,8 @@ module CIAX
     # (ex. '%:1s')
     # Inspection format
     #  %S converts the object with inspect
-    def cfmt(fmt, *ary)
+    def cfmt(*ary)
+      return '' unless (fmt = ary.shift)
       i = 0
       fmt.gsub!(/%.*?[a-zA-Z]/) do |m|
         m = colorize(m, $+.hex) if m.sub!(/:(.)/, '')

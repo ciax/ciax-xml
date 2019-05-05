@@ -14,14 +14,15 @@ module CIAX
       # args will be destroyed
       def set_cmd(args = [], opt = {})
         id = type?(args, Array).shift
-        valid_keys.include?(id) || cmd_err("Invalid command [#{id}]", view_dic)
+        valid_keys.include?(id) ||
+          cmd_err('Invalid command [%s]', id) { view_dic }
         form = get(id)
         @view_par = form.view_par
         form.set_par(args, opt)
       end
 
       def error
-        cmd_err(view_dic)
+        cmd_err { view_dic }
       end
 
       # Proc should return String

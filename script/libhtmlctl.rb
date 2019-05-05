@@ -72,7 +72,7 @@ module CIAX
 
       def __check_group(gid = nil)
         return if @gdb.key?(gid)
-        cmd_err(@gdb.map { |k, v| Msg.itemize(k, v[:caption]) }.join("\n"))
+        cmd_err { @gdb.map { |k, v| Msg.itemize(k, v[:caption]) } }
       end
     end
 

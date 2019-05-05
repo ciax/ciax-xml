@@ -36,52 +36,55 @@ module CIAX
 
     # Exception methods
     def usr_err(*ary) # Raise User error
-      raise UserError, _err_text(ary), caller(1)
+      raise UserError, cfmt(*ary), caller(1)
     end
 
     def args_err(*ary) # Raise ARGS error
-      raise InvalidARGS, _err_text(ary), caller(1)
+      raise InvalidARGS, cfmt(*ary), caller(1)
     end
 
     def id_err(id, type, comment = '') # Raise User error (Invalid User input)
-      raise InvalidID, "No such ID (#{id}) in #{type}\n#{comment}", caller(1)
+      str = cfmt("No such ID (%s) in %s\n%s", id, type, comment)
+      raise InvalidID, str, caller(1)
     end
 
     def cmd_err(*ary) # Raise User error (Invalid User input)
-      raise InvalidCMD, _err_text(ary), caller(1)
+      line = [cfmt(*ary)]
+      line.concat([yield]) if defined? yield
+      raise InvalidCMD, line.flatten.join("\n"), caller(1)
     end
 
     def par_err(*ary) # Raise User error (Invalid User input)
-      raise InvalidPAR, _err_text(ary), caller(1)
+      raise InvalidPAR, cfmt(*ary), caller(1)
     end
 
     def cfg_err(*ary) # Raise Device error (Bad Configulation)
       ary[0] = "#{self.class}: #{ary[0]}"
-      raise ConfigError, _err_text(ary), caller(1)
+      raise ConfigError, cfmt(*ary), caller(1)
     end
 
     def cc_err(*ary) # Raise Device error (Check Code Verification Failed)
-      raise CheckCodeError, _err_text(ary), caller(1)
+      raise CheckCodeError, cfmt(*ary), caller(1)
     end
 
     def com_err(*ary) # Raise Device error (Communication Failed)
-      raise CommError, _err_text(ary), caller(1)
+      raise CommError, cfmt(*ary), caller(1)
     end
 
     def data_err(*ary) # Raise Device error (Data invalid)
-      raise InvalidData, _err_text(ary), caller(1)
+      raise InvalidData, cfmt(*ary), caller(1)
     end
 
     def ver_err(*ary) # Raise Device error (Format Version Mismatch)
-      raise VerMismatch, _err_text(ary), caller(1)
+      raise VerMismatch, cfmt(*ary), caller(1)
     end
 
     def str_err(*ary) # Raise Device error (Stream open Failed)
-      raise StreamError, _err_text(ary), caller(1)
+      raise StreamError, cfmt(*ary), caller(1)
     end
 
     def mcr_err(*ary) # Raise No Macro commandd error (Not an option)
-      raise NoMcrCmd, _err_text(ary), caller(1)
+      raise NoMcrCmd, cfmt(*ary), caller(1)
     end
 
     def relay(str)
@@ -90,12 +93,12 @@ module CIAX
     end
 
     def sv_err(*ary) # Raise Server error (Parameter type)
-      raise ServerError, _err_text(ary), caller(2)
+      raise ServerError, cfmt(*ary), caller(2)
     end
 
     def give_up(str = 'give_up')
       ary = [str, $ERROR_INFO.to_s, *$ERROR_POSITION]
-      Kernel.abort(_err_text(ary))
+      Kernel.abort(cfmt(*ary))
     end
 
     def usage(str)
@@ -108,10 +111,6 @@ module CIAX
       exit 2 unless $ERROR_INFO
       es = $ERROR_INFO.class.to_s.sub('CIAX::', '').to_sym
       exit Errors.index(es) + 3
-    end
-
-    def _err_text(ary)
-      ary.join("\n  ")
     end
   end
 end

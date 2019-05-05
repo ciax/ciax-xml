@@ -87,18 +87,18 @@ module CIAX
       raise NoMcrCmd, cfmt(*ary), caller(1)
     end
 
+    def sv_err(*ary) # Raise Server error (Parameter type)
+      raise ServerError, cfmt(*ary), caller(2)
+    end
+
     def relay(str)
       str = "#{str}\n#{$ERROR_INFO}"
       raise $ERROR_INFO.class, str, caller(1)
     end
 
-    def sv_err(*ary) # Raise Server error (Parameter type)
-      raise ServerError, cfmt(*ary), caller(2)
-    end
-
     def give_up(str = 'give_up')
-      ary = [str, $ERROR_INFO.to_s, *$ERROR_POSITION]
-      Kernel.abort(cfmt(*ary))
+      line = [str, $ERROR_INFO.to_s, *$ERROR_POSITION]
+      Kernel.abort(line.join("\n"))
     end
 
     def usage(str)

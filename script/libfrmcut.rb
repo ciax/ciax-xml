@@ -130,7 +130,7 @@ module CIAX
           verbose { cfmt('Verify:(%s) [%S] OK', e0[:label], ref) }
         else
           fmt = 'Mismatch(%s/%s):%S for %S'
-          cc_err(cfmt(fmt, e0[:label], e0[:decode], val, ref))
+          cc_err(fmt, e0[:label], e0[:decode], val, ref)
         end
       end
     end

@@ -12,7 +12,7 @@ module CIAX
         super()
         # method [len, bcc, sum]
         unless %w(len bcc sum).include?(method)
-          Msg.cfg_err("Bad CC method #{method}")
+          Msg.cfg_err('Bad CC method %s', method)
         end
         @method = method
         replace(yield self) if defined? yield
@@ -24,7 +24,7 @@ module CIAX
           verbose { "Cc Verify OK [#{str}]" }
         else
           fmt = 'CC Mismatch:[%s] (should be [%s]) in [%s]'
-          cc_err(format(fmt, str, ccc, inspect))
+          cc_err(fmt, str, ccc, inspect)
         end
         clear
         self
@@ -41,7 +41,7 @@ module CIAX
         verbose { cfmt('Cc Calc [%s] -> (%02X/%d)', @method.upcase, res, res) }
         res
       rescue NameError
-        Msg.cfg_err("No such CC method #{@method}")
+        Msg.cfg_err('No such CC method %s', @method)
       end
 
       private

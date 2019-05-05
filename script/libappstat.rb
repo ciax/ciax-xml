@@ -47,13 +47,6 @@ module CIAX
         data[var]
       end
 
-      # Substitute str by Status data
-      # - str format: ${key}
-      def subst_val(key)
-        return super if /:/ !~ key
-        @field.subst_val(key)
-      end
-
       private
 
       # For element of SubStat

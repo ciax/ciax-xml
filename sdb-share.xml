@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <sdb xmlns="http://ciax.sum.naoj.org/ciax-xml/sdb">
   <symbol id="share" label="Shared">
-    <table id="iid_tsc" label="Instrument ID by TSC">
-      <pattern class="warn" msg="NONE">^0$</pattern>
-      <pattern class="normal" msg="IRCS">^1$</pattern>
-      <pattern class="normal" msg="CIAO">^3$</pattern>
-      <pattern class="normal" msg="FOCAS">5</pattern>
-      <pattern class="normal" msg="COMICS">7</pattern>
-      <pattern class="normal" msg="MCS">10</pattern>
-      <pattern class="normal" msg="SWIMS">11</pattern>
-      <pattern class="normal" msg="MOIRCS">12</pattern>
-      <pattern class="normal" msg="CIAX3">13</pattern>
-      <default class="warn" msg="N/A"/>
-    </table>
     <table id="iid_ac" label="Instrument ID by Auto Connector">
       <pattern class="warn" msg="NONE">0</pattern>
       <pattern class="normal" msg="CIAX3">1</pattern>

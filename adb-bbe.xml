@@ -15,7 +15,7 @@
             <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
-              <argv>${stat}|0x01</argv>
+              <argv>${field:stat}|0x01</argv>
             </frmcmd>
             <frmcmd name="outfld"/>
             <frmcmd name="getstat"/>
@@ -24,7 +24,7 @@
             <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
-              <argv>${stat}&amp;0xfffe</argv>
+              <argv>${field:stat}&amp;0xfffe</argv>
             </frmcmd>
             <frmcmd name="outfld"/>
             <frmcmd name="getstat"/>
@@ -35,7 +35,7 @@
             <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
-              <argv>${stat}|0x10</argv>
+              <argv>${field:stat}|0x10</argv>
             </frmcmd>
             <frmcmd name="outfld"/>
             <frmcmd name="getstat"/>
@@ -44,7 +44,7 @@
             <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
-              <argv>${stat}&amp;0xffef</argv>
+              <argv>${field:stat}&amp;0xffef</argv>
             </frmcmd>
             <frmcmd name="outfld"/>
             <frmcmd name="getstat"/>
@@ -55,7 +55,7 @@
             <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
-              <argv>${stat}|0x100</argv>
+              <argv>${field:stat}|0x100</argv>
             </frmcmd>
             <frmcmd name="outfld"/>
             <frmcmd name="getstat"/>
@@ -64,7 +64,7 @@
             <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
-              <argv>${stat}&amp;0xfeff</argv>
+              <argv>${field:stat}&amp;0xfeff</argv>
             </frmcmd>
             <frmcmd name="outfld"/>
             <frmcmd name="getstat"/>
@@ -75,7 +75,7 @@
             <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
-              <argv>${stat}|0x1000</argv>
+              <argv>${field:stat}|0x1000</argv>
             </frmcmd>
             <frmcmd name="outfld"/>
             <frmcmd name="getstat"/>
@@ -84,7 +84,7 @@
             <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
-              <argv>${stat}&amp;0xefff</argv>
+              <argv>${field:stat}&amp;0xefff</argv>
             </frmcmd>
             <frmcmd name="outfld"/>
             <frmcmd name="getstat"/>
@@ -95,7 +95,7 @@
             <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
-              <argv>${stat}|0x0011</argv>
+              <argv>${field:stat}|0x0011</argv>
             </frmcmd>
             <frmcmd name="outfld"/>
             <frmcmd name="getstat"/>
@@ -104,7 +104,7 @@
             <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
-              <argv>${stat}&amp;0xffee</argv>
+              <argv>${field:stat}&amp;0xffee</argv>
             </frmcmd>
             <frmcmd name="outfld"/>
             <frmcmd name="getstat"/>
@@ -115,7 +115,7 @@
             <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
-              <argv>${stat}|0x1100</argv>
+              <argv>${field:stat}|0x1100</argv>
             </frmcmd>
             <frmcmd name="outfld"/>
             <frmcmd name="getstat"/>
@@ -124,7 +124,7 @@
             <frmcmd name="getstat"/>
             <frmcmd name="set">
               <argv>stat</argv>
-              <argv>${stat}&amp;0xeeff</argv>
+              <argv>${field:stat}&amp;0xeeff</argv>
             </frmcmd>
             <frmcmd name="outfld"/>
             <frmcmd name="getstat"/>

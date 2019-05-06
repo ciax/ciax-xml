@@ -17,7 +17,7 @@ module CIAX
         dbi = _init_dbi2cfg(%i(dev_id))
         @cfg[:site_id] = @id
         @sv_stat = Prompt.new('site', @id)
-        @stat = Status.new(dbi, ___init_sub)
+        @stat = @cfg[:status] = Status.new(dbi, ___init_sub)
         @batch_interrupt = []
         _init_net
         ___init_command

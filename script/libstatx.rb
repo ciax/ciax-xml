@@ -14,9 +14,9 @@ module CIAX
 
     def get(token)
       token.sub!(/#{@type}:/, '')
-      return @obj.get(token) if /:/ !~ token
-      layer = $LAST_MATCH_INFO
-      cfg_err("No such entry #{layer}") unless key?(layer)
+      return @obj.get(token) unless /:/ =~ token
+      layer = $`
+      cfg_err('No such entry [%s]', layer) unless key?(layer)
       self[layer].get($')
     end
   end
@@ -32,6 +32,11 @@ module CIAX
       _attr_set(@dbi[:version].to_i, @dbi[:host])
       @layer = @dbi[:layer]
       @stat_dic = StatDic.new(@type, self)
+    end
+
+    def cmode(opt)
+      @stat_dic.each { |k, v| v.cmode(opt) if k != @type }
+      super
     end
 
     # Substitute str by self data

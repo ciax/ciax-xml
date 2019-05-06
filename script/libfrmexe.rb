@@ -17,7 +17,7 @@ module CIAX
         dbi = _init_dbi2cfg(%i(stream iocmd))
         @cfg[:site_id] = @id
         @stat = @cfg[:field] = Field.new(dbi)
-        @frame = @stat.frame
+        @frame = @cfg[:frame] = @stat.frame
         @sv_stat = @cfg[:sv_stat] = Prompt.new(@id)
         _init_net
         ___init_command

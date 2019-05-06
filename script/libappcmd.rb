@@ -38,7 +38,7 @@ module CIAX
               enclose("GetCmd(FDB):#{e1.first}", 'Exec(FDB):%s') do
                 ___get_args(e1, args)
               end
-              args
+              args.map { |s| ent[:status].subst(s) }
             end.extend(Enumx)
             ent
           end
@@ -60,9 +60,10 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libinsdb'
+      require 'libappstat'
       Opt::Conf.new('[id] [cmd] (par)', options: 'a') do |cfg|
         dbi = (cfg.opt[:a] ? Db : Ins::Db).new.get(cfg.args.shift)
+        cfg[:status] = Status.new(dbi).cmode(cfg.opt.host)
         # dbi.pick already includes :layer, :command, :version
         ent = Index.new(cfg, dbi.pick).add_rem.add_ext.set_cmd(cfg.args)
         puts ent[:batch].to_s

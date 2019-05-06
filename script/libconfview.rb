@@ -6,7 +6,8 @@ module CIAX
     def path(key = nil)
       i = 0
       ary = @generation.map do |h|
-        "  [#{i += 1}]{" + ___show_generation(key, h) + "} (#{h.object_id})"
+        format('  [%d]{%s} (%s)', i += 1,
+               ___show_generation(key, h), __abbr_id(h))
       end
       __decorate(ary.reverse)
     end
@@ -33,7 +34,10 @@ module CIAX
     end
 
     def __decorate(ary)
-      ["******[Config]******(#{object_id})", *ary, '************'].join("\n")
+      line = [format('******[Config]******(%s)', __abbr_id)]
+      line += ary
+      line << '************'
+      line.join("\n")
     end
 
     def ___show_generation(key, h)
@@ -53,7 +57,7 @@ module CIAX
     def ___show_array(v)
       '[' + v.map do |e|
         __show(e.is_a?(Enumerable) ? e.class : e.inspect)
-      end.join(',') + "](#{v.object_id})"
+      end.join(',') + format(format('](%s)', __abbr_id(v)))
     end
 
     def __show(v)
@@ -62,6 +66,10 @@ module CIAX
 
     def __any_mod?(v, *modary)
       modary.any? { |mod| v.is_a? mod }
+    end
+
+    def __abbr_id(obj = self)
+      format('%X', obj.object_id)[6..11]
     end
   end
 end

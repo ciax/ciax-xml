@@ -66,7 +66,8 @@ module CIAX
         cfg[:status] = Status.new(dbi).cmode(cfg.opt.host)
         # dbi.pick already includes :layer, :command, :version
         ent = Index.new(cfg, dbi.pick).add_rem.add_ext.set_cmd(cfg.args)
-        puts ent[:batch].to_s
+        puts ent.path
+        puts 'batch:' + ent[:batch].to_v
       end
     end
   end

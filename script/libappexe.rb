@@ -10,7 +10,8 @@ module CIAX
   module App
     # Exec class
     class Exe < Exe
-      # atrb must have [:dbi],[:sub_dic]
+      # atrb must have [:dbi]
+      # atrb may have [:sub_dic] if Frm layer exists
       attr_accessor :batch_interrupt
       def initialize(spcfg, atrb = Hashx.new)
         super
@@ -37,7 +38,8 @@ module CIAX
       def ___init_sub
         id = @cfg[:dev_id] || return
         # LayerDB might generated in ExeDic level
-        @sub = @cfg[:sub_dic].get(id)
+        # :sub_dic is generated for stand alone (test module)
+        @sub = (@cfg[:sub_dic] ||= Frm::ExeDic.new(@cfg)).get(id)
         ___init_svstat(@sub.sv_stat)
         @sub.stat
       end
@@ -113,8 +115,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       Opt::Conf.new('[id]', options: 'cehl') do |cfg|
         db = cfg[:db] = Ins::Db.new
-        dbi = db.get(cfg.args.shift)
-        Exe.new(cfg, dbi: dbi, sub_dic: Frm::ExeDic.new(cfg))
+        Exe.new(cfg, dbi: db.get(cfg.args.shift))
       end.cui
     end
   end

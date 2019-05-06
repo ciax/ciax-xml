@@ -114,7 +114,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Conf.new('[id]', options: 'cehl') do |cfg|
-        db = cfg[:db] = Ins::Db.new
+        db = cfg[:db] = Ins::Db.new(cfg.proj)
         Exe.new(cfg, dbi: db.get(cfg.args.shift))
       end.cui
     end

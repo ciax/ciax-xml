@@ -8,8 +8,8 @@ module CIAX
   module App
     # Status class
     class Status
-      # Access from Conv
-      module Conv
+      # Local mode
+      module Local
         def ext_sym(sdb = nil)
           extend(Symbol).ext_sym(sdb || Sym::Db.new)
         end
@@ -17,18 +17,18 @@ module CIAX
       # Symbol Converter
       module Symbol
         def self.extended(obj)
-          Msg.type?(obj, Conv)
+          Msg.type?(obj, Local)
         end
 
         def ext_sym(sdb)
+          @cmt_procs.append(self, :symbol, 2) { labeling }
           @symdb = type?(sdb, Sym::Db).get_dbi(['share'] + @adbs[:symtbl])
           @symbol = @adbs[:symbol] || {}
           @index = @adbs[:index].dup.update(@adbs[:alias] || {})
           self
         end
 
-        def conv
-          super
+        def labeling
           @index.each do |key, hash|
             sid = hash[:symbol] || next
             tbl = ___chk_tbl(sid) || next

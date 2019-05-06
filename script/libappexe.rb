@@ -15,12 +15,11 @@ module CIAX
       attr_accessor :batch_interrupt
       def initialize(spcfg, atrb = Hashx.new)
         super
-        dbi = _init_dbi2cfg(%i(dev_id))
         @cfg[:site_id] = @id
         @sv_stat = Prompt.new('site', @id)
-        @stat = @cfg[:status] = Status.new(dbi, ___init_sub)
         @batch_interrupt = []
         _init_net
+        ___init_stat
         ___init_command
         _opt_mode
       end
@@ -32,6 +31,11 @@ module CIAX
         @cfg[:output] = View.new(@stat)
         @cobj.loc.add_view
         self
+      end
+
+      def ___init_stat
+        dbi = _init_dbi2cfg(%i(dev_id))
+        @stat = @cfg[:status] = Status.new(dbi, ___init_sub)
       end
 
       # Sub methods for Initialize
@@ -46,7 +50,8 @@ module CIAX
 
       def ___init_svstat(subsvs)
         @sv_stat.db.update(subsvs.db)
-        subsvs.cmt_procs.append(self, "sv_stat:#{@id}", 3) do |ss|
+        # Upper layer propagation
+        subsvs.cmt_procs.append(self, "sv_stat:#{@id}", 4) do |ss|
           @sv_stat.update(ss.pick(:comerr, :ioerr)).cmt
         end
       end
@@ -68,9 +73,11 @@ module CIAX
 
         # Mode Extension by Option
         def ext_local
+          super
           ___init_proc_set
           ___init_proc_del
-          super
+          @stat.ext_sym(@cfg[:sdb])
+          self
         end
 
         def run
@@ -99,6 +106,7 @@ module CIAX
         def ___init_proc_set
           @cobj.get('set').def_proc do |ent|
             @stat[:data].repl(ent.par[0], ent.par[1])
+            @stat.cmt
             verbose { "SET:#{ent.par[0]}=#{ent.par[1]}" }
           end
         end

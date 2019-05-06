@@ -5,9 +5,10 @@ module CIAX
   # Commit Priority
   #    (propagation from lower layer)
   #  0: timestamp update
-  #  1: data conversion
-  #  2: file saving/logging
-  #  3: propagation to upper layer
+  #  1: data conversion with lower layer
+  #  2: labeling/symbolize data
+  #  3: file saving/logging
+  #  4: propagation to upper layer
   #
   # Update Priority
   #    (propagation from upper layer)
@@ -38,7 +39,7 @@ module CIAX
     end
 
     def clear
-      @list = Array.new(4) { {} }
+      @list = Array.new(5) { {} }
       self
     end
 

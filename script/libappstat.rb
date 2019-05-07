@@ -32,7 +32,7 @@ module CIAX
         str.split(',').each do |tkn|
           _dic.repl(*tkn.split('='))
         end
-        self
+        cmt
       end
 
       ## For macro step

@@ -425,6 +425,7 @@
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+      <regular/>
       <event label="During Issued" id="isu">
         <range var="isu" inv="true">0</range>
         <exec name="upd"/>

@@ -11,7 +11,7 @@
         <integer id="cf" label="Current Flange" symbol="flange"/>
       </group>
     </status>
-    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="0.2">
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
       <event label="Current Flange 0" id="cf0">
         <onchange var="cf"/>
         <pattern var="cf">0</pattern>

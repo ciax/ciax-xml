@@ -22,20 +22,17 @@ module CIAX
 
       def ___mk_wdb(wdoc, cgrp)
         wdb = wdoc.to_h
-        reg = wdb[:regular] = { period: 300, exec: [] }
-        idx = wdb[:index] = Hashx.new
-        ___get_wdb(wdoc, reg, idx, cgrp)
-        reg[:exec] << ['upd'] if reg[:exec].empty?
+        ___get_wdb(wdoc, wdb, cgrp)
         wdb
       end
 
-      def ___get_wdb(wdoc, reg, idx, cgrp)
+      def ___get_wdb(wdoc, wdb, cgrp)
         @rep.each(wdoc) do |e0|
           case e0.name
           when 'regular'
-            ___make_regular(e0, reg)
+            ___make_regular(e0, wdb[:regular] ||= { period: 300, exec: [] })
           when 'event'
-            ___make_event(e0, idx, cgrp)
+            ___make_event(e0, wdb[:index] ||= Hashx.new, cgrp)
           end
         end
       end
@@ -49,6 +46,7 @@ module CIAX
           end
           reg[:exec] << args
         end
+        reg[:exec] << ['upd'] if reg[:exec].empty?
       end
 
       def ___make_event(e0, idx, cgrp)

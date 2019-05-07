@@ -152,6 +152,7 @@
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+      <regular/>
       <event label="GV Open" id="go">
         <range var="go">1</range>
         <range var="gv">2</range>

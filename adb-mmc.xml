@@ -156,6 +156,7 @@
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+      <regular/>
       <event id="mot" label="On Motion">
         <range var="bs">1</range>
         <block_grp ref="gm"/>

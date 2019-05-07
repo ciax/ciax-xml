@@ -519,6 +519,7 @@
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+      <regular/>
       <event label="Moving Jack" id="jak">
         <onchange var="jkm"/>
         <range var="pid">1:</range>

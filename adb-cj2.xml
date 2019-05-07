@@ -410,6 +410,7 @@
       </group>
     </status>
     <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb" interval="1">
+      <regular/>
       <event label="On Motion" id="mot">
         <range var="exe" inv="true">0</range>
         <block_grp ref="gfix"/>

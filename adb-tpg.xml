@@ -28,5 +28,8 @@
         </float>
       </group>
     </status>
+    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
+      <regular/>
+    </watch>
   </app>
 </adb>

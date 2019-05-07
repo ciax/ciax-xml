@@ -16,7 +16,7 @@ module CIAX
         # DB is generated in ExeDic level
         dbi = _init_dbi2cfg(%i(stream iocmd))
         @cfg[:site_id] = @id
-        @stat = @cfg[:field] = Field.new(dbi)
+        @stat = @cfg[:stat] = Field.new(dbi)
         @frame = @cfg[:frame] = @stat.frame
         @sv_stat = @cfg[:sv_stat] = Prompt.new(@id)
         _init_net

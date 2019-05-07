@@ -35,7 +35,7 @@ module CIAX
 
       def ___init_stat
         dbi = _init_dbi2cfg(%i(dev_id))
-        @stat = @cfg[:status] = Status.new(dbi, ___init_sub)
+        @stat = @cfg[:stat] = Status.new(dbi, ___init_sub)
       end
 
       # Sub methods for Initialize

@@ -28,15 +28,19 @@ module CIAX
 
           private
 
-          # batch is ary of args(ary)
+          # Substitution order
+          #  1. Parameter($1,$2..)
+          #  2. Status   (${id1}, ${id2}..)
+
           def _gen_entity(opt)
             ent = super
+            # batch is ary of args(ary)
             ent[:batch] = ent.deep_subst_par(@cfg[:body]).map do |e1|
               args = []
               enclose("GetCmd(FDB):#{e1.first}", 'Exec(FDB):%s') do
                 ___get_args(e1, args)
               end
-              args.map { |s| ent[:status].subst(s) }
+              args.map { |s| @cfg[:stat].subst(s) }
             end.extend(Enumx)
             ent
           end
@@ -61,14 +65,15 @@ module CIAX
       require 'libappstat'
       Opt::Conf.new('[id] [cmd] (par)', options: 'a') do |cfg|
         dbi = (cfg.opt[:a] ? Db : Ins::Db).new.get(cfg.args.shift)
-        cfg[:status] = Status.new(dbi).cmode(cfg.opt.host)
+        cfg[:stat] = Status.new(dbi).cmode(cfg.opt.host)
         # dbi.pick already includes :layer, :command, :version
         rem = Index.new(cfg, dbi.pick).add_rem
         rem.add_int
         rem.add_ext
         ent = rem.set_cmd(cfg.args)
+        puts ent[:status]
         puts ent.path
-        puts 'batch:' + ent[:batch].to_v
+        puts 'batch:' + ent[:batch].to_v if ent.key?(:batch)
       end
     end
   end

@@ -28,9 +28,13 @@ module CIAX
         class Form
           private
 
+          # Substitution order
+          #  1. Parameter($1,$2..)
+          #  2. Status   (${id1}, ${id2}..)
+
           def _gen_entity(opt)
             ent = super
-            @stat = type?(@cfg[:field], Field)
+            @stat = type?(@cfg[:stat], Field)
             @sel = Select.new(@cfg[:dbi], :command).get(ent[:id])
             @cfg[:nocache] = @sel[:nocache] if @sel.key?(:nocache)
             @stat.echo = ___init_frame(ent)
@@ -103,9 +107,9 @@ module CIAX
       Opt::Conf.new(cap, options: 'rf') do |cfg|
         if cfg.opt[:f]
           dbi = Db.new.get(cfg.args.shift)
-          cfg[:field] = Field.new(dbi)
+          cfg[:stat] = Field.new(dbi)
         else
-          dbi = (cfg[:field] = Field.new(cfg.args)).dbi
+          dbi = (cfg[:stat] = Field.new(cfg.args)).dbi
         end
         # dbi.pick alreay includes :layer, :command, :version
         cobj = Index.new(cfg, dbi.pick(:stream))

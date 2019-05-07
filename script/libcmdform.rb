@@ -19,11 +19,12 @@ module CIAX
       def set_par(pary, opt = {})
         # override
         pary = @cfg[:argv] if @cfg[:argv].is_a? Array
+        type?(pary, Array)
         # validate and convert pars
-        par = ___validate(type?(pary, Array))
-        cid = [@id, *par].join(':')
-        opt.update(par: par, cid: cid)
-        verbose { "SetPAR(#{@id}): #{par}" }
+        pars = ___validate(___subst_stat(pary))
+        cid = [@id, *pars].join(':')
+        opt.update(par: pars, cid: cid)
+        verbose { "SetPAR(#{@id}): #{pars}" }
         ___get_entity(opt, cid)
       end
 
@@ -41,6 +42,14 @@ module CIAX
       end
 
       private
+
+      # Substitute Parameters by Status ${var}
+      def ___subst_stat(pary)
+        return pary unless @cfg.key?(:stat)
+        pary.map do |str|
+          type?(@cfg[:stat], Statx).subst(str)
+        end
+      end
 
       def ___get_entity(opt, cid)
         if @cfg[:nocache]

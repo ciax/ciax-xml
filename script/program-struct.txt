@@ -21,7 +21,7 @@
  Each site has own cfg[:dbi]
   There are two object in this.
  * Frm
-  Shared var: cfg[:dbi],cfg[:field]
+  Shared var: cfg[:dbi],cfg[:stat]
  * App
   Shared var: cfg[:dbi],cfg[:stat]
 

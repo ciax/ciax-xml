@@ -69,7 +69,7 @@ module CIAX
 
       def ___init_status(status)
         @status = type_gen(status, App::Status) { |mod| mod.new(@dbi) }
-        @stat_dic.update(@status.stat_dic)[:event] = self
+        @stat_dic.update(@status.stat_dic)
         propagation(@status)
       end
     end

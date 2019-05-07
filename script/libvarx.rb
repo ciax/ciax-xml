@@ -13,7 +13,7 @@ module CIAX
     attr_reader :type, :id, :host
     def initialize(type, id = nil)
       super()
-      @type = type
+      @type = type?(type, String)
       # When input from File
       #  obj <= Read[:id] anyway
       id = jread[:id] if !id && !STDIN.tty?

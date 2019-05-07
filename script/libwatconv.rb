@@ -31,7 +31,8 @@ module CIAX
           @interval = wdb[:interval].to_f if wdb.key?(:interval)
           @cond = Condition.new(wdb[:index] || {}, @status, self)
           @cmt_procs.append(self, :conv, 1) { conv }
-          ___init_auto(wdb)
+          ___init_auto(wdb[:regular]) if wdb.key?(:regular)
+          self
         end
 
         def conv
@@ -67,8 +68,7 @@ module CIAX
         private
 
         # Initiate for Auto Update
-        def ___init_auto(wdb)
-          reg = wdb[:regular] || {}
+        def ___init_auto(reg)
           per = reg[:period].to_i
           @periodm = per * 1000 if per > 0
           @regexe = reg[:exec] || [['upd']]
@@ -76,7 +76,6 @@ module CIAX
             cfmt('Initiate Auto Update: Period = %d sec, Command = %s',
                  per / 1000, @regexe)
           end
-          self
         end
       end
     end

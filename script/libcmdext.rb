@@ -16,7 +16,7 @@ module CIAX
             super
             cfg_err('No dbi in Ext::Group@cfg') unless @cfg.key?(:dbi)
             @disp_dic = @disp_dic.ext_grp
-            ___init_form(@cfg[:dbi].get(:command))
+            ___init_form_ext(@cfg[:dbi].get(:command))
             @disp_dic.reset!
           end
 
@@ -41,7 +41,7 @@ module CIAX
           end
 
           # Set items by DB
-          def ___init_form(cdb)
+          def ___init_form_ext(cdb)
             cdb[:group].each do |gid, gat|
               sg = @disp_dic.add_grp(gid, gat[:caption], nil, gat[:rank])
               ___init_member(cdb, gat[:members], sg)
@@ -95,13 +95,13 @@ module CIAX
                 r[k] = deep_subst(v)
               end
             else
-              ___subst_str(data)
+              ___subst_par(data)
             end
           end
 
           private
 
-          def ___subst_str(str) # subst by parameters ($1,$2...)
+          def ___subst_par(str) # subst by parameters ($1,$2...)
             return str unless /\$([\d]+)/ =~ str
             # enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
             # num = true

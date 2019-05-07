@@ -15,9 +15,7 @@ module CIAX
           # cfg should have [:dbi] and [:stat]
           def initialize(spcfg, atrb = Hashx.new)
             super
-            init_form_fio
-            add_form('set', '[key] [val]').pars_any(2)
-            add_form('del', '[key,...]').pars_any(1)
+            _init_form_int
           end
         end
       end
@@ -65,7 +63,10 @@ module CIAX
         dbi = (cfg.opt[:a] ? Db : Ins::Db).new.get(cfg.args.shift)
         cfg[:status] = Status.new(dbi).cmode(cfg.opt.host)
         # dbi.pick already includes :layer, :command, :version
-        ent = Index.new(cfg, dbi.pick).add_rem.add_ext.set_cmd(cfg.args)
+        rem = Index.new(cfg, dbi.pick).add_rem
+        rem.add_int
+        rem.add_ext
+        ent = rem.set_cmd(cfg.args)
         puts ent.path
         puts 'batch:' + ent[:batch].to_v
       end

@@ -16,9 +16,9 @@ module CIAX
           # cfg should have [:field]
           def initialize(spcfg, atrb = Hashx.new)
             super
-            init_form_fio
-            add_form('set', '[key(@idx)] [val(,val)]').pars_any(2)
+            _init_form_int
             add_form('flush', 'Stream')
+            @disp_dic['set'] = '[key(@idx)] [val(,val)]'
           end
         end
       end
@@ -109,7 +109,9 @@ module CIAX
         end
         # dbi.pick alreay includes :layer, :command, :version
         cobj = Index.new(cfg, dbi.pick(:stream))
-        rem = cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }.add_ext
+        rem = cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }
+        rem.add_ext
+        rem.add_int
         res = rem.set_cmd(cfg.args).exe_cmd('test')
         if cfg.opt[:r]
           print res.msg

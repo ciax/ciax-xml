@@ -85,7 +85,11 @@ module CIAX
             @cfg[:nocache] = true
           end
 
-          def init_form_fio
+          private
+
+          def _init_form_int
+            add_form('set', '[key] [val]').pars_any(2)
+            add_form('del', '[key,...]').pars_any(1)
             add_form('save', '[key,key...] [tag]').pars_any(2)
             add_form('load', '[tag]').pars.add_enum([])
           end

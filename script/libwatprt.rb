@@ -41,7 +41,7 @@ module CIAX
         def ___view_exe(vw)
           vw << __itemize('Issuing')
           self[:exec].each do |i| # each event
-            vw << cfmt("    %S\n", i)
+            vw << cfmt("    %p\n", i)
           end
         end
 

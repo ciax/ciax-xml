@@ -97,7 +97,7 @@ module CIAX
           vname << i
           verbose { "Type[#{h.class}] Name[#{i}]" }
           verbose { "Content #{h[i].inspect}" }
-          h[i] || alert('No such Value %S in :data', vname)
+          h[i] || alert('No such Value %p in :data', vname)
         end
       end
 

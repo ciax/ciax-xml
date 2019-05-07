@@ -11,7 +11,7 @@ module CIAX
     #  { var.inspect if condition }
     def _w(name, &take_value)
       return unless take_value && (var = yield)
-      show cfmt('%:5s:%s(%:3s) = %S', 'Debug', name, var.object_id, var)
+      show cfmt('%:5s:%s(%:3s) = %p', 'Debug', name, var.object_id, var)
       show caller(1).to_s
     end
 

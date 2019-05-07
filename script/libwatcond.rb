@@ -50,7 +50,7 @@ module CIAX
 
       def ___chk_item(id, item)
         return true unless (cklst = item[:cnd])
-        verbose { cfmt('Check: <%s>(%S)', item[:label], item) }
+        verbose { cfmt('Check: <%s>(%p)', item[:label], item) }
         rary = []
         cklst.each do |ckitm|
           res = ___chk_by_type(ckitm)

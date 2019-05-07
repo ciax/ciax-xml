@@ -41,7 +41,7 @@ module CIAX
         #      Batch: Repeat until outbuffer is empty
         def ___init_buffer
           buf = Buffer.new(@sv_stat, @sub.cobj) do |args, src|
-            verbose { cfmt('Processing App to Buffer %S', args) }
+            verbose { cfmt('Processing App to Buffer %p', args) }
             @sub.exe(args, src)
           end
           ___init_proc_int(buf)
@@ -59,7 +59,7 @@ module CIAX
               verbose { "Issuing:#{args} for Interrupt" }
               buf.send(@cobj.set_cmd(args.dup), 0)
             end
-            warning('Interrupt%S from %s', @batch_interrupt, src)
+            warning('Interrupt%p from %s', @batch_interrupt, src)
           end
         end
 

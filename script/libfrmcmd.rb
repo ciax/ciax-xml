@@ -57,11 +57,11 @@ module CIAX
           end
 
           def ___cc_frame(array)
-            verbose { cfmt('CC Start %S', array) }
+            verbose { cfmt('CC Start %p', array) }
             @frame.push('')
             array.map { |dbc| __single_frame(dbc) }.join
             @cc = CheckCode.new(@sp[:ccmethod]) { @frame.last }
-            verbose { cfmt('CC End %S', @cc) }
+            verbose { cfmt('CC End %p', @cc) }
           end
 
           def __single_frame(dbc)
@@ -71,10 +71,10 @@ module CIAX
             res = @stat.subst(word)
             # No cache if status replacement
             chg = @cfg[:nocache] = true if res != word
-            verbose { cfmt('Convert (%s) %S -> %S', @id, word, res) } if chg
+            verbose { cfmt('Convert (%s) %p -> %p', @id, word, res) } if chg
             # Allow csv parameter
             code = res.split(',').map { |s| __mk_code(s, dbc) }.join
-            verbose { cfmt('Cmd Frame Db [%S] -> %S', dbc, code) }
+            verbose { cfmt('Cmd Frame Db [%p] -> %p', dbc, code) }
             @frame.last << code
           end
 

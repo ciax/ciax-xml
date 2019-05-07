@@ -27,13 +27,12 @@ module CIAX
     # specify color with :n (n =0..f) located between '%' and flag
     # (ex. '%:1s')
     # Inspection format
-    #  %S converts the object with inspect
+    #  %p converts the object with inspect
     def cfmt(*ary)
       return '' unless (fmt = ary.shift)
       i = 0
       fmt.gsub!(/%.*?[a-zA-Z]/) do |m|
         m = colorize(m, $+.hex) if m.sub!(/:(.)/, '')
-        ary[i] = ary[i].inspect if m.sub!(/S/, 's')
         i += 1
         m
       end
@@ -117,7 +116,7 @@ module CIAX
     end
 
     def _conv_text(*par)
-      cfmt('Conversion %s %S %S', *par)
+      cfmt('Conversion %s %p %p', *par)
     end
   end
 end

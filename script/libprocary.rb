@@ -24,10 +24,10 @@ module CIAX
     end
 
     def call(pri = nil)
-      verbose { cfmt("%s in %s P%S\n", @title, @name, pri) + to_s }
+      __verbose(@title, pri)
       (pri ? [@list[pri.to_i]] : @list).each do |a|
         a.each do |k, p|
-          verbose { cfmt("Calling %s in (%s) P%S\n", k, @name, pri) + to_s }
+          __verbose("Calling #{k}", pri)
           p.call(@obj)
         end
       end
@@ -45,14 +45,20 @@ module CIAX
 
     # Append proc in specified priority dict
     def append(obj, id, pri = 0, &prc)
-      verbose { cfmt('Appending in %s [%s]', @name, __mk_id(obj, id)) }
       return self unless (id = __chk_id(obj, id))
       @list[pri][id] = prc
-      verbose { cfmt("Appended in %s P%S\n", @name, pri) + to_s }
+      __verbose('Appended', pri)
       self
     end
 
     private
+
+    def __verbose(title, pri)
+      verbose do
+        pri = "P#{pri} " if pri
+        cfmt("%s in %s #{pri}(%X)\n", title, @name, object_id) + to_s
+      end
+    end
 
     def __mk_id(obj, name)
       ary = obj.class.to_s.downcase.split('::')

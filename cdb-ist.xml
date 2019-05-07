@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
+  <alias id="ist" label="Cas Inst DB">
+    <group id="gci" caption="Current Instrument">
+      <item id="mcs" label="MCS" ref="set">
+        <argv>cis</argv>
+        <argv>8</argv>
+      </item>
+      <item id="comics" label="COMICS" ref="set">
+        <argv>cis</argv>
+        <argv>2</argv>
+      </item>
+      <item id="moircs" label="MOIRCS" ref="set">
+        <argv>cis</argv>
+        <argv>7</argv>
+      </item>
+      <item id="focas" label="FOCAS" ref="set">
+        <argv>cis</argv>
+        <argv>4</argv>
+      </item>
+    </group>
+    <group id="gcf" caption="Current Flange">
+      <item id="sa" label="SA" ref="set">
+        <argv>cf</argv>
+        <argv>0</argv>
+      </item>
+      <item id="sb" label="SB" ref="set">
+        <argv>cf</argv>
+        <argv>1</argv>
+      </item>
+      <item id="sc" label="SC" ref="set">
+        <argv>cf</argv>
+        <argv>2</argv>
+      </item>
+      <item id="sd" label="SD" ref="set">
+        <argv>cf</argv>
+        <argv>3</argv>
+      </item>
+    </group>
+  </alias>
+</cdb>

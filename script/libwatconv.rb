@@ -84,7 +84,7 @@ module CIAX
       require 'libinsdb'
       Opt::Get.new('< status_file', options: 't') do |opt, args|
         stat = App::Status.new(args).ext_local.ext_file
-        event = Event.new(stat[:id]).ext_local.ext_conv
+        event = Event.new(stat[:id], stat).ext_local.ext_conv
         if (t = opt[:t])
           stat.str_update(t)
         end

@@ -86,13 +86,13 @@ module CIAX
         #  str could include Math functions
         # Returns new object
         class Entity < Entity
-          def deep_subst(data)
+          def deep_subst_par(data)
             case data
             when Array
-              data.map { |v| deep_subst(v) }.extend(Enumx)
+              data.map { |v| deep_subst_par(v) }.extend(Enumx)
             when Hash
               data.each_with_object(Hashx.new) do |(k, v), r|
-                r[k] = deep_subst(v)
+                r[k] = deep_subst_par(v)
               end
             else
               ___subst_par(data)

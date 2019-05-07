@@ -74,7 +74,7 @@ module CIAX
 
           def _gen_entity(opt)
             ent = super
-            ent[:sequence] = ent.deep_subst(@cfg[:body])
+            ent[:sequence] = ent.deep_subst_par(@cfg[:body])
             ent
           end
         end

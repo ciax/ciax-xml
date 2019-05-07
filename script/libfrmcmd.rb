@@ -42,7 +42,7 @@ module CIAX
             @sp = type?(@cfg[:stream], Hash)
             @codec = Codec.new(@sp[:endian])
             @frame = ['']
-            ent[:frame] = ___mk_frame(ent.deep_subst(@sel[:struct]))
+            ent[:frame] = ___mk_frame(ent.deep_subst_par(@sel[:struct]))
           end
 
           # instance var frame,sel,field,fstr

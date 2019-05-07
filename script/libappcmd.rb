@@ -31,7 +31,7 @@ module CIAX
           # batch is ary of args(ary)
           def _gen_entity(opt)
             ent = super
-            ent[:batch] = ent.deep_subst(@cfg[:body]).map do |e1|
+            ent[:batch] = ent.deep_subst_par(@cfg[:body]).map do |e1|
               args = []
               enclose("GetCmd(FDB):#{e1.first}", 'Exec(FDB):%s') do
                 ___get_args(e1, args)

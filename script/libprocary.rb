@@ -24,10 +24,10 @@ module CIAX
     end
 
     def call(pri = nil)
-      __verbose(@title, pri)
+      verbose { __ver_text(@title, pri) }
       (pri ? [@list[pri.to_i]] : @list).each do |a|
         a.each do |k, p|
-          __verbose("Calling #{k}", pri)
+          verbose { __ver_text("Calling #{k}", pri) }
           p.call(@obj)
         end
       end
@@ -47,17 +47,15 @@ module CIAX
     def append(obj, id, pri = 0, &prc)
       return self unless (id = __chk_id(obj, id))
       @list[pri][id] = prc
-      __verbose('Appended', pri)
+      verbose { __ver_text('Appended', pri) }
       self
     end
 
     private
 
-    def __verbose(title, pri)
-      verbose do
-        pri = "P#{pri} " if pri
-        cfmt("%s in %s #{pri}(%X)\n", title, @name, object_id) + to_s
-      end
+    def __ver_text(title, pri)
+      pri = "P#{pri} " if pri
+      cfmt("%s in %s #{pri}(%X)\n", title, @name, object_id) + to_s
     end
 
     def __mk_id(obj, name)

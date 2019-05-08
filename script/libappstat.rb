@@ -13,7 +13,6 @@ module CIAX
     # Status Data
     # All elements of @data are String
     class Status < Statx
-      include Dic
       include DicToken
       attr_reader :field
       # dbi can be Ins::Db or ID for new Db

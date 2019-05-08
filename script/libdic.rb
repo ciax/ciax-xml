@@ -29,7 +29,7 @@ module CIAX
 
     def repl(id, val, &done_proc)
       _dic.repl(id, val, &done_proc)
-      cmt
+      time_upd.cmt
     end
 
     def del(*keyary, &done_proc)

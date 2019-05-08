@@ -24,7 +24,7 @@ module CIAX
 
         def ___init_cmt_procs
           act = Action.new(@stat, @sv_stat, @sub)
-          @stat.cmt_procs.append(self, :action, 1) { act.action }
+          @stat.cmt_procs.append(self, :action, 2) { act.action }
         end
 
         def ___init_exe_processor

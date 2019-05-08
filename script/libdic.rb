@@ -22,9 +22,40 @@ module CIAX
       _dic.get(id, &defproc)
     end
 
-    def put(id, obj)
-      _dic.put(id, obj)
+    def put(id, obj, &done_proc)
+      _dic.put(id, obj, &done_proc)
       cmt
+    end
+
+    def repl(id, val, &done_proc)
+      _dic.repl(id, val, &done_proc)
+      cmt
+    end
+
+    def del(*keyary, &done_proc)
+      _dic.del(*keyary, &done_proc)
+      cmt
+    end
+
+    def cover(other)
+      _dic.cover(other)
+      cmt
+    end
+
+    def skeleton
+      _dic.skeleton
+    end
+
+    def pick(*keyary)
+      _dic.pick(*keyary)
+    end
+
+    def trues
+      _dic.trues
+    end
+
+    def first
+      _dic.first
     end
 
     private
@@ -43,13 +74,49 @@ module CIAX
 
     # key format: category + ':' followed by key "data:key, msg:key..."
     # default category is :data if no colon
-    def get(key, &gen_proc)
-      type?(key, String)
-      return super if key !~ /:/
-      cat, id = key.split(':')
+    def get(token, &gen_proc)
+      __get_db(token) do |db, id|
+        db.get(id, &gen_proc)
+      end || super
+    end
+
+    def put(token, obj, &done_proc)
+      __get_db(token) do |db, id|
+        db.put(id, obj, &done_proc)
+      end && cmt || super
+    end
+
+    def repl(token, val, &done_proc)
+      __get_db(token) do |db, id|
+        db.repl(id, val, &done_proc)
+      end && cmt || super
+    end
+
+    def del(*keyary, &done_proc)
+      keyary.any? do |token|
+        __get_db(token) do |db, id|
+          db.del(id, &done_proc)
+        end || super(token, &gen_proc)
+      end && cmt
+    end
+
+    def pick(*keyary)
+      keyary.each_with_object(Hashx.new) do |token, hash|
+        __get_db(token) do |db, id|
+          hash[token] = db[id] if db.key?(id)
+        end
+      end
+    end
+
+    private
+
+    def __get_db(token)
+      return if type?(token, String) !~ /:/
+      cat, id = token.split(':')
       cat = cat.to_sym
       par_err("Invalid category (#{cat}/#{key})") unless key?(cat)
-      self[cat].get(id, &gen_proc) || par_err("Invalid id (#{cat}:#{id})")
+      par_err("Invalid id (#{cat}:#{id})") unless self[cat].key?(id)
+      yield(self[cat], id)
     end
   end
 end

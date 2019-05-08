@@ -4,10 +4,6 @@ require 'libvarx'
 module CIAX
   # Access :dic with get() directly
   module Dic
-    def self.extended(obj)
-      Msg.type?(obj, Varx)
-    end
-
     # set dic
     def ext_dic(dicname)
       @dicname = dicname.to_sym
@@ -46,7 +42,7 @@ module CIAX
       _dic.skeleton
     end
 
-    def pick(*keyary)
+    def pick_dic(*keyary)
       _dic.pick(*keyary)
     end
 
@@ -68,9 +64,6 @@ module CIAX
   # Key is Token (key1:key2:...)
   module DicToken
     include Dic
-    def self.extended(obj)
-      Msg.type?(obj, Hashx)
-    end
 
     # key format: category + ':' followed by key "data:key, msg:key..."
     # default category is :data if no colon
@@ -100,7 +93,7 @@ module CIAX
       end && cmt
     end
 
-    def pick(*keyary)
+    def pick_dic(*keyary)
       keyary.each_with_object(Hashx.new) do |token, hash|
         __get_db(token) do |db, id|
           hash[token] = db[id] if db.key?(id)

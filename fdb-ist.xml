@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
+  <frm id="ist" label="Instrument Assignment" version="0">
+    <field xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbr">
+      <var id="cis" label="Current Instrument"/>
+      <var id="cfl" label="Current Flange"/>
+      <array id="fla" label="Flange Array">
+        <size>4</size>
+      </array>
+    </field>
+  </frm>
+</fdb>

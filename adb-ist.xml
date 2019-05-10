@@ -1,49 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app id="ist" label="Cas Inst DB" version="1">
+    <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
+      <group id="gcf" caption="Current Flange">
+        <item id="setc" label="Set Current">
+          <par_num>0:3</par_num>
+          <frmcmd name="set">
+            <argv>cis</argv>
+            <argv>${field:fla@$1}</argv>
+          </frmcmd>
+          <frmcmd name="set">
+            <argv>cfl</argv>
+            <argv>$1</argv>
+          </frmcmd>
+        </item>
+      </group>
+      <group id="gci" caption="Current Instrument">
+        <item id="seti" label="Set Instrument">
+          <par_num>1:9</par_num>
+          <frmcmd name="set">
+            <argv>cis</argv>
+            <argv>$1</argv>
+          </frmcmd>
+        </item>
+      </group>
+    </command>
     <status xmlns="http://ciax.sum.naoj.org/ciax-xml/adbs">
       <group id="g1" caption="">
-        <integer id="cis" label="Current Instrument" symbol="iid_ac"/>
-        <integer id="sa" label="Instrument Assigned SA" symbol="iid_ac"/>
-        <integer id="sb" label="Instrument Assigned SB" symbol="iid_ac"/>
-        <integer id="sc" label="Instrument Assigned SC" symbol="iid_ac"/>
-        <integer id="sd" label="Instrument Assigned SD" symbol="iid_ac"/>
-        <integer id="cf" label="Current Flange" symbol="flange"/>
+        <integer id="cis" label="Current Instrument" symbol="iid_ac">
+          <field ref="cis"/>
+        </integer>
+        <integer id="sa" label="Instrument Assigned SA" symbol="iid_ac">
+          <field ref="fla" index="0"/>
+        </integer>
+        <integer id="sb" label="Instrument Assigned SB" symbol="iid_ac">
+          <field ref="fla" index="1"/>
+        </integer>
+        <integer id="sc" label="Instrument Assigned SC" symbol="iid_ac">
+          <field ref="fla" index="2"/>
+        </integer>
+        <integer id="sd" label="Instrument Assigned SD" symbol="iid_ac">
+          <field ref="fla" index="3"/>
+        </integer>
+        <integer id="cf" label="Current Flange" symbol="flange">
+          <field ref="cfl"/>
+        </integer>
       </group>
     </status>
-    <watch xmlns="http://ciax.sum.naoj.org/ciax-xml/wdb">
-      <event label="Current Flange 0" id="cf0">
-        <onchange var="cf"/>
-        <pattern var="cf">0</pattern>
-        <exec name="set">
-          <argv>cis</argv>
-          <argv>${sa}</argv>
-        </exec>
-      </event>
-      <event label="Current Flange 1" id="cf1">
-        <onchange var="cf"/>
-        <pattern var="cf">1</pattern>
-        <exec name="set">
-          <argv>cis</argv>
-          <argv>${sb}</argv>
-        </exec>
-      </event>
-      <event label="Current Flange 2" id="cf2">
-        <onchange var="cf"/>
-        <pattern var="cf">2</pattern>
-        <exec name="set">
-          <argv>cis</argv>
-          <argv>${sc}</argv>
-        </exec>
-      </event>
-      <event label="Current Flange 3" id="cf3">
-        <onchange var="cf"/>
-        <pattern var="cf">3</pattern>
-        <exec name="set">
-          <argv>cis</argv>
-          <argv>${sd}</argv>
-        </exec>
-      </event>
-    </watch>
   </app>
 </adb>

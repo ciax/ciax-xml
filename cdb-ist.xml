@@ -2,38 +2,30 @@
 <cdb xmlns="http://ciax.sum.naoj.org/ciax-xml/cdb">
   <alias id="ist" label="Cas Inst DB">
     <group id="gci" caption="Current Instrument">
-      <item id="mcs" label="MCS" ref="set">
-        <argv>cis</argv>
+      <item id="mcs" label="MCS" ref="seti">
         <argv>8</argv>
       </item>
-      <item id="comics" label="COMICS" ref="set">
-        <argv>cis</argv>
+      <item id="comics" label="COMICS" ref="seti">
         <argv>2</argv>
       </item>
-      <item id="moircs" label="MOIRCS" ref="set">
-        <argv>cis</argv>
+      <item id="moircs" label="MOIRCS" ref="seti">
         <argv>7</argv>
       </item>
-      <item id="focas" label="FOCAS" ref="set">
-        <argv>cis</argv>
+      <item id="focas" label="FOCAS" ref="seti">
         <argv>4</argv>
       </item>
     </group>
     <group id="gcf" caption="Current Flange">
-      <item id="sa" label="SA" ref="set">
-        <argv>cf</argv>
+      <item id="sa" label="SA" ref="setc">
         <argv>0</argv>
       </item>
-      <item id="sb" label="SB" ref="set">
-        <argv>cf</argv>
+      <item id="sb" label="SB" ref="setc">
         <argv>1</argv>
       </item>
-      <item id="sc" label="SC" ref="set">
-        <argv>cf</argv>
+      <item id="sc" label="SC" ref="setc">
         <argv>2</argv>
       </item>
-      <item id="sd" label="SD" ref="set">
-        <argv>cf</argv>
+      <item id="sd" label="SD" ref="setc">
         <argv>3</argv>
       </item>
     </group>

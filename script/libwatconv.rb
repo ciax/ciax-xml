@@ -27,15 +27,16 @@ module CIAX
         #       => check(self[:crnt] <> self[:last]?)
         # Stat no changed -> clear exec, no eval
         def ext_conv
-          wdb = @dbi[:watch] || {}
-          @interval = wdb[:interval].to_f if wdb.key?(:interval)
-          @cond = Condition.new(wdb[:index] || {}, @status, self)
+          return self unless @wdb
+          @interval = @wdb[:interval].to_f if @wdb.key?(:interval)
+          @cond = Condition.new(@wdb[:index] || {}, @status, self)
           @cmt_procs.append(self, :conv, 1) { conv }
-          ___init_auto(wdb[:regular]) if wdb.key?(:regular)
+          ___init_auto(@wdb[:regular]) if @wdb.key?(:regular)
           self
         end
 
         def conv
+          return self unless @wdb
           if @status[:time] > @last_updated
             @last_updated = self[:time]
             @cond.upd_cond

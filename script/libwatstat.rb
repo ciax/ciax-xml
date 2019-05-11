@@ -8,9 +8,10 @@ module CIAX
   module Wat
     # Event Data
     class Event < Statx
-      attr_reader :status, :on_act_procs, :on_deact_procs, :interval
+      attr_reader :wdb, :status, :on_act_procs, :on_deact_procs, :interval
       def initialize(dbi = nil, status = nil)
         super('event', dbi, Ins::Db)
+        @wdb = @dbi[:watch]
         @interval = 0.1
         @periodm = 300_000
         @timeout = 10_000

@@ -11,6 +11,7 @@ module CIAX
         end
 
         def ext_driver
+          return self unless @stat.wdb
           @stat.ext_conv
           # @stat[:int] is overwritten by initial loading
           @sub.batch_interrupt = @stat.get(:int)

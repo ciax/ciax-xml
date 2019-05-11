@@ -7,13 +7,11 @@ module CIAX
     deep_include(Site)
     # Watch ExeDic
     class ExeDic
-      attr_reader :id
       # spcfg must have [:db]
       def initialize(spcfg, atrb = Hashx.new)
         super
         _store_db(type?(@cfg[:db], Ins::Db))
-        @sub_dic = App::ExeDic.new(@cfg)
-        @sub_dic.super_dic = self
+        ___init_subdic
       end
 
       def init_sites
@@ -26,6 +24,11 @@ module CIAX
       end
 
       private
+
+      def ___init_subdic
+        @sub_dic = App::ExeDic.new(@cfg)
+        @sub_dic.super_dic = self
+      end
 
       def __each_site(ary)
         ary.each do |site|

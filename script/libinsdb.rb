@@ -16,7 +16,7 @@ module CIAX
       end
 
       def valid_ins
-        @disp_dic.valid_keys.each_with_object(Hashx.new) do |id, hash|
+        list.each_with_object(Hashx.new) do |id, hash|
           get(id)
           atrb = get(id) || @docs.get(id)[:attr]
           hash[id] = atrb[:run] != 'false' &&
@@ -25,14 +25,14 @@ module CIAX
       end
 
       def valid_apps(applist)
-        @disp_dic.valid_keys.select! do |id|
+        list.select! do |id|
           applist.include?(get(id)[:app_id])
         end
       end
 
       def valid_devs
         rl = valid_ins.trues
-        @disp_dic.valid_keys.each_with_object(Hashx.new) do |s, hash|
+        list.each_with_object(Hashx.new) do |s, hash|
           did = get(s)[:dev_id]
           hash[did] = rl.include?(s) if did
         end

@@ -33,6 +33,13 @@ module CIAX
       extend(smod).ext_shell
     end
 
+    private
+
+    def _init_subdic(layer)
+      @sub_dic = layer::ExeDic.new(@cfg)
+      @sub_dic.super_dic = self
+    end
+
     # Shell module
     module Shell
       attr_reader :jumpgrp

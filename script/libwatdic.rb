@@ -11,7 +11,7 @@ module CIAX
       def initialize(spcfg, atrb = Hashx.new)
         super
         _store_db(type?(@cfg[:db], Ins::Db))
-        ___init_subdic
+        _init_subdic(App)
       end
 
       def init_sites
@@ -24,11 +24,6 @@ module CIAX
       end
 
       private
-
-      def ___init_subdic
-        @sub_dic = App::ExeDic.new(@cfg)
-        @sub_dic.super_dic = self
-      end
 
       def __each_site(ary)
         ary.each do |site|

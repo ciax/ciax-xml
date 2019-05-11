@@ -11,20 +11,9 @@ module CIAX
       def initialize(spcfg, atrb = Hashx.new)
         super
         _store_db(type?(@cfg[:db], Ins::Db))
+        _init_subdic(Wat)
         hdb = @cfg[:hdb] = Db.new
         @db.valid_apps(hdb.disp_dic.valid_keys)
-        ___init_subdic
-      end
-
-      private
-
-      def ___init_subdic
-        if @cfg[:dev_dic].is_a?(Wat::ExeDic)
-          @sub_dic = @cfg[:dev_dic]
-        else
-          @sub_dic = Wat::ExeDic.new(@cfg)
-          @sub_dic.super_dic = self
-        end
       end
     end
 

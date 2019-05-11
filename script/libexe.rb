@@ -12,7 +12,7 @@ module CIAX
   #  This instance will be assinged as @eobj in other classes
   class Exe
     include Msg
-    attr_reader :layer, :id, :mode, :cobj, :stat, :sub, :cfg,
+    attr_reader :layer, :id, :mode, :cobj, :stat, :sub_exe, :cfg,
                 :pre_exe_procs, :post_exe_procs, :prompt_proc, :host, :port
     attr_accessor :sv_stat, :shell_input_procs, :shell_output_proc,
                   :server_input_proc, :server_output_proc

@@ -14,7 +14,7 @@ module CIAX
         # type of semantics: execution/test
         def ext_driver
           super
-          return self unless @sub
+          return self unless @sub_exe
           @stat.ext_conv
           ___init_buffer
           self
@@ -40,9 +40,9 @@ module CIAX
         #      Batch: Update Field by Frm response
         #      Batch: Repeat until outbuffer is empty
         def ___init_buffer
-          buf = Buffer.new(@sv_stat, @sub.cobj) do |args, src|
+          buf = Buffer.new(@sv_stat, @sub_exe.cobj) do |args, src|
             verbose { cfmt('Processing App to Buffer %p', args) }
-            @sub.exe(args, src)
+            @sub_exe.exe(args, src)
           end
           ___init_proc_int(buf)
           ___init_proc_ext(buf)

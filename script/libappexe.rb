@@ -43,9 +43,9 @@ module CIAX
         id = @cfg[:dev_id] || return
         # LayerDB might generated in ExeDic level
         # :sub_dic is generated for stand alone (test module)
-        @sub = (@cfg[:sub_dic] ||= Frm::ExeDic.new(@cfg)).get(id)
-        ___init_svstat(@sub.sv_stat)
-        @sub.stat
+        @sub_exe = (@cfg[:sub_dic] ||= Frm::ExeDic.new(@cfg)).get(id)
+        ___init_svstat(@sub_exe.sv_stat)
+        @sub_exe.stat
       end
 
       def ___init_svstat(subsvs)

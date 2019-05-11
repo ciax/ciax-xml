@@ -41,7 +41,7 @@ module CIAX
         # Get Status from Devices via http
         def ___scan
           @exes.each_with_object({}) do |exe, hash|
-            st = hash[exe.id] = exe.sub.stat.latest
+            st = hash[exe.id] = exe.sub_exe.stat.latest
             verbose { "Scanning #{exe.id} (#{elps_sec(st[:time])})" }
           end
         end

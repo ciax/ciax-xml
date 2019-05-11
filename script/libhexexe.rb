@@ -13,7 +13,7 @@ module CIAX
         super
         _init_dbi2cfg
         ___init_sub
-        substat = SubStat.new(@sub.sub.stat, @sv_stat)
+        substat = SubStat.new(@sub_exe.sub_exe.stat, @sv_stat)
         @stat = View.new(substat, @cfg[:hdb])
         _opt_mode
       end
@@ -22,12 +22,12 @@ module CIAX
 
       # Sub Methods for Initialize
       def ___init_sub
-        @sub = @cfg[:sub_dic].get(@id)
-        @sv_stat = @sub.sv_stat
-        @cobj.add_rem(@sub.cobj.rem)
-        @mode = @sub.mode
-        @port = @sub.sub.port.to_i + 1000
-        @post_exe_procs.concat(@sub.post_exe_procs)
+        @sub_exe = @cfg[:sub_dic].get(@id)
+        @sv_stat = @sub_exe.sv_stat
+        @cobj.add_rem(@sub_exe.cobj.rem)
+        @mode = @sub_exe.mode
+        @port = @sub_exe.sub_exe.port.to_i + 1000
+        @post_exe_procs.concat(@sub_exe.post_exe_procs)
       end
 
       # Local mode

@@ -44,7 +44,7 @@ module CIAX
 
         # step has site,var,form
         def select_args
-          stat = @dev_dic.get(self[:site]).sub.stat
+          stat = @dev_dic.get(self[:site]).sub_exe.stat
           super(stat.pick_val(self))
         end
 

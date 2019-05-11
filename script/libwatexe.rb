@@ -8,12 +8,11 @@ module CIAX
     deep_include(CmdTree)
     # atrb must have [:dbi], [:sub_dic]
     class Exe < Exe
-      attr_reader :sub, :stat
       def initialize(spcfg, atrb = Hashx.new)
         super
         dbi = _init_dbi2cfg
         @stat = Event.new(dbi, ___init_sub)
-        @host = @sub.host
+        @host = @sub_exe.host
         _opt_mode
       end
 
@@ -40,12 +39,12 @@ module CIAX
 
       # Sub methods for Initialize
       def ___init_sub
-        @sub = @cfg[:sub_dic].get(@id)
-        @sv_stat = @sub.sv_stat.init_flg(auto: '&', event: '@')
-        @cobj.add_rem(@sub.cobj.rem)
-        @mode = @sub.mode
-        @post_exe_procs.concat(@sub.post_exe_procs)
-        @sub.stat
+        @sub_exe = @cfg[:sub_dic].get(@id)
+        @sv_stat = @sub_exe.sv_stat.init_flg(auto: '&', event: '@')
+        @cobj.add_rem(@sub_exe.cobj.rem)
+        @mode = @sub_exe.mode
+        @post_exe_procs.concat(@sub_exe.post_exe_procs)
+        @sub_exe.stat
       end
 
       # Local mode
@@ -57,7 +56,7 @@ module CIAX
 
         # Mode Extention by Option
         def ext_local
-          @sub.pre_exe_procs << proc { |args| @stat.block?(args) }
+          @sub_exe.pre_exe_procs << proc { |args| @stat.block?(args) }
           super
         end
 

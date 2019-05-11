@@ -14,7 +14,7 @@ module CIAX
           return self unless @stat.wdb
           @stat.ext_conv
           # @stat[:int] is overwritten by initial loading
-          @sub.batch_interrupt = @stat.get(:int)
+          @sub_exe.batch_interrupt = @stat.get(:int)
           ___init_cmt_procs
           ___init_exe_processor
           @stat.ext_log if @opt.drv?
@@ -24,13 +24,13 @@ module CIAX
         private
 
         def ___init_cmt_procs
-          act = Action.new(@stat, @sv_stat, @sub)
+          act = Action.new(@stat, @sv_stat, @sub_exe)
           @stat.cmt_procs.append(self, :action, 2) { act.action }
         end
 
         def ___init_exe_processor
           @th_auto = ___init_auto_thread unless @cfg[:cmd_line_mode]
-          @sub.post_exe_procs << proc do
+          @sub_exe.post_exe_procs << proc do
             @sv_stat.set_flg(:auto, @th_auto && @th_auto.alive?)
           end
         end

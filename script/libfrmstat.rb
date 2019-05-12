@@ -16,9 +16,7 @@ module CIAX
         #  (Set upper layer's update)
         self[:comerr] = false
         ext_dic(:data) { ___init_field }
-        return unless @dbi.key?(:response)
-        @frame = Stream::Frame.new(@dbi)
-        @stat_dic['frame'] = @frame
+        ___init_frame
       end
 
       # First token is taken as is (id@x@y) or ..
@@ -74,6 +72,15 @@ module CIAX
       end
 
       private
+
+      def ___init_frame
+        if @dbi.key?(:response)
+          @frame = Stream::Frame.new(@dbi)
+          @stat_dic['frame'] = @frame
+        else
+          init_time2cmt
+        end
+      end
 
       def ___init_field
         data = Hashx.new

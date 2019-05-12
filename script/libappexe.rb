@@ -16,7 +16,6 @@ module CIAX
       def initialize(spcfg, atrb = Hashx.new)
         super
         @cfg[:site_id] = @id
-        @sv_stat = Prompt.new('site', @id)
         @batch_interrupt = []
         _init_net
         ___init_stat
@@ -34,22 +33,20 @@ module CIAX
       end
 
       def ___init_stat
+        @sv_stat = Prompt.new('site', @id)
         dbi = _init_dbi2cfg(%i(dev_id))
-        @stat = @cfg[:stat] = Status.new(dbi, ___init_sub)
+        @stat = @cfg[:stat] = Status.new(dbi, ___init_field)
+        @stat.stat_dic['sv_stat'] = @sv_stat
       end
 
       # Sub methods for Initialize
-      def ___init_sub
+      def ___init_field
         id = @cfg[:dev_id] || return
         # LayerDB might generated in ExeDic level
         # :sub_dic is generated for stand alone (test module)
         @sub_exe = (@cfg[:sub_dic] ||= Frm::ExeDic.new(@cfg)).get(id)
-        ___init_svstat(@sub_exe.sv_stat)
+        @sv_stat.sub_merge(@sub_exe.sv_stat, %i(commerr ioerr))
         @sub_exe.stat
-      end
-
-      def ___init_svstat(subsvs)
-        @sv_stat.sub_merge(subsvs, %i(commerr ioerr))
       end
 
       def ___init_command

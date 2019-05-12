@@ -14,12 +14,9 @@ module CIAX
       def initialize(spcfg, atrb = Hashx.new)
         super
         # DB is generated in ExeDic level
-        dbi = _init_dbi2cfg(%i(stream iocmd))
         @cfg[:site_id] = @id
-        @stat = @cfg[:stat] = Field.new(dbi)
-        @frame = @cfg[:frame] = @stat.frame
-        @sv_stat = @cfg[:sv_stat] = Prompt.new(@id)
         _init_net
+        ___init_stat
         ___init_command
         _opt_mode
       end
@@ -37,6 +34,17 @@ module CIAX
 
       def _ext_shell
         super.input_conv_set
+      end
+
+      def ___init_stat
+        dbi = _init_dbi2cfg(%i(stream iocmd))
+        @stat = Field.new(dbi)
+        @frame = @stat.frame
+        @sv_stat = Prompt.new('dev', @id)
+        # commerr: device no response
+        # ioerr: port is not open (communication refused)
+        @sv_stat.init_flg(comerr: 'X', ioerr: 'E')
+        @cfg.update(stat: @stat, frame: @frame, sv_stat: @sv_stat)
       end
 
       # Sub Methods for Initialize
@@ -85,16 +93,6 @@ module CIAX
           require 'libfrmdrv'
           extend(Driver).ext_driver
         end
-      end
-    end
-
-    # For Frm
-    class Prompt < Prompt
-      # commerr: device no response
-      # ioerr: port is not open (communication refused)
-      def initialize(id)
-        super('dev', id)
-        init_flg(comerr: 'X', ioerr: 'E')
       end
     end
 

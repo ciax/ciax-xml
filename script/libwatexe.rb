@@ -10,8 +10,7 @@ module CIAX
     class Exe < Exe
       def initialize(spcfg, atrb = Hashx.new)
         super
-        dbi = _init_dbi2cfg
-        @stat = Event.new(dbi, ___init_sub)
+        @stat = Event.new(@dbi, ___init_sub)
         @host = @sub_exe.host
         _opt_mode
       end

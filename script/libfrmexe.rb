@@ -37,8 +37,8 @@ module CIAX
       end
 
       def ___init_stat
-        dbi = _init_dbi2cfg(%i(stream iocmd))
-        @stat = Field.new(dbi)
+        _dbi_pick(%i(stream iocmd))
+        @stat = Field.new(@dbi)
         @frame = @stat.frame
         @sv_stat = Prompt.new(@id)
         @cfg.update(stat: @stat, frame: @frame, sv_stat: @sv_stat)

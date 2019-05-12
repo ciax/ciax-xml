@@ -11,7 +11,7 @@ module CIAX
     class Exe < Exe
       def initialize(spcfg, atrb = Hashx.new)
         super
-        _init_dbi2cfg
+        _dbi_pick
         ___init_sub
         substat = SubStat.new(@sub_exe.sub_exe.stat, @sv_stat)
         @stat = View.new(substat, @cfg[:hdb])

@@ -68,7 +68,7 @@ module CIAX
     def __chk_id(obj, name)
       id = __mk_id(obj, name)
       return id unless @list.any? { |h| h.key?(id) }
-      cfg_err("Duplicated id [#{id}] on #{@name}")
+      cfg_err('Duplicated id [%s](%s) on %s', id, name, @name)
     end
   end
 end

@@ -20,9 +20,9 @@ module CIAX
     #  atrb contains the parameter for each layer individually
     def initialize(spcfg, atrb = Hashx.new)
       @cfg = type?(spcfg, Config).gen(self).update(atrb)
-      @cfg.check_keys(%i(opt))
-      @opt = @cfg[:opt]
+      ___init_opt
       ___init_procs
+      ___init_dbi
       @cobj = context_module('Index').new(@cfg)
       @layer = layer_name
     end
@@ -102,6 +102,11 @@ module CIAX
     end
 
     # Sub methods for Initialize
+    def ___init_opt
+      @cfg.check_keys(%i(opt))
+      @opt = @cfg[:opt]
+    end
+
     def ___init_procs
       # Proc for Server Command (by User query}
       @pre_exe_procs = [proc { verbose { 'Processing PreExeProcs' } }]
@@ -115,12 +120,15 @@ module CIAX
     #  @cfg must have [:dbi] shared in the site (among layers)
     #  @dbi will be set for Varx, @cfg[:dbi] will be set for Index
     #  It is not necessarily the case that id and Config[:dbi][:id] is identical
-    def _init_dbi2cfg(ary = [])
-      dbi = type?(@cfg[:dbi], Dbx::Item)
+    def ___init_dbi
+      @dbi = type?(@cfg[:dbi], Dbx::Item)
       # dbi.pick already includes :command, :version
-      @cfg.update(dbi.pick(*ary, :id, :host, :port))
-      @id = dbi[:id]
-      dbi
+      @cfg.update(@dbi.pick(:id, :host, :port))
+      @id = @dbi[:id]
+    end
+
+    def _dbi_pick(*ary)
+      @cfg.update(@dbi.pick(*ary))
     end
 
     def _init_net

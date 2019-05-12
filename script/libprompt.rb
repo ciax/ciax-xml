@@ -7,6 +7,7 @@ module CIAX
     attr_reader :db
     # type = site,mcr
     def initialize(type, id)
+      cfg_err('No ID') unless id
       super(['server', type].compact.join('_'), id)
       @db = {}
       self[:msg] = ''
@@ -102,7 +103,7 @@ module CIAX
       type?(sub, Prompt)
       @db.update(sub.db)
       # Upper layer propagation
-      sub.cmt_procs.append(self, "sv_stat:#{@id}", 4) do |ss|
+      sub.cmt_procs.append(self, @id, 4) do |ss|
         update(ss.pick(args)).cmt
       end
       self

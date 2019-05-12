@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 require 'libexedrv'
-require 'libstream'
 module CIAX
   # Frame Layer
   module Frm

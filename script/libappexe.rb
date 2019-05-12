@@ -15,6 +15,8 @@ module CIAX
       attr_accessor :batch_interrupt
       def initialize(spcfg, atrb = Hashx.new)
         super
+        # generate @id
+        _dbi_pick(%i(dev_id))
         @cfg[:site_id] = @id
         @batch_interrupt = []
         _init_net
@@ -34,8 +36,7 @@ module CIAX
 
       def ___init_stat
         @sv_stat = Prompt.new(@id)
-        dbi = _init_dbi2cfg(%i(dev_id))
-        @stat = @cfg[:stat] = Status.new(dbi, ___init_field)
+        @stat = @cfg[:stat] = Status.new(@dbi, ___init_field)
         @stat.stat_dic['sv_stat'] = @sv_stat
       end
 

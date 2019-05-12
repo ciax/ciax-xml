@@ -43,7 +43,7 @@ module CIAX
 
           def ___init_frame(ent)
             verbose { "Body:#{@cfg[:label]}(#{@id})" }
-            @sp = type?(@cfg[:stream], Hash)
+            @sp = type?(@cfg[:dbi][:stream], Hash)
             @codec = Codec.new(@sp[:endian])
             @frame = ['']
             ent[:frame] = ___mk_frame(ent.deep_subst_par(@sel[:struct]))

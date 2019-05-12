@@ -2,6 +2,7 @@
 require 'libstatx'
 require 'libdic'
 require 'libdevdb'
+require 'libstream'
 
 module CIAX
   # Frame Layer

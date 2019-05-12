@@ -12,16 +12,16 @@ module CIAX
       def initialize(event)
         super()
         @event = type?(event, Event)
-        wdb = type?(event.dbi, Dbx::Item)[:watch]
-        ___init_stat(wdb || { index: [] })
+        wdb = type?(event.dbi, Dbx::Item)[:watch] || {}
+        ___init_stat(wdb[:index] || {})
         ___init_cmt_procs
       end
 
       private
 
-      def ___init_stat(wdb)
+      def ___init_stat(idx)
         self[:stat] = Hashx.new
-        wdb[:index].each do |id, evnt|
+        idx.each do |id, evnt|
           hash = self[:stat].get(id) { Hashx.new }
           hash[:label] = evnt[:label]
           ___init_cond(evnt[:cnd], hash.get(:cond) { [] })

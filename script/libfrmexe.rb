@@ -40,10 +40,7 @@ module CIAX
         dbi = _init_dbi2cfg(%i(stream iocmd))
         @stat = Field.new(dbi)
         @frame = @stat.frame
-        @sv_stat = Prompt.new('dev', @id)
-        # commerr: device no response
-        # ioerr: port is not open (communication refused)
-        @sv_stat.init_flg(comerr: 'X', ioerr: 'E')
+        @sv_stat = Prompt.new(@id)
         @cfg.update(stat: @stat, frame: @frame, sv_stat: @sv_stat)
       end
 
@@ -93,6 +90,16 @@ module CIAX
           require 'libfrmdrv'
           extend(Driver).ext_driver
         end
+      end
+    end
+
+    # To distinct from other(site) proc array title
+    class Prompt < Prompt
+      # commerr: device no response
+      # ioerr: port is not open (communication refused)
+      def initialize(id)
+        super('dev', id)
+        init_flg(comerr: 'X', ioerr: 'E')
       end
     end
 

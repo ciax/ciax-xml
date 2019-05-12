@@ -33,7 +33,7 @@ module CIAX
       end
 
       def ___init_stat
-        @sv_stat = Prompt.new('site', @id)
+        @sv_stat = Prompt.new(@id)
         dbi = _init_dbi2cfg(%i(dev_id))
         @stat = @cfg[:stat] = Status.new(dbi, ___init_field)
         @stat.stat_dic['sv_stat'] = @sv_stat
@@ -110,6 +110,13 @@ module CIAX
             verbose { "DELETE:#{ent.par[0]}" }
           end
         end
+      end
+    end
+
+    # To distinct from other(dev) proc array title
+    class Prompt < Prompt
+      def initialize(id)
+        super('site', id)
       end
     end
 

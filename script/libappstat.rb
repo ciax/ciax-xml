@@ -50,9 +50,12 @@ module CIAX
 
       # For element of SubStat
       def ___init_field(field)
-        return unless @dbi[:dev_id]
-        @field = type_gen(field, Frm::Field) { |mod| mod.new(@dbi[:dev_id]) }
-        @stat_dic.update(@field.stat_dic)
+        if @dbi.key?(:dev_id)
+          @field = type_gen(field, Frm::Field) { |mod| mod.new(@dbi[:dev_id]) }
+          @stat_dic.update(@field.stat_dic)
+        else
+          init_time2cmt
+        end
       end
     end
 

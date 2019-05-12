@@ -49,11 +49,7 @@ module CIAX
       end
 
       def ___init_svstat(subsvs)
-        @sv_stat.db.update(subsvs.db)
-        # Upper layer propagation
-        subsvs.cmt_procs.append(self, "sv_stat:#{@id}", 4) do |ss|
-          @sv_stat.update(ss.pick(:comerr, :ioerr)).cmt
-        end
+        @sv_stat.sub_merge(subsvs, %i(commerr ioerr))
       end
 
       def ___init_command

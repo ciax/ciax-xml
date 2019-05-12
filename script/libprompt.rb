@@ -101,7 +101,11 @@ module CIAX
     def sub_merge(sub, args)
       type?(sub, Prompt)
       @db.update(sub.db)
-      update(sub.pick(args))
+      # Upper layer propagation
+      sub.cmt_procs.append(self, "sv_stat:#{@id}", 4) do |ss|
+        update(ss.pick(args)).cmt
+      end
+      self
     end
 
     private(:[]=)

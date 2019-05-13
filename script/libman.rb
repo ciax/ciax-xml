@@ -27,7 +27,7 @@ module CIAX
         verbose { 'Initiate Manager (option:' + @opt.keys.join + ')' }
         # id = nil -> taken by ARGV
         # pick already includes :command, :version
-        _dbi_pick(%i(sites))
+        _dbi_pick(:sites)
         _init_net
         ___init_stat
         ___init_cmd

@@ -16,7 +16,7 @@ module CIAX
       def initialize(spcfg, atrb = Hashx.new)
         super
         # generate @id
-        _dbi_pick(%i(dev_id))
+        _dbi_pick(:dev_id)
         @cfg[:site_id] = @id
         @batch_interrupt = []
         _init_net

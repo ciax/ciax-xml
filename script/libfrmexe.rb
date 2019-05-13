@@ -37,7 +37,7 @@ module CIAX
       end
 
       def ___init_stat
-        _dbi_pick(%i(stream iocmd))
+        _dbi_pick(:stream, :iocmd)
         @stat = Field.new(@dbi)
         @frame = @stat.frame
         @sv_stat = Prompt.new(@id)

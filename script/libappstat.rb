@@ -26,6 +26,15 @@ module CIAX
         ___init_field(field)
       end
 
+      # Get with token
+      def get(token)
+        token.sub!(%r(data/), '')
+        return super unless %r(/) =~ token
+        cat = $`.to_sym
+        cfg_err('No such entry [%s]', cat) unless key?(cat)
+        self[cat].get($')
+      end
+
       # set vars by csv
       def str_update(str)
         str.split(',').each do |tkn|

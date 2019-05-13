@@ -5,68 +5,18 @@ require 'libhexdb'
 module CIAX
   # Ascii Hex Pack
   module Hex
-    # Sub Status DB (Frame, Field, Status)
-    class SubStat < Upd
-      include DicToken
-      attr_reader :dbi, :sv_stat
-      def initialize(status, sv_stat = nil)
-        ext_dic(:data)
-        super()
-        @stat = type?(status, App::Status)
-        update(@stat.pick(:id, :time, :data_ver, :data, :class, :msg))
-        @dbi = @stat.dbi
-        @sv_stat = sv_stat || Prompt.new('site', @stat[:id])
-        ___init_stats
-        ___init_cmt_procs
-      end
-
-      def ext_remote(host)
-        @skeys.each do |ky|
-          self[ky].ext_remote(host)
-        end
-        self
-      end
-
-      def ext_local
-        @skeys.each do |ky|
-          self[ky].ext_local.ext_file
-        end
-        self
-      end
-
-      def cmode(host)
-        host ? ext_remote(host) : ext_local
-      end
-
-      private
-
-      def ___init_stats
-        sdic = { status: @stat }
-        if @stat.field
-          field = sdic[:field] = type?(@stat.field, Frm::Field)
-          sdic[:frame] = type?(field.frame, Stream::Frame) if field.frame
-        end
-        @skeys = sdic.keys
-        update(sdic)
-      end
-
-      def ___init_cmt_procs
-        propagation(@stat)
-        propagation(@sv_stat)
-        cmt
-      end
-    end
     # View class
     class View < Varx
       # sv_stat should have server status (isu,watch,exe..) like App::Exe
       # stat contains Status (data:name ,class:name ,msg:name)
       #   + Field (field:name) + Frame (frame:name)
       def initialize(stat, hdb = nil)
-        @stat = type?(stat, SubStat)
+        @stat = type?(stat, App::Status)
         super('hex', @stat[:id])
         _attr_set(@stat[:data_ver])
         @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])
-        @sv_stat = @stat.sv_stat
+        @stat_dic = @stat.stat_dic
+        @sv_stat = @stat_dic['sv_stat'] || Prompt.new('site', @id)
         vmode('x')
         ___init_cmt_procs
       end
@@ -157,7 +107,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id]', options: 'h') do |opt, args|
-        stat = SubStat.new(App::Status.new(args)).cmode(opt.host)
+        stat = App::Status.new(args).cmode(opt.host)
         puts View.new(stat).to_x
       end
     end

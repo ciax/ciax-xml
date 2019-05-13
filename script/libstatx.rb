@@ -8,7 +8,7 @@ module CIAX
     def initialize(type, obj)
       # Default layer status name
       @type = type
-      @obj = obj
+      @obj = type?(obj, Statx)
       self[type] = @obj
     end
 
@@ -18,6 +18,10 @@ module CIAX
       layer = $`
       cfg_err('No such entry [%s]', layer) unless key?(layer)
       self[layer].get($')
+    end
+
+    def cmode(opt)
+      each_value { |v| v.cmode(opt) }
     end
   end
 
@@ -32,11 +36,6 @@ module CIAX
       _attr_set(@dbi[:version].to_i, @dbi[:host])
       @layer = @dbi[:layer]
       @stat_dic = StatDic.new(@type, self)
-    end
-
-    def cmode(opt)
-      @stat_dic.each { |k, v| v.cmode(opt) if k != @type }
-      super
     end
 
     # Substitute str by self data

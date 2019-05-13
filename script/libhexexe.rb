@@ -13,8 +13,7 @@ module CIAX
         super
         _dbi_pick
         ___init_sub
-        substat = SubStat.new(@sub_exe.sub_exe.stat, @sv_stat)
-        @stat = View.new(substat, @cfg[:hdb])
+        @stat = View.new(@sub_exe.sub_exe.stat, @cfg[:hdb])
         _opt_mode
       end
 

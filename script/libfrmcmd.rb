@@ -35,7 +35,7 @@ module CIAX
           def _gen_entity(opt)
             ent = super
             @stat = type?(@cfg[:stat], Field)
-            @sel = Select.new(@cfg[:dbi], :command).get(ent[:id])
+            @sel = Select.new(@dbi, :command).get(ent[:id])
             @cfg[:nocache] = @sel[:nocache] if @sel.key?(:nocache)
             @stat.echo = ___init_frame(ent)
             ent
@@ -43,7 +43,7 @@ module CIAX
 
           def ___init_frame(ent)
             verbose { "Body:#{@cfg[:label]}(#{@id})" }
-            @sp = type?(@cfg[:dbi][:stream], Hash)
+            @sp = type?(@dbi[:stream], Hash)
             @codec = Codec.new(@sp[:endian])
             @frame = ['']
             ent[:frame] = ___mk_frame(ent.deep_subst_par(@sel[:struct]))

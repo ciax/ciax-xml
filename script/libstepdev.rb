@@ -24,8 +24,9 @@ module CIAX
         def ext_device(dev_dic)
           @dev_dic = type?(dev_dic, Wat::ExeDic)
           # App::Exe dic used in this Step
-          if (condb = delete(:cond))
-            @condition = Condition.new(condb) { |s| @dev_dic.get(s) }
+          return self unless (condb = delete(:cond))
+          @condition = Condition.new(condb) do |s|
+            @dev_dic.get(s).stat.stat_dic
           end
           self
         end
@@ -44,7 +45,7 @@ module CIAX
 
         # step has site,var,form
         def select_args
-          stat = @dev_dic.get(self[:site]).sub_exe.stat
+          stat = @dev_dic.get(self[:site]).stat_dic['status']
           super(stat.pick_val(self))
         end
 
@@ -73,12 +74,12 @@ module CIAX
         # obj.stat -> looking at Status
 
         def active?
-          @condition.exes.all? { |e| e.stat.active? }
+          @condition.stats.all? { |s| s['event'].active? }
         end
 
         # Blocking during busy. (for interlock check)
         def wait_ready_all
-          @condition.exes.each { |e| e.sv_stat.wait_ready }
+          @condition.stats.each { |s| s['sv_stat'].wait_ready }
           self
         end
 
@@ -86,7 +87,7 @@ module CIAX
           var ||= self[:retry].to_i - self[:count].to_i
           return super(var) unless defined? yield
           super(var) do
-            @condition.exes.all? { |e| e.stat.updating? }
+            @condition.stats.all? { |s| s['event'].updating? }
             yield
           end
         end

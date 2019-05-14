@@ -10,7 +10,7 @@ module CIAX
     class Exe < Exe
       def initialize(spcfg, atrb = Hashx.new)
         super
-        @sub_exe = ___init_sub
+        @sub_exe = _init_sub_exe
         @stat = Event.new(@dbi, @sub_exe.stat)
         @sv_stat.init_flg(auto: '&', event: '@')
         _opt_mode
@@ -35,17 +35,6 @@ module CIAX
         @cfg[:output] = View.new(@stat).ext_prt.upd
         @cobj.loc.add_view
         self
-      end
-
-      # Sub methods for Initialize
-      def ___init_sub
-        se = @cfg[:sub_dic].get(@id)
-        @sv_stat = se.sv_stat
-        @cobj.add_rem(se.cobj.rem)
-        @mode = se.mode
-        @host = se.host
-        @post_exe_procs.concat(se.post_exe_procs)
-        se
       end
 
       # Local mode

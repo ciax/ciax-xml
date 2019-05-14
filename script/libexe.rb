@@ -136,5 +136,17 @@ module CIAX
       @port = @cfg[:port]
       self
     end
+
+    # Initialise Sub layer Exe
+    #  used by Wat/Hex
+    def _init_sub_exe
+      se = @cfg[:sub_dic].get(@id)
+      @sv_stat = se.sv_stat
+      @cobj.add_rem(se.cobj.rem)
+      @mode = se.mode
+      @host = se.host
+      @post_exe_procs.concat(se.post_exe_procs)
+      se
+    end
   end
 end

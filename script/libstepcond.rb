@@ -9,7 +9,7 @@ module CIAX
       # Step condition class
       class Condition
         include Msg
-        attr_reader :exes
+        attr_reader :stats
         def initialize(cond)
           @conditions = type?(cond, Array)
           sites = @conditions.map { |ref| ref[:site] }.uniq

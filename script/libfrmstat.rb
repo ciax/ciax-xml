@@ -76,7 +76,7 @@ module CIAX
       def ___init_frame
         if @dbi.key?(:response)
           @frame = Stream::Frame.new(@dbi)
-          @stat_dic['frame'] = @frame
+          @stat_pool['frame'] = @frame
         else
           init_time2cmt
         end

@@ -37,7 +37,7 @@ module CIAX
       def ___init_stat
         @sv_stat = Prompt.new(@id)
         @stat = @cfg[:stat] = Status.new(@dbi, ___init_field)
-        @stat.stat_dic['sv_stat'] = @sv_stat
+        @stat.stat_pool['sv_stat'] = @sv_stat
       end
 
       # Sub methods for Initialize

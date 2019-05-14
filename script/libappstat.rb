@@ -61,7 +61,7 @@ module CIAX
       def ___init_field(field)
         if @dbi.key?(:dev_id)
           @field = type_gen(field, Frm::Field) { |mod| mod.new(@dbi[:dev_id]) }
-          @stat_dic.update(@field.stat_dic)
+          @stat_pool.update(@field.stat_pool)
         else
           init_time2cmt
         end

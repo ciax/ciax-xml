@@ -26,7 +26,7 @@ module CIAX
           # App::Exe dic used in this Step
           return self unless (condb = delete(:cond))
           @condition = Condition.new(condb) do |s|
-            @dev_dic.get(s).stat.stat_dic
+            @dev_dic.get(s).stat.stat_pool
           end
           self
         end
@@ -45,7 +45,7 @@ module CIAX
 
         # step has site,var,form
         def select_args
-          stat = @dev_dic.get(self[:site]).stat_dic['status']
+          stat = @dev_dic.get(self[:site]).stat_pool['status']
           super(stat.pick_val(self))
         end
 

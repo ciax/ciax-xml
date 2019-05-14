@@ -8,6 +8,6 @@ module CIAX
     aex = Wat::ExeDic.new(cfg, db: Ins::Db.new(cfg.proj)).get(cfg.args.shift)
     cfg.args.empty? ? aex.no_cmd : aex.exe(cfg.args)
     puts aex
-    puts aex.wait_ready ? 'COMPLETE' : 'TIMEOUT'
+    puts aex.sv_stat.wait_ready ? 'COMPLETE' : 'TIMEOUT'
   end
 end

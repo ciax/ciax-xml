@@ -16,7 +16,7 @@ module CIAX
         super('hex', @stat[:id])
         _attr_set(@stat[:data_ver])
         @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])
-        @sv_stat = @stat_dic['sv_stat'] || Prompt.new('site', @id)
+        @sv_stat = type?(@stat_dic['sv_stat'], Prompt)
         vmode('x')
         ___init_cmt_procs
       end
@@ -108,6 +108,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id]', options: 'h') do |opt, args|
         stat = App::Status.new(args).cmode(opt.host)
+        stat.stat_dic['sv_stat'] = Prompt.new('site', stat.id)
         puts View.new(stat.stat_dic).to_x
       end
     end

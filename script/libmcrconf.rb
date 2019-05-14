@@ -16,7 +16,7 @@ module CIAX
         proj = ___get_proj(cfg)
         self[:dbi] = Db.new.get(proj)
         self[:sv_stat] = ___init_prompt(proj, cfg.opt[:n])
-        self[:dev_dic] = Wat::ExeDic.new(cfg, db: Ins::Db.new(proj))
+        self[:dev_dic] = ___init_dev_dic(cfg, db: Ins::Db.new(proj))
         self[:rec_arc] = RecArc.new
       end
 
@@ -42,6 +42,10 @@ module CIAX
         ss.init_flg(nonstop: '(nonstop)')
         ss.up(:nonstop) if nonstop
         ss
+      end
+
+      def ___init_dev_dic(cfg, atrb)
+        cfg[:top_layer]::ExeDic.new(cfg, atrb)
       end
     end
 

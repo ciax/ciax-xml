@@ -14,7 +14,7 @@ module CIAX
         super
         # Set [:dev_dic] here for using layer_cfg
         # For element of Layer
-        @sub_dic = type?(@cfg[:dev_dic], Wat::ExeDic)
+        @sub_dic = type?(@cfg[:dev_dic], CIAX::ExeDic)
         # For server response
         @sv_stat = type?(@cfg[:sv_stat], Prompt).repl(:sid, '')
         @rec_arc = type?(@cfg[:rec_arc], RecArc)

@@ -101,7 +101,9 @@ module CIAX
     class Conf < Get
       def initialize(ustr = '', optargs = {})
         super do |opt, args|
-          yield(Config.new(args: args, opt: opt, proj: ENV['PROJ']))
+          atrb = { opt: opt, top_layer: opt.init_layer_mod }
+          atrb.update(args: args, proj: ENV['PROJ'])
+          yield(Config.new(atrb))
         end
       end
     end

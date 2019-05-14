@@ -6,7 +6,6 @@ module CIAX
   class Layer < CIAX::ExeDic
     def initialize(top_cfg)
       super(top_cfg)
-      @cfg[:top_layer] = top_cfg[:opt].init_layer_mod
       obj = yield(@cfg)
       # Initialize all sub layers
       loop do

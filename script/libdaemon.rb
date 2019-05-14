@@ -15,7 +15,7 @@ module CIAX
       tag = $PROGRAM_NAME.split('/').last
       ___chk_args(___kill_pids(tag), cfg.args + cfg.opt.values)
       ___init_server(tag, cfg.opt, port)
-      ___server(port) { yield cfg.opt.init_layer_mod }
+      ___server(port) { yield cfg }
     end
 
     private

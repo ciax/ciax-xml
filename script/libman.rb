@@ -28,7 +28,7 @@ module CIAX
         # id = nil -> taken by ARGV
         # pick already includes :command, :version
         _dbi_pick(:sites)
-        _init_net
+        _init_port
         ___init_stat
         ___init_cmd
         _opt_mode

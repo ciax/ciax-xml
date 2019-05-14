@@ -131,9 +131,9 @@ module CIAX
       @cfg.update(@dbi.pick(*ary))
     end
 
-    def _init_net
+    def _init_port(port_offset = 0)
       @host = @opt.host || @cfg[:host]
-      @port = @cfg[:port]
+      @port = @cfg[:port].to_i + port_offset
       self
     end
 
@@ -144,7 +144,6 @@ module CIAX
       @sv_stat = se.sv_stat
       @cobj.add_rem(se.cobj.rem)
       @mode = se.mode
-      @host = se.host
       @post_exe_procs.concat(se.post_exe_procs)
       se
     end

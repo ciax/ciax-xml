@@ -15,7 +15,7 @@ module CIAX
         super
         # DB is generated in ExeDic level
         @cfg[:site_id] = @id
-        _init_net
+        _init_port
         ___init_stat
         ___init_command
         _opt_mode

@@ -13,7 +13,7 @@ module CIAX
         super
         @sub_exe = _init_sub_exe
         @stat = View.new(@sub_exe.stat, @cfg[:hdb])
-        @port = @port.to_i + 1000
+        _init_port(1000)
         _opt_mode
       end
 

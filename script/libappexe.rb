@@ -19,7 +19,7 @@ module CIAX
         _dbi_pick(:dev_id)
         @cfg[:site_id] = @id
         @batch_interrupt = []
-        _init_net
+        _init_port
         ___init_stat
         ___init_command
         _opt_mode

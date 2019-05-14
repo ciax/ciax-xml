@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libconf'
-require 'libcmdpar'
+require 'libcbasepar'
 # @cfg[:def_proc] should be Proc which is given |Entity| as param
 #   returns String as message.
 module CIAX

@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libcmdgroup'
+require 'libcbasegroup'
 
 # @cfg[:def_proc] should be Proc which is given |Entity| as param,
 #   returns String as message.

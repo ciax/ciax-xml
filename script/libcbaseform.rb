@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libcmdentity'
+require 'libcbaseentity'
 module CIAX
   # Command Module
   module CmdBase

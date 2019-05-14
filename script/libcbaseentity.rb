@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libcmdfunc'
+require 'libcbasefunc'
 #   returns String as message.
 module CIAX
   # Command Module

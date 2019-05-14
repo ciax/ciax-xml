@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libcmdform'
+require 'libcbaseform'
 require 'libdispgrp'
 # CIAX-XML
 module CIAX

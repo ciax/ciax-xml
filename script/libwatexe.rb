@@ -10,8 +10,9 @@ module CIAX
     class Exe < Exe
       def initialize(spcfg, atrb = Hashx.new)
         super
-        @stat = Event.new(@dbi, ___init_sub)
-        @host = @sub_exe.host
+        @sub_exe = ___init_sub
+        @stat = Event.new(@dbi, @sub_exe.stat)
+        @sv_stat.init_flg(auto: '&', event: '@')
         _opt_mode
       end
 
@@ -38,12 +39,13 @@ module CIAX
 
       # Sub methods for Initialize
       def ___init_sub
-        @sub_exe = @cfg[:sub_dic].get(@id)
-        @sv_stat = @sub_exe.sv_stat.init_flg(auto: '&', event: '@')
-        @cobj.add_rem(@sub_exe.cobj.rem)
-        @mode = @sub_exe.mode
-        @post_exe_procs.concat(@sub_exe.post_exe_procs)
-        @sub_exe.stat
+        se = @cfg[:sub_dic].get(@id)
+        @sv_stat = se.sv_stat
+        @cobj.add_rem(se.cobj.rem)
+        @mode = se.mode
+        @host = se.host
+        @post_exe_procs.concat(se.post_exe_procs)
+        se
       end
 
       # Local mode

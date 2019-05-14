@@ -10,12 +10,12 @@ module CIAX
       # sv_stat should have server status (isu,watch,exe..) like App::Exe
       # stat contains Status (data:name ,class:name ,msg:name)
       #   + Field (field:name) + Frame (frame:name)
-      def initialize(stat, hdb = nil)
-        @stat = type?(stat, App::Status)
+      def initialize(stat_dic, hdb = nil)
+        @stat_dic = type?(stat_dic, StatDic)
+        @stat = @stat_dic['status']
         super('hex', @stat[:id])
         _attr_set(@stat[:data_ver])
         @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])
-        @stat_dic = @stat.stat_dic
         @sv_stat = @stat_dic['sv_stat'] || Prompt.new('site', @id)
         vmode('x')
         ___init_cmt_procs
@@ -108,7 +108,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id]', options: 'h') do |opt, args|
         stat = App::Status.new(args).cmode(opt.host)
-        puts View.new(stat).to_x
+        puts View.new(stat.stat_dic).to_x
       end
     end
   end

@@ -11,9 +11,9 @@ module CIAX
     class Exe < Exe
       def initialize(spcfg, atrb = Hashx.new)
         super
-        _dbi_pick
-        ___init_sub
-        @stat = View.new(@sub_exe.sub_exe.stat, @cfg[:hdb])
+        @sub_exe = ___init_sub
+        @stat = View.new(@sub_exe.stat, @cfg[:hdb])
+        @port = @port.to_i + 1000
         _opt_mode
       end
 
@@ -21,12 +21,13 @@ module CIAX
 
       # Sub Methods for Initialize
       def ___init_sub
-        @sub_exe = @cfg[:sub_dic].get(@id)
-        @sv_stat = @sub_exe.sv_stat
-        @cobj.add_rem(@sub_exe.cobj.rem)
-        @mode = @sub_exe.mode
-        @port = @sub_exe.sub_exe.port.to_i + 1000
-        @post_exe_procs.concat(@sub_exe.post_exe_procs)
+        se = @cfg[:sub_dic].get(@id)
+        @sv_stat = se.sv_stat
+        @cobj.add_rem(se.cobj.rem)
+        @mode = se.mode
+        @port = se.port
+        @post_exe_procs.concat(se.post_exe_procs)
+        se
       end
 
       # Local mode

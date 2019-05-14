@@ -8,7 +8,7 @@ module CIAX
   module Mcr
     Opt::Conf.new('[id] ...', options: 'denxb') do |root_cfg|
       Daemon.new(root_cfg) do |cfg|
-        cfg[:top_layer]::ExeDic.new(cfg, Atrb.new(cfg)).run
+        ExeDic.new(cfg, Atrb.new(cfg)).run
       end
     end
   end

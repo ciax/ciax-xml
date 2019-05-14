@@ -49,16 +49,6 @@ module CIAX
         usage
       end
 
-      # Get init_layer (default 'Wat') with require file
-      def top_layer
-        key = __make_exopt(%i(m x w a f)) || :w
-        name = @optdb.layers[key]
-        require "lib#{name}dic"
-        mod = name.capitalize
-        cfg_err("No #{mod} module") unless CIAX.const_defined?(mod)
-        CIAX.const_get(mod)
-      end
-
       private
 
       # Mode (Device) [prompt]

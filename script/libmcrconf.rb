@@ -16,7 +16,8 @@ module CIAX
         proj = ___get_proj(cfg)
         self[:dbi] = Db.new.get(proj)
         self[:sv_stat] = ___init_prompt(proj, cfg.opt[:n])
-        self[:dev_dic] = ___init_dev_dic(cfg, db: Ins::Db.new(proj))
+        mod = cfg.opt.top_layer
+        self[:dev_dic] = ___init_dev_dic(cfg, mod, db: Ins::Db.new(proj))
         self[:rec_arc] = RecArc.new
       end
 
@@ -44,8 +45,8 @@ module CIAX
         ss
       end
 
-      def ___init_dev_dic(cfg, atrb)
-        obj = cfg[:top_layer]::ExeDic.new(cfg, atrb)
+      def ___init_dev_dic(cfg, mod, atrb)
+        obj = mod::ExeDic.new(cfg, atrb)
         obj = obj.sub_dic until obj.is_a? Wat::ExeDic
         obj
       end

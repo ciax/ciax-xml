@@ -4,6 +4,8 @@ require 'libcbasegroup'
 # @cfg[:def_proc] should be Proc which is given |Entity| as param,
 #   returns String as message.
 module CIAX
+  # CmdBase includes
+  #  Index, Domain, Group, Form, Entity, ParArray, Parameter
   module CmdBase
     # Inherited by Index,Domain
     class GrpAry < Arrayx

@@ -101,10 +101,19 @@ module CIAX
     class Conf < Get
       def initialize(ustr = '', optargs = {})
         super do |opt, args|
-          atrb = { opt: opt, top_layer: opt.init_layer_mod }
-          atrb.update(args: args, proj: ENV['PROJ'])
-          yield(Config.new(atrb))
+          @cfg = Config.new(opt: opt, args: args, proj: ENV['PROJ'])
+          yield(@cfg)
         end
+      end
+
+      # Get init_layer (default 'Wat') with require file
+      def top_layer
+        key = __make_exopt(%i(m x w a f)) || :w
+        name = @optdb.layers[key]
+        mod = name.capitalize
+        require "lib#{name}dic"
+        cfg_err("No #{mod} module") unless CIAX.const_defined?(mod)
+        CIAX.const_get(mod)
       end
     end
   end

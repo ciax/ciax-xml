@@ -29,6 +29,7 @@ module CIAX
 
       def ___init_cmt_procs
         propagation(@stat)
+        propagation(@sv_stat)
         @cmt_procs.append(self, :hex, 1) do
           verbose { _conv_text('Field -> Hexstr', @id, time_id) }
           self[:hexpack] = ___header + ___body

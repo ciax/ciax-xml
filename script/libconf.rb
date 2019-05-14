@@ -110,8 +110,20 @@ module CIAX
       def top_layer
         key = __make_exopt(%i(m x w a f)) || :w
         name = @optdb.layers[key]
-        mod = name.capitalize
         require "lib#{name}dic"
+        ___init_db
+        ___get_mod(name)
+      end
+
+      private
+
+      def ___init_db
+        @cfg[:db] = Ins::Db.new(@cfg.proj)
+        @cfg[:sites] = @cfg.args
+      end
+
+      def ___get_mod(name)
+        mod = name.capitalize
         cfg_err("No #{mod} module") unless CIAX.const_defined?(mod)
         CIAX.const_get(mod)
       end

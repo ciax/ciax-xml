@@ -16,18 +16,6 @@ module CIAX
         _opt_mode
       end
 
-      # wait for busy end or status changed
-      def wait_ready
-        verbose { 'Waiting Busy Device' }
-        100.times do
-          sleep 0.1
-          next if @sv_stat.upd.up?(:busy) # event from buffer
-          return 'done' unless @sv_stat.up?(:comerr)
-          com_err('Busy Device not responding')
-        end
-        com_err('Timeout for Busy Device')
-      end
-
       private
 
       def _ext_shell

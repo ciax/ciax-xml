@@ -119,6 +119,18 @@ module CIAX
       def initialize(id)
         super('site', id)
       end
+
+      # wait for busy end or status changed
+      def wait_ready
+        verbose { 'Waiting Busy Device' }
+        100.times do
+          sleep 0.1
+          next if upd.up?(:busy) # event from buffer
+          return 'done' unless up?(:comerr)
+          com_err('Busy Device not responding')
+        end
+        com_err('Timeout for Busy Device')
+      end
     end
 
     if __FILE__ == $PROGRAM_NAME

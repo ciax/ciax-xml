@@ -35,7 +35,7 @@ module CIAX
         end
 
         def exec_wait
-          _show_res(_exe_site.wait_ready)
+          _show_res(_exe_site.sv_stat.wait_ready)
         end
 
         def system
@@ -78,7 +78,7 @@ module CIAX
 
         # Blocking during busy. (for interlock check)
         def wait_ready_all
-          @condition.exes.each(&:wait_ready)
+          @condition.exes.each { |e| e.sv_stat.wait_ready }
           self
         end
 

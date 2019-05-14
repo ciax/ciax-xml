@@ -12,7 +12,7 @@ module CIAX
       def initialize(spcfg, atrb = Hashx.new)
         super
         @sub_exe = _init_sub_exe
-        @stat = View.new(@sub_exe.stat.stat_dic, @cfg[:hdb])
+        @stat = View.new(@sub_exe.stat, @cfg[:hdb])
         @port = @port.to_i + 1000
         _opt_mode
       end

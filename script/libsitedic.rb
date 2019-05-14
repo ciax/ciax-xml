@@ -5,13 +5,14 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     # This should be set [:db]
     class ExeDic < CIAX::ExeDic
-      attr_reader :db, :sub_dic
+      attr_reader :db, :sub_dic, :stat_dic
       attr_accessor :super_dic
       def initialize(spcfg, atrb = Hashx.new)
         atrb[:opt] = spcfg[:opt].sub_opt
         super
         @cfg[:column] = 2
         @run_list = []
+        @stat_dic = Hashx.new
       end
 
       def get(site)
@@ -42,6 +43,7 @@ module CIAX
         atrb = { dbi: @db.get(site), sub_dic: @sub_dic }
         eobj = layer_module::Exe.new(@cfg, atrb)
         put(site, eobj)
+        @stat_dic.put(site, eobj.stat.stat_pool)
         eobj
       end
 

@@ -74,12 +74,12 @@ module CIAX
         # obj.stat -> looking at Status
 
         def active?
-          @condition.stats.all? { |s| s['event'].active? }
+          @condition.active?
         end
 
         # Blocking during busy. (for interlock check)
         def wait_ready_all
-          @condition.stats.each { |s| s['sv_stat'].wait_ready }
+          @condition.wait_ready
           self
         end
 
@@ -87,7 +87,7 @@ module CIAX
           var ||= self[:retry].to_i - self[:count].to_i
           return super(var) unless defined? yield
           super(var) do
-            @condition.stats.all? { |s| s['event'].updating? }
+            @condition.updating?
             yield
           end
         end

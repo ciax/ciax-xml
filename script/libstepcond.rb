@@ -16,6 +16,20 @@ module CIAX
           @stats = sites.map { |id| type?(yield(id), StatDic) }
         end
 
+        def active?
+          @stats.all? { |s| s['event'].active? }
+        end
+
+        # Blocking during busy. (for interlock check)
+        def wait_ready
+          @stats.each { |s| s['sv_stat'].wait_ready }
+          self
+        end
+
+        def updating?
+          @stats.all? { |s| s['event'].updating? }
+        end
+
         # Get condition result Array with latest stat
         def results
           sdic = ___scan
@@ -40,7 +54,8 @@ module CIAX
 
         # Get Status from Devices via http
         def ___scan
-          @stats.each_with_object({}) do |stat, hash|
+          @stats.each_with_object({}) do |s, hash|
+            stat = s['status']
             st = hash[stat.id] = stat.latest
             verbose { "Scanning #{stat.id} (#{elps_sec(st[:time])})" }
           end

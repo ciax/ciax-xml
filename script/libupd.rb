@@ -58,6 +58,7 @@ module CIAX
     end
 
     # Update without any processing (Use for scan in macro)
+    #  load in client mode
     def latest
       self
     end

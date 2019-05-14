@@ -26,7 +26,7 @@ module CIAX
           # App::Exe dic used in this Step
           return self unless (condb = delete(:cond))
           @condition = Condition.new(condb) do |s|
-            @dev_dic.stat_dic.get(s)
+            @dev_dic.get(s).stat_pool
           end
           self
         end

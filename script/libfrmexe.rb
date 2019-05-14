@@ -42,6 +42,7 @@ module CIAX
         @frame = @stat.frame
         @sv_stat = Prompt.new(@id)
         @cfg.update(stat: @stat, frame: @frame, sv_stat: @sv_stat)
+        @stat_pool = @stat.stat_pool
       end
 
       # Sub Methods for Initialize

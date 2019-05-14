@@ -12,6 +12,7 @@ module CIAX
         super
         @sub_exe = _init_sub_exe
         @stat = Event.new(@dbi, @sub_exe.stat)
+        @stat_pool = @stat.stat_pool
         @sv_stat.init_flg(auto: '&', event: '@')
         _opt_mode
       end

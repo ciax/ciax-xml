@@ -29,9 +29,9 @@ module CIAX
     # Inspection format
     #  %p converts the object with inspect
     def cfmt(*ary)
-      return '' unless (fmt = ary.shift)
+      return '' unless (head = ary.shift)
       i = 0
-      fmt.gsub!(/%.*?[a-zA-Z]/) do |m|
+      fmt = head.to_s.gsub(/%.*?[a-zA-Z]/) do |m|
         m = colorize(m, $+.hex) if m.sub!(/:(.)/, '')
         i += 1
         m

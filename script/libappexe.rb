@@ -53,7 +53,7 @@ module CIAX
 
       def ___init_command
         @cobj.add_rem.cfg[:def_msg] = 'ISSUED'
-        @cobj.rem.add_sys
+        @cobj.rem.add_sys if @stat_pool.key?('frame')
         @cobj.rem.add_int
         @cobj.rem.add_ext
         self

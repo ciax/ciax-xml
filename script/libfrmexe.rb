@@ -48,7 +48,7 @@ module CIAX
       # Sub Methods for Initialize
       def ___init_command
         @cobj.add_rem.cfg[:def_msg] = 'OK'
-        @cobj.rem.add_sys
+        @cobj.rem.add_sys if @frame
         @cobj.rem.add_ext
         @cobj.rem.add_int
         self

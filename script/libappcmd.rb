@@ -21,6 +21,12 @@ module CIAX
       end
       # External Command
       module Ext
+        class Group
+          def initialize(spcfg, atrb = Hashx.new)
+            super
+            add_form('upd', 'Update')
+          end
+        end
         # Generate [:batch]
         class Form
           # Ext entity
@@ -35,7 +41,7 @@ module CIAX
           def _gen_entity(opt)
             ent = super
             # batch is ary of args(ary)
-            ent[:batch] = ent.deep_subst_par(@cfg[:body]).map do |e1|
+            ent[:batch] = ent.deep_subst_par(@cfg[:body] || []).map do |e1|
               args = []
               enclose("GetCmd(FDB):#{e1.first}", 'Exec(FDB):%s') do
                 ___get_args(e1, args)

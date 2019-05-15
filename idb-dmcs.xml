@@ -24,7 +24,7 @@
         </watch>
       </site>
       <site id="tmi" dev_id="tmi" app_id="cmi" host="moircsobcp" port="25690" label="Current Mask Index"/>
-      <site id="tbb" dev_id="tbb" app_id="bbe" host="localhost" port="25696" label="TEST BBE simple">
+      <site id="tbb" dev_id="tbb" app_id="bbe" host="pingu" port="25696" label="TEST BBE simple">
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="X0-3"/>
           <group ref="g1" caption="X4-7"/>
@@ -32,7 +32,7 @@
           <group ref="g3" caption="X12-15"/>
         </status>
       </site>
-      <site id="tbw" dev_id="tbb" app_id="bbe" host="localhost" port="25697" label="TEST BBE with Watch">
+      <site id="tbw" dev_id="tbb" app_id="bbe" host="pingu" port="25697" label="TEST BBE with Watch">
         <command ref="tbb"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="g0" caption="X0-3"/>

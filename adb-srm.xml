@@ -2,7 +2,7 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="srm" id="srm" label="CsEtr Controller" version="2">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <group id="gu" caption="Device">
+      <group id="gsys" caption="System">
         <unit id="uu" label="Status">
           <item id="upd" label="Upd">
             <frmcmd name="getstat"/>

@@ -12,9 +12,9 @@ module CIAX
       # @cfg should have [:sv_stat]
       def initialize(layer_cfg, atrb = Hashx.new)
         super
-        # Set [:dev_dic] here for using layer_cfg
+        # Set [:sub_dic] here for using layer_cfg
         # For element of Layer
-        @sub_dic = type?(@cfg[:dev_dic], CIAX::ExeDic)
+        @sub_dic = type?(@cfg[:sub_dic], CIAX::ExeDic)
         # For server response
         @sv_stat = type?(@cfg[:sv_stat], Prompt).repl(:sid, '')
         @rec_arc = type?(@cfg[:rec_arc], RecArc)

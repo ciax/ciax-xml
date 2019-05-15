@@ -99,7 +99,7 @@ module CIAX
 
         # Initiate procs
         def ___init_proc_set
-          @cobj.get('set').def_proc do |ent, src|
+          _set_def_proc('set') do |ent, src|
             @stat.repl(ent.par[0], ent.par[1])
             @stat.cmt if src != 'event'
             verbose { "SET:#{ent.par[0]}=#{ent.par[1]}" }
@@ -107,7 +107,7 @@ module CIAX
         end
 
         def ___init_proc_del
-          @cobj.get('del').def_proc do |ent|
+          _set_def_proc('del') do |ent|
             ent.par[0].split(',').each { |key| @stat.delete(key) }
             verbose { "DELETE:#{ent.par[0]}" }
           end

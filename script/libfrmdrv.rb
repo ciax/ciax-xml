@@ -41,8 +41,8 @@ module CIAX
         end
 
         def ___init_processor_int
-          @cobj.get('flush').def_proc { @frame.flush }
-          @cobj.get('reset').def_proc { @frame.reset }
+          _set_def_proc('flush') { @frame.flush }
+          _set_def_proc('reset') { @frame.reset }
         end
       end
     end

@@ -21,6 +21,7 @@ module CIAX
       end
       # External Command
       module Ext
+        # External Group
         class Group
           def initialize(spcfg, atrb = Hashx.new)
             super

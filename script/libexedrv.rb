@@ -26,19 +26,18 @@ module CIAX
       end
 
       def ___init_processor_save
-        @cobj.get('save').def_proc do |ent|
+        _set_def_proc('save') do |ent|
           @stat.save_partial(ent.par[0].split(','), ent.par[1])
           verbose { "Saving [#{ent.par[0]}]" }
         end
       end
 
       def ___init_processor_load
-        item = @cobj.get('load')
-        item.pars.first.list = @stat.tag_list
-        item.def_proc do |ent|
+        item = _set_def_proc('load') do |ent|
           @stat.load_partial(ent.par[0] || '')
           verbose { "Loading [#{ent.par[0]}]" }
         end
+        item.pars.first.list = @stat.tag_list if item
       end
     end
   end

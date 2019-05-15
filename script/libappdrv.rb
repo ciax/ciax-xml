@@ -54,7 +54,7 @@ module CIAX
 
         # App: Sendign a first priority command (interrupt)
         def ___init_proc_int(buf)
-          @cobj.get('interrupt').def_proc do |_ent, src|
+          _set_def_proc('interrupt') do |_ent, src|
             @batch_interrupt.each do |args|
               verbose { "Issuing:#{args} for Interrupt" }
               buf.send(@cobj.set_cmd(args.dup), 0)

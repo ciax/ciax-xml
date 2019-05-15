@@ -59,7 +59,7 @@ module CIAX
 
         # Mode Extension by Option
         def ext_local
-          @cobj.get('interrupt').def_proc { @thread.raise(Interrupt) }
+          _set_def_proc('interrupt') { @thread.raise(Interrupt) }
           super
         end
 

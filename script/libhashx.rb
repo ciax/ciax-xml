@@ -105,6 +105,10 @@ module CIAX
       find { |e| res = e.get(key) } && res
     end
 
+    def key?(key)
+      any? { |e| e.key?(key) }
+    end
+
     # Update interface for TagList
     def upd
       self

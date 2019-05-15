@@ -101,6 +101,11 @@ module CIAX
       extend(Shell).ext_shell
     end
 
+    def _set_def_proc(id, &def_proc)
+      return unless @cobj.key?(id)
+      @cobj.get(id).def_proc(&def_proc)
+    end
+
     # Sub methods for Initialize
     def ___init_opt
       @cfg.check_keys(%i(opt))

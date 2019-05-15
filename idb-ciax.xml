@@ -10,7 +10,9 @@
       <site id="dts" dev_id="dts" app_id="oss" port="25105" label="TSC Control">
         <command ref="dts"/>
       </site>
-      <!-- site id="ist" dev_id="ist" app_id="ist" port="53051" label="Current Instrument"/ -->
+      <site id="ist" dev_id="ist" app_id="ist" port="53051" label="Current Instrument">
+        <command ref="ist"/>
+      </site>
     </group>
     <group id="cx_sim" label="SimLab">
       <site id="cr2" dev_id="cr2" app_id="mel" port="25502" label="CIAX CART 2"/>

@@ -5,7 +5,7 @@ require 'libwatdic'
 module CIAX
   Opt::Conf.new('[id] [cmd] (par)', options: 'elch') do |cfg|
     cfg[:cmd_line_mode] = true # exclude empty command
-    aex = Wat::ExeDic.new(cfg, db: Ins::Db.new(cfg.proj)).get(cfg.args.shift)
+    aex = cfg.opt.top_layer::ExeDic.new(cfg).get(cfg.args.shift)
     cfg.args.empty? ? aex.no_cmd : aex.exe(cfg.args)
     puts aex
     puts aex.sv_stat.wait_ready ? 'COMPLETE' : 'TIMEOUT'

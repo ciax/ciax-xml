@@ -11,7 +11,7 @@ module CIAX
     class Exe < Exe
       def initialize(spcfg, atrb = Hashx.new)
         super
-        @sub_exe = _init_sub_exe
+        @sub_exe = _init_sub_exe.sub_exe
         @stat = View.new(@sub_exe.stat, @cfg[:hdb])
         @stat_pool = @sub_exe.stat_pool
         _init_port(1000)

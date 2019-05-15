@@ -13,7 +13,7 @@ module CIAX
         def initialize(cond)
           @conditions = type?(cond, Array)
           sites = @conditions.map { |ref| ref[:site] }.uniq
-          @stats = sites.map { |id| type?(yield(id), StatDic) }
+          @stats = sites.map { |id| type?(yield(id), StatPool) }
         end
 
         def active?

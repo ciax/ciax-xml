@@ -4,7 +4,8 @@ require 'libdb'
 
 module CIAX
   # Layer status container
-  class StatDic < Hashx
+  class StatPool < Hashx
+    attr_reader :type
     def initialize(type, obj)
       # Default layer status name
       @type = type
@@ -35,7 +36,7 @@ module CIAX
       @dbi ||= mod.new.get(@id)
       _attr_set(@dbi[:version].to_i, @dbi[:host])
       @layer = @dbi[:layer]
-      @stat_pool = StatDic.new(@type, self)
+      @stat_pool = StatPool.new(@type, self)
     end
 
     # Substitute str by self data

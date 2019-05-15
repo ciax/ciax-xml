@@ -11,7 +11,8 @@ module CIAX
       # stat contains Status (data:name ,class:name ,msg:name)
       #   + Field (field:name) + Frame (frame:name)
       def initialize(stat, hdb = nil)
-        @stat = type?(stat, Statx)
+        # To use token omitting 'status:'
+        @stat = type?(stat, App::Status)
         super('hex', @stat[:id])
         _attr_set(@stat[:data_ver])
         @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])
@@ -70,13 +71,13 @@ module CIAX
 
       def ___mk_bit(bits)
         bits.map do |hash|
-          @stat.get(hash[:ref])
+          @stat_pool.get(hash[:ref])
         end.join
       end
 
       def ___mk_frame(fields)
         fields.map do |hash|
-          ___padding(hash, @stat.get(hash[:ref]))
+          ___padding(hash, @stat_pool.get(hash[:ref]))
         end.join
       end
 

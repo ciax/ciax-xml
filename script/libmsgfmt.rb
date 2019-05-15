@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'libmsgtime'
 # Array#to_s shows lines
 class Array
   def to_s
@@ -116,7 +117,7 @@ module CIAX
     end
 
     def _conv_text(*par)
-      cfmt('Conversion %s %p %p', *par)
+      cfmt('Conversion %s %p [%s]', *par)
     end
   end
 end

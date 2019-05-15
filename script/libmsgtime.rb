@@ -1,9 +1,11 @@
 #!/usr/bin/env ruby
-require 'libmsgfmt'
 # Common Module
 module CIAX
   ### Time Format Methods ###
   module Msg
+    # Starting Time
+    START = Time.now
+
     module_function
 
     def now_msec
@@ -20,6 +22,10 @@ module CIAX
       return 0 unless base_msec
       sec = (later_msec - base_msec).to_f / 1000
       interval(sec)
+    end
+
+    def uptime(msec)
+      interval(msec.to_f / 1000 - START.to_f)
     end
 
     def interval(sec)

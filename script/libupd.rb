@@ -76,7 +76,7 @@ module CIAX
     end
 
     def time_id
-      self[:time].to_s[-6, 6]
+      Msg.uptime(self[:time])
     end
 
     # Set time_upd to @cmt_procs with lower layer time
@@ -99,7 +99,7 @@ module CIAX
     private
 
     def ___time_text(str)
-      format('Timestamp %s %s (%s)', str, elps_sec(time), time_id)
+      cfmt('Timestamp %s %s (%s)', str, elps_sec(time), time_id)
     end
 
     def ___ppg_text(src, dst)
@@ -108,7 +108,7 @@ module CIAX
       ca = caller.reject do |s|
         /lib(upd|msg)/ =~ s
       end.first.split('/').last.tr("'`", '')
-      format(fmt, src.base_class, dst.base_class, ca)
+      cfmt(fmt, src.base_class, dst.base_class, ca)
     end
   end
 end

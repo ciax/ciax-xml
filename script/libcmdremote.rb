@@ -64,12 +64,7 @@ module CIAX
             atrb.get(:caption) { 'System Commands' }
             super
             add_form('interrupt', nil, def_msg: 'INTERRUPT')
-            add_form('reset', 'stream', dev_msg: 'RESET')
-          end
-
-          def add_empty
-            # Accept empty command for upd
-            add_form(nil, nil, def_msg: '')
+            add_form('reset', 'Stream', dev_msg: 'RESET')
           end
         end
       end
@@ -83,6 +78,11 @@ module CIAX
             atrb.get(:caption) { 'Internal Commands' }
             super
             @cfg[:nocache] = true
+          end
+
+          def add_empty
+            # Accept empty command for upd
+            add_form(nil, nil, def_msg: '')
           end
 
           private

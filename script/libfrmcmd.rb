@@ -17,8 +17,17 @@ module CIAX
           def initialize(spcfg, atrb = Hashx.new)
             super
             _init_form_int
-            add_form('flush', 'Stream')
             @disp_dic['set'] = '[key(@idx)] [val(,val)]'
+          end
+        end
+      end
+
+      module Sys
+        # System Command Group
+        class Group
+          def initialize(spcfg, atrb = Hashx.new)
+            super
+            add_form('flush', 'Stream')
           end
         end
       end

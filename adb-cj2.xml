@@ -2,7 +2,7 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="cj2" id="cj2" label="Stand-by Flange PLC" version="4">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <group id="gint" caption="Interrpt Commands" column="2">
+      <group id="gsys" caption="System Commands" column="2">
         <unit id="upd" label="Status">
           <item id="upd" label="Upd">
             <frmcmd name="getstat"/>

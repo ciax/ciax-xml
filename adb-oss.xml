@@ -2,7 +2,7 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="oss" id="oss" label="TSC Control" version="7">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <group id="gupd" caption="System">
+      <group id="gsys" caption="System">
         <item id="upd" label="Upd">
           <frmcmd name="logstat"/>
           <frmcmd name="getstat"/>

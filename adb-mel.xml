@@ -2,7 +2,7 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app frm_id="mel" id="mel" label="Cart PLC" version="8">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <group id="gint" caption="Interrupt Commands" column="2">
+      <group id="gsys" caption="System Commands" column="2">
         <unit id="uu">
           <item id="upd" label="Status update">
             <frmcmd name="getstat"/>

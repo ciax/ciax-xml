@@ -43,13 +43,9 @@ module CIAX
         end
 
         def ___init_recview_cmd
-          page = @cobj.loc.add_page
-          page.get('last').def_proc do |ent|
-            @view.inc(ent.par[0] || 1)
-          end
-          page.get('cl').def_proc do
-            @view.flush
-          end
+          @cobj.loc.add_page
+          _set_def_proc('last') { |ent| @view.inc(ent.par[0] || 1) }
+          _set_def_proc('cl') { @view.flush }
         end
 
         def ___init_rank_cmd(view)

@@ -19,8 +19,8 @@ module CIAX
         list.each_with_object(Hashx.new) do |id, hash|
           get(id)
           atrb = get(id) || @docs.get(id)[:attr]
-          hash[id] = atrb[:run] != 'false' &&
-                     ['localhost', HOST].include?(atrb[:host])
+          hash[id] = atrb[:run] != 'false' && atrb[:host]
+#                     ['localhost', HOST].include?(atrb[:host])
         end
       end
 

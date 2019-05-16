@@ -29,6 +29,11 @@ module CIAX
         super
       end
 
+      # k = mcr id (unix time)
+      def interrupt
+        _dic.each { |k, v| k =~ /[\d]+/ && v.interrupt }
+      end
+
       # obsolete, was used for RecDic@cache
       def records
         _dic.inject({}) { |h, obj| h[obj[:id]] = obj.stat }
@@ -44,13 +49,9 @@ module CIAX
       end
 
       def ___init_cmd(rem)
-        rem.ext_input_log if @opt.mcr_log?
         rem.ext.def_proc { |ent| __gen_cmd(ent) }
         rem.int.def_proc { |ent| ___man_cmd(ent) }
-        rem.get('interrupt').def_proc do
-          # k = mcr id (unix time)
-          _dic.each { |k, v| k =~ /[\d]+/ && v.interrupt }
-        end
+        rem.get('interrupt').def_proc { interrupt }
       end
 
       # Macro Generator

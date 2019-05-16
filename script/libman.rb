@@ -74,6 +74,7 @@ module CIAX
           super
           @cfg[:cid] = 'manager'
           @mode = 'DRY' if @opt.dry?
+          @cobj.rem.ext_input_log if @opt.mcr_log?
           @pre_exe_procs << proc do
             @sv_stat.repl(:sid, '')
             @sv_stat.flush(:run).cmt if @sv_stat.get(:list).empty?

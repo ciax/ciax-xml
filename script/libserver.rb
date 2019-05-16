@@ -16,7 +16,7 @@ module CIAX
       def ext_server
         return self unless @port
         @mode += ':SV'
-        @cobj.rem.int.add_empty
+        @cobj.rem.add_empty
         @server_input_proc ||= ___init_input
         @server_output_proc ||= proc { JSON.dump(@sv_stat) }
         ___startup

@@ -22,6 +22,10 @@ module CIAX
           @cfg[:def_proc] = proc {} # proc is re-defined
         end
 
+        def add_empty
+          @empty = add_grp('Empty')
+        end
+
         def add_sys # returns Group
           @sys = add_grp('Sys')
         end
@@ -55,6 +59,19 @@ module CIAX
       end
 
       #### Groups ####
+
+      # Accept empty command for upd
+      module Empty
+        deep_include CmdBase
+        # System Command Group
+        class Group < CmdBase::Group
+          def initialize(dom_cfg, atrb = Hashx.new)
+            super
+            add_form(nil, nil, def_msg: '')
+          end
+        end
+      end
+
       # System Commands
       module Sys
         deep_include CmdBase
@@ -78,11 +95,6 @@ module CIAX
             atrb.get(:caption) { 'Internal Commands' }
             super
             @cfg[:nocache] = true
-          end
-
-          def add_empty
-            # Accept empty command for upd
-            add_form(nil, nil, def_msg: '')
           end
 
           private

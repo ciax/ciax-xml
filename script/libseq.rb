@@ -49,7 +49,7 @@ module CIAX
 
       def ___pre_play
         @dev_dic.init_sites if @dev_dic
-        Thread.current[:query] = @qry
+        Thread.current[:query] = @qry.clear
         show_fg @record.start
         @sv_stat.push(:list, @id).repl(:sid, @id)
       end

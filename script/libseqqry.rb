@@ -42,7 +42,12 @@ module CIAX
         res = ___get_ans(step, cmds)
         ___judge(res)
       ensure
+        clear
+      end
+
+      def clear
         @valid_keys.clear
+        self
       end
 
       private

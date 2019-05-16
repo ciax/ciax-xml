@@ -29,7 +29,7 @@ module CIAX
       # Mode Extention by Option
       def _ext_shell
         super
-        @prompt_proc = proc { opt_listing(@int.valid_keys) }
+        @prompt_proc = proc { opt_listing(@valid_keys) }
         @cobj.loc.add_view
         self
       end
@@ -40,7 +40,8 @@ module CIAX
         @sys = rem.add_sys
         @int = rem.add_int
         @sys.add_form('run', 'seqence').def_proc { run }
-        @cfg[:valid_keys] = @int.valid_keys.clear
+        @valid_keys = @cfg[:valid_keys] = @int.valid_keys.clear
+        @valid_keys << 'run'
       end
 
       def ___init_seq(submcr_proc)

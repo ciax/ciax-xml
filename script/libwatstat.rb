@@ -50,10 +50,10 @@ module CIAX
       end
 
       def act_start
-        self[:act_time][0] = act_upd
+        self[:act_time][0] = act_end
       end
 
-      def act_upd
+      def act_end
         self[:act_time][1] = now_msec
       end
 

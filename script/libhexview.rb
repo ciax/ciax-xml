@@ -42,7 +42,7 @@ module CIAX
       def ___header
         ary = ['%', self[:id]]
         ary << __b2e(__up?(:udperr))
-        ary << __b2i(__up?(:event, :action))
+        ary << __b2i(__up?(:event))
         ary << __b2i(__up?(:busy))
         ary << __b2e(__up?(:comerr))
         ary.join('')

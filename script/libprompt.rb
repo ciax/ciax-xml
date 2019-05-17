@@ -31,14 +31,14 @@ module CIAX
 
     def up(key)
       cfg_err("No such flag [#{key}]") unless key?(key)
-      verbose { "Flag up #{key} was (#{self[key]})" }
+      verbose { "Flag up #{key} (was #{self[key]})" }
       repl(key, 'true')
       self
     end
 
     def dw(key)
       cfg_err("No such flag [#{key}]") unless key?(key)
-      verbose { "Flag down #{key} was (#{self[key]})" }
+      verbose { "Flag down #{key} (was #{self[key]})" }
       repl(key, 'false')
       self
     end

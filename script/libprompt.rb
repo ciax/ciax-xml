@@ -30,17 +30,11 @@ module CIAX
     end
 
     def up(key)
-      cfg_err("No such flag [#{key}]") unless key?(key)
-      verbose { "Flag up #{key} (was #{self[key]})" }
-      repl(key, 'true')
-      self
+      __turn_flag(key, 'up', 'true')
     end
 
     def dw(key)
-      cfg_err("No such flag [#{key}]") unless key?(key)
-      verbose { "Flag down #{key} (was #{self[key]})" }
-      repl(key, 'false')
-      self
+      __turn_flag(key, 'down', 'false')
     end
 
     def set_flg(key, flag)
@@ -111,5 +105,16 @@ module CIAX
 
     private(:[]=)
     protected(:[])
+
+    private
+
+    def __turn_flag(key, label, tf)
+      cfg_err("No such flag [#{key}]") unless key?(key)
+      verbose do
+        cfmt('Flag %s %s %s', label, key, self[key] != tf ? '-> changed' : '')
+      end
+      repl(key, tf)
+      self
+    end
   end
 end

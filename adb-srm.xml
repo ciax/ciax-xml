@@ -72,7 +72,7 @@
             </frmcmd>
           </item>
         </unit>
-        <unit id="ipw" title="ipw[on|off]"  label="Instrument Power [%s]">
+        <unit id="ipw" title="ipw[on|off]" label="Instrument Power [%s]">
           <item id="ipwon" label="ON">
             <frmcmd name="fset" label="Bit 4 ON">
               <argv>50000</argv>

@@ -74,8 +74,8 @@ module CIAX
           def ___make_unit_form(sg, uat, index)
             umem = uat[:members]
             il = umem.map { |m| index[m][:label] }.join('/')
-            sg.put_dummy(uat[:title], uat[:label] % il)
             sg.replace(sg - umem)
+            sg.put_dummy(uat[:title], uat[:label] % il)
           end
         end
         # Ext Form

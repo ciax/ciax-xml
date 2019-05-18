@@ -41,10 +41,10 @@ module CIAX
       # Server Status
       def ___header
         ary = ['%', self[:id]]
-        ary << __b2e(@sv_stat.up?(:udperr))
-        ary << __b2i(@sv_stat.up?(:event))
-        ary << __b2i(@sv_stat.up?(:busy))
-        ary << __b2e(@sv_stat.up?(:comerr))
+        ary << __b2e(__up?(:udperr))
+        ary << __b2i(__up?(:event))
+        ary << __b2i(__up?(:busy))
+        ary << __b2e(__up?(:comerr))
         ary.join('')
       end
 
@@ -104,6 +104,10 @@ module CIAX
 
       def __b2e(b) # Boolean to Error (E,_)
         b ? 'E' : '_'
+      end
+
+      def __up?(*ary)
+        ary.any? { |k| @sv_stat.up?(k) }
       end
     end
 

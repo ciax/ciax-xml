@@ -7,12 +7,12 @@
 # command is exclusive
 #link exe
 exit=~/.var/exit.txt
-pid=~/.var/pid.txt
+pidfile=~/.var/pid.txt
 exelog=~/.var/gen2log.txt
 [ -f $exit ] || echo "0" > $exit
-[ -f $pid ] || touch $pid
+[ -f $pidfile ] || touch $pidfile
 loghead(){
-    echo -e "[$(date +%D-%T)]% $@" >> $exelog
+    echo -en "[$(date +%F_%T)]% $@" >> $exelog
 }
 doexe(){
     # Error output should be separated
@@ -29,16 +29,12 @@ updexit(){
     echo $code
 }
 bglog(){
+    echo "$$" > $pidfile
     loghead "$@" "(pid=$$)\n"
-    echo "$$" > $pid
-    code=0
-    bgexe "$@" &
-}
-bgexe(){
     doexe "$@"
     loghead "(pid=$$)"
     setexit
-    > $pid
+    > $pidfile
 }
 fglog(){
     loghead "$@"
@@ -50,10 +46,10 @@ reject(){
     loghead "$@" "[Rejected by duplication!]\n"
 }
 # Check background running
-# Back ground task is alive when $pid is not empty
+# Back ground task is alive when $pidfile is not empty
 chkbg(){
-    code=$(<$pid)
-    [ "$code" ] || code=0
+    pid=$(<$pidfile)
+    [ "$pid" ] && code=1 || code=0
     return $code
 }
 case "$1" in
@@ -63,7 +59,11 @@ case "$1" in
     -b)
         shift
         if [ "$1" ] ; then
-            chkbg && bglog "$@" || reject "$@"
+            if chkbg ; then
+                bglog "$@" &
+            else
+                reject "$@"
+            fi
         else
             chkbg
         fi

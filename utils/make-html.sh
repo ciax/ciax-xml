@@ -1,7 +1,6 @@
 #!/bin/bash
 #alias mkhtml
 [ "$1" ] || { echo "Usage: make-html [site] [ctlunit].. or -"; exit; }
-setup-www
 id=$1
 shift
 tmp=$HOME/.var/temp.$(date +%s)

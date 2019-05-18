@@ -143,3 +143,17 @@
   adb//event/(int,exec,block)@name <= adb//commands/command@id
   adb//event/(onchange,pattern,range)@ref <= adb//status/*@id
   *@symbol <= *//symbol/table@id
+
+### Command Grouping ###
+  target: fdb//command, adb//command
+
+  //group: Grouping ether CUI or WEB control section.
+    WEB: Controlable Group is selectable.
+
+  //unit: group of exclusive commands (conflict each other)
+          label can be format text. '%s' is replaced with  member labels connected by '/'
+    WEB: All member gets into one select tab.
+         w/label: Show label before select tab.
+    CUI: w/title:  Show title and label representing the group. Don't show each members. 
+         w/o title: Show each members.
+

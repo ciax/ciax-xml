@@ -10,7 +10,7 @@
         </unit>
       </group>
       <group id="gz" caption="Obsolete Device">
-        <unit id="stp" label="STOW PIN">
+        <unit id="stp" title="st[on|off]" label="STOW PIN [%s]">
           <item id="ston" label="ON">
             <frmcmd name="fset" label="Bit 5 ON">
               <argv>500000</argv>
@@ -22,7 +22,7 @@
             </frmcmd>
           </item>
         </unit>
-        <unit id="c3p" label="CIAX3 POWER">
+        <unit id="c3p" title="c3[on|off]" label="CIAX3 POWER [%s]">
           <item id="c3on" label="ON">
             <frmcmd name="fset" label="Bit 0 on">
               <argv>5</argv>
@@ -34,7 +34,7 @@
             </frmcmd>
           </item>
         </unit>
-        <unit id="c3e" label="CIAX3 EMERGENCY">
+        <unit id="c3e" title="em[on|off]" label="CIAX3 EMERGENCY [%s}">
           <item id="emon" label="ON">
             <frmcmd name="fset" label="Bit 1 ON">
               <argv>50</argv>
@@ -47,8 +47,8 @@
           </item>
         </unit>
       </group>
-      <group id="gp" caption="Peripheral Device">
-        <unit id="ccd" label="CS CCD">
+      <group id="gp" caption="Power">
+        <unit id="ccd" title="ccd[on|off]" label="CS CCD [%s]">
           <item id="ccdon" label="ON">
             <frmcmd name="fset" label="Bit 2 ON">
               <argv>500</argv>
@@ -60,7 +60,7 @@
             </frmcmd>
           </item>
         </unit>
-        <unit id="csl" label="CS LAN">
+        <unit id="csl" title="lan[on|off]" label="CS LAN [%s]">
           <item id="lanon" label="ON">
             <frmcmd name="fset" label="Bit 3 ON">
               <argv>5000</argv>
@@ -72,9 +72,7 @@
             </frmcmd>
           </item>
         </unit>
-      </group>
-      <group id="gm" caption="Main Device">
-        <unit id="ipw" label="CS IPW">
+        <unit id="ipw" title="ipw[on|off]" label="Instrument Power [%s]">
           <item id="ipwon" label="ON">
             <frmcmd name="fset" label="Bit 4 ON">
               <argv>50000</argv>

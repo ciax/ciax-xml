@@ -231,14 +231,14 @@
             <frmcmd name="getcmd"/>
           </item>
         </unit>
-        <unit id="unit_chg" title="chg[on|off]" label="Charge ON/OFF">
-          <item id="chgon" label="Start">
+        <unit id="unit_chg" title="chg[on/off]" label="Charge [%s]">
+          <item id="chgon" label="ON">
             <frmcmd name="act">
               <argv>15</argv>
             </frmcmd>
             <frmcmd name="getcmd"/>
           </item>
-          <item id="chgoff" label="Stop">
+          <item id="chgoff" label="OFF">
             <frmcmd name="int">
               <argv format="%d">3</argv>
             </frmcmd>

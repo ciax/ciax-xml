@@ -151,7 +151,9 @@
     WEB: Controlable Group is selectable.
 
   //unit: group of exclusive commands (conflict each other)
+          label can be format text. '%s' is replaced with  member labels connected by '/'
     WEB: All member gets into one select tab.
          w/label: Show label before select tab.
     CUI: w/title:  Show title and label representing the group. Don't show each members. 
          w/o title: Show each members.
+

@@ -59,7 +59,7 @@
         </unit>
       </group>
       <group id="gmot" caption="Motion" column="2">
-        <unit id="fr" title="f[hook|unhk]" label="Fix Rotation">
+        <unit id="fr" title="f[hook|unhk]" label="Fix Rot [%s]">
           <item id="fhook" label="Hook">
             <frmcmd name="setbit">
               <argv>1</argv>
@@ -75,7 +75,7 @@
             <frmcmd name="getexe"/>
           </item>
         </unit>
-        <unit id="fj" title="fj[up|dw]" label="Fix Jack">
+        <unit id="fj" title="fj[up|dw]" label="Fix Jack [%s]">
           <item id="fjup" label="Up">
             <frmcmd name="setbit">
               <argv>1</argv>
@@ -91,7 +91,7 @@
             <frmcmd name="getexe"/>
           </item>
         </unit>
-        <unit id="mr" title="m[hook|unhk]" label="Mov Rotation">
+        <unit id="mr" title="m[hook|unhk]" label="Mov Rot [%s]">
           <item id="mhook" label="Hook">
             <frmcmd name="setbit">
               <argv>2</argv>
@@ -107,7 +107,7 @@
             <frmcmd name="getexe"/>
           </item>
         </unit>
-        <unit id="mj" title="mj[up|dw]" label="Mov Jack">
+        <unit id="mj" title="mj[up|dw]" label="Mov Jack [%s]">
           <item id="mjup" label="Up">
             <frmcmd name="setbit">
               <argv>2</argv>
@@ -123,7 +123,7 @@
             <frmcmd name="getexe"/>
           </item>
         </unit>
-        <unit id="tr" title="rot[in|out]" label="Transer Orientation">
+        <unit id="tr" title="rot[in|out]" label="Transer Rot [%s]">
           <item id="rotout" label="Loading">
             <frmcmd name="setbit">
               <argv>2</argv>
@@ -139,7 +139,7 @@
             <frmcmd name="getexe"/>
           </item>
         </unit>
-        <unit id="tp" title="tr[in|out]" label="Transer Position">
+        <unit id="tp" title="tr[in|out]" label="Transer Position [%s]">
           <item id="trin" label="In">
             <frmcmd name="setbit">
               <argv>2</argv>
@@ -155,7 +155,7 @@
             <frmcmd name="getexe"/>
           </item>
         </unit>
-        <unit id="door" title="d[open|close]" label="Door">
+        <unit id="door" title="d[open|close]" label="Door [%s]">
           <item id="dopen" label="Open">
             <frmcmd name="setbit">
               <argv>3</argv>
@@ -171,7 +171,7 @@
             <frmcmd name="getexe"/>
           </item>
         </unit>
-        <unit id="chgarm" title="chg[fw|bk]" label="Chg Arm">
+        <unit id="chgarm" title="chg[fw|bk]" label="Chg Arm [%s]">
           <item id="chgfw" label="Forward">
             <frmcmd name="setbit">
               <argv>1</argv>
@@ -189,7 +189,7 @@
         </unit>
       </group>
       <group id="gipw" caption="Power Supply" column="2">
-        <unit id="ufpw" title="fpw[on|off]" label="Fix IPW">
+        <unit id="ufpw" title="fpw[on|off]" label="Fix IPW [%s]">
           <item id="fpwon" label="On">
             <frmcmd name="setbit">
               <argv>3</argv>
@@ -205,7 +205,7 @@
             <frmcmd name="getexe"/>
           </item>
         </unit>
-        <unit id="umpw" title="mpw[on|off]" label="Mov IPW">
+        <unit id="umpw" title="mpw[on|off]" label="Mov IPW [%s]">
           <item id="mpwon" label="On">
             <frmcmd name="setbit">
               <argv>3</argv>
@@ -221,7 +221,7 @@
             <frmcmd name="getexe"/>
           </item>
         </unit>
-        <unit id="uopw" title="pwoff" label="Outlet">
+        <unit id="uopw" title="pwoff" label="Outlet [%s]">
           <item id="pwoff" label="Off">
             <frmcmd name="setbit">
               <argv>1</argv>
@@ -232,7 +232,7 @@
         </unit>
       </group>
       <group id="gccd" caption="CCD Power" column="3">
-        <unit id="fccd" title="fccd[on|off]" label="Fix CCD">
+        <unit id="fccd" title="fccd[on|off]" label="Fix CCD [%s]">
           <item id="fccdon" label="On">
             <frmcmd name="setbit">
               <argv>3</argv>
@@ -247,15 +247,15 @@
             </frmcmd>
             <frmcmd name="getexe"/>
           </item>
+          <item id="fccdtoff" label="Timer">
+            <frmcmd name="setbit">
+              <argv>3</argv>
+              <argv>10</argv>
+            </frmcmd>
+            <frmcmd name="getexe"/>
+          </item>
         </unit>
-        <item id="fccdtoff" label="Timer Off">
-          <frmcmd name="setbit">
-            <argv>3</argv>
-            <argv>10</argv>
-          </frmcmd>
-          <frmcmd name="getexe"/>
-        </item>
-        <unit id="mccd" title="mccd[on|off]" label="Mov CCD">
+        <unit id="mccd" title="mccd[on|off]" label="Mov CCD [%s]">
           <item id="mccdon" label="On">
             <frmcmd name="setbit">
               <argv>3</argv>
@@ -270,7 +270,7 @@
             </frmcmd>
             <frmcmd name="getexe"/>
           </item>
-          <item id="mccdtoff" label="Timer Off">
+          <item id="mccdtoff" label="Timer">
             <frmcmd name="setbit">
               <argv>3</argv>
               <argv>14</argv>

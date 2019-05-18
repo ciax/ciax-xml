@@ -12,7 +12,8 @@ function getarg($key){
 }
 $args=array();
 foreach($argv as &$e){
-    $ary=split("=",$e);
+    # split is obsolete in PHP7. use explode
+    $ary=explode("=",$e);
     if(count($ary)>1){
 	$args[$ary[0]]=$ary[1];
     }

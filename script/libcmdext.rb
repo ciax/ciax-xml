@@ -55,6 +55,7 @@ module CIAX
             mem.each do |id|
               itm = cdb[:index][id]
               sg.put_item(id, itm[:label])
+              sg.index.hide(id) if itm[:hidden]
               # [:parameters] is set here
               ___add_form(id, itm)
             end

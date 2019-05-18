@@ -1,5 +1,5 @@
 #!/bin/bash
-# Required packages: make php5-sqlite yui-compressor
+# Required packages: make php5-sqlite yui-compressor php-pdo
 jslink(){
     for i in *.js; do
         sudo ln -sf $(pwd -P)/$i $dir

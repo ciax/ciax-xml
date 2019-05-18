@@ -1,6 +1,6 @@
 #!/bin/bash
 # Required packages(Debian,Raspbian,Ubuntu): make gcc socat sqlite3 ruby ruby-all-dev ruby-libxml libxml2-utils apache2 libapache2-mod-php php-sqlite3 php-elisp socat libxml-xpath-perl
-# Required packages(CentOs): make gcc ruby-devel libxml2-devel httpd socat sqlite httpd php php-pear perl-XML-XPath
+# Required packages(CentOs): make gcc ruby-devel libxml2-devel httpd socat sqlite httpd php php-pear php-pdo perl-XML-XPath
 # Required modules(Ruby): json libxml-ruby
 echo $C3"Install required packages"$C0
 if [ -f /etc/centos-release ]; then

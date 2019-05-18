@@ -8,63 +8,63 @@
           <frmcmd name="getcmd"/>
         </item>
         <unit id="ustop" label="Stop">
-        <item id="emstop" label="Emergency Stop">
-          <frmcmd name="int">
-            <argv>1</argv>
-          </frmcmd>
-          <frmcmd name="clr_int"/>
-          <frmcmd name="getstat"/>
-        </item>
-        <item id="pause" label="Pause Action">
-          <frmcmd name="int">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="clr_int"/>
-          <frmcmd name="clr_act"/>
-          <frmcmd name="getcmd"/>
-          <frmcmd name="getstat"/>
-        </item>
-        <item id="cancel" label="Command Cancel">
-          <frmcmd name="int">
-            <argv>4</argv>
-          </frmcmd>
-          <frmcmd name="clr_int"/>
-          <frmcmd name="getstat"/>
-        </item>
-        <item id="cstop" label="Stop at Next Tag">
-          <frmcmd name="int">
-            <argv>7</argv>
-          </frmcmd>
-          <frmcmd name="clr_int"/>
-          <frmcmd name="getstat"/>
-        </item>
+          <item id="emstop" label="Emergency Stop">
+            <frmcmd name="int">
+              <argv>1</argv>
+            </frmcmd>
+            <frmcmd name="clr_int"/>
+            <frmcmd name="getstat"/>
+          </item>
+          <item id="pause" label="Pause Action">
+            <frmcmd name="int">
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="clr_int"/>
+            <frmcmd name="clr_act"/>
+            <frmcmd name="getcmd"/>
+            <frmcmd name="getstat"/>
+          </item>
+          <item id="cancel" label="Command Cancel">
+            <frmcmd name="int">
+              <argv>4</argv>
+            </frmcmd>
+            <frmcmd name="clr_int"/>
+            <frmcmd name="getstat"/>
+          </item>
+          <item id="cstop" label="Stop at Next Tag">
+            <frmcmd name="int">
+              <argv>7</argv>
+            </frmcmd>
+            <frmcmd name="clr_int"/>
+            <frmcmd name="getstat"/>
+          </item>
         </unit>
         <unit id="urec" label="Recovery">
-        <item id="ready" label="Ready mode">
-          <frmcmd name="int">
-            <argv>6</argv>
-          </frmcmd>
-          <frmcmd name="getcmd"/>
-          <frmcmd name="getstat"/>
-        </item>
-        <item id="clear" label="Clear Error">
-          <frmcmd name="int">
-            <argv>5</argv>
-          </frmcmd>
-          <frmcmd name="clr_int"/>
-          <frmcmd name="getstat"/>
-        </item>
-        <item id="resume" label="Resume from Pause">
-          <frmcmd name="int">
-            <argv>5</argv>
-          </frmcmd>
-          <frmcmd name="clr_int"/>
-          <frmcmd name="getstat"/>
-        </item>
-        <item id="rescmd" label="Reset Cmd Flag" hidden="true">
-          <frmcmd name="clr_act"/>
-          <frmcmd name="getcmd"/>
-        </item>
+          <item id="ready" label="Ready mode">
+            <frmcmd name="int">
+              <argv>6</argv>
+            </frmcmd>
+            <frmcmd name="getcmd"/>
+            <frmcmd name="getstat"/>
+          </item>
+          <item id="clear" label="Clear Error">
+            <frmcmd name="int">
+              <argv>5</argv>
+            </frmcmd>
+            <frmcmd name="clr_int"/>
+            <frmcmd name="getstat"/>
+          </item>
+          <item id="resume" label="Resume from Pause">
+            <frmcmd name="int">
+              <argv>5</argv>
+            </frmcmd>
+            <frmcmd name="clr_int"/>
+            <frmcmd name="getstat"/>
+          </item>
+          <item id="rescmd" label="Reset Cmd Flag" hidden="true">
+            <frmcmd name="clr_act"/>
+            <frmcmd name="getcmd"/>
+          </item>
         </unit>
       </group>
       <group id="gact" caption="Action Commands" column="2">
@@ -161,26 +161,27 @@
             <frmcmd name="getcmd"/>
           </item>
         </unit>
-        <item id="runf" label="Run Forward">
-          <frmcmd name="set_tag">
-            <argv>98</argv>
-          </frmcmd>
-          <frmcmd name="act">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="getcmd"/>
-        </item>
-        <item id="runb" label="Run Backword">
-          <frmcmd name="set_tag">
-            <argv>99</argv>
-          </frmcmd>
-          <frmcmd name="act">
-            <argv>0</argv>
-          </frmcmd>
-          <frmcmd name="getcmd"/>
-        </item>
-        <!--        <unit id="unit_lftup" title="lftup[1-3]/dw/chg" label="Lift Level"> -->
-        <unit id="unit_lftup" label="Lift Level">
+        <unit id="unit_find" title="run[f/b]" label="Run find Tag">
+          <item id="runf" label="Forward">
+            <frmcmd name="set_tag">
+              <argv>98</argv>
+            </frmcmd>
+            <frmcmd name="act">
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="getcmd"/>
+          </item>
+          <item id="runb" label="Backword">
+            <frmcmd name="set_tag">
+              <argv>99</argv>
+            </frmcmd>
+            <frmcmd name="act">
+              <argv>0</argv>
+            </frmcmd>
+            <frmcmd name="getcmd"/>
+          </item>
+        </unit>
+        <unit id="unit_lftup" title="lftup[1-3]" label="Lift Up">
           <item id="lftup1" label="Low">
             <frmcmd name="set_pos">
               <argv>1</argv>
@@ -208,6 +209,9 @@
             </frmcmd>
             <frmcmd name="getcmd"/>
           </item>
+        </unit>
+        <!--        <unit id="unit_lftup" title="lftup[1-3]/dw/chg" label="Lift Level"> -->
+        <unit id="unit_lfth" title="lft[dw/chg]" label="Lift Level">
           <item id="lftdw" label="Down">
             <frmcmd name="set_pos">
               <argv>0</argv>
@@ -227,48 +231,6 @@
             <frmcmd name="getcmd"/>
           </item>
         </unit>
-      </group>
-      <group id="gins" caption="Instrument Assign" column="2">
-        <unit id="unit_ins" label="Instrument">
-        <item id="comics" label="COMICS">
-          <frmcmd name="set_ins">
-            <argv>1</argv>
-          </frmcmd>
-          <frmcmd name="getstat"/>
-        </item>
-        <item id="ciao" label="CIAO">
-          <frmcmd name="set_ins">
-            <argv>2</argv>
-          </frmcmd>
-          <frmcmd name="getstat"/>
-        </item>
-        <item id="focas" label="FOCAS">
-          <frmcmd name="set_ins">
-            <argv>3</argv>
-          </frmcmd>
-          <frmcmd name="getstat"/>
-        </item>
-        <item id="moircs" label="MOIRCS">
-          <frmcmd name="set_ins">
-            <argv>4</argv>
-          </frmcmd>
-          <frmcmd name="getstat"/>
-        </item>
-        <item id="mcs" label="Meteorogy Box">
-          <frmcmd name="set_ins">
-            <argv>5</argv>
-          </frmcmd>
-          <frmcmd name="getstat"/>
-        </item>
-        <item id="swims" label="SWIMS">
-          <frmcmd name="set_ins">
-            <argv>6</argv>
-          </frmcmd>
-          <frmcmd name="getstat"/>
-        </item>
-        </unit>
-      </group>
-      <group id="gchg" caption="Charging Commands" column="2">
         <unit id="unit_chg" title="chg[on|off]" label="Charge ON/OFF">
           <item id="chgon" label="Start">
             <frmcmd name="act">
@@ -281,6 +243,46 @@
               <argv format="%d">3</argv>
             </frmcmd>
             <frmcmd name="clr_int"/>
+            <frmcmd name="getstat"/>
+          </item>
+        </unit>
+      </group>
+      <group id="gins" caption="Instrument Assign" column="2">
+        <unit id="unit_ins" label="Instrument">
+          <item id="comics" label="COMICS">
+            <frmcmd name="set_ins">
+              <argv>1</argv>
+            </frmcmd>
+            <frmcmd name="getstat"/>
+          </item>
+          <item id="ciao" label="CIAO">
+            <frmcmd name="set_ins">
+              <argv>2</argv>
+            </frmcmd>
+            <frmcmd name="getstat"/>
+          </item>
+          <item id="focas" label="FOCAS">
+            <frmcmd name="set_ins">
+              <argv>3</argv>
+            </frmcmd>
+            <frmcmd name="getstat"/>
+          </item>
+          <item id="moircs" label="MOIRCS">
+            <frmcmd name="set_ins">
+              <argv>4</argv>
+            </frmcmd>
+            <frmcmd name="getstat"/>
+          </item>
+          <item id="mcs" label="Meteorogy Box">
+            <frmcmd name="set_ins">
+              <argv>5</argv>
+            </frmcmd>
+            <frmcmd name="getstat"/>
+          </item>
+          <item id="swims" label="SWIMS">
+            <frmcmd name="set_ins">
+              <argv>6</argv>
+            </frmcmd>
             <frmcmd name="getstat"/>
           </item>
         </unit>
@@ -442,7 +444,6 @@
       <event label="While Running" id="run">
         <range var="run">1</range>
         <block_grp ref="gact"/>
-        <block_grp ref="gchg"/>
         <int name="pause"/>
         <exec name="upd"/>
       </event>
@@ -454,7 +455,6 @@
       <event label="While Jacking" id="jak">
         <range var="jak">1</range>
         <block_grp ref="gact"/>
-        <block_grp ref="gchg"/>
         <int name="pause"/>
         <exec name="upd"/>
       </event>

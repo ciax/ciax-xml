@@ -58,7 +58,7 @@
           </item>
         </unit>
       </group>
-      <group id="gmot" caption="Motion Control" column="2">
+      <group id="gmot" caption="Motion" column="2">
         <unit id="fr" title="f[hook|unhk]" label="Fix Rotation">
           <item id="fhook" label="Hook">
             <frmcmd name="setbit">
@@ -123,7 +123,7 @@
             <frmcmd name="getexe"/>
           </item>
         </unit>
-        <unit id="tr" title="rot[in|out]" label="Mov Orientation">
+        <unit id="tr" title="rot[in|out]" label="Transer Orientation">
           <item id="rotout" label="Loading">
             <frmcmd name="setbit">
               <argv>2</argv>
@@ -139,7 +139,7 @@
             <frmcmd name="getexe"/>
           </item>
         </unit>
-        <unit id="tp" title="tr[in|out]" label="Mov Location">
+        <unit id="tp" title="tr[in|out]" label="Transer Position">
           <item id="trin" label="In">
             <frmcmd name="setbit">
               <argv>2</argv>
@@ -222,7 +222,7 @@
           </item>
         </unit>
         <unit id="uopw" title="pwoff" label="Outlet">
-          <item id="pwoff" label="Power Off">
+          <item id="pwoff" label="Off">
             <frmcmd name="setbit">
               <argv>1</argv>
               <argv>8</argv>
@@ -231,7 +231,7 @@
           </item>
         </unit>
       </group>
-      <group id="gccd" caption="Power" column="3">
+      <group id="gccd" caption="CCD Power" column="3">
         <unit id="fccd" title="fccd[on|off]" label="Fix CCD">
           <item id="fccdon" label="On">
             <frmcmd name="setbit">

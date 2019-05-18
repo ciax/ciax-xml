@@ -17,6 +17,7 @@ module CIAX
       def initialize(caption: nil, color: nil, column: 2, line_number: false)
         @valid_keys = Arrayx.new
         @dummy_keys = Arrayx.new
+        @hidden_keys = Arrayx.new
         @caption = caption
         @color = color
         @column = Array.new(column) { [0, 0] }
@@ -45,7 +46,7 @@ module CIAX
       end
 
       def reset!
-        @valid_keys.replace(keys - @dummy_keys)
+        @valid_keys.replace(keys - @dummy_keys + @hidden_keys)
         self
       end
 
@@ -61,6 +62,12 @@ module CIAX
       def delete(id)
         @valid_keys.delete(id)
         super
+      end
+
+      def hide(id)
+        delete(id)
+        @hidden_keys << id
+        self
       end
 
       # Display part
@@ -97,7 +104,7 @@ module CIAX
       # Top level only
       idx = Index.new(column: 3, caption: 'top1')
       6.times { |i| idx.put_item("x#{i}", "caption #{i}") }
-      puts idx
+      puts idx.hide('x0')
     end
   end
 end

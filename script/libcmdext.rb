@@ -55,6 +55,7 @@ module CIAX
             mem.each do |id|
               itm = cdb[:index][id]
               sg.put_item(id, itm[:label])
+              sg.index.hide(id) if itm[:hidden]
               # [:parameters] is set here
               ___add_form(id, itm)
             end
@@ -73,9 +74,14 @@ module CIAX
 
           def ___make_unit_form(sg, uat, index)
             umem = uat[:members]
+            name = uat[:title]
+            if umem.include?(name)
+              warning('Conflicting name of unit and member [%s]', name)
+              return sg
+            end
             il = umem.map { |m| index[m][:label] }.join('/')
+            sg.put_dummy(name, uat[:label] % il)
             sg.replace(sg - umem)
-            sg.put_dummy(uat[:title], uat[:label] % il)
           end
         end
         # Ext Form

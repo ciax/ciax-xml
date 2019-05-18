@@ -48,7 +48,7 @@
             <frmcmd name="logstat"/>
           </item>
         </unit>
-        <unit id="useq" title="startup|shutdown" label="[%s] CIAX sequence">
+        <unit id="useq" label="[%s] CIAX sequence">
           <item id="startup" label="Startup">
             <frmcmd name="login"/>
             <frmcmd name="tsconly" label="TSC Only Mode(CIAX Mode)"/>

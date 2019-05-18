@@ -221,8 +221,8 @@
             <frmcmd name="getexe"/>
           </item>
         </unit>
-        <unit id="uopw" title="pwoff" label="Outlet [%s]">
-          <item id="pwoff" label="Off">
+        <unit id="uopw" label="Outlet">
+          <item id="pwoff" label="Power Off">
             <frmcmd name="setbit">
               <argv>1</argv>
               <argv>8</argv>

@@ -6,32 +6,30 @@
         <item id="cinit" label="Start TCP Status Request">
           <frmcmd name="init"/>
         </item>
-        <unit id="uupd" title="upd" label="Update [%s] Status">
-          <item id="upd" label="All">
-            <frmcmd name="logstat"/>
-            <frmcmd name="getstat"/>
-            <frmcmd name="telstat"/>
-            <frmcmd name="comerr"/>
-            <frmcmd name="iststat"/>
-            <frmcmd name="jakstat"/>
-            <frmcmd name="inrang"/>
-            <frmcmd name="jaklen"/>
-            <frmcmd name="zlen"/>
-            <frmcmd name="getexit"/>
-          </item>
-          <item id="updinr" label="Inr" hidden="true">
-            <frmcmd name="getstat"/>
-            <frmcmd name="inrang"/>
-            <frmcmd name="getpid"/>
-          </item>
-          <item id="updjak" label="Jak" hidden="true">
-            <frmcmd name="getstat"/>
-            <frmcmd name="jakstat"/>
-            <frmcmd name="jaklen"/>
-            <frmcmd name="zlen"/>
-            <frmcmd name="getpid"/>
-          </item>
-        </unit>
+        <item id="upd" label="All">
+          <frmcmd name="logstat"/>
+          <frmcmd name="getstat"/>
+          <frmcmd name="telstat"/>
+          <frmcmd name="comerr"/>
+          <frmcmd name="iststat"/>
+          <frmcmd name="jakstat"/>
+          <frmcmd name="inrang"/>
+          <frmcmd name="jaklen"/>
+          <frmcmd name="zlen"/>
+          <frmcmd name="getexit"/>
+        </item>
+        <item id="updinr" label="Inr" hidden="true">
+          <frmcmd name="getstat"/>
+          <frmcmd name="inrang"/>
+          <frmcmd name="getpid"/>
+        </item>
+        <item id="updjak" label="Jak" hidden="true">
+          <frmcmd name="getstat"/>
+          <frmcmd name="jakstat"/>
+          <frmcmd name="jaklen"/>
+          <frmcmd name="zlen"/>
+          <frmcmd name="getpid"/>
+        </item>
         <unit id="ucx" title="cx[on|off]" label="TSC [%s] Mode">
           <item id="cxon" label="Only(CIAX Mode)">
             <frmcmd name="tsconly"/>

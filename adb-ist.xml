@@ -2,8 +2,8 @@
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
   <app id="ist" label="Cas Inst DB" version="1">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
-      <group id="gcf" caption="Current Flange">
-        <item id="setc" label="Set Current">
+      <group id="gci" caption="Current Instrument">
+        <item id="setc" label="Set Flange">
           <par_num>0:3</par_num>
           <frmcmd name="set">
             <argv>cis</argv>
@@ -14,8 +14,6 @@
             <argv>$1</argv>
           </frmcmd>
         </item>
-      </group>
-      <group id="gci" caption="Current Instrument">
         <item id="seti" label="Set Instrument">
           <par_num>1:9</par_num>
           <frmcmd name="set">

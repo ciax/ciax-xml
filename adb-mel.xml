@@ -161,7 +161,7 @@
             <frmcmd name="getcmd"/>
           </item>
         </unit>
-        <unit id="unit_find" title="run[f/b]" label="Run find Tag">
+        <unit id="unit_find" title="run[f|b]" label="Run find Tag">
           <item id="runf" label="Forward">
             <frmcmd name="set_tag">
               <argv>98</argv>
@@ -211,7 +211,7 @@
           </item>
         </unit>
         <!--        <unit id="unit_lftup" title="lftup[1-3]/dw/chg" label="Lift Level"> -->
-        <unit id="unit_lfth" title="lft[dw/chg]" label="Lift Level">
+        <unit id="unit_lfth" title="lft[dw|chg]" label="Lift Level">
           <item id="lftdw" label="Down">
             <frmcmd name="set_pos">
               <argv>0</argv>
@@ -231,7 +231,7 @@
             <frmcmd name="getcmd"/>
           </item>
         </unit>
-        <unit id="unit_chg" title="chg[on/off]" label="Charge [%s]">
+        <unit id="unit_chg" title="chg[on|off]" label="Charge [%s]">
           <item id="chgon" label="ON">
             <frmcmd name="act">
               <argv>15</argv>

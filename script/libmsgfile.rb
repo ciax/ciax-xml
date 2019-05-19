@@ -3,17 +3,11 @@
 require 'libmsgfunc'
 require 'fileutils'
 module CIAX
-  ### Checking Methods ###
+  ### File related ###
   module Msg
-    # Json read with contents conversion
-    # Invalid json str including nil gives error
     #  Used for initial reading to get id
-    def jread(jstr = nil)
-      unless jstr
-        data_err("No data in file(#{ARGV})") unless (jstr = gets(nil))
-        show('Getting Data from STDIN')
-      end
-      @preload = j2h(jstr)
+    def pre_read(jstr = nil)
+      @preload = jread(jstr)
     end
 
     # OK for bad file
@@ -30,7 +24,15 @@ module CIAX
 
     module_function
 
-    ## File related ##
+    # Json read with contents conversion
+    # Invalid json str including nil gives error
+    def jread(jstr = nil)
+      unless jstr
+        data_err("No data in file(#{ARGV})") unless (jstr = gets(nil))
+        show('Getting Data from STDIN')
+      end
+      j2h(jstr)
+    end
 
     def xmlfiles(type)
       Dir.glob("#{__dir__}/../#{type}-*.xml").map { |f| File.absolute_path(f) }

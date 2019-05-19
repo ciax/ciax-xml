@@ -16,7 +16,7 @@ module CIAX
       @type = type?(type, String)
       # When input from File
       #  obj <= Read[:id] anyway
-      id = jread[:id] if !id && !STDIN.tty?
+      id = pre_read[:id] if !id && !STDIN.tty?
       @id = self[:id] = id
       # @id is for file name (prevent overwritten)
       self[:format_ver] = nil

@@ -40,7 +40,6 @@ module CIAX
         @id = @sv_stat.get(:id)
         @que = Arrayx.new # For testing
         @cmt_procs.append(self, :flush, 1) { ___sv_upd }
-        @cmt_procs.append(self, :ready, 5) { __sv_dw }
       end
 
       # Take App command entity

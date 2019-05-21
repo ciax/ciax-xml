@@ -50,6 +50,12 @@ module CIAX
       __chk_ver('data', hash) ? hash : {}
     end
 
+    # Update without any processing (Use for scan in macro)
+    #  load in client mode
+    def latest
+      self
+    end
+
     private
 
     def _attr_set(ver = nil, host = nil, dir = nil)

@@ -57,12 +57,6 @@ module CIAX
       super { cmt }
     end
 
-    # Update without any processing (Use for scan in macro)
-    #  load in client mode
-    def latest
-      self
-    end
-
     # Time Updater
     def time
       self[:time]

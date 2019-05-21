@@ -54,7 +54,17 @@ module CIAX
       @stat_pool.get(key)
     end
 
+    def latest
+      @sub_stat ? @sub_stat.latest : super
+    end
+
     private
+
+    def _init_sub_stat(stat)
+      @sub_stat = type?(stat, Statx)
+      @stat_pool.update(@sub_stat.stat_pool)
+      self
+    end
 
     # Set dbi, otherwise generate by stdin info
     # When input from TTY

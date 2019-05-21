@@ -29,7 +29,8 @@ module CIAX
     end
 
     def latest
-      load
+      # It works because cmt_procs doesn't have conversion.
+      load.cmt
     end
 
     private

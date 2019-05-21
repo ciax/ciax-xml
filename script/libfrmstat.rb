@@ -9,7 +9,6 @@ module CIAX
     class Field < Statx
       include Dic
       attr_accessor :echo
-      attr_reader :frame
       def initialize(dbi = nil)
         super('field', dbi, Dev::Db)
         # Proc for Terminate process of each individual commands
@@ -75,8 +74,7 @@ module CIAX
 
       def ___init_frame
         if @dbi.key?(:response)
-          @frame = Stream::Frame.new(@dbi)
-          @stat_pool['frame'] = @frame
+          _init_sub_stat(Stream::Frame.new(@dbi))
         else
           init_time2cmt
         end

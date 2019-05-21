@@ -14,7 +14,6 @@ module CIAX
     # All elements of @data are String
     class Status < Statx
       include DicToken
-      attr_reader :field
       # dbi can be Ins::Db or ID for new Db
       def initialize(dbi = nil, field = nil)
         super('status', dbi, Ins::Db)
@@ -60,8 +59,8 @@ module CIAX
       # For element of SubStat
       def ___init_field(field)
         if @dbi.key?(:dev_id)
-          @field = type_gen(field, Frm::Field) { |mod| mod.new(@dbi[:dev_id]) }
-          @stat_pool.update(@field.stat_pool)
+          @sub_stat = type_gen(field, Frm::Field) { |mod| mod.new(@dbi[:dev_id]) }
+          @stat_pool.update(@sub_stat.stat_pool)
         else
           init_time2cmt
         end

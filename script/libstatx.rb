@@ -30,7 +30,7 @@ module CIAX
   #  STDIN function is availabie
   #  Need Header(Dbx::Item)
   class Statx < Varx
-    attr_reader :dbi, :stat_pool
+    attr_reader :dbi, :stat_pool, :sub_stat
     def initialize(type, obj, mod = Dbx::Index)
       super(type, ___get_id(obj))
       @dbi ||= mod.new.get(@id)
@@ -56,6 +56,7 @@ module CIAX
 
     def latest
       @sub_stat ? @sub_stat.latest : super
+      self
     end
 
     private

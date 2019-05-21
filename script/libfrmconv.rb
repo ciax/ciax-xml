@@ -34,9 +34,9 @@ module CIAX
 
         # Convert with corresponding cmd
         def conv(ent)
-          frmsrc = @frame.get(ent.id)
+          frmsrc = @sub_stat.get(ent.id)
           return self unless frmsrc
-          time_upd(@frame)
+          time_upd(@sub_stat)
           # CutFrame structure:
           #   main(total){ ccrange{ body(selected str) } }
           # terminator: frame pointer will jump to terminator

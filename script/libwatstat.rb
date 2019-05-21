@@ -69,8 +69,7 @@ module CIAX
       end
 
       def ___init_status(status)
-        @sub_stat = type_gen(status, App::Status) { |mod| mod.new(@dbi) }
-        @stat_pool.update(@sub_stat.stat_pool)
+        _init_sub_stat(status, App::Status, @dbi)
         propagation(@sub_stat)
       end
     end

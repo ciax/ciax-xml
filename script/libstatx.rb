@@ -61,8 +61,8 @@ module CIAX
 
     private
 
-    def _init_sub_stat(stat)
-      @sub_stat = type?(stat, Statx)
+    def _init_sub_stat(stat, mod, par)
+      @sub_stat = type?(type_gen(stat, mod, par), Statx)
       @stat_pool.update(@sub_stat.stat_pool)
       self
     end

@@ -31,7 +31,7 @@ module CIAX
       # sv_stat: Server Status
       def initialize(sv_stat, cobj = nil, &conv_proc)
         super()
-        @sv_stat = type?(sv_stat, Prompt).init_array(:queue).init_flg(busy: '*')
+        @sv_stat = type?(sv_stat, Prompt).init_array(:queue)
         # Frm Command Object
         @cobj = cobj
         # Update App Status

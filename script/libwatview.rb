@@ -14,7 +14,7 @@ module CIAX
         @event = type?(event, Event)
         wdb = type?(event.dbi, Dbx::Item)[:watch] || {}
         ___init_stat(wdb[:index] || {})
-        ___init_cmt_procs
+        ___init_upd_procs
       end
 
       private
@@ -29,15 +29,13 @@ module CIAX
         self
       end
 
-      def ___init_cmt_procs
-        propagation(@event)
-        @cmt_procs.append(self, :view, 1) do
+      def ___init_upd_procs
+        @upd_procs.append(self, :view) do
           %i(exec block int act_time upd_next).each do |id|
             self[id] = @event.get(id)
           end
           ___upd_stat
         end
-        cmt
       end
 
       def ___init_cond(cond, m)
@@ -64,6 +62,7 @@ module CIAX
           ___upd_cond(id, v[:cond])
           v[:active] = @event.get(:active).include?(id)
         end
+        time_upd(@event)
         self
       end
 
@@ -93,7 +92,7 @@ module CIAX
       require 'libinsdb'
       Opt::Get.new('[site] | < event_file', options: 'r') do |_opt, args|
         event = Event.new(args.shift).ext_local.ext_file
-        puts View.new(event).cmt
+        puts View.new(event)
       end
     end
   end

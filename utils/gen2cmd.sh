@@ -1,5 +1,4 @@
 #!/bin/bash
-source ~/gen2/conf/bashrc
 source gen2mkcmd
 par=$(selcmd $*) || exit 1
 set - $par

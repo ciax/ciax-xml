@@ -12,21 +12,21 @@ slept(){
     echo "$@"
     sleep $(( ${2:-1} / 10 ))
 }
-cmd=slept
-#cmd=$PYTHONPATH/Gen2/client/g2cmd.py
-
-exitfile=~/.var/exit.txt
-pidfile=~/.var/pid.txt
-exelog=~/.var/gen2log.txt
-[ -f $exitfile ] || echo "0" > $exitfile
-[ -f $pidfile ] || touch $pidfile
-loghead(){
-    echo -en "[$(date +%F_%T)]% $@ " >> $exelog
+# gen2 command
+g2cmd(){
+    source ~/gen2/conf/bashrc
+    $PYTHONPATH/Gen2/client/g2cmd.py "$@"
 }
+# exec
 doexe(){
     # Error output should be separated
-    eval $cmd $* 2>> $exelog
+    eval slept $* 2>> $exelog
     code="$?"
+}
+
+### Status functions ###
+loghead(){
+    echo -en "[$(date +%F_%T)]% $@ " >> $exelog
 }
 setexit(){
     echo "$code" > $exitfile
@@ -68,6 +68,11 @@ bgexe(){
     [ "$pid" ] || pid=0
     echo $pid
 }
+exitfile=~/.var/exit.txt
+pidfile=~/.var/pid.txt
+exelog=~/.var/gen2log.txt
+[ -f $exitfile ] || echo "0" > $exitfile
+[ -f $pidfile ] || touch $pidfile
 case "$1" in
     '')
         updexit

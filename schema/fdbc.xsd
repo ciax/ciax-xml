@@ -48,6 +48,7 @@
           <xsd:restriction base="xsd:token">
             <xsd:enumeration value="stat"/>
             <xsd:enumeration value="action"/>
+            <xsd:enumeration value="motion"/>
             <xsd:enumeration value="config"/>
             <xsd:enumeration value="protocol"/>
           </xsd:restriction>

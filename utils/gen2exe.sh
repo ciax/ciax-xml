@@ -6,21 +6,10 @@
 #  exe -b [command] : Background execution
 # command is exclusive
 #link exe
-
-# test dummy
-slept(){
-    echo "$@"
-    sleep $(( ${2:-1} / 10 ))
-}
-# gen2 command
-g2cmd(){
-    source ~/gen2/conf/bashrc
-    $PYTHONPATH/Gen2/client/g2cmd.py "$@"
-}
 # exec
 doexe(){
     # Error output should be separated
-    eval g2cmd $* 2>> $exelog
+    eval $* 2>> $exelog
     code="$?"
 }
 

@@ -20,7 +20,7 @@ g2cmd(){
 # exec
 doexe(){
     # Error output should be separated
-    eval slept $* 2>> $exelog
+    eval g2cmd $* 2>> $exelog
     code="$?"
 }
 

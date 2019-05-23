@@ -49,6 +49,7 @@ selcmd(){
         jdw) TIMEOUT=40 mkcmd 932005$num;;
         jstop) mkcmd 932006$num;;
         setinst) mkcmd 13200700$num;;
+        reset) echo '--reset';;
         *) usage;;
     esac
 }

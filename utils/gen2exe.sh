@@ -6,6 +6,15 @@
 #  exe -b [command] : Background execution
 # command is exclusive
 #link exe
+
+# test dummy
+slept(){
+    echo "$@"
+    sleep $(( ${2:-1} / 10 ))
+}
+cmd=slept
+#cmd=$PYTHONPATH/Gen2/client/g2cmd.py
+
 exitfile=~/.var/exit.txt
 pidfile=~/.var/pid.txt
 exelog=~/.var/gen2log.txt
@@ -16,7 +25,7 @@ loghead(){
 }
 doexe(){
     # Error output should be separated
-    eval $* 2>> $exelog
+    eval $cmd $* 2>> $exelog
     code="$?"
 }
 setexit(){

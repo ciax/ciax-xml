@@ -28,8 +28,13 @@ module CIAX
 
       private
 
+      def ___exe?
+        pre = @pre_bs
+        @pre_bs = __up?(:busy)
+        pre && !@pre_bs || __up?(:event)
+      end
+
       def ___init_cmt_procs
-        propagation(@stat)
         propagation(@sv_stat)
         @cmt_procs.append(self, :hex, 1) do
           verbose { _conv_text('Field -> Hexstr', @id, time_id) }
@@ -42,7 +47,7 @@ module CIAX
       def ___header
         ary = ['%', self[:id]]
         ary << __b2e(__up?(:udperr))
-        ary << __b2i(__up?(:event))
+        ary << __b2i(___exe?)
         ary << __b2i(__up?(:busy))
         ary << __b2e(__up?(:comerr))
         ary.join('')

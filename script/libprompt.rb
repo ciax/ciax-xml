@@ -15,7 +15,6 @@ module CIAX
       init_time2cmt
       @layer = 'all'
       @flg_keys = []
-      @prev = {}
     end
 
     # For String Data
@@ -66,21 +65,18 @@ module CIAX
     end
 
     def flush(key, ary = [])
-      nop
       type?(self[key], Array).replace(ary)
       verbose { cfmt('Flushed queue %p', self[key]) }
       self
     end
 
     def push(key, elem) # returns self
-      nop
       self[key].push(elem) # unless type?(self[key], Array).include?(elem)
       verbose { cfmt('Pushed queue %p', self[key]) }
       self
     end
 
     def erase(key, elem)
-      nop
       type?(self[key], Array).delete(elem)
       self
     end
@@ -91,7 +87,6 @@ module CIAX
     end
 
     def seterr
-      nop
       repl(:msg, $ERROR_INFO.to_s.split("\n").first)
     end
 
@@ -121,15 +116,6 @@ module CIAX
       self
     end
 
-    def nop
-      each { |k| @prev[k] = self[k] }
-      self
-    end
-
-    def changed?(key)
-      @prev[key] != self[key]
-    end
-
     private(:[]=)
     protected(:[])
 
@@ -137,11 +123,10 @@ module CIAX
 
     def __turn_flag(key, label, tf)
       cfg_err("No such flag [#{key}]") unless key?(key)
-      nop
-      repl(key, tf)
       verbose do
-        cfmt('Flag %s [%s] %s', label, key, changed?(key) ? '-> changed' : '')
+        cfmt('Flag %s [%s] %s', label, key, self[key] != tf ? '-> changed' : '')
       end
+      repl(key, tf)
       self
     end
   end

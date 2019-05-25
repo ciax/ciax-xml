@@ -9,10 +9,12 @@ module CIAX
     def initialize(type, id)
       cfg_err('No ID') unless id
       super(['server', type].compact.join('_'), id)
+      # @db: [key <-> Symbol at true] Database
       @db = {}
       self[:msg] = ''
       init_time2cmt
       @layer = 'all'
+      @flg_keys = []
     end
 
     # For String Data
@@ -25,7 +27,10 @@ module CIAX
     # Value should be String to replace
     def init_flg(db = {}) # returns self
       @db.update(type?(db, Hash))
-      db.keys.each { |k| self[k] = 'false' }
+      db.keys.each do |k|
+        self[k] = 'false'
+        @flg__keys << k
+      end
       self
     end
 
@@ -39,6 +44,12 @@ module CIAX
 
     def set_flg(key, flag)
       flag ? up(key) : dw(key)
+    end
+
+    def reset
+      verbose { 'Reset Flags' }
+      @reset_keys.each { |k| repl(k, 'false') }
+      self
     end
 
     # flag will be converted to Boolean in JSON
@@ -84,7 +95,7 @@ module CIAX
     end
 
     # Subtract and merge to self data, return rest of the data
-    def sub(input)
+    def subtr(input)
       hash = input.dup
       @db.keys.each do |k|
         self[k] = hash[k] ? hash.delete(k) : false

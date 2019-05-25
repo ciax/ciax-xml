@@ -39,7 +39,7 @@ module CIAX
         @outbuf = Outbuf.new
         @id = @sv_stat.get(:id)
         @que = Arrayx.new # For testing
-        @cmt_procs.append(self, :flush, 1) { ___sv_upd }
+        @cmt_procs.append(self, :flush, 1) { ___sv_dw }
       end
 
       # Take App command entity
@@ -129,13 +129,9 @@ module CIAX
         @sv_stat.up(:busy)
       end
 
-      def __sv_dw
+      def ___sv_dw
         verbose { "Busy Down(#{@id}):timing" }
         @sv_stat.dw(:busy)
-      end
-
-      def ___sv_upd
-        __sv_dw if @sv_stat.up?(:event)
         @sv_stat.flush(:queue, @outbuf.cids)
       end
 

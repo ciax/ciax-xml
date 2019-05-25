@@ -66,11 +66,13 @@ module CIAX
 
     def flush(key, ary = [])
       type?(self[key], Array).replace(ary)
+      verbose { cfmt('Flushed queue %p', self[key]) }
       self
     end
 
     def push(key, elem) # returns self
       self[key].push(elem) # unless type?(self[key], Array).include?(elem)
+      verbose { cfmt('Pushed queue %p', self[key]) }
       self
     end
 
@@ -122,7 +124,7 @@ module CIAX
     def __turn_flag(key, label, tf)
       cfg_err("No such flag [#{key}]") unless key?(key)
       verbose do
-        cfmt('Flag %s %s %s', label, key, self[key] != tf ? '-> changed' : '')
+        cfmt('Flag %s [%s] %s', label, key, self[key] != tf ? '-> changed' : '')
       end
       repl(key, tf)
       self

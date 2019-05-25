@@ -44,7 +44,9 @@ module CIAX
         @windex.each do |id, item|
           next unless ___chk_item(id, item)
           ___actives(item[:act])
-          @event.fetch(:active) << id
+          aary = @event.fetch(:active)
+          aary << id
+          verbose { cfmt('Active conditions %p', aary) }
         end
       end
 

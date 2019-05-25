@@ -52,19 +52,21 @@ module CIAX
         # event :______-------------__
 
         ## Trigger Table
-        # actv|event| mark| action to event
-        #  o  |  o  |  e  |  -
-        #  x  |  o  |  e  | down
-        #  o  |  x  |  s  | up
-        #  x  |  x  |  -  |  -
+        # activ|event| mark| @sv_stat
+        #   o  |  o  |  e  | cmt
+        #   x  |  o  |  e  | evnet:down
+        #   o  |  x  |  s  | event:up
+        #   x  |  x  |  -  | cmt
 
         def ___event_flag
           if @sv_stat.up?(:event)
             @event.mark_end
-            @sv_stat.dw(:event) unless @event.active?
+            @event.active? ? @sv_stat.cmt : @sv_stat.dw(:event)
           elsif @event.active?
             @event.mark_start
             @sv_stat.up(:event)
+          else
+            @sv_stat.cmt
           end
         end
       end

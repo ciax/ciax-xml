@@ -12,7 +12,7 @@ module CIAX
       #   + Field (field:name) + Frame (frame:name)
       def initialize(stat, hdb = nil)
         # To use token omitting 'status:'
-        @stat = type?(stat, App::Status)
+        @stat = type?(stat, Wat::Event)
         super('hex', @stat[:id])
         _attr_set(@stat[:data_ver])
         @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])

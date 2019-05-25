@@ -45,8 +45,7 @@ module CIAX
       def ___init_field
         id = @cfg[:dev_id] || return
         # LayerDB might generated in ExeDic level
-        # :sub_dic is generated for stand alone (test module)
-        @sub_exe = (@cfg[:sub_dic] ||= Frm::ExeDic.new(@cfg)).get(id)
+        @sub_exe = @cfg[:sub_dic].get(id)
         @sv_stat.sub_merge(@sub_exe.sv_stat, %i(commerr ioerr))
         @sub_exe.stat
       end
@@ -137,8 +136,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Conf.new('[id]', options: 'cehl') do |cfg|
-        db = cfg[:db] = Ins::Db.new(cfg.proj)
-        Exe.new(cfg, dbi: db.get(cfg.args.shift))
+        db = cfg[:db] = Ins::Db.new
+        dbi = db.get(cfg.args.shift)
+        sub_dic = Frm::ExeDic.new(cfg)
+        Exe.new(cfg, dbi: dbi, sub_dic: sub_dic)
       end.cui
     end
   end

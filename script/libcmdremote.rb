@@ -81,7 +81,7 @@ module CIAX
             atrb.get(:caption) { 'System Commands' }
             super
             add_form('interrupt', nil, def_msg: 'INTERRUPT')
-            add_form('reset', 'Stream', def_msg: 'RESET')
+            add_form('reset', 'Reset', def_msg: 'RESET')
           end
         end
       end

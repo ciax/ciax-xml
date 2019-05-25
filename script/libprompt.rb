@@ -29,7 +29,7 @@ module CIAX
       @db.update(type?(db, Hash))
       db.keys.each do |k|
         self[k] = 'false'
-        @flg__keys << k
+        @flg_keys << k
       end
       self
     end
@@ -48,7 +48,7 @@ module CIAX
 
     def reset
       verbose { 'Reset Flags' }
-      @reset_keys.each { |k| repl(k, 'false') }
+      @flg_keys.each { |k| repl(k, 'false') }
       self
     end
 

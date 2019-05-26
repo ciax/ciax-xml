@@ -20,7 +20,7 @@ module CIAX
           get(id)
           atrb = get(id) || @docs.get(id)[:attr]
           hash[id] = atrb[:run] != 'false' && atrb[:host]
-#                     ['localhost', HOST].include?(atrb[:host])
+          #                     ['localhost', HOST].include?(atrb[:host])
         end
       end
 

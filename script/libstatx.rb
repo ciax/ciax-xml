@@ -30,7 +30,7 @@ module CIAX
   #  STDIN function is availabie
   #  Need Header(Dbx::Item)
   class Statx < Varx
-    attr_reader :dbi, :stat_pool
+    attr_reader :dbi, :stat_pool, :sub_stat
     def initialize(type, obj, mod = Dbx::Index)
       super(type, ___get_id(obj))
       @dbi ||= mod.new.get(@id)
@@ -54,7 +54,18 @@ module CIAX
       @stat_pool.get(key)
     end
 
+    def latest
+      @sub_stat ? @sub_stat.latest : super
+      self
+    end
+
     private
+
+    def _init_sub_stat(stat, mod, par)
+      @sub_stat = type?(type_gen(stat, mod, par), Statx)
+      @stat_pool.update(@sub_stat.stat_pool)
+      self
+    end
 
     # Set dbi, otherwise generate by stdin info
     # When input from TTY

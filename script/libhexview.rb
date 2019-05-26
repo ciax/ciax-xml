@@ -12,28 +12,37 @@ module CIAX
       #   + Field (field:name) + Frame (frame:name)
       def initialize(stat, hdb = nil)
         # To use token omitting 'status:'
-        @stat = type?(stat, App::Status)
+        @stat = type?(stat, Wat::Event)
         super('hex', @stat[:id])
         _attr_set(@stat[:data_ver])
         @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])
         @stat_pool = @stat.stat_pool
         @sv_stat = type?(@stat_pool['sv_stat'], Prompt)
-        vmode('x')
         ___init_cmt_procs
+        vmode('x')
       end
 
       def to_x
-        self[:hexpack]
+        ___header + ___body
       end
 
       private
+
+      # To keep :exe flag 'up' between :busy and :event
+      def ___exe?
+        # @pre_bs: previous value of :busy
+        pre = @pre_bs
+        @pre_bs = __up?(:busy)
+        pre && !@pre_bs || __up?(:event)
+      end
 
       def ___init_cmt_procs
         propagation(@stat)
         propagation(@sv_stat)
         @cmt_procs.append(self, :hex, 1) do
           verbose { _conv_text('Field -> Hexstr', @id, time_id) }
-          self[:hexpack] = ___header + ___body
+          @exe_flg = ___exe?
+          self[:hexpack] = to_x
         end
         cmt
       end
@@ -42,7 +51,7 @@ module CIAX
       def ___header
         ary = ['%', self[:id]]
         ary << __b2e(__up?(:udperr))
-        ary << __b2i(__up?(:event))
+        ary << __b2i(@exe_flg)
         ary << __b2i(__up?(:busy))
         ary << __b2e(__up?(:comerr))
         ary.join('')

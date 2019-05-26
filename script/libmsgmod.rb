@@ -99,8 +99,8 @@ module CIAX
       end
     end
 
-    def type_gen(obj, mod)
-      obj = yield mod if !obj && defined? yield
+    def type_gen(obj, mod, par)
+      obj ||= mod.new(par)
       type?(obj, mod)
     end
   end

@@ -9,14 +9,13 @@ module CIAX
     class Field < Statx
       include Dic
       attr_accessor :echo
-      attr_reader :frame
-      def initialize(dbi = nil)
+      def initialize(dbi = nil, frame = nil)
         super('field', dbi, Dev::Db)
         # Proc for Terminate process of each individual commands
         #  (Set upper layer's update)
         self[:comerr] = false
         ext_dic(:data) { ___init_field }
-        ___init_frame
+        ___init_frame(frame)
       end
 
       # First token is taken as is (id@x@y) or ..
@@ -73,10 +72,9 @@ module CIAX
 
       private
 
-      def ___init_frame
+      def ___init_frame(frame)
         if @dbi.key?(:response)
-          @frame = Stream::Frame.new(@dbi)
-          @stat_pool['frame'] = @frame
+          _init_sub_stat(frame, Stream::Frame, @dbi)
         else
           init_time2cmt
         end

@@ -10,7 +10,7 @@ module CIAX
       def initialize(layer, id, host, port)
         @layer = layer
         @id = id
-        @host = host
+        @host = host || 'localhost'
         @port = port
         @udp = UDPSocket.open
         verbose { "Initiate UDP client (#{@id}) [#{@host}:#{@port}]" }

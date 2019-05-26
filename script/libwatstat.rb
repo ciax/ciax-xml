@@ -49,11 +49,11 @@ module CIAX
         com_err("stale data over #{(@timeout / 1000).to_i} sec")
       end
 
-      def act_start
-        self[:act_time][0] = act_end
+      def mark_start
+        self[:act_time][0] = mark_end
       end
 
-      def act_end
+      def mark_end
         self[:act_time][1] = now_msec
       end
 
@@ -69,9 +69,8 @@ module CIAX
       end
 
       def ___init_status(status)
-        @status = type_gen(status, App::Status) { |mod| mod.new(@dbi) }
-        @stat_pool.update(@status.stat_pool)
-        propagation(@status)
+        _init_sub_stat(status, App::Status, @dbi)
+        propagation(@sub_stat)
       end
     end
 

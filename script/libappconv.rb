@@ -10,7 +10,7 @@ module CIAX
       module Local
         include Varx::Local
         def ext_conv
-          return self unless @field
+          return self unless @sub_stat
           extend(Conv).ext_conv
         end
       end
@@ -29,7 +29,7 @@ module CIAX
         # Field will commit multiple timese par one commit here
         # So no propagation with it except time update
         def conv
-          time_upd(@field.flush)
+          time_upd(@sub_stat.flush)
           @adbsi.each do |id, hash|
             cnd = hash[:fields].empty?
             next if cnd && get(id)
@@ -101,7 +101,7 @@ module CIAX
         def __get_field(e)
           # fld can contain '@', i.e. key@idx1@idx2...
           fld = type?(e, Hash)[:ref] || give_up("No field Key in #{e}")
-          val = @field.get(fld)
+          val = @sub_stat.get(fld)
           # verbose(val.empty?) { "NoFieldContent in [#{fld}]" }
           val = e[:conv][val] if e.key?(:conv)
           val = val == e[:negative] ? '-' : '+' if /true|1/ =~ e[:sign]

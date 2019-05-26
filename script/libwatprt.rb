@@ -16,6 +16,7 @@ module CIAX
         end
 
         def to_v
+          upd
           vw = ''
           ___view_time(vw)
           ___view_exe(vw)

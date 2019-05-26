@@ -5,7 +5,11 @@ module CIAX
   # Watch Layer
   module Wat
     class Exe
-      # Event Action
+      # Event Action class
+      #   Required Vars
+      #   1.Event as Trigger (@event)
+      #   2.Execution (@eobj)
+      #   3.Server Status (@sv_stat)
       class Action
         include Msg
         def initialize(event, sv_stat, eobj)
@@ -44,26 +48,22 @@ module CIAX
 
         ## Timing chart in active mode
         # busy  :__--__--__--==__--___
-        # activ :___--------__----____
-        # event :_____---------------__
+        # activ :_____------__----____
+        # event :______-------------__
 
         ## Trigger Table
-        # busy| actv|event| action to event
-        #  o  |  o  |  o  |  -
-        #  o  |  x  |  o  |  -
-        #  o  |  o  |  x  |  up
-        #  o  |  x  |  x  |  -
-        #  x  |  o  |  o  |  -
-        #  x  |  x  |  o  | down
-        #  x  |  o  |  x  |  up
-        #  x  |  x  |  x  |  -
+        # activ|event| mark| @sv_stat
+        #   o  |  o  |  e  | cmt
+        #   x  |  o  |  e  | evnet:down
+        #   o  |  x  |  s  | event:up
+        #   x  |  x  |  -  | cmt
 
         def ___event_flag
           if @sv_stat.up?(:event)
-            @event.act_end
+            @event.mark_end
             @sv_stat.dw(:event) unless @event.active?
           elsif @event.active?
-            @event.act_start
+            @event.mark_start
             @sv_stat.up(:event)
           end
         end

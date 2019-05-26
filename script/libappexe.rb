@@ -35,25 +35,23 @@ module CIAX
       end
 
       def ___init_stat
-        @sv_stat = Prompt.new(@id)
         @stat = @cfg[:stat] = Status.new(@dbi, ___init_field)
+        @sv_stat = Prompt.new(@id, @sub_exe)
         @stat_pool = @stat.stat_pool
-        @stat_pool['sv_stat'] = @sv_stat
+        @stat_pool['sv_stat'] = @sv_stat.init_flg(busy: '*')
       end
 
       # Sub methods for Initialize
       def ___init_field
         id = @cfg[:dev_id] || return
         # LayerDB might generated in ExeDic level
-        # :sub_dic is generated for stand alone (test module)
-        @sub_exe = (@cfg[:sub_dic] ||= Frm::ExeDic.new(@cfg)).get(id)
-        @sv_stat.sub_merge(@sub_exe.sv_stat, %i(commerr ioerr))
+        @sub_exe = @cfg[:sub_dic].get(id)
         @sub_exe.stat
       end
 
       def ___init_command
         @cobj.add_rem.cfg[:def_msg] = 'ISSUED'
-        @cobj.rem.add_sys if @stat_pool.key?('frame')
+        @cobj.rem.add_sys
         @cobj.rem.add_int
         @cobj.rem.add_ext
         self
@@ -117,8 +115,9 @@ module CIAX
 
     # To distinct from other(dev) proc array title
     class Prompt < Prompt
-      def initialize(id)
+      def initialize(id, sub_exe = nil)
         super('site', id)
+        sub_merge(sub_exe.sv_stat, %i(commerr ioerr)) if sub_exe
       end
 
       # wait for busy end or status changed
@@ -136,8 +135,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Conf.new('[id]', options: 'cehl') do |cfg|
-        db = cfg[:db] = Ins::Db.new(cfg.proj)
-        Exe.new(cfg, dbi: db.get(cfg.args.shift))
+        db = cfg[:db] = Ins::Db.new
+        dbi = db.get(cfg.args.shift)
+        sub_dic = Frm::ExeDic.new(cfg)
+        Exe.new(cfg, dbi: dbi, sub_dic: sub_dic)
       end.cui
     end
   end

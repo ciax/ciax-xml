@@ -16,7 +16,8 @@ function getarg($key){
 }
 $args=array();
 foreach($argv as &$e){
-  $ary=split("=",$e);
+    # split is obsolete at PHP7. use explode
+    $ary=explode("=",$e);
   if(count($ary)>1){
     $args[$ary[0]]=$ary[1];
   }
@@ -64,5 +65,5 @@ $vids=getarg('vid');
 # No time -> now
 $utime=getarg('time');
 
-echo(json_encode(array_map('get_data', split(',',$vids))));
+echo(json_encode(array_map('get_data', explode(',',$vids))));
 ?>

@@ -21,15 +21,15 @@ module CIAX
           Msg.type?(obj, Event)
         end
 
-        # @status[:data](picked) = self[:crnt](picked) > self[:last]
+        # @sub_stat[:data](picked) = self[:crnt](picked) > self[:last]
         # upd() => self[:last]<-self[:crnt]
-        #       => self[:crnt]<-@status.data(picked)
+        #       => self[:crnt]<-@sub_stat.data(picked)
         #       => check(self[:crnt] <> self[:last]?)
         # Stat no changed -> clear exec, no eval
         def ext_conv
           return self unless @wdb
           @interval = @wdb[:interval].to_f if @wdb.key?(:interval)
-          @cond = Condition.new(@wdb[:index] || {}, @status, self)
+          @cond = Condition.new(@wdb[:index] || {}, @sub_stat, self)
           @cmt_procs.append(self, :conv, 1) { conv }
           ___init_auto(@wdb[:regular]) if @wdb.key?(:regular)
           self
@@ -37,7 +37,7 @@ module CIAX
 
         def conv
           return self unless @wdb
-          if @status[:time] > @last_updated
+          if @sub_stat[:time] > @last_updated
             @last_updated = self[:time]
             @cond.upd_cond
             verbose { _conv_text('Symbol -> Event', @id, time_id) }

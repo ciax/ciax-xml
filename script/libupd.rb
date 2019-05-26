@@ -16,13 +16,6 @@ module CIAX
       @cmt_procs = ProcArray.new(self, :cmt, 'Committing')
     end
 
-    # Add cmt for self return method
-    # Only drives upper layer (No converting, saving)
-    def deep_update(ope, concat = false)
-      super
-      cmt(4)
-    end
-
     # Time setting, Loading file at client
     # For loading with propagation
     # Should be done when pulling data
@@ -57,12 +50,6 @@ module CIAX
       super { cmt }
     end
 
-    # Update without any processing (Use for scan in macro)
-    #  load in client mode
-    def latest
-      self
-    end
-
     # Time Updater
     def time
       self[:time]
@@ -94,6 +81,22 @@ module CIAX
         cmt
       end
       obj
+    end
+
+    ### Display methods
+    def to_j
+      upd
+      super
+    end
+
+    def to_r
+      upd
+      super
+    end
+
+    def path(ary = [])
+      upd
+      super
     end
 
     private

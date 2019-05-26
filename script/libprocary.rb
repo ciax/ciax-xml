@@ -9,7 +9,6 @@ module CIAX
   #  2: labeling/symbolize data
   #  3: file saving/logging
   #  4: propagation to upper layer
-  #  5: server flag
   #
   # Update Priority
   #    (propagation from upper layer)
@@ -40,7 +39,7 @@ module CIAX
     end
 
     def clear
-      @list = Array.new(6) { {} }
+      @list = Array.new(5) { {} }
       self
     end
 

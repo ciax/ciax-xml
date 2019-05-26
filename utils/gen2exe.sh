@@ -6,27 +6,40 @@
 #  exe -b [command] : Background execution
 # command is exclusive
 #link exe
-exit=~/.var/exit.txt
-pidfile=~/.var/pid.txt
-exelog=~/.var/gen2log.txt
-[ -f $exit ] || echo "0" > $exit
-[ -f $pidfile ] || touch $pidfile
-loghead(){
-    echo -en "[$(date +%F_%T)]% $@" >> $exelog
+
+# test dummy
+slept(){
+    echo "$@"
+    sleep $(( ${2:-1} / 10 ))
 }
+# gen2 command
+g2cmd(){
+    source ~/gen2/conf/bashrc
+    $PYTHONPATH/Gen2/client/g2cmd.py "$@"
+}
+# exec
 doexe(){
     # Error output should be separated
-    eval $* 2>> $exelog
+    eval g2cmd $* 2>> $exelog
     code="$?"
 }
+
+### Status functions ###
+loghead(){
+    echo -en "[$(date +%F_%T)]% $@ " >> $exelog
+}
 setexit(){
-    echo "$code" > $exit
+    echo "$code" > $exitfile
     echo " [exitcode=$code]" >> $exelog
 }
 updexit(){
-    code=$(< $exit)
-    [ "$code" = "0" ] || echo "0" > $exit
+    code=$(< $exitfile)
+    [ "$code" = "0" ] || echo "0" > $exitfile
     echo $code
+}
+updpid(){
+    sleep 0.1
+    pid=$(< $pidfile)
 }
 bglog(){
     echo "$$" > $pidfile
@@ -47,29 +60,31 @@ reject(){
 }
 # Check background running
 # Back ground task is alive when $pidfile is not empty
-chkbg(){
+bgexe(){
     pid=$(<$pidfile)
-    [ "$pid" ] && code=1 || code=0
-    return $code
+    if [ "$1" ] ; then
+        [ "$pid" ] && reject "$@" || { bglog "$@" & updpid; }
+    fi
+    [ "$pid" ] || pid=0
+    echo $pid
 }
+exitfile=~/.var/exit.txt
+pidfile=~/.var/pid.txt
+exelog=~/.var/gen2log.txt
+[ -f $exitfile ] || echo "0" > $exitfile
+[ -f $pidfile ] || touch $pidfile
 case "$1" in
     '')
         updexit
         ;;
-    -b)
+    -b) # bg -> return pid, duplicated -> reject and pid 
         shift
-        if [ "$1" ] ; then
-            if chkbg ; then
-                bglog "$@" &
-            else
-                reject "$@"
-            fi
-        else
-            chkbg
-        fi
-        echo $code;;
+        bgexe "$@"
+        ;;
     -v) #For maintenance
         cat $exelog
         ;;
-    *) fglog "$@";;
+    *) 
+        fglog "$@"
+        ;;
 esac

@@ -23,22 +23,20 @@ module CIAX
       if jstr.empty?
         warning(' -- json url file (%s) is empty at loading', url)
       else
-        ___chkupd(jstr)
+        deep_update(jverify(j2h(jstr)))
       end
       self
     end
 
     def latest
+      # It works because cmt_procs doesn't have conversion.
+      lt = time
       load
+      cmt if time > lt
+      self
     end
 
     private
-
-    def ___chkupd(jstr)
-      lt = self[:time]
-      deep_update(jverify(j2h(jstr)))
-      cmt if self[:time] > lt
-    end
 
     def ___read_url(url)
       jstr = ''

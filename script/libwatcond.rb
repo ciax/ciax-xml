@@ -44,7 +44,8 @@ module CIAX
         @windex.each do |id, item|
           next unless ___chk_item(id, item)
           ___actives(item[:act])
-          @event.fetch(:active) << id
+          (aary = @event.fetch(:active)) << id
+          verbose { cfmt('Active conditions %p', aary) }
         end
       end
 
@@ -54,8 +55,7 @@ module CIAX
         rary = []
         cklst.each do |ckitm|
           res = ___chk_by_type(ckitm)
-          res = !res if /true|1/ =~ ckitm[:inv]
-          rary << res
+          rary << (/true|1/ =~ ckitm[:inv] ? !res : res)
         end
         @event[:res][id] = rary
         rary.all?

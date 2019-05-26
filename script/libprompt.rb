@@ -13,7 +13,6 @@ module CIAX
       @flg_db = {}
       self[:msg] = ''
       init_time2cmt
-      @layer = 'all'
     end
 
     # For String Data

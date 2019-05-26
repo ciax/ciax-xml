@@ -35,8 +35,8 @@ module CIAX
       end
 
       def ___init_stat
-        @sv_stat = Prompt.new(@id)
         @stat = @cfg[:stat] = Status.new(@dbi, ___init_field)
+        @sv_stat = Prompt.new(@id, @sub_exe)
         @stat_pool = @stat.stat_pool
         @stat_pool['sv_stat'] = @sv_stat.init_flg(busy: '*')
       end
@@ -46,7 +46,6 @@ module CIAX
         id = @cfg[:dev_id] || return
         # LayerDB might generated in ExeDic level
         @sub_exe = @cfg[:sub_dic].get(id)
-        @sv_stat.sub_merge(@sub_exe.sv_stat, %i(commerr ioerr))
         @sub_exe.stat
       end
 
@@ -116,8 +115,9 @@ module CIAX
 
     # To distinct from other(dev) proc array title
     class Prompt < Prompt
-      def initialize(id)
+      def initialize(id, sub_exe = nil)
         super('site', id)
+        sub_merge(sub_exe.sv_stat, %i(commerr ioerr)) if sub_exe
       end
 
       # wait for busy end or status changed

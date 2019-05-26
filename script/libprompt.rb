@@ -121,12 +121,13 @@ module CIAX
 
     private
 
-    def __turn_flag(key, label, tf)
+    def __turn_flag(key, label, tfstr)
       cfg_err("No such flag [#{key}]") unless key?(key)
       verbose do
-        cfmt('Flag %s [%s] %s', label, key, self[key] != tf ? '-> changed' : '')
+        chg = self[key] != tfstr ? '-> changed' : ''
+        cfmt('Flag %s [%s] %s', label, key, chg)
       end
-      repl(key, tf)
+      repl(key, tfstr)
       self
     end
   end

@@ -55,7 +55,6 @@ module CIAX
         @cobj.rem.add_sys
         @cobj.rem.add_int
         @cobj.rem.add_ext
-        _set_def_proc('reset') { @sv_stat.reset }
         self
       end
 

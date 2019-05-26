@@ -54,6 +54,7 @@ module CIAX
 
         # App: Sendign a first priority command (interrupt)
         def ___init_proc_int(buf)
+          _set_def_proc('reset') { @sv_stat.reset }
           _set_def_proc('interrupt') do |_ent, src|
             @batch_interrupt.each do |args|
               verbose { "Issuing:#{args} for Interrupt" }

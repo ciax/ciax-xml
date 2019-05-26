@@ -4,17 +4,16 @@ module CIAX
   # For server status through all layers
   #   This instance will be assigned as @sv_stat in other classes
   class Prompt < Varx
-    attr_reader :db
+    attr_reader :flg_db
     # type = site,mcr
     def initialize(type, id)
       cfg_err('No ID') unless id
       super(['server', type].compact.join('_'), id)
-      # @db: [key <-> Symbol at true] Database
-      @db = {}
+      # @flg_db: [key <-> Symbol at true] Database
+      @flg_db = {}
       self[:msg] = ''
       init_time2cmt
       @layer = 'all'
-      @flg_keys = []
     end
 
     # For String Data
@@ -23,13 +22,12 @@ module CIAX
       self
     end
 
-    # For Binary Data with display db
+    # For Binary Data with display flg_db
     # Value should be String to replace
-    def init_flg(db = {}) # returns self
-      @db.update(type?(db, Hash))
-      db.keys.each do |k|
+    def init_flg(flg_db = {}) # returns self
+      @flg_db.update(type?(flg_db, Hash))
+      flg_db.keys.each do |k|
         self[k] = 'false'
-        @flg_keys << k
       end
       self
     end
@@ -47,8 +45,8 @@ module CIAX
     end
 
     def reset
-      verbose { 'Reset Flags' }
-      @flg_keys.each { |k| repl(k, 'false') }
+      verbose { cfmt('Reset Flags %p', @flg_db.keys) }
+      @flg_db.keys.each { |k| repl(k, 'false') }
       self
     end
 
@@ -93,13 +91,13 @@ module CIAX
     def to_v
       verbose { 'Shell' + inspect }
       # Because true(String) will be converted to Boolean in JSON
-      @db.map { |k, v| v if self[k].to_s == 'true' }.join
+      @flg_db.map { |k, v| v if self[k].to_s == 'true' }.join
     end
 
     # Subtract and merge to self data, return rest of the data
     def subtr(input)
       hash = input.dup
-      @db.keys.each do |k|
+      @flg_db.keys.each do |k|
         self[k] = hash[k] ? hash.delete(k) : false
       end
       hash
@@ -108,7 +106,7 @@ module CIAX
     # Merge sub prompt for picked up keys
     def sub_merge(sub, args)
       type?(sub, Prompt)
-      @db.update(sub.db)
+      @flg_db.update(sub.flg_db)
       # Upper layer propagation
       sub.cmt_procs.append(self, @id, 4) do |ss|
         update(ss.pick(args)).cmt

@@ -48,19 +48,15 @@ module CIAX
 
         ## Timing chart in active mode
         # busy  :__--__--__--==__--___
-        # activ :___--------__----____
-        # event :_____---------------__
+        # activ :_____------__----____
+        # event :______-------------__
 
         ## Trigger Table
-        # busy| actv|event| action to event
-        #  o  |  o  |  o  |  -
-        #  o  |  x  |  o  |  -
-        #  o  |  o  |  x  |  up
-        #  o  |  x  |  x  |  -
-        #  x  |  o  |  o  |  -
-        #  x  |  x  |  o  | down
-        #  x  |  o  |  x  |  up
-        #  x  |  x  |  x  |  -
+        # activ|event| mark| @sv_stat
+        #   o  |  o  |  e  | cmt
+        #   x  |  o  |  e  | evnet:down
+        #   o  |  x  |  s  | event:up
+        #   x  |  x  |  -  | cmt
 
         def ___event_flag
           if @sv_stat.up?(:event)
@@ -70,7 +66,6 @@ module CIAX
             @event.mark_start
             @sv_stat.up(:event)
           end
-          @sv_stat.dw(:busy)
         end
       end
     end

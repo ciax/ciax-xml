@@ -105,7 +105,6 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libexedic'
       Opt::Conf.new('[id]', options: 'cehl') do |cfg|
         db = cfg[:db] = Dev::Db.new
         dbi = db.get(cfg.args.shift)

@@ -58,7 +58,8 @@ module CIAX
       Opt::Conf.new('[id]', options: 'cehlt') do |cfg|
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(cfg.args.shift)
-        Exe.new(cfg, dbi: dbi, sub_dic: App::ExeDic.new(cfg))
+        sub_dic = App::ExeDic.new(cfg)
+        Exe.new(cfg, dbi: dbi, sub_dic: sub_dic)
       end.cui
     end
   end

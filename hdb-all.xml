@@ -2,98 +2,98 @@
 <hdb xmlns="http://ciax.sum.naoj.org/ciax-xml/hdb">
   <hexpack id="bbe" version="1" label="Helium Compressor">
     <pack code="b" length="1">
-      <bit ref="xsw0" label="Out 5"/>
-      <bit ref="xdr0" label="In 5-1"/>
-      <bit ref="xtm0" label="In 5-2"/>
-      <bit ref="xpr0" label="In 5-3"/>
+      <bit ref="status:xsw0" label="Out 5"/>
+      <bit ref="status:xdr0" label="In 5-1"/>
+      <bit ref="status:xtm0" label="In 5-2"/>
+      <bit ref="status:xpr0" label="In 5-3"/>
     </pack>
     <pack code="b" length="1">
-      <bit ref="xsw1" label="Out 6"/>
-      <bit ref="xdr1" label="In 6-1"/>
-      <bit ref="xtm1" label="In 6-2"/>
-      <bit ref="xpr1" label="In 6-3"/>
+      <bit ref="status:xsw1" label="Out 6"/>
+      <bit ref="status:xdr1" label="In 6-1"/>
+      <bit ref="status:xtm1" label="In 6-2"/>
+      <bit ref="status:xpr1" label="In 6-3"/>
     </pack>
     <pack code="b" length="1">
-      <bit ref="xsw2" label="Out 7"/>
-      <bit ref="xdr2" label="In 7-1"/>
-      <bit ref="xtm2" label="In 7-2"/>
-      <bit ref="xpr2" label="In 7-3"/>
+      <bit ref="status:xsw2" label="Out 7"/>
+      <bit ref="status:xdr2" label="In 7-1"/>
+      <bit ref="status:xtm2" label="In 7-2"/>
+      <bit ref="status:xpr2" label="In 7-3"/>
     </pack>
     <pack code="b" length="1">
-      <bit ref="xsw3" label="Out 8"/>
-      <bit ref="xdr3" label="In 8-1"/>
-      <bit ref="xtm3" label="In 8-2"/>
-      <bit ref="xpr3" label="In 8-3"/>
+      <bit ref="status:xsw3" label="Out 8"/>
+      <bit ref="status:xdr3" label="In 8-1"/>
+      <bit ref="status:xtm3" label="In 8-2"/>
+      <bit ref="status:xpr3" label="In 8-3"/>
     </pack>
   </hexpack>
   <hexpack id="mel" label="CIAX CART 3">
-    <field ref="rdy" label="READY" length="1" type="binary"/>
-    <field ref="stp" label="STOP" length="1" type="binary"/>
-    <field ref="pse" label="PAUSE" length="1" type="binary"/>
-    <field ref="emg" label="EMG" length="1" type="binary"/>
-    <field ref="flt" label="Fault" length="1" type="binary"/>
-    <field ref="exc" label="Fault Message" length="4" type="str"/>
-    <field ref="acp" label="Command Enable" length="1" type="binary"/>
-    <field ref="run" label="RUNNING" length="1" type="binary"/>
-    <field ref="cps" label="CRNT POS" length="2" type="int"/>
-    <field ref="dps" label="DEST POS" length="2" type="int"/>
-    <field ref="jak" label="JACKING" length="1" type="binary"/>
-    <field ref="jlv" label="Jack Pos" length="2" type="int"/>
-    <field ref="ist" label="Instrument ID" length="2" type="int"/>
-    <field ref="ion" label="Container Detection" length="4" type="binary"/>
-    <field ref="js1" label="JK1 Drive" length="1" type="binary"/>
-    <field ref="jh1" label="H1(mm)" length="5" type="float"/>
-    <field ref="lc1" label="LOAD1" length="1" type="int"/>
-    <field ref="cn1" label="Corn1" length="1" type="binary"/>
-    <field ref="js2" label="JK2 Drive" length="1" type="binary"/>
-    <field ref="jh2" label="H2(mm)" length="5" type="float"/>
-    <field ref="lc2" label="LOAD2" length="1" type="int"/>
-    <field ref="cn2" label="Corn2" length="1" type="binary"/>
-    <field ref="js3" label="JK3 Drive" length="1" type="binary"/>
-    <field ref="jh3" label="H3(mm)" length="5" type="float"/>
-    <field ref="lc3" label="LOAD3" length="1" type="int"/>
-    <field ref="cn3" label="Corn3" length="1" type="binary"/>
-    <field ref="js4" label="JK4 Drive" length="1" type="binary"/>
-    <field ref="jh4" label="H4(mm)" length="5" type="float"/>
-    <field ref="lc4" label="LOAD4" length="1" type="int"/>
-    <field ref="cn4" label="Corn4" length="1" type="binary"/>
-    <field ref="msr" label="Wheel Right Drive" length="1" type="binary"/>
-    <field ref="msl" label="Wheel Left Drive" length="1" type="binary"/>
-    <field ref="chg" label="CHARGING" length="1" type="binary"/>
-    <field ref="vol" label="Battery Voltage" length="5" type="float"/>
-    <field ref="ctl" label="AUTO/Manal" length="1" type="int"/>
+    <field ref="status:rdy" label="READY" length="1" type="binary"/>
+    <field ref="status:stp" label="STOP" length="1" type="binary"/>
+    <field ref="status:pse" label="PAUSE" length="1" type="binary"/>
+    <field ref="status:emg" label="EMG" length="1" type="binary"/>
+    <field ref="status:flt" label="Fault" length="1" type="binary"/>
+    <field ref="status:exc" label="Fault Message" length="4" type="str"/>
+    <field ref="status:acp" label="Command Enable" length="1" type="binary"/>
+    <field ref="status:run" label="RUNNING" length="1" type="binary"/>
+    <field ref="status:cps" label="CRNT POS" length="2" type="int"/>
+    <field ref="status:dps" label="DEST POS" length="2" type="int"/>
+    <field ref="status:jak" label="JACKING" length="1" type="binary"/>
+    <field ref="status:jlv" label="Jack Pos" length="2" type="int"/>
+    <field ref="status:ist" label="Instrument ID" length="2" type="int"/>
+    <field ref="status:ion" label="Container Detection" length="4" type="binary"/>
+    <field ref="status:js1" label="JK1 Drive" length="1" type="binary"/>
+    <field ref="status:jh1" label="H1(mm)" length="5" type="float"/>
+    <field ref="status:lc1" label="LOAD1" length="1" type="int"/>
+    <field ref="status:cn1" label="Corn1" length="1" type="binary"/>
+    <field ref="status:js2" label="JK2 Drive" length="1" type="binary"/>
+    <field ref="status:jh2" label="H2(mm)" length="5" type="float"/>
+    <field ref="status:lc2" label="LOAD2" length="1" type="int"/>
+    <field ref="status:cn2" label="Corn2" length="1" type="binary"/>
+    <field ref="status:js3" label="JK3 Drive" length="1" type="binary"/>
+    <field ref="status:jh3" label="H3(mm)" length="5" type="float"/>
+    <field ref="status:lc3" label="LOAD3" length="1" type="int"/>
+    <field ref="status:cn3" label="Corn3" length="1" type="binary"/>
+    <field ref="status:js4" label="JK4 Drive" length="1" type="binary"/>
+    <field ref="status:jh4" label="H4(mm)" length="5" type="float"/>
+    <field ref="status:lc4" label="LOAD4" length="1" type="int"/>
+    <field ref="status:cn4" label="Corn4" length="1" type="binary"/>
+    <field ref="status:msr" label="Wheel Right Drive" length="1" type="binary"/>
+    <field ref="status:msl" label="Wheel Left Drive" length="1" type="binary"/>
+    <field ref="status:chg" label="CHARGING" length="1" type="binary"/>
+    <field ref="status:vol" label="Battery Voltage" length="5" type="float"/>
+    <field ref="status:ctl" label="AUTO/Manal" length="1" type="int"/>
   </hexpack>
   <hexpack id="cj2" label="Stand-by Flange">
-    <field ref="rdy" label="READY" length="1" type="binary"/>
-    <field ref="pse" label="PAUSE" length="1" type="binary"/>
-    <field ref="emg" label="EMG" length="1" type="binary"/>
-    <field ref="ctl" label="CONTROL" length="2" type="binary"/>
-    <field ref="fis" label="FIX INST" length="4" type="binary"/>
-    <field ref="fhk" label="FIX HOOK" length="2" type="binary"/>
-    <field ref="fjb" label="FIX BOLT" length="2" type="binary"/>
-    <field ref="mis" label="MOV INST" length="4" type="binary"/>
-    <field ref="mhk" label="MOV HOOK" length="2" type="binary"/>
-    <field ref="mjb" label="MOV BOLT" length="2" type="binary"/>
-    <field ref="mrt" label="MOV ROT" length="2" type="binary"/>
-    <field ref="mtr" label="MOV TRANS" length="2" type="binary"/>
-    <field ref="mpw" label="MOV IPW" length="1" type="binary"/>
-    <field ref="fpw" label="FIX IPW" length="1" type="binary"/>
-    <field ref="mid" label="MOV INST ID" length="1" type="int"/>
-    <field ref="fid" label="FIX INST ID" length="1" type="int"/>
-    <field ref="chg" label="CHG ARM" length="2" type="binary"/>
-    <field ref="dor" label="DOOR STAT" length="2" type="binary"/>
+    <field ref="status:rdy" label="READY" length="1" type="binary"/>
+    <field ref="status:pse" label="PAUSE" length="1" type="binary"/>
+    <field ref="status:emg" label="EMG" length="1" type="binary"/>
+    <field ref="status:ctl" label="CONTROL" length="2" type="binary"/>
+    <field ref="status:fis" label="FIX INST" length="4" type="binary"/>
+    <field ref="status:fhk" label="FIX HOOK" length="2" type="binary"/>
+    <field ref="status:fjb" label="FIX BOLT" length="2" type="binary"/>
+    <field ref="status:mis" label="MOV INST" length="4" type="binary"/>
+    <field ref="status:mhk" label="MOV HOOK" length="2" type="binary"/>
+    <field ref="status:mjb" label="MOV BOLT" length="2" type="binary"/>
+    <field ref="status:mrt" label="MOV ROT" length="2" type="binary"/>
+    <field ref="status:mtr" label="MOV TRANS" length="2" type="binary"/>
+    <field ref="status:mpw" label="MOV IPW" length="1" type="binary"/>
+    <field ref="status:fpw" label="FIX IPW" length="1" type="binary"/>
+    <field ref="status:mid" label="MOV INST ID" length="1" type="int"/>
+    <field ref="status:fid" label="FIX INST ID" length="1" type="int"/>
+    <field ref="status:chg" label="CHG ARM" length="2" type="binary"/>
+    <field ref="status:dor" label="DOOR STAT" length="2" type="binary"/>
   </hexpack>
   <hexpack id="srm" version="1" label="CsEtr Control">
-    <field ref="cod" label="RESPONSE CODE" length="2" type="str"/>
-    <field ref="iid" label="CAS INST ID" length="1" type="int"/>
+    <field ref="status:cod" label="RESPONSE CODE" length="2" type="str"/>
+    <field ref="status:iid" label="CAS INST ID" length="1" type="int"/>
     <pack code="b" length="2">
-      <bit ref="ipw" label="CAS IPW"/>
+      <bit ref="status:ipw" label="CAS IPW"/>
     </pack>
     <pack code="b" length="2">
-      <bit ref="c3p" label="CIAX3 PW"/>
-      <bit ref="c3e" label="CIAX3 EMG"/>
-      <bit ref="ccd" label="CAS CCD PW"/>
-      <bit ref="lan" label="CAS LAN PW"/>
+      <bit ref="status:c3p" label="CIAX3 PW"/>
+      <bit ref="status:c3e" label="CIAX3 EMG"/>
+      <bit ref="status:ccd" label="CAS CCD PW"/>
+      <bit ref="status:lan" label="CAS LAN PW"/>
     </pack>
   </hexpack>
   <hexpack id="oss" label="TSC">
@@ -114,11 +114,11 @@
     <field ref="frame:logstat" label="LOGIN Statu" type="str"/>
   </hexpack>
   <hexpack id="ist" label="INST ID">
-    <field ref="msg/cis" label="CURRENT INST" length="6"/>
-    <field ref="msg/sa" label="INST ON A-FL" length="6"/>
-    <field ref="msg/sb" label="INST ON B-FL" length="6"/>
-    <field ref="msg/sc" label="INST ON C-FL" length="6"/>
-    <field ref="msg/sd" label="INST ON D-FL" length="6"/>
-    <field ref="msg/cf" label="HOME POSITION" length="2"/>
+    <field ref="status:msg/cis" label="CURRENT INST" length="6"/>
+    <field ref="status:msg/sa" label="INST ON A-FL" length="6"/>
+    <field ref="status:msg/sb" label="INST ON B-FL" length="6"/>
+    <field ref="status:msg/sc" label="INST ON C-FL" length="6"/>
+    <field ref="status:msg/sd" label="INST ON D-FL" length="6"/>
+    <field ref="status:msg/cf" label="HOME POSITION" length="2"/>
   </hexpack>
 </hdb>

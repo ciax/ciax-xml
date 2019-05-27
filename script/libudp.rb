@@ -54,6 +54,7 @@ module CIAX
 
       def ___recv
         line, @addr = @udp.recvfrom(4096)
+        line.chomp!
         verbose { "UDP Recv:#{line} is #{line.class}" }
         [line, Addrinfo.ip(@addr[2]).getnameinfo.first]
       end

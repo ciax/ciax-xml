@@ -5,8 +5,9 @@
 #  exe -b           : Show active background process id
 #  exe -b [command] : Background execution
 # command is exclusive
+# Description: Long term command should be done backgroup to update status
 #link exe
-# exec
+
 doexe(){
     # Error output should be separated
     eval $* 2>> $exelog
@@ -73,7 +74,7 @@ case "$1" in
     -v) #For maintenance
         cat $exelog
         ;;
-    *) 
+    *)
         fglog "$@"
         ;;
 esac

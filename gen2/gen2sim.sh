@@ -1,15 +1,15 @@
 #!/bin/bash
 # Usage: gen2sim [command]
 #  Gen2 command simulator
-#link gen2cmd
-#link gen2prt
+#link g2cmd
+#link g2prt
 # test dummy
-g2cmd(){
-    echo -n '(Command simulator) ' >/dev/stderr
-    gen2mkcmd "$@" >/dev/stderr
-    gen2exe sleep $(( ${2:-1} / 10 ))
+g2cmd-f(){
+    echo "(Command simulator) $*" >/dev/stderr
+    [ "$1" ] && w=$(( ${!#} / 10 )) || w=0.1
+    sleep $w
 }
-g2prt(){
+g2prt-f(){
     CXWS_TSCV_TELDRIVE=12
     CXWS_TSCV_0_SENSOR=5f
     CXWS_TSCV_POWER_V2=000427000000000353000000000317000000000509000000000448000000000430000000000440000000000464000000000412000000000392000000000319000000000492000000000431000000000500000000000463000000000447000000
@@ -32,14 +32,5 @@ g2prt(){
         echo ${!id}
     done
 }
-case "$0" in
-    *gen2cmd)
-        g2cmd "$@" >/dev/stderr
-        ;;
-    *gen2prt)
-        g2prt $(gen2mkprt $*)
-        ;;
-    *) ;;
-esac
-
-
+cmd=${0##*/}-f
+type $cmd >/dev/null 2>&1 && $cmd "$@"

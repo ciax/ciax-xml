@@ -5,9 +5,9 @@
 #link gen2prt
 # test dummy
 g2cmd(){
-    echo -n '(Command simulator)' >/dev/stderr
+    echo -n '(Command simulator) ' >/dev/stderr
     gen2mkcmd "$@" >/dev/stderr
-    sleep $(( ${2:-1} / 10 ))
+    gen2exe sleep $(( ${2:-1} / 10 ))
 }
 g2prt(){
     CXWS_TSCV_TELDRIVE=12
@@ -27,17 +27,17 @@ g2prt(){
     CXWS_TSCV_STOW_1=05
     CXWS_TSCL_Z_SENSOR=000477000000000000000000000000000000000925000000
     CXWS_TSCV_OBE_INR=0005
-    id=${1//./_}
-    echo ${!id}
+    for i ; do
+        id=${i//./_}
+        echo ${!id}
+    done
 }
 case "$0" in
     *gen2cmd)
         g2cmd "$@" >/dev/stderr
         ;;
     *gen2prt)
-        for i in $(gen2mkprt $*); do
-            g2prt ${i//./_}
-        done
+        g2prt $(gen2mkprt $*)
         ;;
     *) ;;
 esac

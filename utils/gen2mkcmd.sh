@@ -21,8 +21,8 @@ usage(){
 }
 mkcmd(){
     args="'EXEC TSC NATIVE CMD=\"$*\"'"
-    [ "$TIMEOUT" ] && opt=-b
-    echo "$opt $args ${TIMEOUT:-10}"
+    [ "$TIMEOUT" ] && opt='-b '
+    echo "$opt$args ${TIMEOUT:-10}"
 }
 selcmd(){
     id="$1"

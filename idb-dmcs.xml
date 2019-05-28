@@ -82,6 +82,7 @@
       <site id="tst" dev_id="tst" app_id="ist" host="localhost" port="53051" label="Current Instrument">
         <command ref="ist"/>
       </site>
+      <site id="tts" dev_id="tts" app_id="oss" host="localhost" port="25195" label="OSS Telescope"/>
     </group>
   </project>
 </idb>

@@ -29,6 +29,7 @@ g2prt-f(){
     CXWS_TSCV_OBE_INR=0005
     for i ; do
         id=${i//./_}
+        set|egrep "^$id" >/dev/null 2>&1 || continue
         echo ${!id}
     done
 }

@@ -13,7 +13,7 @@ module CIAX
     def initialize(cfg, port = 54_321)
       ___set_env
       tag = $PROGRAM_NAME.split('/').last
-      ___chk_args(___kill_pids, cfg.args + cfg.opt.values)
+      ___chk_args(___kill_pids(port), cfg.args + cfg.opt.values)
       ___init_server(tag, cfg.opt, port)
       ___server(port) { yield cfg }
     end
@@ -61,8 +61,8 @@ module CIAX
       verbose { "Initiate Daemon Detached (#{$PROCESS_ID})" }
     end
 
-    def ___kill_pids
-      @pidfile = vardir('run') + 'daemon.pid'
+    def ___kill_pids(port)
+      @pidfile = vardir('run') + "daemon#{port}.pid"
       pids = ___read_pids
       __write_pid('')
       'Nothing to do' unless pids.any? { |pid| ___kill_pid(pid) }

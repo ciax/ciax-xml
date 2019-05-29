@@ -1,8 +1,6 @@
 #!/bin/bash
 # Usage: gen2sim [command]
 #  Gen2 command simulator
-#link g2cmd
-#link g2prt
 # test dummy
 g2cmd-f(){
     echo "(Command simulator) $*" >/dev/stderr

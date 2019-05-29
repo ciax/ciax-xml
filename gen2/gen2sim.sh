@@ -27,11 +27,16 @@ g2prt-f(){
     CXWS_TSCV_STOW_1=05
     CXWS_TSCL_Z_SENSOR=000477000000000000000000000000000000000925000000
     CXWS_TSCV_OBE_INR=0005
+    # Iterative output to pipe breaks read() data at a new line.
+    #  -> One time output by temp file
+    tmpfile=~/.var/$$.tmp
     for i ; do
         id=${i//./_}
         set|egrep "^$id" >/dev/null 2>&1 || continue
         echo ${!id}
-    done
+    done > $tmpfile
+    cat $tmpfile
+    rm $tmpfile
 }
 cmd=${0##*/}-f
 type $cmd >/dev/null 2>&1 && $cmd "$@"

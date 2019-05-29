@@ -73,6 +73,6 @@
     <site id="tci" frm_id="bbe" port="24198" iocmd="socat - udp:localhost:8892" label="CCI dummy"/>
     <site id="tco" frm_id="bbe" port="24199" iocmd="socat - udp:localhost:8893" label="CCO dummy"/>
     <site id="tst" frm_id="ist" port="24106" label="Instument Status"/>
-    <site id="tts" frm_id="oss" port="24195" iocmd="sh" label="Gen2 TSC Control"/>
+    <site id="tts" frm_id="oss" port="24195" iocmd="/bin/sh" label="Gen2 TSC Control"/>
   </group>
 </ddb>

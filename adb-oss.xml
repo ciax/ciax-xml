@@ -89,6 +89,12 @@
             <frmcmd name="ajstop"/>
             <frmcmd name="jakstat"/>
           </item>
+          <item id="astop" label="ALL">
+            <frmcmd name="rstop"/>
+            <frmcmd name="ajstop"/>
+            <frmcmd name="inrang"/>
+            <frmcmd name="jakstat"/>
+          </item>
         </unit>
       </group>
       <group id="gact" caption="Action">
@@ -623,6 +629,14 @@
         <block name="cunhk"/>
         <int name="rstop"/>
         <exec name="updinr"/>
+      </event>
+      <event label="Moving Any" id="any">
+        <onchange var="jkm" inv="true"/>
+        <onchange var="iang" inv="true"/>
+        <range var="pid">1:</range>
+        <block_grp ref="gact"/>
+        <int name="astop"/>
+        <exec name="upd"/>
       </event>
       <event label="End motion" id="endm">
         <onchange var="pid"/>

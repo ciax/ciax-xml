@@ -20,9 +20,8 @@ usage(){
     exit 1
 }
 mkcmd(){
-    args="'EXEC TSC NATIVE CMD=\"$*\"'"
-    [ "$TIMEOUT" ] && opt='-b '
-    echo "$opt$args ${TIMEOUT:-10}"
+    # Background run is judged with last number letter (0->BG, others->FG)
+    echo "'EXEC TSC NATIVE CMD=\"$*\"' ${TIMEOUT:-9}"
 }
 selcmd(){
     id="$1"

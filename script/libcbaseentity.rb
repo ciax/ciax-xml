@@ -23,7 +23,7 @@ module CIAX
         verbose { _exe_text(@id, src, pri) }
         ___input_log(src, pri)
         @msg = self[:def_msg] || ''
-        self[:def_proc].call(self, src, pri)
+        self[:def_proc].call(self)
         self
       end
 

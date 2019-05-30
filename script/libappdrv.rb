@@ -55,20 +55,20 @@ module CIAX
         # App: Sendign a first priority command (interrupt)
         def ___init_proc_int(buf)
           _set_def_proc('reset') { @sv_stat.reset }
-          _set_def_proc('interrupt') do |_ent, src|
+          _set_def_proc('interrupt') do |ent|
             @batch_interrupt.each do |args|
               verbose { "Issuing:#{args} for Interrupt" }
               buf.send(@cobj.set_cmd(args.dup), 0)
             end
-            warning('Interrupt%p from %s', @batch_interrupt, src)
+            warning('Interrupt%p from %s', @batch_interrupt, ent[:src])
           end
         end
 
         # App: Sending a general App command (Frm batch)
         def ___init_proc_ext(buf)
-          @cobj.rem.ext.def_proc do |ent, src, pri|
-            verbose { _exe_text(ent.id, src, pri) }
-            buf.send(ent, pri)
+          @cobj.rem.ext.def_proc do |ent|
+            verbose { _exe_text(ent.id, ent[:src], ent[:pri]) }
+            buf.send(ent, ent[:pri])
           end
         end
       end

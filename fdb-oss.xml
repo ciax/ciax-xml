@@ -87,23 +87,23 @@
         </item>
       </group>
       <group caption="Drive" id="gdrv">
-        <item id="ron" label="InR Drive ON" response="exit" type="action">
+        <item id="ron" label="InR Drive ON" response="exit" type="config">
           <string>gen2cmd</string>
           <string> ron</string>
         </item>
-        <item id="roff" label="InR Drive OFF" response="exit" type="action">
+        <item id="roff" label="InR Drive OFF" response="exit" type="config">
           <string>gen2cmd</string>
           <string> roff</string>
         </item>
-        <item id="rstop" label="InR Stop" response="exit" type="action">
+        <item id="rstop" label="InR Stop" response="exit" type="config">
           <string>gen2cmd</string>
           <string> rstop</string>
         </item>
-        <item id="jon" label="Jack Drive ON" response="exit" type="action">
+        <item id="jon" label="Jack Drive ON" response="exit" type="config">
           <string>gen2cmd</string>
           <string> jon</string>
         </item>
-        <item id="joff" label="Jack Drive OFF" response="exit" type="action">
+        <item id="joff" label="Jack Drive OFF" response="exit" type="config">
           <string>gen2cmd</string>
           <string> joff</string>
         </item>
@@ -128,30 +128,30 @@
           <string> reset</string>
         </item>
       </group>
-      <group caption="Motion" id="gmot">
-        <item id="rhook" label="InR Hook(0deg)" response="pid" type="motion">
+      <group caption="Action" id="gact">
+        <item id="rhook" label="InR Hook(0deg)" response="pid" type="action">
           <string>gen2cmd</string>
           <string> rhook</string>
         </item>
-        <item id="runhk" label="InR UnHook(-4deg)" response="pid" type="motion">
+        <item id="runhk" label="InR UnHook(-4deg)" response="pid" type="action">
           <string>gen2cmd</string>
           <string> runhk</string>
         </item>
-        <item id="ajup" label="All EJB Up" response="pid" type="motion">
+        <item id="ajup" label="All EJB Up" response="pid" type="action">
           <string>gen2cmd</string>
           <string> ajup</string>
         </item>
-        <item id="ajdw" label="All EJB Down" response="pid" type="motion">
+        <item id="ajdw" label="All EJB Down" response="pid" type="action">
           <string>gen2cmd</string>
           <string> ajdw</string>
         </item>
-        <item id="jup" label="EJB Up [#]" response="pid" type="motion">
+        <item id="jup" label="EJB Up [#]" response="pid" type="action">
           <par_num>1:16</par_num>
           <string>gen2cmd</string>
           <string> jup </string>
           <string format="%02d">$1*3+1</string>
         </item>
-        <item id="jdw" label="EJB Down [#]" response="pid" type="motion">
+        <item id="jdw" label="EJB Down [#]" response="pid" type="action">
           <par_num>1:16</par_num>
           <string>gen2cmd</string>
           <string> jdw </string>

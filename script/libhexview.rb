@@ -28,14 +28,6 @@ module CIAX
 
       private
 
-      # To keep :exe flag 'up' between :busy and :event
-      def ___exe?
-        # @pre_bs: previous value of :busy
-        pre = @pre_bs
-        @pre_bs = __up?(:busy)
-        pre && !@pre_bs || __up?(:event)
-      end
-
       def ___init_cmt_procs
         propagation(@stat)
         propagation(@sv_stat)
@@ -51,7 +43,8 @@ module CIAX
       def ___header
         ary = ['%', self[:id]]
         ary << __b2e(__up?(:udperr))
-        ary << __b2i(@exe_flg)
+        # Use :action flag to keep :exe 'up' between :busy and :event
+        ary << __b2i(__up?(:busy, :action, :event))
         ary << __b2i(__up?(:busy))
         ary << __b2e(__up?(:comerr))
         ary.join('')

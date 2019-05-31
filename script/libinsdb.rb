@@ -20,7 +20,6 @@ module CIAX
           get(id)
           atrb = get(id) || @docs.get(id)[:attr]
           hash[id] = atrb[:run] != 'false' && atrb[:host]
-          #                     ['localhost', HOST].include?(atrb[:host])
         end
       end
 
@@ -31,10 +30,10 @@ module CIAX
       end
 
       def valid_devs
-        rl = valid_ins.trues
+        vi = valid_ins
         list.each_with_object(Hashx.new) do |s, hash|
           did = get(s)[:dev_id]
-          hash[did] = rl.include?(s) if did
+          hash[did] = vi[s] if did && vi.key?(s)
         end
       end
 

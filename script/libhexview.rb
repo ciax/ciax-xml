@@ -43,7 +43,7 @@ module CIAX
         ary = ['%', self[:id]]
         ary << __b2e(__up?(:udperr))
         # Use :action flag to keep :exe 'up' between :busy and :event
-        ary << __b2i(__up?(:busy, :action, :event))
+        ary << __b2i(__up?(:action, :event))
         ary << __b2i(__up?(:busy))
         ary << __b2e(__up?(:comerr))
         ary.join('')

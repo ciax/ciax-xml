@@ -33,7 +33,6 @@ module CIAX
         propagation(@sv_stat)
         @cmt_procs.append(self, :hex, 1) do
           verbose { _conv_text('Field -> Hexstr', @id, time_id) }
-          @exe_flg = ___exe?
           self[:hexpack] = to_x
         end
         cmt

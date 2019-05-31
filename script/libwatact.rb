@@ -44,12 +44,14 @@ module CIAX
         # @event[:exec] : Cmd queue which contains cmds issued as event
         # @event[:block] : Array of cmds (units) which are blocked during busy
         # @event[:int] : List of interrupt cmds which is effectie during busy
+        # @sv_stat[:action] : Flag by command type 'action' (actuator moving)
         # @sv_stat[:event] is internal var (actuator moving)
 
         ## Timing chart in active mode
-        # busy  :__--__--__--==__--___
-        # activ :_____------__----____
-        # event :______-------------__
+        # busy   :__--__--__--==__--___
+        # action :___---_______________
+        # active :_____------__----____
+        # event  :_____-------------___
 
         ## Trigger Table
         # activ|event| mark| @sv_stat

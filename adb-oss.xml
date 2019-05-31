@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="oss" id="oss" label="TSC Control" version="7">
+  <app frm_id="oss" id="oss" label="TSC Control" version="8">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gsys" caption="System">
         <item id="cinit" label="Start TCP Status Request">
@@ -89,6 +89,12 @@
             <frmcmd name="ajstop"/>
             <frmcmd name="jakstat"/>
           </item>
+          <item id="astop" label="ALL">
+            <frmcmd name="rstop"/>
+            <frmcmd name="ajstop"/>
+            <frmcmd name="inrang"/>
+            <frmcmd name="jakstat"/>
+          </item>
         </unit>
       </group>
       <group id="gact" caption="Action">
@@ -119,12 +125,18 @@
         <unit id="ujak" title="cj[up|dw]" label="All EJB [%s]">
           <item id="cjup" label="Up">
             <frmcmd name="ajup"/>
+            <frmcmd name="getstat"/>
             <frmcmd name="jakstat"/>
+            <frmcmd name="jaklen"/>
+            <frmcmd name="zlen"/>
             <frmcmd name="getpid"/>
           </item>
           <item id="cjdw" label="Down">
             <frmcmd name="ajdw"/>
+            <frmcmd name="getstat"/>
             <frmcmd name="jakstat"/>
+            <frmcmd name="jaklen"/>
+            <frmcmd name="zlen"/>
             <frmcmd name="getpid"/>
           </item>
         </unit>
@@ -133,6 +145,8 @@
             <frmcmd name="jup">
               <argv>1</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -140,6 +154,8 @@
             <frmcmd name="jup">
               <argv>2</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -147,6 +163,8 @@
             <frmcmd name="jup">
               <argv>3</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -154,6 +172,8 @@
             <frmcmd name="jup">
               <argv>4</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -161,6 +181,8 @@
             <frmcmd name="jup">
               <argv>5</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -168,6 +190,8 @@
             <frmcmd name="jup">
               <argv>6</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -175,6 +199,8 @@
             <frmcmd name="jup">
               <argv>7</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -182,6 +208,8 @@
             <frmcmd name="jup">
               <argv>8</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -189,6 +217,8 @@
             <frmcmd name="jup">
               <argv>9</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -196,6 +226,8 @@
             <frmcmd name="jup">
               <argv>10</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -203,6 +235,8 @@
             <frmcmd name="jup">
               <argv>11</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -210,6 +244,8 @@
             <frmcmd name="jup">
               <argv>12</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -217,6 +253,8 @@
             <frmcmd name="jup">
               <argv>13</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -224,6 +262,8 @@
             <frmcmd name="jup">
               <argv>14</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -231,6 +271,8 @@
             <frmcmd name="jup">
               <argv>15</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -238,6 +280,8 @@
             <frmcmd name="jup">
               <argv>16</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -247,6 +291,8 @@
             <frmcmd name="jdw">
               <argv>1</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -254,6 +300,8 @@
             <frmcmd name="jdw">
               <argv>2</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -261,6 +309,8 @@
             <frmcmd name="jdw">
               <argv>3</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -268,6 +318,8 @@
             <frmcmd name="jdw">
               <argv>4</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -275,6 +327,8 @@
             <frmcmd name="jdw">
               <argv>5</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -282,6 +336,8 @@
             <frmcmd name="jdw">
               <argv>6</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -289,6 +345,8 @@
             <frmcmd name="jdw">
               <argv>7</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -296,6 +354,8 @@
             <frmcmd name="jdw">
               <argv>8</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -303,6 +363,8 @@
             <frmcmd name="jdw">
               <argv>9</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -310,6 +372,8 @@
             <frmcmd name="jdw">
               <argv>10</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -317,6 +381,8 @@
             <frmcmd name="jdw">
               <argv>11</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -324,6 +390,8 @@
             <frmcmd name="jdw">
               <argv>12</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -331,6 +399,8 @@
             <frmcmd name="jdw">
               <argv>13</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -338,6 +408,8 @@
             <frmcmd name="jdw">
               <argv>14</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -345,6 +417,8 @@
             <frmcmd name="jdw">
               <argv>15</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -352,6 +426,8 @@
             <frmcmd name="jdw">
               <argv>16</argv>
             </frmcmd>
+            <frmcmd name="getstat"/>
+            <frmcmd name="jaklen"/>
             <frmcmd name="jakstat"/>
             <frmcmd name="getpid"/>
           </item>
@@ -553,6 +629,14 @@
         <block name="cunhk"/>
         <int name="rstop"/>
         <exec name="updinr"/>
+      </event>
+      <event label="Moving Any" id="any">
+        <onchange var="jkm" inv="true"/>
+        <onchange var="iang" inv="true"/>
+        <range var="pid">1:</range>
+        <block_grp ref="gact"/>
+        <int name="astop"/>
+        <exec name="upd"/>
       </event>
       <event label="End motion" id="endm">
         <onchange var="pid"/>

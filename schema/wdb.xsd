@@ -72,6 +72,7 @@
     <xsd:complexType>
       <xsd:attribute name="var" type="xsd:token" use="required"/>
       <xsd:attribute name="tolerance" type="xsd:float"/>
+      <xsd:attribute name="inv" type="xsd:boolean"/>
     </xsd:complexType>
   </xsd:element>
   <xsd:element name="range">

@@ -97,9 +97,9 @@ module CIAX
 
         # Initiate procs
         def ___init_proc_set
-          _set_def_proc('set') do |ent, src|
+          _set_def_proc('set') do |ent|
             @stat.repl(ent.par[0], ent.par[1])
-            @stat.cmt if src != 'event'
+            @stat.cmt if ent[:src] != 'event'
             verbose { "SET:#{ent.par[0]}=#{ent.par[1]}" }
           end
         end

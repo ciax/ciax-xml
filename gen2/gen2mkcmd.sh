@@ -20,14 +20,13 @@ usage(){
     exit 1
 }
 mkcmd(){
-    args="'EXEC TSC NATIVE CMD=\"$*\"'"
-    echo "$args $TIMEOUT"
+    # Background run is judged with last number letter (0->BG, others->FG)
+    echo "'EXEC TSC NATIVE CMD=\"$*\"' ${TIMEOUT:-9}"
 }
 selcmd(){
     id="$1"
     shift
     num=$(printf %02d ${1:-1})
-    TIMEOUT=10;
     case "$id" in
         login) mkcmd 1A1901ciax%%%%%%%%%%%%%%%% CIAX%%%%%%%%%%%% dummyunit dummyMenu dummyMessage;;
         logout) mkcmd 1A1902;;
@@ -53,5 +52,6 @@ selcmd(){
         *) usage;;
     esac
 }
+# test module
 me=${BASH_SOURCE[0]}
 [ $me =  $0 ] && selcmd $*

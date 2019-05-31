@@ -8,15 +8,19 @@ case `uname` in
         OSS_CMDPATH=/app/LOAD/DEBUG
         OSS_OBS_HOST=cxws
         PATH=$OSS_SYSTEM:$OSS_CMDPATH:$PATH
+        cmd="OSST_ciaxTSCcommand"
+        prt="OSSC_screenPrint"
         ;;
     Linux)
-        source ~/gen2/conf/bashrc
-        [ -d "$PYTHONPATH" ] || { echo "NO OSS files"; exit; }
+        if [ -d ~/gen2 ] ; then
+            source ~/gen2/conf/bashrc
+            [ -d "$PYTHONPATH" ] || { echo "NO OSS files"; exit; }
+            g2prt=$PYTHONPATH/SOSS/status/screenPrint.py
+            g2cmd=$PYTHONPATH/Gen2/client/g2cmd.py
+        fi
         ;;
     *)
         echo "Not for this system"
         exit
         ;;
 esac
-cmd="OSST_ciaxTSCcommand"
-prt="OSSC_screenPrint"

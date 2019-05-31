@@ -31,7 +31,8 @@ module CIAX
       # sv_stat: Server Status
       def initialize(sv_stat, cobj = nil, &conv_proc)
         super()
-        @sv_stat = type?(sv_stat, Prompt).init_array(:queue)
+        @sv_stat = type?(sv_stat, Prompt)
+        @sv_stat.init_array(:queue).init_flg(action: '!')
         # Frm Command Object
         @cobj = cobj
         # Update App Status
@@ -85,6 +86,7 @@ module CIAX
         batch.each do |args|
           fcmd = { args: args, cid: cid }
           fcmd[:type] = @cobj.set_cmd(args.dup).get(:type) if @cobj
+          @sv_stat.up(:action) if fcmd[:type] == 'action'
           @outbuf[pri] << fcmd
         end
         verbose { "OutBuf:Recieved:timing #{cid}(#{@id})\n#{@outbuf}" }
@@ -127,6 +129,7 @@ module CIAX
       def ___sv_up
         verbose { "Busy Up(#{@id}):timing" }
         @sv_stat.up(:busy)
+        @sv_stat.dw(:action)
       end
 
       def ___sv_dw

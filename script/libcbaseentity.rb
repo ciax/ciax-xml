@@ -19,10 +19,11 @@ module CIAX
 
       # returns result of def_proc block (String)
       def exe_cmd(src, pri = 1)
+        update(src: src, pri: pri)
         verbose { _exe_text(@id, src, pri) }
         ___input_log(src, pri)
         @msg = self[:def_msg] || ''
-        self[:def_proc].call(self, src, pri)
+        self[:def_proc].call(self)
         self
       end
 

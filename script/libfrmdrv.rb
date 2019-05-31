@@ -30,13 +30,13 @@ module CIAX
         end
 
         def ___init_processor_ext
-          @cobj.rem.ext.def_proc do |ent, src|
+          @cobj.rem.ext.def_proc do |ent|
             # This corresponds the propagation
             next unless @frame.conv(ent)
             @stat.conv(ent)
             # Frm: Update after each single command finish
             #   flush => clear [:comerr]
-            @stat.flush if src != 'buffer'
+            @stat.flush if ent[:src] != 'buffer'
           end
         end
 

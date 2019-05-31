@@ -23,7 +23,7 @@
           </event>
         </watch>
       </site>
-      <site id="tmi" dev_id="tmi" app_id="cmi" port="25690" label="Current Mask Index"/>
+      <site id="tmi" app_id="cmi" port="25690" label="Current Mask Index"/>
     </group>
     <group id="sim"  host="pcyh" label="Dummy Compressor simulator">
       <site id="tbb" dev_id="tbb" app_id="bbe" port="25696" label="TEST BBE simple">

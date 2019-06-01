@@ -121,6 +121,12 @@ module CIAX
         atrb[key] = val if key
       end
     end
+
+    # Reduce Array if ary not empty
+    def reduce(ary = [])
+      return self if ary.empty?
+      replace(ary & self)
+    end
   end
 
   if __FILE__ == $PROGRAM_NAME

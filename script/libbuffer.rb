@@ -32,7 +32,6 @@ module CIAX
       def initialize(sv_stat, cobj = nil, &conv_proc)
         super()
         @sv_stat = type?(sv_stat, Prompt)
-        @sv_stat.init_array(:queue).init_flg(action: '!')
         # Frm Command Object
         @cobj = cobj
         # Update App Status

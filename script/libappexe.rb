@@ -36,9 +36,14 @@ module CIAX
 
       def ___init_stat
         @stat = @cfg[:stat] = Status.new(@dbi, ___init_field)
-        @sv_stat = Prompt.new(@id, @sub_exe)
         @stat_pool = @stat.stat_pool
-        @stat_pool['sv_stat'] = @sv_stat.init_flg(busy: '*')
+        @stat_pool['sv_stat'] = ___init_sv_stat
+      end
+
+      def ___init_sv_stat
+        @sv_stat = Prompt.new(@id, @sub_exe)
+        @sv_stat.init_flg(busy: '*').init_flg(action: '!')
+        @sv_stat.init_array(:queue)
       end
 
       # Sub methods for Initialize

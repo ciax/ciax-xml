@@ -15,7 +15,7 @@ module CIAX
         @adb = App::Db.new
       end
 
-      def valid_ins
+      def host_idb
         list.each_with_object(Hashx.new) do |id, hash|
           get(id)
           atrb = get(id) || @docs.get(id)[:attr]
@@ -29,8 +29,8 @@ module CIAX
         end
       end
 
-      def valid_devs
-        vi = valid_ins
+      def host_ddb
+        vi = host_idb
         list.each_with_object(Hashx.new) do |s, hash|
           did = get(s)[:dev_id]
           hash[did] = vi[s] if did && vi.key?(s)
@@ -122,8 +122,8 @@ module CIAX
       require 'libconf'
       Opt::Conf.new('[id] (key) ..', options: 'r') do |cfg|
         db = Db.new(cfg.proj)
-        puts "Ins list = #{db.valid_ins.inspect}"
-        puts "Dev list = #{db.valid_devs.inspect}"
+        puts "Ins list = #{db.host_idb.inspect}"
+        puts "Dev list = #{db.host_ddb.inspect}"
         dbi = db.get(cfg.args.shift)
         puts cfg.opt[:r] ? dbi.to_v : dbi.path(cfg.args)
       end

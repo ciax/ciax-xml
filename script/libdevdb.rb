@@ -38,7 +38,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
-        dlist = Ins::Db.new.valid_devs.trues
+        dlist = Ins::Db.new.host_ddb.keys
         db = Db.new.reduce(dlist)
         puts "Dev list = #{db.list.inspect}"
         dbi = db.get(args.shift)

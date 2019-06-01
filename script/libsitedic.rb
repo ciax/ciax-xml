@@ -33,7 +33,7 @@ module CIAX
         @db.reduce(host_db.keys) if host_db
         # Making run_list
         @run_list = @db.list.dup.reduce(@cfg[:sites])
-        @run_list.select! { |s| /localhost|#{HOST}/ =~ host_db[s] }
+        @run_list.select! { |s| /localhost|#{HOST}/ =~ host_db[s] } if host_db
         verbose { cfmt('Run_list = %p', @run_list) }
         self
       end

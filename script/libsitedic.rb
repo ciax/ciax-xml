@@ -28,12 +28,13 @@ module CIAX
       private
 
       # Reduce valid_keys with Array in block
-      def _store_db(db)
+      def _store_db(db, host_db = nil)
         @db = @cfg[:db] = type?(db, Dbx::Index)
-        @db.reduce(yield @db) if defined? yield
+        @db.reduce(host_db.keys) if host_db
         # Making run_list
-        sites = @cfg[:sites] || []
-        @run_list = sites.empty? ? @db.list : (sites & @db.list)
+        @run_list = @db.list.dup.reduce(@cfg[:sites])
+        @run_list.select! { |s| /localhost|#{HOST}/ =~ host_db[s] }
+        verbose { cfmt('Run_list = %p', @run_list) }
         self
       end
 

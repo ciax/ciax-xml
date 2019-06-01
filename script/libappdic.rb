@@ -10,9 +10,8 @@ module CIAX
       # spcfg must have [:db]
       def initialize(spcfg, atrb = Hashx.new)
         super
-        _store_db(type?(@cfg[:db], Ins::Db)) do |db|
-          db.valid_ins.trues
-        end
+        idb = type?(@cfg[:db], Ins::Db)
+        _store_db(idb, idb.host_idb)
         _init_subdic(Frm)
         @cfg[:sdb] = Sym::Db.new
       end

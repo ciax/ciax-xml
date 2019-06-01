@@ -124,7 +124,7 @@ module CIAX
 
     # Reduce Array if ary not empty
     def reduce(ary = [])
-      return self if ary.empty?
+      return self if !ary || ary.empty?
       replace(ary & self)
     end
   end

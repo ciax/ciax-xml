@@ -25,7 +25,7 @@ module CIAX
       else
         deep_update(jverify(j2h(jstr)))
       end
-      self
+      cmt
     end
 
     def latest

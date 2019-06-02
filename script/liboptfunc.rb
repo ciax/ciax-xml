@@ -4,6 +4,21 @@ module CIAX
   module Opt
     # Option Functions
     module Func
+      # Mode (Device) [prompt]
+      # none : test all layers        [test]
+      # -e   : drive all layers       [drv]
+      # -c   : client all layers      [cl]
+      # -l[n]: client to [n]th lower layers [drv:cl]
+      # -s   : server
+
+      # Mode (Macro)
+      # none : test
+      # -d   : dryrun (get status only)
+      # -e   : with device driver
+      # -c   : client to macro server
+      # -l   : client to device server
+      # -s   : server
+
       # Check first
       def cl?
         __any_key?(:h, :c)
@@ -46,12 +61,11 @@ module CIAX
 
       # Others
       def sub_opt
-        opt = dup
-        if opt.key?(:l)
-          %i(s e l).each { |k| opt.delete(k) }
-          opt[:c] = true
-        end
-        opt
+        return dup unless key?(:l)
+        opt = dup.update(l: self[:l].to_i - 1)
+        return opt if opt[:l] > 0
+        %i(s e l).each { |k| opt.delete(k) }
+        opt.update(c: true)
       end
 
       def host
@@ -92,7 +106,7 @@ module CIAX
       ## Common in Macro and Device
       # Client option
       def ___optdb_client
-        db = { c: 'default', l: 'lower-layer', h: '[host]' }
+        db = { c: 'default', l: '[n] lower', h: '[host]' }
         __add_optdb(db, 'client to %s')
       end
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require 'libwatact'
+require 'libthreadx'
 module CIAX
   # Watch Layer
   module Wat

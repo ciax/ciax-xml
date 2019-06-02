@@ -50,21 +50,6 @@ module CIAX
 
       private
 
-      # Mode (Device) [prompt]
-      # none : test all layers        [test]
-      # -e   : drive all layers       [drv]
-      # -c   : client all layers      [cl]
-      # -l   : client to lower layers [drv:cl]
-      # -s   : server
-
-      # Mode (Macro)
-      # none : test
-      # -d   : dryrun (get status only)
-      # -e   : with device driver
-      # -c   : client to macro server
-      # -l   : client to device server
-      # -s   : server
-
       def _set_opt(str)
         ops = ___add_colon(str)
         ___make_usage(ops)

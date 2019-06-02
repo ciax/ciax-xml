@@ -31,12 +31,14 @@ module CIAX
       self
     end
 
-    def up(key)
-      __turn_flag(key, 'up', 'true')
+    def up(*keya)
+      keya.each { |key| __turn_flag(key, 'up', 'true') }
+      self
     end
 
-    def dw(key)
-      __turn_flag(key, 'down', 'false')
+    def dw(*keya)
+      keya.each { |key| __turn_flag(key, 'down', 'false') }
+      self
     end
 
     def set_flg(key, flag)

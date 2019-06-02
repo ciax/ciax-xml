@@ -63,7 +63,7 @@ module CIAX
         def ___event_flag
           if @sv_stat.up?(:event)
             @event.mark_end
-            @sv_stat.dw(:event) unless @event.active?
+            @sv_stat.dw(:event, :action) unless @event.active?
           elsif @event.active?
             @event.mark_start
             @sv_stat.up(:event)

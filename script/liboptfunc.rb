@@ -6,11 +6,11 @@ module CIAX
     module Func
       # Check first
       def cl?
-        %i(h c).any? { |k| key?(k) }
+        __any_key?(:h, :c)
       end
 
       def drv?
-        %i(e l d).any? { |k| key?(k) }
+        __any_key?(:e, :l, :d)
       end
 
       def test?

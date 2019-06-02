@@ -105,6 +105,10 @@ module CIAX
       def __make_exopt(ary)
         ary.find { |c| self[c] } || ary.find { |c| @defopt.include?(c.to_s) }
       end
+
+      def __any_key?(*ary)
+        ary.any? { |k| key?(k) }
+      end
     end
   end
 end

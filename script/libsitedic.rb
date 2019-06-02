@@ -8,7 +8,6 @@ module CIAX
       attr_reader :db, :sub_dic
       attr_accessor :super_dic
       def initialize(spcfg, atrb = Hashx.new)
-        atrb[:opt] = spcfg[:opt].sub_opt
         super
         @cfg[:column] = 2
         @run_list = []

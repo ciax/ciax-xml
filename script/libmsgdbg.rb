@@ -24,6 +24,10 @@ module CIAX
       raise(ServerError, res, src)
     end
 
+    def last_caller
+      "'" + caller(2..2).first.split('`').last
+    end
+
     def data_type?(data, type)
       return data if data['type'] == type
       data_err("Data type error <#{name.class}> for (#{mod})")

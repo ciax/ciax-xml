@@ -44,6 +44,11 @@ module CIAX
       self
     end
 
+    def watch(val)
+      show __make_msg(cfmt('%p on %s', val, last_caller), 3)
+      val
+    end
+
     # For debugging
     def errmsg
       show __make_msg("ERROR:#{$ERROR_INFO} at\n", 1) +

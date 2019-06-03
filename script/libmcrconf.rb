@@ -45,7 +45,7 @@ module CIAX
       end
 
       def ___init_dev_dic(cfg)
-        obj = cfg.opt.top_layer::ExeDic.new(cfg)
+        obj = cfg.opt.top_layer::ExeDic.new(cfg, opt: cfg[:opt].sub_opt)
         self[:sub_dic] = obj
         obj = obj.sub_dic until obj.is_a? Wat::ExeDic
         obj

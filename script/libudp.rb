@@ -13,20 +13,20 @@ module CIAX
         @host = host || 'localhost'
         @port = port
         @udp = UDPSocket.open
-        verbose { "Initiate UDP client (#{@id}) [#{@host}:#{@port}]" }
+        verbose { cfmt('Initiate UDP client (%s) [%s:%s]', @id, @host, @port) }
       end
 
       def send(str)
         # Address family not supported by protocol -> see above
         @udp.send(str, 0, @host, @port.to_i)
-        verbose { "UDP Send #{str} [#{@host}:#{@port}]" }
+        verbose { cfmt('UDP Data Send [%s:%s]: %s', @host, @port, str) }
         self
       end
 
       def recv
         return unless IO.select([@udp], nil, nil, 1)
         res = @udp.recv(1024)
-        verbose { "UDP Recv #{res}" }
+        verbose { cfmt('UDP Data Recv: %s', res) }
         res
       end
     end
@@ -36,7 +36,7 @@ module CIAX
       def initialize(layer, id, port, msg = '')
         @layer = layer
         @id = id
-        verbose { "Initiate UDP server #{msg}(#{@id}) port:[#{port}]" }
+        verbose { cfmt('Initiate UDP server %s(%s) port:[%s]', msg, @id, port) }
         @udp = UDPSocket.open
         @udp.bind('0.0.0.0', port.to_i)
       end
@@ -55,13 +55,13 @@ module CIAX
       def ___recv
         line, @addr = @udp.recvfrom(4096)
         line.chomp!
-        verbose { "UDP Recv:#{line} is #{line.class}" }
+        verbose { cfmt('UDP Recv:%s is %s', line, line.class) }
         [line, Addrinfo.ip(@addr[2]).getnameinfo.first]
       end
 
       def ___send(send_str)
         @udp.send(send_str, 0, @addr[2], @addr[1])
-        verbose { "UDP Send:#{send_str}" }
+        verbose { cfmt('UDP Send:%s', send_str) }
       end
     end
   end

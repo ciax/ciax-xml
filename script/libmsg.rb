@@ -70,12 +70,9 @@ module CIAX
     private
 
     def __prt_lines(data)
-      ind = 0
-      base = Msg.ver_indent
-      data.each_line do |line|
-        show Msg.indent(base + ind) + line
-        ind = 2
-      end
+      lines = data.split("\n")
+      show Msg.indent(base = Msg.ver_indent) + lines.shift
+      lines.each { |line| show Msg.indent(base + 2) + line }
     end
 
     def __make_msg(title, c = nil)

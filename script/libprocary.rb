@@ -18,6 +18,7 @@ module CIAX
     def initialize(obj, name, title = 'ProcArray', psize = 1)
       super()
       @obj = type?(obj, Upd)
+      @layer = @obj.layer_name
       @name = __mk_id(@obj, name)
       @title = title
       @psize = psize.to_i
@@ -25,18 +26,16 @@ module CIAX
     end
 
     def call(pri = nil)
-      verbose { __ver_text(@title, pri) }
-      (pri ? [@list[pri.to_i]] : @list).each do |a|
-        a.each do |k, p|
-          verbose { __ver_text("Calling #{k}", pri) }
-          p.call(@obj)
+      enclose(__ver_text(@title, pri)) do
+        (pri ? [@list[pri.to_i]] : @list).each do |a|
+          a.each_value { |p| p.call(@obj) }
         end
       end
       self
     end
 
     def to_s
-      @list.map { |l| l.keys.inspect }.join("\n")
+      @list.map { |l| l.keys.inspect unless l.empty? }.compact.join("\n")
     end
 
     def clear

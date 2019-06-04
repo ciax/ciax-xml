@@ -15,11 +15,12 @@ module CIAX
   #  0: loading/status query/propagation to lower layer
   class ProcArray
     include Msg
-    def initialize(obj, name, title = 'ProcArray')
+    def initialize(obj, name, title = 'ProcArray', level = 0)
       super()
       @obj = type?(obj, Upd)
       @name = __mk_id(@obj, name)
       @title = title
+      @level = level.to_i
       clear
     end
 
@@ -39,14 +40,14 @@ module CIAX
     end
 
     def clear
-      @list = Array.new(5) { {} }
+      @list = Array.new(@level) { {} }
       self
     end
 
     # Append proc in specified priority dict
     def append(obj, id, pri = 0, &prc)
       return self unless (id = __chk_id(obj, id))
-      @list[pri][id] = prc
+      @list[[pri.to_i, @list.size - 1].max][id] = prc
       verbose { __ver_text('Appended', pri) }
       self
     end

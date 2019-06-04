@@ -13,7 +13,7 @@ module CIAX
       # Proc Array for Pre-Process of Update Propagation to the upper Layers
       @upd_procs = ProcArray.new(self, :upd, 'Updating')
       # Proc Array for Commit Propagation to the upper Layers
-      @cmt_procs = ProcArray.new(self, :cmt, 'Committing')
+      @cmt_procs = ProcArray.new(self, :cmt, 'Committing', 5)
     end
 
     # Time setting, Loading file at client

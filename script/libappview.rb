@@ -52,13 +52,11 @@ module CIAX
       def ___init_upd_procs
         @elps = Elapsed.new(@stat)
         @upd_procs.append(self, :view) do
-          @stat.upd
           self['gtime'] = { caption: '', lines: [hash = {}] }
           hash[:time] = { label: 'TIMESTAMP', msg: date(@stat[:time]) }
           hash[:elapsed] = { label: 'ELAPSED', msg: @elps }
           ___view_groups
         end
-        upd
       end
 
       def ___view_groups

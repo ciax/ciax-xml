@@ -15,7 +15,7 @@ module CIAX
         def initialize(event, sv_stat, eobj)
           @event = type?(event, Event)
           @sv_stat = type?(sv_stat, Prompt)
-          @eobj = type?(eobj, App::Exe)
+          @eobj = type?(eobj, Exe)
         end
 
         def action

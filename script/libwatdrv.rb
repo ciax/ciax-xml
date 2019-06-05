@@ -25,7 +25,7 @@ module CIAX
         private
 
         def ___init_cmt_procs
-          act = Action.new(@stat, @sv_stat, @sub_exe)
+          act = Action.new(@stat, @sv_stat, self)
           @stat.cmt_procs.append(self, :action, 2) { act.action }
         end
 

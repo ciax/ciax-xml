@@ -14,7 +14,6 @@ module CIAX
       verbose { "Initiate Http (#{@host})" }
       @id || Msg.cfg_err('ID')
       @upd_procs.append(self, :http) { load }
-      upd
     end
 
     def load(tag = nil)
@@ -23,17 +22,16 @@ module CIAX
       if jstr.empty?
         warning(' -- json url file (%s) is empty at loading', url)
       else
+        lt = time
         deep_update(jverify(j2h(jstr)))
+        cmt if time > lt
       end
-      cmt
+      self
     end
 
     def latest
       # It works because cmt_procs doesn't have conversion.
-      lt = time
       load
-      cmt if time > lt
-      self
     end
 
     private

@@ -32,8 +32,8 @@ module CIAX
     #  - Save File
     #  - Logging
     #  - Exec Upper data cmt
-    def cmt(pri = nil)
-      @cmt_procs.call(pri)
+    def cmt
+      @cmt_procs.call
       self
     end
 

@@ -25,9 +25,9 @@ module CIAX
       clear
     end
 
-    def call(pri = nil)
-      enclose(__ver_text(@title, pri)) do
-        (pri ? [@list[pri.to_i]] : @list).each do |a|
+    def call
+      enclose(__ver_text(@title)) do
+        @list.each do |a|
           a.each_value { |p| p.call(@obj) }
         end
       end
@@ -35,7 +35,7 @@ module CIAX
     end
 
     def to_s
-      @list.map { |l| l.keys.inspect unless l.empty? }.compact.join("\n")
+      @list.map { |l| l.keys.inspect }.join("\n")
     end
 
     def clear
@@ -46,7 +46,7 @@ module CIAX
     # Append proc in specified priority dict
     def append(obj, id, pri = 0, &prc)
       return self unless (id = __chk_id(obj, id))
-      pri = [pri.to_i, @list.size - 1].max
+      pri = [pri.to_i, @list.size - 1].min
       @list[pri][id] = prc
       verbose { __ver_text('Appended', pri) }
       self
@@ -54,7 +54,7 @@ module CIAX
 
     private
 
-    def __ver_text(title, pri)
+    def __ver_text(title, pri = nil)
       pri = "P#{pri} " if pri
       cfmt("%s in %s #{pri}(%X)\n", title, @name, object_id) + to_s
     end

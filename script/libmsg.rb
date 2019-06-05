@@ -77,8 +77,7 @@ module CIAX
 
     def __make_msg(title, c = nil)
       return unless title
-      ts = __make_head + ':'
-      ts << (c ? Msg.colorize(title.to_s, c) : title.to_s)
+      __make_head(c ? Msg.colorize(title.to_s, c) : title.to_s)
     end
 
     def ___head_ary
@@ -92,16 +91,16 @@ module CIAX
       cary << [cls, Msg.cls_color(cls)]
     end
 
-    def __make_head
-      Msg.indent(Msg.ver_indent) + ___head_ary.map do |str, color|
+    def __make_head(tail)
+      Msg.indent(Msg.ver_indent) + (___head_ary.map do |str, color|
         Msg.colorize(str.to_s, color)
-      end.join(':')
+      end << tail).join(':')
     end
 
     # Override libmsgerr error output method
     # Adding header when error output is redirect to file
     def _err_text(ary)
-      ary[0] = __make_head + ary[0] unless $stderr.tty?
+      ary[0] = __make_head(ary[0]) unless $stderr.tty?
       ary.join("\n  ")
     end
 

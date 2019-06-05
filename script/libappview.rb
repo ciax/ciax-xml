@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'libappstat'
 
-# View is separated from Status. (Propagate Status -> View (Prt)
+# View is separated from Status.
 # View is not used for computing, just for apperance for user.
 # Some information is added from Dbx::Item
 # So the convert process (upd) will be included in to_v
@@ -20,10 +20,11 @@ module CIAX
         @index = adbs[:index].dup
         @index.update(adbs[:alias]) if adbs.key?(:alias)
         # Just additional data should be provided
-        ___init_cmt_procs
+        ___init_upd_procs
       end
 
       def to_csv
+        upd
         @group.values.each_with_object('') do |gdb, str|
           cap = gdb[:caption] || next
           gdb[:members].each do |id|
@@ -34,6 +35,7 @@ module CIAX
       end
 
       def to_v
+        upd
         values.flat_map do |v|
           next unless v.is_a? Hash
           lns = ___view_lines(v[:lines])
@@ -47,16 +49,16 @@ module CIAX
 
       private
 
-      def ___init_cmt_procs
+      def ___init_upd_procs
         @elps = Elapsed.new(@stat)
-        @cmt_procs.append(self, :view, 1) do
+        @upd_procs.append(self, :view) do
+          @stat.upd
           self['gtime'] = { caption: '', lines: [hash = {}] }
           hash[:time] = { label: 'TIMESTAMP', msg: date(@stat[:time]) }
           hash[:elapsed] = { label: 'ELAPSED', msg: @elps }
           ___view_groups
         end
-        propagation(@stat)
-        cmt
+        upd
       end
 
       def ___view_groups
@@ -105,7 +107,6 @@ module CIAX
       Opt::Get.new('[site] | < status_file', options: 'rjv') do |opt, args|
         stat = Status.new(args).ext_local.ext_file
         view = View.new(stat)
-        stat.cmt
         puts opt[:c] ? view.to_csv : view.to_s
       end
     end

@@ -30,7 +30,8 @@ module CIAX
       end
 
       def ___init_upd_procs
-        @upd_procs.append(self, :view) do
+        @upd_procs.append(self, :event) { @event.upd }
+        @upd_procs.append(self, :to_s) do
           %i(exec block int act_time upd_next).each do |id|
             self[id] = @event.get(id)
           end

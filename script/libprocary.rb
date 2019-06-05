@@ -35,7 +35,7 @@ module CIAX
     end
 
     def to_s
-      @list.map { |l| l.keys }.flatten.inspect
+      @list.map(&:keys).flatten.inspect
     end
 
     def clear

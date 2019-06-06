@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libhashx'
+require 'liboptconf'
 require 'librerange'
 module CIAX
   # Command Module

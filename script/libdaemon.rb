@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libconf'
+require 'liboptconf'
 require 'libthreadx'
 require 'libudp'
 module CIAX

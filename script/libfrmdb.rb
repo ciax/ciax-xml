@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 require 'libdbtree'
-
 module CIAX
   # Frame Layer
   module Frm

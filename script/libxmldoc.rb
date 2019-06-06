@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 require 'libdispgrp'
-require 'libhashx'
 require 'libxmlox'
 
 # Structure for Command: [top: listed in disp], <doclist: separated top-doc>

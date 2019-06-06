@@ -119,7 +119,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'libconf'
+      require 'liboptconf'
       Opt::Conf.new('[id] (key) ..', options: 'r') do |cfg|
         db = Db.new(cfg.proj)
         puts "Ins list = #{db.host_idb.inspect}"

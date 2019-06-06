@@ -2,7 +2,7 @@
 require 'libexe'
 require 'libmcrcmd'
 require 'librecarclist'
-require 'libwatdic' # deprecated
+require 'libwatdic'
 
 module CIAX
   # Macro Layer

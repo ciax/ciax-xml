@@ -1,13 +1,26 @@
 #!/usr/bin/env ruby
 require 'libexedic'
+require 'libudp'
 
 module CIAX
   # element object can be (Frm,App,Wat,Hex)
   class Layer < CIAX::ExeDic
     def initialize(top_cfg)
       super(top_cfg)
+      ___get_proj
       obj = yield(@cfg)
-      # Initialize all sub layers
+      ___init_layers(obj)
+    end
+
+    def ___get_proj
+      return unless (host = @cfg.opt[:h])
+      udp = Udp::Client.new('top', 'client', host, 54_321)
+      line = udp.send('.').recv.lines.grep(/^\[run\]/).first
+      @cfg[:proj] = line.chomp.split(':').last
+    end
+
+    # Initialize all sub layers
+    def ___init_layers(obj)
       loop do
         ns = m2id(obj.class, -2)
         put(ns, obj)

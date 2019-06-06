@@ -14,8 +14,7 @@ module CIAX
         _store_db(idb, idb.host_idb)
         _init_subdic(Wat)
         hdb = @cfg[:hdb] = Db.new
-        alist = @db.valid_apps(hdb.disp_dic.valid_keys)
-        @run_list.reduce(alist)
+        @run_list.reduce(@db.valid_apps(hdb.list))
       end
     end
 

@@ -40,6 +40,7 @@ module CIAX
       def ___add(site) # returns Exe
         # layer_module can be Frm,App,Wat,Hex
         atrb = { dbi: @db.get(site), sub_dic: @sub_dic }
+        atrb[:opt] = @cfg.opt.dev_opt(@run_list.include?(site))
         eobj = layer_module::Exe.new(@cfg, atrb)
         put(site, eobj)
         eobj

@@ -68,6 +68,14 @@ module CIAX
         opt.update(c: true)
       end
 
+      # tf = site is member of run_list?
+      def dev_opt(tf)
+        return dup unless key?(:p)
+        hash = dup.update(tf ? :e : :c => true)
+        hash.delete(:p)
+        hash
+      end
+
       def host
         self[:h]
       end
@@ -106,7 +114,7 @@ module CIAX
       ## Common in Macro and Device
       # Client option
       def ___optdb_client
-        db = { c: 'default', l: '[n] lower', h: '[host]' }
+        db = { c: 'default', l: '[n] lower', h: '[host]', p: 'proper' }
         __add_optdb(db, 'client to %s')
       end
 

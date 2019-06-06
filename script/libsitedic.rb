@@ -30,7 +30,7 @@ module CIAX
       def _store_db(db, host_db = nil)
         @db = @cfg[:db] = type?(db, Dbx::Index)
         @db.reduce(host_db.keys) if host_db
-        # Making run_list
+        # Making run_list (Arrayx)
         @run_list = @db.list.dup.reduce(@cfg[:sites])
         @run_list.select! { |s| /localhost|#{HOST}/ =~ host_db[s] } if host_db
         verbose { cfmt('Run_list = %p', @run_list) }

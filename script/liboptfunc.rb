@@ -92,7 +92,7 @@ module CIAX
       private
 
       # Remained Options
-      #  g,i,k,m,o,p,q,t,u,w,y,z
+      # g,i,k,m,o,p,q,t,u,y,z
       def ___mk_optdb
         ___optdb_client
         ___optdb_system

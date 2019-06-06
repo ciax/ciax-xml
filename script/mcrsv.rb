@@ -6,7 +6,7 @@ require 'libdaemon'
 module CIAX
   # Macro module
   module Mcr
-    Opt::Conf.new('[id] ...', options: 'denxb') do |root_cfg|
+    Opt::Conf.new('[id] ...', options: 'denxpb') do |root_cfg|
       Daemon.new(root_cfg) do |cfg|
         ExeDic.new(cfg, Atrb.new(cfg)).run
       end

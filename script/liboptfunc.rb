@@ -25,7 +25,7 @@ module CIAX
       end
 
       def drv?
-        __any_key?(:e, :l, :d)
+        __any_key?(:e, :l, :d, :p)
       end
 
       def test?

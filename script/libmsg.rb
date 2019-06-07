@@ -22,9 +22,10 @@ module CIAX
     # Returns T/F (Displayed or not)
     def verbose
       return unless ENV['VER'] && !@hide_inside
+      return if (ver = ENV['VER'].tr('@', '')).empty?
       str = type?(yield, String)
       msg = __make_msg(str)
-      return unless ___chk_ver(msg) || (@enclosed ||= []).any?
+      return unless ___chk_ver(msg, ver) || (@enclosed ||= []).any?
       __prt_lines(msg)
       true
     end
@@ -106,12 +107,11 @@ module CIAX
 
     # VER= makes setenv "" to VER otherwise nil
     # VER example "str1:str2,str3!str4"
-    def ___chk_ver(msg)
-      ev = ENV['VER']
-      return unless ev && msg
-      return true if /\*/ =~ ev
+    def ___chk_ver(msg, ver)
+      return unless ver && msg
+      return true if /\*/ =~ ver
       title = msg.split("\n").first.upcase
-      ev.upcase.split(',').any? do |s|
+      ver.upcase.split(',').any? do |s|
         ___chk_exp(title, *s.split('!'))
       end
     end

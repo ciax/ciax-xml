@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 require 'libexedic'
-require 'libudp'
 
 module CIAX
   # element object can be (Frm,App,Wat,Hex)

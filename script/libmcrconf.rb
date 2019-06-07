@@ -3,7 +3,6 @@ require 'libmcrdb'
 require 'libprompt'
 require 'libwatdic'
 require 'librecarc'
-require 'libudp'
 
 # CIAX_XML
 module CIAX

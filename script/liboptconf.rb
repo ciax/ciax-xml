@@ -1,12 +1,15 @@
 #!/usr/bin/env ruby
 require 'libconf'
 require 'libopt'
+require 'libudp'
+
 module CIAX
   # Option module
   module Opt
     # Option parser with Config
     class Conf < Get
       def initialize(ustr = '', optargs = {})
+        # opt is self
         super do |opt, args|
           @cfg = Config.new(opt: opt, args: args, proj: ___get_proj)
           yield(@cfg)

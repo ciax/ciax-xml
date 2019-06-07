@@ -54,7 +54,7 @@ module CIAX
           super
           @cfg[:jump_site] = @jumpgrp
           @jumpgrp.ext_grp.merge_forms(@cfg[:db].disp_dic)
-          @current = @run_list.first
+          @current = @run_list.first || @db.list.first
           @sub_dic.ext_shell if @sub_dic
           self
         end

@@ -75,8 +75,8 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      Opt::Conf.new('[proj] [cmd] (par)', options: 'edlnr') do |cfg|
-        ent = Index.new(cfg, Atrb.new(cfg)).add_rem.add_ext.set_cmd(cfg.args)
+      Conf.new('[proj] [cmd] (par)', options: 'edlnr') do |cfg|
+        ent = Index.new(cfg).add_rem.add_ext.set_cmd(cfg.args)
         Exe.new(ent).shell
       end
     end

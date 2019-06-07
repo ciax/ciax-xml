@@ -119,13 +119,12 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      require 'liboptconf'
-      Opt::Conf.new('[id] (key) ..', options: 'r') do |cfg|
-        db = Db.new(cfg.proj)
+      Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
+        db = Db.new(PROJ)
         puts "Ins list = #{db.host_idb.inspect}"
         puts "Dev list = #{db.host_ddb.inspect}"
-        dbi = db.get(cfg.args.shift)
-        puts cfg.opt[:r] ? dbi.to_v : dbi.path(cfg.args)
+        dbi = db.get(args.shift)
+        puts opt[:r] ? dbi.to_v : dbi.path(args)
       end
     end
   end

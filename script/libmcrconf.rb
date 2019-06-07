@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'liboptconf'
 require 'libmcrdb'
 require 'libprompt'
 require 'libwatdic'
@@ -9,17 +10,22 @@ module CIAX
   # Macro Layer
   module Mcr
     # Attribute for Mcr Config (Separated from Driver Config)
-    class Atrb < Hashx
-      def initialize(cfg)
-        super()
-        proj = cfg.opt.proj
-        self[:dbi] = Db.new.get(proj)
-        self[:sv_stat] = ___init_prompt(proj, cfg.opt[:n])
-        self[:dev_dic] = ___init_dev_dic(cfg)
-        self[:rec_arc] = RecArc.new
+    class Conf < Opt::Conf
+      def initialize(ustr = '', optargs = {})
+        super do |cfg|
+          yield(___init_cfg(cfg))
+        end
       end
 
       private
+
+      def ___init_cfg(cfg)
+        cfg[:dbi] = Db.new.get(proj)
+        cfg[:sv_stat] = ___init_prompt(proj, self[:n])
+        cfg[:dev_dic] = cfg[:sub_dic] = ___init_dev_dic(cfg)
+        cfg[:rec_arc] = RecArc.new
+        cfg
+      end
 
       def ___init_prompt(proj, nonstop)
         ss = Prompt.new('mcr', proj)
@@ -35,16 +41,15 @@ module CIAX
       end
 
       def ___init_dev_dic(cfg)
-        obj = cfg.opt.top_layer::ExeDic.new(cfg, opt: cfg[:opt].sub_opt)
-        self[:sub_dic] = obj
+        obj = top_layer::ExeDic.new(cfg, opt: sub_opt)
         obj = obj.sub_dic until obj.is_a? Wat::ExeDic
         obj
       end
     end
 
     if __FILE__ == $PROGRAM_NAME
-      Opt::Conf.new('[id]') do |cfg|
-        puts Atrb.new(cfg).path(cfg.args)
+      Conf.new('[id]') do |cfg|
+        puts cfg.path(cfg.args.shift)
       end
     end
   end

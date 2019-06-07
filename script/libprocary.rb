@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libupd'
+require 'libmsg'
 module CIAX
   # Proc Dic
   # Commit Priority

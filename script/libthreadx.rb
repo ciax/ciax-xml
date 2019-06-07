@@ -19,7 +19,7 @@ module CIAX
   module Threadx
     include Msg
     Threads = ThreadGroup.new
-    Thread.current.update(name: ENV['PROJ'] || 'Main', layer: 'top',
+    Thread.current.update(name: PROJ || 'all', layer: 'top',
                           id: File.basename($PROGRAM_NAME))
 
     module_function

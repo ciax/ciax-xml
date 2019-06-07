@@ -10,6 +10,8 @@ module CIAX
   PROGRAM = $PROGRAM_NAME.split('/').pop
   # Initial View Mode
   VMODE = 'v'.freeze
+  # Project
+  PROJ = ENV['PROJ']
 
   ### Data Error ###
   # Server error (Handled in Server)

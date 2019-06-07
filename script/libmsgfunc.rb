@@ -80,7 +80,7 @@ module CIAX
       br = _git("branch|grep '^\*'").split(' ')[1]
       tagary = [PROGRAM, HOST, today]
       tag = format('%s@%s%d', *tagary)
-      msgary = [ENV['PROJ'], br, RUBY_VERSION]
+      msgary = [PROJ, br, RUBY_VERSION]
       msg = format('PROJECT = %s, BRANCH = %s, RUBY Ver = %s', *msgary)
       _git("tag -afm '#{msg}' '#{tag}'")
       tag

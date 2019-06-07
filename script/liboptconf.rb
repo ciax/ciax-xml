@@ -8,7 +8,7 @@ module CIAX
     class Conf < Get
       def initialize(ustr = '', optargs = {})
         super do |opt, args|
-          @cfg = Config.new(opt: opt, args: args, proj: ENV['PROJ'])
+          @cfg = Config.new(opt: opt, args: args, proj: PROJ)
           yield(@cfg)
         end
       end

@@ -8,9 +8,13 @@ module CIAX
     class Conf < Get
       def initialize(ustr = '', optargs = {})
         super do |opt, args|
-          @cfg = Config.new(opt: opt, args: args, proj: PROJ)
+          @cfg = Config.new(opt: opt, args: args, proj: ___get_proj)
           yield(@cfg)
         end
+      end
+
+      def proj
+        @cfg[:proj] ||= @cfg.args.shift
       end
 
       # Get init_layer (default 'Wat') with require file
@@ -23,6 +27,13 @@ module CIAX
       end
 
       private
+
+      def ___get_proj
+        return PROJ unless (host = self[:h])
+        udp = Udp::Client.new('top', 'client', host, 54_321)
+        line = udp.send('.').recv.lines.grep(/^\[run\]/).first
+        line.chomp.split(':').last
+      end
 
       def ___init_db
         @cfg[:db] = Ins::Db.new(@cfg.proj)

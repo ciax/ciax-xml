@@ -31,6 +31,7 @@ module CIAX
       end
 
       def ___set_client_proc
+        @cobj.rem.add_empty
         @cobj.rem.def_proc do |ent|
           @udp.send(JSON.dump(ent.id.split(':')))
           ___udp_recv

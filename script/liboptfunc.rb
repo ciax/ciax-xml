@@ -62,10 +62,9 @@ module CIAX
       # Others
       def sub_opt
         return dup unless key?(:l)
-        opt = dup.update(l: self[:l].to_i - 1)
-        return opt if opt[:l] > 0
-        %i(s e l).each { |k| opt.delete(k) }
-        opt.update(c: true)
+        l = self[:l].to_i
+        return dup.update(l: l - 1) if l > 1
+        %i(s e l).each_with_object(dup.update(c: true)) { |k, o| o.delete(k) }
       end
 
       # tf = site is member of run_list?

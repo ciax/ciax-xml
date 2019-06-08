@@ -16,7 +16,7 @@ module CIAX
       # -d   : dryrun (get status only)
       # -e   : with device driver
       # -c   : client to macro server
-      # -l   : client to device server
+      # -p   : partialy client to device server
       # -s   : server
 
       # Check first
@@ -100,7 +100,7 @@ module CIAX
       private
 
       # Remained Options
-      # g,i,k,m,o,p,q,t,u,y,z
+      # g,i,k,m,o,q,t,u,y,z
       def ___mk_optdb
         ___optdb_client
         ___optdb_system

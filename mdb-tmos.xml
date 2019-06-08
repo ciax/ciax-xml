@@ -11,6 +11,8 @@
         <mesg label="tfp ok?"/>
         <upd site="tap"/>
         <mesg label="tap ok?"/>
+        <upd site="tbb"/>
+        <upd site="tbw"/>
       </item>
       <item id="upd_all" label="Update All">
         <mcr name="upd"/>

@@ -6,7 +6,7 @@ require 'libmcrdic'
 module CIAX
   # Macro
   module Mcr
-    Conf.new('[proj]', options: 'elchdnrxp') do |root_cfg|
+    Conf.new('[proj]', options: 'echdnrxp') do |root_cfg|
       Layer.new(root_cfg) do |cfg|
         ExeDic.new(cfg)
       end.shell

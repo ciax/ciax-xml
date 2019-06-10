@@ -62,9 +62,10 @@ module CIAX
       # Others
       def sub_opt
         return dup unless key?(:l)
-        l = self[:l].to_i
-        return dup.update(l: l - 1) if l > 1
-        %i(s e l).each_with_object(dup.update(c: true)) { |k, o| o.delete(k) }
+        lo = self[:l].to_i
+        return dup.update(l: lo - 1) if lo > 1
+        hs = self[:l].size > 1 ? self[:l] : 'localhost'
+        %i(s e l).each_with_object(dup.update(h: hs)) { |k, o| o.delete(k) }
       end
 
       # tf = site is member of run_list?
@@ -113,7 +114,7 @@ module CIAX
       ## Common in Macro and Device
       # Client option
       def ___optdb_client
-        db = { c: 'default', l: '[n] lower', h: '[host]', p: 'proper' }
+        db = { c: 'default', l: '[n|host] lower', h: '[host]', p: 'proper' }
         __add_optdb(db, 'client to %s')
       end
 

@@ -3,9 +3,13 @@ PROJ=dmcs
 mos_sim -
 sleep 5
 dvexe -e tmc slot5
-mcrexe -en upd
+if [ "$1" = -l ] ; then
+    dvsv -e
+    opt=-l0
+fi
+mcrexe -en$opt upd
 while
-    mcrexe -en cinit
+    mcrexe -en$opt cinit
     [ $? -gt 8 ]
 do :;done
 cd ~/ciax-xml

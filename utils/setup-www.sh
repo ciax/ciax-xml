@@ -1,8 +1,8 @@
 #!/bin/bash
 # Required packages: php-all-dev yui-compressor
 # Required packages(Debian,Ubuntu,Raspbian):apache2 php-elisp
-# Required packages(Debian,Ubuntu): libapache2-mod-php5 php5-sqlite
-# Required packages(Raspbian):libapache2-mod-php php-sqlite3
+# Required packages(Debian): libapache2-mod-php5 php5-sqlite
+# Required packages(Raspbian,Ubuntu):libapache2-mod-php php-sqlite3
 # Required packages(CentOs):httpd php php-pear php-pdo perl-XML-XPath php5-sqlite
 jslink(){
     for i in *.js; do

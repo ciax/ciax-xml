@@ -23,4 +23,4 @@ case "$dist" in
         ;;
 esac
 # Install gem apps
-sudo gem install ox rubocop
+sudo gem install ox rubocop gserver

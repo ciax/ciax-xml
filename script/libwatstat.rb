@@ -45,6 +45,7 @@ module CIAX
       end
 
       def updating?
+        upd
         return true unless active? && now_msec > self[:time] + @timeout
         com_err("stale data over #{(@timeout / 1000).to_i} sec")
       end

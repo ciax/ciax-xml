@@ -144,8 +144,8 @@ module CIAX
 
     def ___saved_notice(tag, size)
       verbose do
-        fmt = 'File Saved [%s/ver.%s](%d) at %d'
-        cfmt(fmt, __file_name(tag), self[:data_ver], size, self[:time])
+        fmt = 'File Saved [%s/ver.%s](%d) at %s'
+        cfmt(fmt, __file_name(tag), self[:data_ver], size, hour(time))
       end
     end
   end

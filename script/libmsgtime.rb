@@ -44,6 +44,10 @@ module CIAX
       Time.at(msec.to_f / 1000).inspect
     end
 
+    def hour(msec)
+      Time.at(msec.to_f / 1000).strftime('%H:%M:%S')
+    end
+
     def today
       Time.now.strftime('%Y%m%d')
     end

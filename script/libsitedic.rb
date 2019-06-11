@@ -30,17 +30,21 @@ module CIAX
       def _store_db(db, host_db = nil)
         @db = @cfg[:db] = type?(db, Dbx::Index)
         @db.reduce(host_db.keys) if host_db
-        # Making run_list (Arrayx)
+        ___mk_run_list(host_db if @cfg.opt.proper?)
+        self
+      end
+
+      # Making run_list (Arrayx)
+      def ___mk_run_list(host_db)
         @run_list = @db.list.dup.reduce(@cfg[:sites])
         @run_list.select! { |s| /localhost|#{HOST}/ =~ host_db[s] } if host_db
         verbose { cfmt('Run_list = %p', @run_list) }
-        self
       end
 
       def ___add(site) # returns Exe
         # layer_module can be Frm,App,Wat,Hex
         atrb = { dbi: @db.get(site), sub_dic: @sub_dic }
-        atrb[:opt] = @cfg.opt.dev_opt(@run_list.include?(site))
+        atrb[:opt] = @cfg.opt.site_opt(@run_list.include?(site))
         eobj = layer_module::Exe.new(@cfg, atrb)
         put(site, eobj)
         eobj

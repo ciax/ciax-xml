@@ -5,11 +5,14 @@ module CIAX
     # Option Functions
     module Func
       # Mode (Device) [prompt]
-      # none : test all layers        [test]
-      # -e   : drive all layers       [drv]
-      # -c   : client all layers      [cl]
-      # -l[n]: client to [n]th lower layers [drv:cl]
-      # -s   : server
+      # none    : test all layers        [test]
+      # -e      : drive all layers       [drv]
+      # -p      : run listed in run_list [drv]
+      # -c      : client all layers      [cl]
+      # -h[host]: client to host all layers
+      # -l[n]   : client to [n]th lower layers
+      # -l[host]: client to host for lower layers
+      # -s      : server
 
       # Mode (Macro)
       # none : test
@@ -59,18 +62,23 @@ module CIAX
         mcr_log? && bg?
       end
 
+      # Distributes connection to the proper sites
+      def proper?
+        key?(:p)
+      end
+
       # Others
       def sub_opt
         return dup unless key?(:l)
-        lo = self[:l].to_i
-        return dup.update(l: lo - 1) if lo > 1
-        hs = self[:l].size > 1 ? self[:l] : 'localhost'
+        lo = self[:l]
+        return dup.update(l: lo.to_i - 1) if lo.to_i > 1
+        hs = lo.size > 1 ? lo : 'localhost'
         %i(s e l).each_with_object(dup.update(h: hs)) { |k, o| o.delete(k) }
       end
 
       # tf = site is member of run_list?
-      def dev_opt(tf)
-        return dup unless key?(:p)
+      def site_opt(tf)
+        return dup unless proper?
         hash = dup.update(tf ? :e : :c => true)
         hash.delete(:p)
         hash
@@ -114,13 +122,13 @@ module CIAX
       ## Common in Macro and Device
       # Client option
       def ___optdb_client
-        db = { c: 'default', l: '[n|host] lower', h: '[host]', p: 'proper' }
+        db = { c: 'default', l: '[n|host] lower', h: '[host]' }
         __add_optdb(db, 'client to %s')
       end
 
       # System mode
       def ___optdb_system
-        db = { s: 'server', b: 'back ground', e: 'execution' }
+        db = { s: 'server', b: 'back ground', e: 'execution', p: 'proper' }
         __add_optdb(db, '%s mode')
       end
 

@@ -4,7 +4,8 @@ mos_sim -
 sleep 5
 dvexe -e tmc slot5
 if [ "$1" = -l ] ; then
-    VER=saved dvsv -e
+    VER=event:saved dvsv -e
+    export VER=event:loaded
     opt=l0
 fi
 mcrexe -en$opt upd

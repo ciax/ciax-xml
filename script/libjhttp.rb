@@ -46,7 +46,7 @@ module CIAX
     def ___store(jstr, url)
       lt = time
       deep_update(jverify(j2h(jstr)))
-      verbose { cfmt('Loaded url [%s](%d) at %s', url, size, hour(time)) }
+      verbose { cfmt('Loaded url [%s](%d) of %s', url, size, hour(time)) }
       cmt if time > lt
     end
   end

@@ -22,9 +22,7 @@ module CIAX
       if jstr.empty?
         warning(' -- json url file (%s) is empty at loading', url)
       else
-        lt = time
-        deep_update(jverify(j2h(jstr)))
-        cmt if time > lt
+        ___store(jstr, url)
       end
       self
     end
@@ -38,14 +36,18 @@ module CIAX
 
     def ___read_url(url)
       jstr = ''
-      open(url) do |f|
-        verbose { "Loading url [#{url}](#{f.size})" }
-        jstr = f.read
-      end
+      open(url) { |f| jstr = f.read }
       jstr
     rescue OpenURI::HTTPError
       alert('  -- no url file (%s)', url)
       jstr
+    end
+
+    def ___store(jstr, url)
+      lt = time
+      deep_update(jverify(j2h(jstr)))
+      verbose { cfmt("Loaded url [%s](%s)",url,date(time)) }
+      cmt if time > lt
     end
   end
 end

@@ -14,6 +14,7 @@ while
     mcrexe -en$opt cinit
     [ $? -gt 8 ]
 do :;done
+[ "$opt" ] && dvsv
+mos_sim
 cd ~/ciax-xml
 git status | grep nothing && git tag -f 'Success!mos-sim'$(date +%y%m%d)
-

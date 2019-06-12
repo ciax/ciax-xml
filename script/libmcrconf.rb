@@ -14,11 +14,11 @@ module CIAX
       private
 
       def _init_cfg(opt, args)
-        cfg = super
-        cfg[:dbi] = Db.new.get(proj)
-        cfg[:sv_stat] = ___init_prompt
-        cfg[:rec_arc] = RecArc.new
-        cfg
+        super.update(
+          dbi: Db.new.get(proj),
+          sv_stat: ___init_prompt,
+          rec_arc: RecArc.new
+        )
       end
 
       def ___init_prompt

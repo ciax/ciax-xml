@@ -6,7 +6,8 @@ module CIAX
   # Macro Exec
   module Mcr
     Conf.new('[proj] [cmd] (par)', options: 'ednlp') do |cfg|
-      ent = Index.new(cfg).add_rem.add_ext.set_cmd(cfg.args)
+      atrb = { dev_dic: cfg.opt.top_layer::ExeDic.new(cfg) }
+      ent = Index.new(cfg, atrb).add_rem.add_ext.set_cmd(cfg.args)
       Exe.new(ent).seq.play
     end
   end

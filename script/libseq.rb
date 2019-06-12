@@ -127,7 +127,8 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Conf.new('[proj] [cmd] (par)', options: 'eldnr') do |cfg|
-        ent = Index.new(cfg).add_rem.add_ext.set_cmd(cfg.args)
+        atrb = { dev_dic: cfg.opt.top_layer::ExeDic.new(cfg) }
+        ent = Index.new(cfg, atrb).add_rem.add_ext.set_cmd(cfg.args)
         Sequencer.new(ent).play
       end
     end

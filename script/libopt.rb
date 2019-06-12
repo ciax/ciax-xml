@@ -87,6 +87,7 @@ module CIAX
         end
       end
 
+      # Pick up a specified option from limiting ary
       def __make_exopt(ary)
         ary.find { |c| self[c] } || ary.find { |c| @defopt.include?(c.to_s) }
       end

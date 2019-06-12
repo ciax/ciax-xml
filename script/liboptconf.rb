@@ -22,8 +22,7 @@ module CIAX
 
       # Get init_layer (default 'Wat') with require file
       def top_layer
-        key = __make_exopt(%i(m x w a f)) || :w
-        name = @optdb.layers[key]
+        name = super
         require "lib#{name}dic"
         ___init_db
         ___get_mod(name)

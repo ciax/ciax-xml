@@ -83,6 +83,11 @@ module CIAX
         hash
       end
 
+      def top_layer
+        key = __make_exopt(%i(m x w a f)) || :w
+        @optdb.layers[key]
+      end
+
       def host
         self[:h]
       end

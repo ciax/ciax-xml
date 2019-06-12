@@ -11,8 +11,7 @@ module CIAX
       def initialize(ustr = '', optargs = {})
         # opt is self
         super do |opt, args|
-          @cfg = Config.new(opt: opt, args: args, proj: ___get_proj)
-          yield(@cfg)
+          yield _init_cfg(opt, args)
         end
       end
 
@@ -29,6 +28,10 @@ module CIAX
       end
 
       private
+
+      def _init_cfg(opt, args)
+        @cfg = Config.new(opt: opt, args: args, proj: ___get_proj)
+      end
 
       def ___get_proj
         return PROJ unless (host = self[:h])

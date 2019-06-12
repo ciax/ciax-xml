@@ -11,22 +11,17 @@ module CIAX
   module Mcr
     # Attribute for Mcr Config (Separated from Driver Config)
     class Conf < Opt::Conf
-      def initialize(ustr = '', optargs = {})
-        super do |cfg|
-          yield(___init_cfg(cfg))
-        end
-      end
-
       private
 
-      def ___init_cfg(cfg)
+      def _init_cfg(opt, args)
+        cfg = super
         cfg[:dbi] = Db.new.get(proj)
-        cfg[:sv_stat] = ___init_prompt(proj, self[:n])
+        cfg[:sv_stat] = ___init_prompt
         cfg[:rec_arc] = RecArc.new
         cfg
       end
 
-      def ___init_prompt(proj, nonstop)
+      def ___init_prompt
         ss = Prompt.new('mcr', proj)
         # list: running macros
         ss.init_array(:list)
@@ -35,7 +30,7 @@ module CIAX
         # sid: serial ID
         ss.init_str(:sid)
         ss.init_flg(nonstop: '(nonstop)')
-        ss.up(:nonstop) if nonstop
+        ss.up(:nonstop) if nonstop?
         ss
       end
     end

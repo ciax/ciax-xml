@@ -27,7 +27,7 @@ module CIAX
       private
 
       def _init_subdic(layer)
-        super
+        @sub_dic = layer::ExeDic.new(@cfg, opt: @opt.sub_opt)
         @sub_dic.super_dic = self
       end
 

@@ -24,7 +24,8 @@ module CIAX
         ___arc_refresh(dbi)
         ___web_select(dbi)
         get('man').run
-        super
+        @sub_dic.run
+        self
       end
 
       # k = mcr id (unix time)
@@ -42,7 +43,8 @@ module CIAX
       # Set [:sub_dic] here for using layer_cfg
       # Generate sub_dic here for inter layer jump
       def _init_subdic
-        obj = @cfg[:sub_dic] = super(@opt.top_layer)
+        obj = @opt.top_layer::ExeDic.new(@cfg, opt: @opt.sub_opt)
+        @cfg[:sub_dic] = @sub_dic = obj
         obj = obj.sub_dic until obj.is_a? Wat::ExeDic
         @cfg[:dev_dic] = obj
       end

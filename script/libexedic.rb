@@ -22,21 +22,10 @@ module CIAX
       ext_shell.shell
     end
 
-    def run
-      @sub_dic.run
-      self
-    end
-
     def ext_shell
       smod = context_module('Shell')
       return self if is_a?(smod)
       extend(smod).ext_shell
-    end
-
-    private
-
-    def _init_subdic(layer)
-      @sub_dic = layer::ExeDic.new(@cfg, opt: @opt.sub_opt)
     end
 
     # Shell module

@@ -26,6 +26,11 @@ module CIAX
 
       private
 
+      def _init_subdic(layer)
+        super
+        @sub_dic.super_dic = self
+      end
+
       # Reduce valid_keys with Array in block
       def _store_db(db, host_db = nil)
         @db = @cfg[:db] = type?(db, Dbx::Index)

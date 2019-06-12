@@ -22,8 +22,6 @@ module CIAX
       def ___init_cfg(cfg)
         cfg[:dbi] = Db.new.get(proj)
         cfg[:sv_stat] = ___init_prompt(proj, self[:n])
-        # :sub_dic: for Layer jump
-        cfg[:sub_dic] = ___init_dev_dic(cfg)
         cfg[:rec_arc] = RecArc.new
         cfg
       end
@@ -39,13 +37,6 @@ module CIAX
         ss.init_flg(nonstop: '(nonstop)')
         ss.up(:nonstop) if nonstop
         ss
-      end
-
-      # :dev_dic: for Useing by Macro
-      def ___init_dev_dic(cfg)
-        obj = top_layer::ExeDic.new(cfg, opt: sub_opt)
-        obj = obj.sub_dic until obj.is_a? Wat::ExeDic
-        cfg[:dev_dic] = obj
       end
     end
 

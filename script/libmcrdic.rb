@@ -12,13 +12,11 @@ module CIAX
       # @cfg should have [:sv_stat]
       def initialize(layer_cfg, atrb = Hashx.new)
         super
-        # Set [:sub_dic] here for using layer_cfg
-        # For element of Layer
-        @sub_dic = type?(@cfg[:sub_dic], CIAX::ExeDic)
         # For server response
         @sv_stat = type?(@cfg[:sv_stat], Prompt).repl(:sid, '')
         @rec_arc = type?(@cfg[:rec_arc], RecArc)
         ___init_man(Man.new(@cfg))
+        _init_subdic
       end
 
       def run
@@ -40,6 +38,14 @@ module CIAX
       end
 
       private
+
+      # Set [:sub_dic] here for using layer_cfg
+      # Generate sub_dic here for inter layer jump
+      def _init_subdic
+        obj = @cfg[:sub_dic] = super(@opt.top_layer)
+        obj = obj.sub_dic until obj.is_a? Wat::ExeDic
+        @cfg[:dev_dic] = obj
+      end
 
       def ___init_man(man)
         put('man', man)

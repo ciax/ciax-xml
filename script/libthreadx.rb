@@ -54,21 +54,13 @@ module CIAX
       def initialize(tname, layer, id, atrb = {})
         @layer = layer
         @id = id
-        th = super { ___do_proc(id) { yield } }
+        th = super do
+          Thread.pass
+          verbose { "Initiate Thread #{id}" }
+          yield
+        end
         th.update(layer: layer, name: tname, id: id).update(atrb)
         Threads.add(th)
-      end
-
-      private
-
-      def ___do_proc(id)
-        Thread.pass
-        verbose { "Initiate Thread #{id}" }
-        yield
-      rescue StandardError, Interrupt
-        show_err
-      rescue Exception
-        errmsg
       end
     end
 

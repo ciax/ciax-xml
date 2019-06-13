@@ -12,6 +12,8 @@ module CIAX
   VMODE = 'v'.freeze
   # Project
   PROJ = ENV['PROJ']
+  # Thread error handling
+  # Thread.abort_on_exception = true
 
   ### Data Error ###
   # Server error (Handled in Server)

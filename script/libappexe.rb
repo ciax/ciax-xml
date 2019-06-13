@@ -42,8 +42,6 @@ module CIAX
 
       def ___init_sv_stat
         @sv_stat = Prompt.new(@id, @sub_exe)
-        @sv_stat.init_flg(busy: '*').init_flg(action: '!')
-        @sv_stat.init_array(:queue)
       end
 
       # Sub methods for Initialize
@@ -123,6 +121,8 @@ module CIAX
       def initialize(id, sub_exe = nil)
         super('site', id)
         sub_merge(sub_exe.sv_stat, %i(commerr ioerr)) if sub_exe
+        init_flg(busy: '*', action: '!')
+        init_array(:queue)
       end
 
       # wait for busy end or status changed

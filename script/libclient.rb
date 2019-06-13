@@ -44,7 +44,7 @@ module CIAX
           @sv_stat.dw(:udperr)
           return if res.empty?
           @sv_stat.jmerge(res)
-          verbose { cfmt('Prompt Loading from UDP (%s)', @host) }
+          verbose { cfmt('Prompt Loading from UDP (%s) %p', @host, @sv_stat) }
         else
           @sv_stat.up(:udperr).repl(:msg, 'TIMEOUT')
         end

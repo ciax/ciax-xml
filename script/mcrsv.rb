@@ -6,7 +6,7 @@ require 'libdaemon'
 module CIAX
   # Macro module
   module Mcr
-    Conf.new('[id] ...', options: 'depnxb') do |root_cfg|
+    Conf.new('[id] ...', options: 'xdepnb') do |root_cfg|
       Daemon.new(root_cfg) do |cfg|
         ExeDic.new(cfg).run
       end

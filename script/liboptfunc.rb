@@ -71,7 +71,7 @@ module CIAX
       def sub_opt
         return dup unless (lo = self[:l])
         return dup.update(l: lo.to_i - 1) if lo.to_i > 1
-        hs = lo.size > 1 ? lo : 'localhost'
+        hs = lo.to_s.size > 1 ? lo : 'localhost'
         %i(s e l).each_with_object(dup.update(h: hs)) { |k, o| o.delete(k) }
       end
 

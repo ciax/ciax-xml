@@ -29,7 +29,7 @@ module CIAX
       info('Start Layer %s', yield.class)
       msg = 'for Thread status'
       reg = 'udp'
-      Udp::Server.new('daemon', 'top', port, msg).listen do |inp, _host|
+      Udp::Server.new(port, msg).listen do |inp, _host|
         reg = inp unless inp.empty?
         ___thread_list(reg)
       end

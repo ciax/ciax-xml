@@ -25,8 +25,9 @@ module CIAX
 
       def ___init_upd
         @sv_stat.init_flg(udperr: 'x')
+        @sv_stat.ext_remote(@host)
         @sv_stat.upd_procs.append(self, :client) { exe([]) }
-        @udp = Udp::Client.new(@layer, @id, @host, @port)
+        @udp = Udp::Client.new(@host, @port)
         ___set_client_proc
       end
 

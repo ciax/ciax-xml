@@ -120,7 +120,7 @@ module CIAX
     class Prompt < Prompt
       def initialize(id, sub_exe = nil)
         super('site', id)
-        sub_merge(sub_exe.sv_stat, %i(commerr ioerr)) if sub_exe
+        ___init_sub_exe(sub_exe)
         init_flg(busy: '*', action: '!')
         init_array(:queue)
       end
@@ -136,8 +136,14 @@ module CIAX
         end
         com_err('Timeout for Busy Device')
       end
-    end
 
+      private
+
+      def ___init_sub_exe(sub_exe)
+        return unless sub_exe
+        sub_merge(sub_exe.sv_stat, %i(comerr ioerr))
+      end
+    end
     if __FILE__ == $PROGRAM_NAME
       Opt::Conf.new('[id]', options: 'cehl') do |cfg|
         db = cfg[:db] = Ins::Db.new

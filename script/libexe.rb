@@ -85,9 +85,13 @@ module CIAX
     end
 
     def _ext_remote
-      require 'libclient'
-      return self if is_a?(Client)
-      extend(Client).ext_remote
+      @mode = 'CL'
+      @stat.ext_remote(@host)
+      @sv_stat.ext_remote(@host, @port)
+      @sv_stat.upd_procs.append(self, :exe) { @stat.upd }
+      @cobj.rem.add_empty
+      @cobj.rem.def_proc { |ent| @sv_stat.send(ent.id) }
+      self
     end
 
     def _ext_local

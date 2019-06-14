@@ -18,7 +18,6 @@ module CIAX
     def initialize(obj, name, title = 'ProcArray', psize = 1)
       super()
       @obj = type?(obj, Upd)
-      @layer = @obj.layer_name
       @name = __mk_id(@obj, name)
       @title = title
       @psize = psize.to_i

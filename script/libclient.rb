@@ -4,50 +4,37 @@ require 'libudp'
 # Provide Client
 module CIAX
   # Device Processing
-  class Exe
+  class Prompt
     # Client module
     module Client
       def self.extended(obj)
-        Msg.type?(obj, Exe)
+        Msg.type?(obj, Prompt)
       end
 
       # If you get a system error 'Address family not ..',
       # remove ipv6 entry from /etc/hosts
-      def ext_remote
-        @mode = 'CL'
-        @stat.ext_remote(@host)
-        @pre_exe_procs << proc { @stat.upd }
-        ___init_upd if @port
+      def ext_remote(host, port)
+        init_flg(udperr: 'x')
+        @udp = Udp::Client.new(host, port)
+        @upd_procs.append(self, :client) { send }
+        self
+      end
+
+      def send(str = '')
+        @udp.send(JSON.dump(str.split(':')))
+        ___udp_recv || up(:udperr).repl(:msg, 'TIMEOUT')
         self
       end
 
       private
 
-      def ___init_upd
-        @sv_stat.init_flg(udperr: 'x')
-        @sv_stat.upd_procs.append(self, :client) { exe([]) }
-        @udp = Udp::Client.new(@layer, @id, @host, @port)
-        ___set_client_proc
-      end
-
-      def ___set_client_proc
-        @cobj.rem.add_empty
-        @cobj.rem.def_proc do |ent|
-          @udp.send(JSON.dump(ent.id.split(':')))
-          ___udp_recv
-        end
-        self
-      end
-
       def ___udp_recv
-        if (res = @udp.recv)
-          @sv_stat.dw(:udperr)
-          return if res.empty?
-          @sv_stat.jmerge(res)
-          verbose { cfmt('Prompt Loading from UDP (%s) %p', @host, @sv_stat) }
-        else
-          @sv_stat.up(:udperr).repl(:msg, 'TIMEOUT')
-        end
+        return unless (res = @udp.recv)
+        dw(:udperr)
+        return if res.empty?
+        jmerge(res)
+        verbose { cfmt('Prompt Loading from UDP (%s) %p', @host, self) }
+        cmt
       end
     end
   end

@@ -48,7 +48,7 @@ module CIAX
       end
 
       def ___srv_udp
-        Udp::Server.new(@layer, @id, @port).listen do |line, rhost|
+        Udp::Server.new(@port, "#{@id}:#{@layer}").listen do |line, rhost|
           ___srv_exec(line, rhost)
           @server_output_proc.call
         end

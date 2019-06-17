@@ -90,6 +90,7 @@ module CIAX
     end
 
     def to_v
+      upd
       verbose { 'Shell' + inspect }
       # Because true(String) will be converted to Boolean in JSON
       @flg_db.map { |k, v| v if self[k].to_s == 'true' }.join
@@ -106,13 +107,18 @@ module CIAX
 
     # Merge sub prompt for picked up keys
     def sub_merge(sub, args)
-      type?(sub, Prompt)
+      propagation(type?(sub, Prompt))
       @flg_db.update(sub.flg_db)
-      # Upper layer propagation
-      sub.cmt_procs.append(self, @id, 4) do |ss|
-        update(ss.pick(args)).cmt
-      end
-      self
+      @upd_procs.append(self, @id) { sub.upd }
+      @cmt_procs.append(self, @id, 2) { update(sub.pick(*args)) }
+      update(sub)
+    end
+
+    def ext_remote(host, port = nil)
+      return self unless port
+      require 'libclient'
+      return self if is_a?(Client)
+      extend(Client).ext_remote(host, port)
     end
 
     private(:[]=)

@@ -7,13 +7,11 @@ module CIAX
     # UDP Client
     class Client
       include Msg
-      def initialize(layer, id, host, port)
-        @layer = layer
-        @id = id
+      def initialize(host, port)
         @host = host || 'localhost'
         @port = port
         @udp = UDPSocket.open
-        verbose { cfmt('Initiate UDP client (%s) [%s:%s]', @id, @host, @port) }
+        verbose { cfmt('Initiate UDP client [%s:%s]', @host, @port) }
       end
 
       def send(str)
@@ -33,10 +31,8 @@ module CIAX
     # UDP Server Thread with Loop
     class Server
       include Msg
-      def initialize(layer, id, port, msg = '')
-        @layer = layer
-        @id = id
-        verbose { cfmt('Initiate UDP server %s(%s) port:[%s]', msg, @id, port) }
+      def initialize(port, msg = '')
+        verbose { cfmt('Initiate UDP server %s port:[%s]', msg, port) }
         @udp = UDPSocket.open
         @udp.bind('0.0.0.0', port.to_i)
       end

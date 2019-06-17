@@ -32,6 +32,11 @@ module CIAX
 
       private
 
+      def _ext_remote
+        super
+        _remote_sv_stat
+      end
+
       def _ext_shell
         super.input_conv_set
       end

@@ -35,7 +35,7 @@ module CIAX
 
       def ___get_proj
         return PROJ unless (host = self[:h])
-        udp = Udp::Client.new('top', 'client', host, 54_321)
+        udp = Udp::Client.new(host, 54_321)
         line = udp.send('.').recv.lines.grep(/^\[run\]/).first
         line.chomp.split(':').last
       end

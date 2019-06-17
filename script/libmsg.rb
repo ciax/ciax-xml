@@ -46,7 +46,7 @@ module CIAX
     end
 
     def watch(val)
-      show __make_msg(cfmt('%p on %s', val, last_caller), 3)
+      show __make_msg(cfmt('%p(%s) on %s', val, val.object_id, last_caller), 3)
       val
     end
 

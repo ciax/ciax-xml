@@ -8,7 +8,7 @@ case "$1" in
         # VER=event:saved
         dvsv -e
         # export VER=event:loaded
-        opt=l0
+        opt=lw
         ;;
     -p)
         dvsv -p

@@ -87,8 +87,8 @@ module CIAX
       # Others
       def sub_opt
         return dup unless (lo = self[:l])
-        sub = @valids.shift
-        return dup.update(l: sub) if @valids.include?(lo)
+        @valids.shift
+        return dup if @valids.include?(lo.to_sym)
         %i(s e l).each_with_object(dup.update(c: true)) { |k, o| o.delete(k) }
       end
 

@@ -12,9 +12,9 @@ Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
 # Offense count: 1
-Lint/RescueException:
-  Exclude:
-    - 'libthreadx.rb'
+#Lint/RescueException:
+#  Exclude:
+#    - 'libthreadx.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.

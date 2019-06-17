@@ -24,7 +24,7 @@ module CIAX
 
       # Check first
       def cl?
-        __any_key?(:h, :c)
+        __any_key?(:c) || (host && !key?(:l))
       end
 
       def drv?
@@ -67,14 +67,6 @@ module CIAX
         key?(:p)
       end
 
-      # Others
-      def sub_opt
-        return dup unless (lo = self[:l])
-        return dup.update(l: lo.to_i - 1) if lo.to_i > 1
-        hs = lo.to_s.size > 1 ? lo : 'localhost'
-        %i(s e l).each_with_object(dup.update(h: hs)) { |k, o| o.delete(k) }
-      end
-
       # tf = site is member of run_list?
       def site_opt(tf)
         return dup unless proper?
@@ -84,8 +76,20 @@ module CIAX
       end
 
       def top_layer
-        key = __make_exopt(%i(m x w a f)) || :w
-        @optdb.layers[key]
+        @valids = []
+        %i(f a w x m).any? do |l|
+          @valids.unshift(l)
+          key?(l)
+        end || @valids = %i(w a f)
+        @optdb.layers[@valids.shift]
+      end
+
+      # Others
+      def sub_opt
+        return dup unless (lo = self[:l])
+        sub = @valids.shift
+        return dup.update(l: sub) if @valids.include?(lo)
+        %i(s e l).each_with_object(dup.update(c: true)) { |k, o| o.delete(k) }
       end
 
       def host
@@ -126,7 +130,7 @@ module CIAX
       ## Common in Macro and Device
       # Client option
       def ___optdb_client
-        db = { c: 'default', l: '[n|host] lower', h: '[host]' }
+        db = { c: 'default', l: '[layer] lower', h: '[host]' }
         __add_optdb(db, 'client to %s')
       end
 

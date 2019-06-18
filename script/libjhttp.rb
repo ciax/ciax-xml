@@ -14,6 +14,7 @@ module CIAX
       verbose { "Initiate Http (#{@host})" }
       @id || Msg.cfg_err('ID')
       @upd_procs.append(self, :http) { load }
+      self
     end
 
     def load(tag = nil)

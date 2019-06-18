@@ -14,6 +14,10 @@ case "$1" in
         dvsv -p
         opt=p
         ;;
+    -c)
+        mcrsv -p
+        opt=c
+        ;;
     *)
         opt=e
         ;;

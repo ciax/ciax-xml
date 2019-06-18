@@ -39,13 +39,7 @@ module CIAX
 
     # Merge data with setting sub structures
     def jmerge(jstr = nil)
-      deep_update(jread(jstr))
-    end
-
-    module_function
-
-    def jread(jstr = nil)
-      Msg.jread(jstr).extend(Enumx)
+      deep_update(j2h(jstr).extend(Enumx))
     end
 
     private

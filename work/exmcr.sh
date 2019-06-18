@@ -8,16 +8,19 @@ case "$1" in
         # VER=event:saved
         dvsv -e
         # export VER=event:loaded
-        opt=lw
+        opt=lwhlocalhost
         ;;
     -p)
         dvsv -p
         opt=p
         ;;
+    *)
+        opt=e
+        ;;
 esac
-mcrexe -en$opt upd
+mcrexe -n$opt upd
 while
-    mcrexe -en$opt cinit
+    mcrexe -n$opt cinit
     [ $? -gt 8 ]
 do :;done
 [ "$opt" ] && dvsv

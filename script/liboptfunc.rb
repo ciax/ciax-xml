@@ -5,14 +5,13 @@ module CIAX
     # Option Functions
     module Func
       # Mode (Device) [prompt]
-      # none    : test all layers        [test]
-      # -e      : drive all layers       [drv]
-      # -p      : run listed in run_list [drv]
-      # -c      : client all layers      [cl]
-      # -h[host]: client to host all layers
-      # -l[n]   : client to [n]th lower layers
-      # -l[host]: client to host for lower layers
-      # -s      : server
+      # none     : test all layers            [test]
+      # -e       : run all sites/layers       [drv]
+      # -p       : run default sites/layers   [drv]
+      # -c       : to default host all layers [cl]
+      # -h[host] : to host all layers
+      # -l[layer]: to localhost lower layers
+      # -s       : server
 
       # Mode (Macro)
       # none : test
@@ -89,7 +88,7 @@ module CIAX
         return dup unless (lo = self[:l])
         @valids.shift
         return dup if @valids.include?(lo.to_sym)
-        %i(s e l).each_with_object(dup.update(c: true)) { |k, o| o.delete(k) }
+        %i(s e l).each_with_object(dup.update(h: 'localhost')) { |k, o| o.delete(k) }
       end
 
       def host

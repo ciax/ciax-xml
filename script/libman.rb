@@ -36,6 +36,11 @@ module CIAX
 
       private
 
+      def _ext_remote
+        super
+        _remote_sv_stat
+      end
+
       # Overridden by libmansh
       def _ext_shell
         super

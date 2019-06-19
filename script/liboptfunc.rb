@@ -88,7 +88,8 @@ module CIAX
         return dup unless (lo = self[:l])
         @valids.shift
         return dup if @valids.include?(lo.to_sym)
-        %i(s e l).each_with_object(dup.update(h: 'localhost')) { |k, o| o.delete(k) }
+        sb = %i(s e l).each_with_object(dup) { |k, o| o.delete(k) }
+        sb.update(h: 'localhost')
       end
 
       def host

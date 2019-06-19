@@ -19,6 +19,7 @@ module CIAX
           @id = @seq.id
           @int.def_proc { |ent| @seq.reply(ent.id) }
           @stat = @seq.record
+          ___init_run
           self
         end
 
@@ -29,6 +30,13 @@ module CIAX
           end
           _set_def_proc('interrupt') { @thread.raise(Interrupt) }
           self
+        end
+
+        private
+
+        def ___init_run
+          @sys.add_form('run', 'seqence').def_proc { run }
+          @valid_keys << 'run'
         end
       end
     end

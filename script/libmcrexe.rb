@@ -40,9 +40,7 @@ module CIAX
         rem.cfg[:def_msg] = 'ACCEPT'
         @sys = rem.add_sys
         @int = rem.add_int
-        @sys.add_form('run', 'seqence').def_proc { run }
         @valid_keys = @cfg[:valid_keys] = @int.valid_keys.clear
-        @valid_keys << 'run'
       end
 
       # To inhelit CIAX::Exe::Local
@@ -63,7 +61,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      Conf.new('[proj] [cmd] (par)', options: 'edlnr') do |cfg|
+      Conf.new('[proj] [cmd] (par)', options: 'chedlnr') do |cfg|
         atrb = { dev_dic: cfg.opt.top_layer::ExeDic.new(cfg) }
         ent = Index.new(cfg, atrb).add_rem.add_ext.set_cmd(cfg.args)
         Exe.new(ent)

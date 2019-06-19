@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
-require 'libexe'
-require 'libseq'
-require 'libthreadx'
+require 'libexelocal'
+require 'libmcrcmd'
+require 'libmcrconf'
+require 'librecord'
 
 module CIAX
   # Macro Layer
@@ -15,8 +16,8 @@ module CIAX
         verbose { 'Initiate New Macro' }
         ___init_cmd
         @sv_stat = type?(@cfg[:sv_stat], Prompt)
-        ___init_seq(submcr_proc)
-        _ext_local
+        @stat = Record.new
+        _opt_mode
       end
 
       def interrupt
@@ -44,13 +45,6 @@ module CIAX
         @valid_keys << 'run'
       end
 
-      def ___init_seq(submcr_proc)
-        @seq = Sequencer.new(@cfg, &submcr_proc)
-        @id = @seq.id
-        @int.def_proc { |ent| @seq.reply(ent.id) }
-        @stat = @seq.record
-      end
-
       # To inhelit CIAX::Exe::Local
       module Local
         include CIAX::Exe::Local
@@ -58,18 +52,12 @@ module CIAX
           Msg.type?(obj, Exe)
         end
 
-        # Mode Extension by Option
-        def ext_local
-          _set_def_proc('interrupt') { @thread.raise(Interrupt) }
-          super
-        end
+        private
 
-        def run
-          @thread = Threadx::Fork.new('Macro', 'seq', @id) do
-            @sys.valid_keys.delete('run')
-            @seq.play
-          end
-          self
+        def _ext_driver
+          super
+          require 'libmcrdrv'
+          extend(Driver).ext_driver
         end
       end
     end
@@ -78,8 +66,8 @@ module CIAX
       Conf.new('[proj] [cmd] (par)', options: 'edlnr') do |cfg|
         atrb = { dev_dic: cfg.opt.top_layer::ExeDic.new(cfg) }
         ent = Index.new(cfg, atrb).add_rem.add_ext.set_cmd(cfg.args)
-        Exe.new(ent).shell
-      end
+        Exe.new(ent)
+      end.cui
     end
   end
 end

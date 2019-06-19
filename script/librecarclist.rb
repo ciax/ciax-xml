@@ -31,9 +31,11 @@ module CIAX
         end
 
         # last is latest
+        # @oldest isn't included
         def list
           rl = @rec_arc.list
-          rl[rl.index(@oldest) + 1..-1]
+          rl.shift(rl.index(@oldest).to_i + 1) if @oldest
+          rl
         end
 
         def clear
@@ -42,8 +44,14 @@ module CIAX
         end
 
         def inc(num = 1)
+          return clear unless num.to_i > 0
           rl = @rec_arc.list
-          @oldest = rl[rl.index(@oldest) - num.to_i]
+          if num.to_i > rl.size - 1
+            @oldest = nil
+          else
+            idx = @oldest ? rl.index(@oldest) : rl.size
+            @oldest = rl[[idx - num.to_i, 0].max]
+          end
           self
         end
 

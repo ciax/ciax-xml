@@ -12,11 +12,11 @@ module CIAX
         attr_reader :rec_arc
         def initialize(rec_arc, &get_proc)
           super()
-          @rec_arc = type?(rec_arc, RecArc)
+          @rec_arc = type?(rec_arc, RecArc).upd
           # @cache in RecDic
           @get_proc = get_proc || proc {}
           ___init_propagate
-          cmt
+          clear
         end
 
         # Show Index of Alives Item
@@ -30,6 +30,7 @@ module CIAX
           list.extend(Enumx).to_r
         end
 
+        # last is latest
         def list
           rl = @rec_arc.list
           rl[rl.index(@oldest) + 1..-1]

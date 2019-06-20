@@ -86,6 +86,7 @@ module CIAX
         def play
           sid = @sv_stat.send(@cfg[:cid]).get(:sid)
           @stat = Record.new(sid)
+          super
         end
       end
     end

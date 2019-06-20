@@ -28,7 +28,7 @@ module CIAX
             @seq.play
           end
           _set_def_proc('interrupt') { @thread.raise(Interrupt) }
-          self
+          super
         end
       end
     end

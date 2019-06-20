@@ -16,7 +16,6 @@ module CIAX
         verbose { 'Initiate New Macro' }
         ___init_cmd
         @sv_stat = type?(@cfg[:sv_stat], Prompt)
-        @stat = Record.new
         _opt_mode
       end
 
@@ -26,6 +25,14 @@ module CIAX
       end
 
       private
+
+      def _ext_remote
+        _init_port
+        _remote_sv_stat
+        sid = @sv_stat.send(@cfg[:cid]).get(:sid)
+        @stat = Record.new(sid)
+        super
+      end
 
       # Mode Extention by Option
       def _ext_shell
@@ -48,6 +55,11 @@ module CIAX
         include CIAX::Exe::Local
         def self.extended(obj)
           Msg.type?(obj, Exe)
+        end
+
+        def ext_local
+          @stat = Record.new
+          super
         end
 
         private

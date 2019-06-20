@@ -16,6 +16,7 @@ module CIAX
         verbose { 'Initiate New Macro' }
         ___init_cmd
         @sv_stat = type?(@cfg[:sv_stat], Prompt)
+        @stat = Record.new
         _opt_mode
       end
 
@@ -61,11 +62,6 @@ module CIAX
           Msg.type?(obj, Exe)
         end
 
-        def ext_local
-          @stat = Record.new
-          super
-        end
-
         private
 
         def _ext_driver
@@ -84,7 +80,7 @@ module CIAX
         def ext_remote
           _init_port
           _remote_sv_stat
-          super
+          self
         end
 
         def play

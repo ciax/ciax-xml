@@ -14,7 +14,7 @@ module CIAX
 
       def _cmd_mesg(step, _mstat)
         # If nonstop, add return after query line
-        show_fg if @qry.query(['ok'], step).is_a?(Step)
+        show_fg if _qry_ok?(step)
         true
       end
 

@@ -24,13 +24,15 @@ module CIAX
         self
       end
 
+      def play
+        @valid_keys.delete('play')
+        self
+      end
+
       private
 
       def _ext_remote
-        _init_port
-        _remote_sv_stat
-        sid = @sv_stat.send(@cfg[:cid]).get(:sid)
-        @stat = Record.new(sid)
+        extend(Remote).ext_remote
         super
       end
 
@@ -46,8 +48,10 @@ module CIAX
         rem = @cobj.add_rem
         rem.cfg[:def_msg] = 'ACCEPT'
         @sys = rem.add_sys
+        @sys.add_form('play', 'seqence').def_proc { play }
         @int = rem.add_int
         @valid_keys = @cfg[:valid_keys] = @int.valid_keys.clear
+        @valid_keys << 'play'
       end
 
       # To inhelit CIAX::Exe::Local
@@ -68,6 +72,24 @@ module CIAX
           super
           require 'libmcrdrv'
           extend(Driver).ext_driver
+        end
+      end
+
+      # Remote mode
+      module Remote
+        def self.extended(obj)
+          Msg.type?(obj, Exe)
+        end
+
+        def ext_remote
+          _init_port
+          _remote_sv_stat
+          super
+        end
+
+        def play
+          sid = @sv_stat.send(@cfg[:cid]).get(:sid)
+          @stat = Record.new(sid)
         end
       end
     end

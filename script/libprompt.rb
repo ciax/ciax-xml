@@ -107,9 +107,8 @@ module CIAX
 
     # Merge sub prompt for picked up keys
     def sub_merge(sub, args)
-      propagation(type?(sub, Prompt))
+      propagation(type?(sub, Prompt), @id)
       @flg_db.update(sub.flg_db)
-      @upd_procs.append(self, @id) { sub.upd }
       @cmt_procs.append(self, @id, 2) { update(sub.pick(*args)) }
       update(sub)
     end

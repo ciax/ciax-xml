@@ -1682,10 +1682,10 @@
       <unit id="unit_almo" title="a[f|s]mo" label="Align Front/Side MOV.OPT">
         <item id="afmo" label="Align Front MOV.OPT">
           <goal label="Rotation Stored?">
-            <equal form="msg" site="tso" var="mrt">DES</equal>
+            <equal form="msg" site="tso" var="mrt">LOAD</equal>
           </goal>
           <check>
-            <equal form="msg" site="tso" var="mrt">STR</equal>
+            <equal form="msg" site="tso" var="mrt">STORE</equal>
             <equal form="msg" site="tso" var="mhk">HOOK</equal>
             <equal form="msg" site="tso" var="mtr">FW</equal>
           </check>
@@ -1699,10 +1699,10 @@
         </item>
         <item id="asmo" label="Align Side MOV.OPT">
           <goal label="Rotation Stored?">
-            <equal form="msg" site="tso" var="mrt">STR</equal>
+            <equal form="msg" site="tso" var="mrt">STORE</equal>
           </goal>
           <check>
-            <equal form="msg" site="tso" var="mrt">DES</equal>
+            <equal form="msg" site="tso" var="mrt">LOAD</equal>
             <equal form="msg" site="tso" var="mhk">HOOK</equal>
             <equal form="msg" site="tso" var="mtr">FW</equal>
           </check>
@@ -1721,7 +1721,7 @@
             <equal form="msg" site="tso" var="mtr">FW</equal>
           </goal>
           <check>
-            <equal form="msg" site="tso" var="mrt">STR</equal>
+            <equal form="msg" site="tso" var="mrt">STORE</equal>
             <equal form="msg" site="tso" var="mhk">HOOK</equal>
             <equal form="msg" site="tso" var="mtr">BK</equal>
           </check>
@@ -1738,7 +1738,7 @@
             <equal form="msg" site="tso" var="mtr">BK</equal>
           </goal>
           <check>
-            <equal form="msg" site="tso" var="mrt">STR</equal>
+            <equal form="msg" site="tso" var="mrt">STORE</equal>
             <equal form="msg" site="tso" var="mhk">HOOK</equal>
             <equal form="msg" site="tso" var="mtr">FW</equal>
           </check>
@@ -1754,10 +1754,10 @@
       <unit id="unit_aldmi" title="a[f|s]mi" label="Align Front/Side MOV.IR">
         <item id="afmi" label="Align Front MOV.IR">
           <goal label="Rotation Stored?">
-            <equal form="msg" site="tsi" var="mrt">DES</equal>
+            <equal form="msg" site="tsi" var="mrt">LOAD</equal>
           </goal>
           <check>
-            <equal form="msg" site="tsi" var="mrt">STR</equal>
+            <equal form="msg" site="tsi" var="mrt">STORE</equal>
             <equal form="msg" site="tsi" var="mhk">HOOK</equal>
             <equal form="msg" site="tsi" var="mtr">FW</equal>
           </check>
@@ -1771,10 +1771,10 @@
         </item>
         <item id="asmi" label="Align Side MOV.IR">
           <goal label="Rotation Stored?">
-            <equal form="msg" site="tsi" var="mrt">STR</equal>
+            <equal form="msg" site="tsi" var="mrt">STORE</equal>
           </goal>
           <check>
-            <equal form="msg" site="tsi" var="mrt">DES</equal>
+            <equal form="msg" site="tsi" var="mrt">LOAD</equal>
             <equal form="msg" site="tsi" var="mhk">HOOK</equal>
             <equal form="msg" site="tsi" var="mtr">FW</equal>
           </check>
@@ -1793,7 +1793,7 @@
             <equal form="msg" site="tsi" var="mtr">FW</equal>
           </goal>
           <check>
-            <equal form="msg" site="tsi" var="mrt">STR</equal>
+            <equal form="msg" site="tsi" var="mrt">STORE</equal>
             <equal form="msg" site="tsi" var="mhk">HOOK</equal>
             <equal form="msg" site="tsi" var="mtr">BK</equal>
           </check>
@@ -1810,7 +1810,7 @@
             <equal form="msg" site="tsi" var="mtr">BK</equal>
           </goal>
           <check>
-            <equal form="msg" site="tsi" var="mrt">STR</equal>
+            <equal form="msg" site="tsi" var="mrt">STORE</equal>
             <equal form="msg" site="tsi" var="mhk">HOOK</equal>
             <equal form="msg" site="tsi" var="mtr">FW</equal>
           </check>

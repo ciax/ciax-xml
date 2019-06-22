@@ -36,8 +36,9 @@ module CIAX
         private
 
         def _ext_shell
-          @cobj.get('play').def_proc { run }
           super
+          @cobj.get('play').def_proc { run }
+          self
         end
       end
     end

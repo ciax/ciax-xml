@@ -25,7 +25,8 @@ module CIAX
       end
 
       def batch
-        _play
+        @valid_keys.delete('play')
+        self
       end
 
       private
@@ -41,13 +42,8 @@ module CIAX
         @prompt_proc = proc { opt_listing(@valid_keys) }
         @cobj.loc.add_view
         @sys = @cobj.rem.add_sys
-        @sys.add_form('play', 'seqence').def_proc { _play }
+        @sys.add_form('play', 'seqence').def_proc { batch }
         @valid_keys << 'play'
-        self
-      end
-
-      def _play
-        @valid_keys.delete('play')
         self
       end
 
@@ -86,9 +82,7 @@ module CIAX
           self
         end
 
-        private
-
-        def _play
+        def batch
           sid = @sv_stat.send(@cfg[:cid]).get(:sid)
           p @sv_stat
           p sid

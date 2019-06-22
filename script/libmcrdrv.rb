@@ -22,16 +22,21 @@ module CIAX
           self
         end
 
+        def batch
+          @seq.play
+          super
+        end
+
         def run
-          @thread = Threadx::Fork.new('Macro', 'seq', @id) { _play }
+          @thread = Threadx::Fork.new('Macro', 'seq', @id) { batch }
           _set_def_proc('interrupt') { @thread.raise(Interrupt) }
           super
         end
 
         private
 
-        def _play
-          @seq.play
+        def _ext_shell
+          @cobj.get('play').def_proc { run }
           super
         end
       end

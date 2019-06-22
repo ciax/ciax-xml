@@ -22,12 +22,16 @@ module CIAX
           self
         end
 
-        def play
-          @thread = Threadx::Fork.new('Macro', 'seq', @id) do
-            @sys.valid_keys.delete('run')
-            @seq.play
-          end
+        def run
+          @thread = Threadx::Fork.new('Macro', 'seq', @id) { _play }
           _set_def_proc('interrupt') { @thread.raise(Interrupt) }
+          super
+        end
+
+        private
+
+        def _play
+          @seq.play
           super
         end
       end

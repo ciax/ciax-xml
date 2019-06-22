@@ -10,7 +10,6 @@ module CIAX
     # Macro Executor
     # Local mode only
     class Exe < Exe
-      attr_reader :thread, :seq
       def initialize(spcfg, atrb = Hashx.new, &submcr_proc)
         super
         verbose { 'Initiate New Macro' }
@@ -25,9 +24,8 @@ module CIAX
         self
       end
 
-      def play
-        @valid_keys.delete('play')
-        self
+      def batch(_dmy = nil)
+        _play
       end
 
       private
@@ -42,17 +40,22 @@ module CIAX
         super
         @prompt_proc = proc { opt_listing(@valid_keys) }
         @cobj.loc.add_view
+        @sys = @cobj.rem.add_sys
+        @sys.add_form('play', 'seqence').def_proc { _play }
+        @valid_keys << 'play'
+        self
+      end
+
+      def _play
+        @valid_keys.delete('play')
         self
       end
 
       def ___init_cmd
         rem = @cobj.add_rem
         rem.cfg[:def_msg] = 'ACCEPT'
-        @sys = rem.add_sys
-        @sys.add_form('play', 'seqence').def_proc { play }
         @int = rem.add_int
         @valid_keys = @cfg[:valid_keys] = @int.valid_keys.clear
-        @valid_keys << 'play'
       end
 
       # To inhelit CIAX::Exe::Local
@@ -83,9 +86,14 @@ module CIAX
           self
         end
 
-        def play
+        private
+
+        def _play
           sid = @sv_stat.send(@cfg[:cid]).get(:sid)
-          @stat = Record.new(sid)
+          p @sv_stat
+          p sid
+          @stat = Record.new(sid).ext_remote
+          p @stat
           super
         end
       end

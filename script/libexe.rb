@@ -71,8 +71,8 @@ module CIAX
       _ext_shell.shell
     end
 
-    def batch(args)
-      puts [exe(args), @stat]
+    def batch
+      puts [exe(@cfg[:args]), @stat]
       self
     end
 

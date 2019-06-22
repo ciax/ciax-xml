@@ -24,7 +24,7 @@ module CIAX
         self
       end
 
-      def batch(_dmy = nil)
+      def batch
         _play
       end
 

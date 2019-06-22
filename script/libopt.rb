@@ -41,7 +41,7 @@ module CIAX
           @obj.shell
         else
           @obj = @obj.get(@argv.shift) if @obj.is_a?(ExeDic)
-          @obj.batch(@argv)
+          @obj.batch
         end
         self
       rescue InvalidARGS

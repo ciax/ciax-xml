@@ -59,7 +59,7 @@
         </item>
       </group>
       <group caption="Action" id="gact">
-        <item id="setbit" label="Set Int/Cmd Bit" response="cmdrsp" type="stat">
+        <item id="setbit" label="Set Int/Cmd Bit" response="cmdrsp" type="action">
           <par_num>0:3</par_num>
           <par_num>0:15</par_num>
           <char label="FINS Command:MRC" length="1">0x01</char>

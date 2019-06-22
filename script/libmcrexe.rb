@@ -33,7 +33,6 @@ module CIAX
 
       def _ext_remote
         extend(Remote).ext_remote
-        super
       end
 
       # Mode Extention by Option
@@ -42,7 +41,10 @@ module CIAX
         @prompt_proc = proc { opt_listing(@valid_keys) }
         @cobj.loc.add_view
         @sys = @cobj.rem.add_sys
-        @sys.add_form('play', 'seqence').def_proc { batch }
+        @sys.add_form('play', 'seqence').def_proc do
+          batch
+          @cfg[:output] = @stat
+        end
         @valid_keys << 'play'
         self
       end
@@ -77,6 +79,7 @@ module CIAX
         end
 
         def ext_remote
+          @mode = 'CL'
           _init_port
           _remote_sv_stat
           self
@@ -86,7 +89,7 @@ module CIAX
           sid = @sv_stat.send(@cfg[:cid]).get(:sid)
           p @sv_stat
           p sid
-          @stat = Record.new(sid).ext_remote
+          @stat = Record.new(sid).ext_remote(@host)
           p @stat
           super
         end

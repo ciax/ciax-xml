@@ -71,6 +71,11 @@ module CIAX
       _ext_shell.shell
     end
 
+    def batch(args)
+      puts [exe(args), @stat]
+      self
+    end
+
     private
 
     # Option handling

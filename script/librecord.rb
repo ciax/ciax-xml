@@ -52,6 +52,7 @@ module CIAX
       end
 
       def jverify(hash = {})
+        delete(:option)
         res = super
         (res[:steps] || []).map! do |i|
           Step.new(res[:start]).update(i)

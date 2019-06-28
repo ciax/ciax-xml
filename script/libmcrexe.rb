@@ -72,9 +72,19 @@ module CIAX
           @mode = 'CL'
           _init_port
           _remote_sv_stat
+          ___init_stat
+          self
+        end
+
+        private
+
+        def ___init_stat
           sid = @sv_stat.send(@cfg[:cid]).get(:sid)
           @stat = Record.new(sid).ext_remote(@host)
-          self
+          @stat.upd_procs.append(self, 'remote') do |_s|
+            @valid_keys.replace(@stat[:option].to_a)
+          end
+          @int.pars.add_num(sid)
         end
       end
     end

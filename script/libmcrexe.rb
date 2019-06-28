@@ -88,7 +88,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      Conf.new('[proj] [cmd] (par)', options: 'chedlnr') do |cfg|
+      Conf.new('[proj] [cmd] (par)', options: 'chedlinr') do |cfg|
         atrb = { dev_dic: cfg.opt.top_layer::ExeDic.new(cfg) }
         ent = Index.new(cfg, atrb).add_rem.add_ext.set_cmd(cfg.args)
         Exe.new(ent)

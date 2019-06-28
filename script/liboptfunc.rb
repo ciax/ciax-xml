@@ -52,6 +52,10 @@ module CIAX
         key?(:n) && true
       end
 
+      def interactive?
+        key?(:i) && true
+      end
+
       def mcr_log?
         drv? && !dry?
       end

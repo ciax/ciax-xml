@@ -24,11 +24,6 @@ module CIAX
         self
       end
 
-      def batch
-        @valid_keys.delete('play')
-        self
-      end
-
       private
 
       def _ext_remote
@@ -40,12 +35,7 @@ module CIAX
         super
         @prompt_proc = proc { opt_listing(@valid_keys) }
         @cobj.loc.add_view
-        @sys = @cobj.rem.add_sys
-        @sys.add_form('play', 'seqence').def_proc do
-          batch
-          @cfg[:output] = @stat
-        end
-        @valid_keys << 'play'
+        @cobj.rem.add_sys
         self
       end
 
@@ -82,16 +72,9 @@ module CIAX
           @mode = 'CL'
           _init_port
           _remote_sv_stat
-          self
-        end
-
-        def batch
           sid = @sv_stat.send(@cfg[:cid]).get(:sid)
-          p @sv_stat
-          p sid
           @stat = Record.new(sid).ext_remote(@host)
-          p @stat
-          super
+          self
         end
       end
     end

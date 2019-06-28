@@ -48,16 +48,14 @@ module CIAX
 
       # To inhelit CIAX::Exe::Local
       module Local
+        require 'libmcrdrv'
         include CIAX::Exe::Local
         def self.extended(obj)
           Msg.type?(obj, Exe)
         end
 
-        private
-
-        def _ext_driver
+        def opt_mode
           super
-          require 'libmcrdrv'
           extend(Driver).ext_driver
         end
       end
@@ -81,7 +79,7 @@ module CIAX
         def ___init_stat
           sid = @sv_stat.send(@cfg[:cid]).get(:sid)
           @stat = Record.new(sid).ext_remote(@host)
-          @stat.upd_procs.append(self, 'remote') do |_s|
+          @stat.upd_procs.append(self, 'remote') do
             @valid_keys.replace(@stat[:option].to_a)
           end
           @int.pars.add_num(sid)

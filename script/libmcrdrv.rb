@@ -24,7 +24,7 @@ module CIAX
 
         def batch
           @seq.play
-          super
+          self
         end
 
         def run

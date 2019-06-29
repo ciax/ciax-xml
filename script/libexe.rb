@@ -72,7 +72,7 @@ module CIAX
     end
 
     def batch
-      puts [exe(@cfg[:args]), @stat]
+      puts exe(@cfg[:args])
       self
     end
 
@@ -91,7 +91,6 @@ module CIAX
 
     def _ext_remote
       @mode = 'CL'
-      @stat.ext_remote(@host)
       self
     end
 
@@ -160,6 +159,7 @@ module CIAX
 
     # Remote setting for sv_stat (will be applied for App/Frm)
     def _remote_sv_stat
+      @stat.ext_remote(@host)
       @sv_stat.ext_remote(@host, @port)
       @sv_stat.upd_procs.append(self, :exe) { @stat.upd }
       @cobj.rem.add_empty

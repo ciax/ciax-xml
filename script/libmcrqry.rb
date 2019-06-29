@@ -30,6 +30,8 @@ module CIAX
         return if opt.empty?
         @valid_keys.replace(opt)
         ___judge(___input_tty)
+      ensure
+        clear
       end
 
       def clear

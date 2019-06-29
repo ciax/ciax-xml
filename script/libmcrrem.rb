@@ -24,10 +24,10 @@ module CIAX
 
         def batch
           @idx = 0
-          tout = 3
+          tout = 5
           while tout > 0
-            sleep 0.5
-            tout = ___show_tail(tout) || 3
+            sleep 0.3
+            tout = ___show_tail(tout) || 5
           end
           show_fg @all.last
           show_fg

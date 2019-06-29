@@ -13,6 +13,7 @@ module CIAX
         super
         @que_cmd = Queue.new
         @que_res = Queue.new
+        @res_proc = proc { |id| __response(id) }
       end
 
       # Communicate with forked macro

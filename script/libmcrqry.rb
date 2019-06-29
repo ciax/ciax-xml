@@ -9,12 +9,13 @@ module CIAX
     class Query
       include Msg
       # Record should have [:opt] key
-      def initialize(stat, sv_stat, valid_keys)
+      def initialize(stat, sv_stat, valid_keys, &res_proc)
         # Datax#put() will access to header, but get() will access @data
         @record = type?(stat, Record)
         @record.put(:status, 'ready')
         @sv_stat = type?(sv_stat, Prompt)
         @valid_keys = type?(valid_keys, Array)
+        @res_proc = res_proc
       end
 
       # For prompt
@@ -24,11 +25,11 @@ module CIAX
       end
 
       # return t/f
-      def query(cmds)
-        @valid_keys.replace(cmds)
+      def query
+        opt = @record[:option] || []
+        return if opt.empty?
+        @valid_keys.replace(opt)
         ___judge(___input_tty)
-      ensure
-        clear
       end
 
       def clear
@@ -48,7 +49,7 @@ module CIAX
           line = Readline.readline(__options, true)
           break 'interrupt' unless line
           id = line.rstrip
-          break id if __response(id)
+          break id if @res_proc.call(id)
         end
       end
 

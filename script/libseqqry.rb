@@ -33,6 +33,8 @@ module CIAX
         res = Msg.fg? ? ___input_tty : ___input_que
         step.put(:action, res).cmt
         ___judge(res)
+      ensure
+        clear
       end
 
       private

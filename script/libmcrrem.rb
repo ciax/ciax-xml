@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'libmcrqry'
 
 module CIAX
   # Macro Layer
@@ -17,6 +18,7 @@ module CIAX
           _init_port
           _remote_sv_stat
           ___init_stat
+          ___init_proc
           self
         end
 
@@ -25,12 +27,12 @@ module CIAX
           prev = @stat.to_json
           timeout = 3
           while timeout > 0
-            sleep 1
+            sleep 0.5
             str = @stat.upd.to_v
             lines = str.split("\n").grep_v(/^ \(/)
             lines[idx..-1].each { |l| puts l }
             if prev == str.to_json
-              timeout -= 1
+              @qry.query || timeout -= 1
             else
               prev = str.to_json
               idx = lines.size
@@ -46,10 +48,16 @@ module CIAX
         def ___init_stat
           sid = @sv_stat.send(@cfg[:cid]).get(:sid)
           @stat = Record.new(sid).ext_remote(@host)
+          @int.pars.add_num(sid)
+          @qry = Query.new(@stat, @sv_stat, @valid_keys) do |cid|
+            @sv_stat.send(format('%s:%s', cid, sid))
+          end
+        end
+
+        def ___init_proc
           @stat.upd_procs.append(self, 'remote') do
             @valid_keys.replace(@stat[:option].to_a)
           end
-          @int.pars.add_num(sid)
         end
       end
     end

@@ -21,7 +21,7 @@ module CIAX
         @submcr_proc = submcr_proc
         @depth = 0
         # For Thread mode
-        @qry = Query.new(@record, @sv_stat, @cfg[:valid_keys] || [])
+        @qry = Reply.new(@record, @sv_stat, @cfg[:valid_keys] || [])
       end
 
       # For prompt '(stat) [option]'

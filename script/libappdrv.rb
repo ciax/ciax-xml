@@ -15,7 +15,7 @@ module CIAX
         def ext_driver
           super
           return self unless @sub_exe
-          @stat.ext_conv
+          @stat.ext_sym(@cfg[:sdb]).ext_conv
           ___init_buffer
           self
         end

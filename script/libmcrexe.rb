@@ -15,7 +15,6 @@ module CIAX
         verbose { 'Initiate New Macro' }
         ___init_cmd
         @sv_stat = type?(@cfg[:sv_stat], Prompt)
-        @stat = Record.new
         _opt_mode
       end
 

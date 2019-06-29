@@ -19,8 +19,9 @@ module CIAX
       # Local operation included in ext_test, ext_driver
       # (non_client)
       def ext_local
-        @stat.ext_local.ext_file
-        @post_exe_procs << proc { |_args, _src, msg| @sv_stat.repl(:msg, msg) }
+        @post_exe_procs << proc do |_a, _s, msg|
+          @sv_stat.repl(:msg, msg)
+        end
         self
       end
 
@@ -43,13 +44,14 @@ module CIAX
       # No save any data
       def _ext_test
         @mode = 'TEST'
+        @stat.ext_local.ext_file
         self
       end
 
       # Generate and Save Data
       def _ext_driver
         @mode = 'DRV'
-        @stat.ext_save
+        @stat.ext_local.ext_file.ext_save
         self
       end
     end

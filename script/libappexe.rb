@@ -77,7 +77,6 @@ module CIAX
           super
           ___init_proc_set
           ___init_proc_del
-          @stat.ext_sym(@cfg[:sdb])
           self
         end
 

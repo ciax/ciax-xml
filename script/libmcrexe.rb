@@ -56,7 +56,7 @@ module CIAX
         end
 
         def opt_mode
-          super
+          @mode = @opt.drv? ? 'DRV' : 'TEST'
           extend(Driver).ext_driver
         end
       end

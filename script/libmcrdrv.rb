@@ -14,12 +14,11 @@ module CIAX
         include CIAX::Exe::Driver
         attr_reader :thread, :seq
         def ext_driver(&submcr_proc)
-          super
           @seq = Sequencer.new(@cfg, &submcr_proc)
           @id = @seq.id
           @int.def_proc { |ent| @seq.reply(ent.id) }
           @stat = @seq.record
-          self
+          super
         end
 
         def batch

@@ -23,27 +23,36 @@ module CIAX
         end
 
         def batch
-          idx = 0
-          prev = @stat.to_json
-          timeout = 3
-          while timeout > 0
+          @idx = 0
+          tout = 3
+          while tout > 0
             sleep 0.5
-            str = @stat.upd.to_v
-            lines = str.split("\n").grep_v(/^ \(/)
-            lines[idx..-1].each { |l| puts l }
-            if prev == str.to_json
-              @qry.query || timeout -= 1
-            else
-              prev = str.to_json
-              idx = lines.size
-              timeout = 3
-            end
+            tout = ___show_tail(tout) || 3
           end
-          puts @stat.to_v.split("\n").last
+          show_fg @all.last
+          show_fg
           self
         end
 
         private
+
+        def ___show_tail(timeout)
+          str = @stat.upd.to_v
+          @all = str.lines
+          lines = @all.grep_v(/^ \(/)
+          lines[@idx..-1].each { |l| __show l }
+          @idx = lines.size
+          return(timeout - 1) unless @qry.query || __diff(str)
+        end
+
+        def __diff(str)
+          return false if @prev == str.to_json
+          @prev = str.to_json
+        end
+
+        def __show(line)
+          show_fg(/.+\?$/ =~ line ? line.chop : line)
+        end
 
         def ___init_stat
           sid = @sv_stat.send(@cfg[:cid]).get(:sid)

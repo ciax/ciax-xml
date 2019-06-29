@@ -16,7 +16,7 @@ module CIAX
         def ext_remote
           @mode = 'CL'
           _init_port
-          _remote_sv_stat
+          _remote_stat
           ___init_stat
           ___init_proc
           self

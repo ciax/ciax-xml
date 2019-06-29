@@ -158,7 +158,7 @@ module CIAX
     end
 
     # Remote setting for sv_stat (will be applied for App/Frm)
-    def _remote_sv_stat
+    def _remote_stat
       @stat.ext_remote(@host)
       @sv_stat.ext_remote(@host, @port)
       @sv_stat.upd_procs.append(self, :exe) { @stat.upd }

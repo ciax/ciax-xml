@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'libclient'
 require 'libmcrqry'
 
 module CIAX
@@ -9,15 +10,17 @@ module CIAX
     class Exe
       # Remote mode
       module Remote
+        include CIAX::Exe::Remote
         def self.extended(obj)
           Msg.type?(obj, Exe)
         end
 
         def ext_remote
-          @mode = 'CL'
+          super
           _init_port
-          _remote_stat
+          _remote_sv_stat
           ___init_stat
+          _remote_stat
           ___init_proc
           self
         end
@@ -56,7 +59,7 @@ module CIAX
 
         def ___init_stat
           sid = @sv_stat.send(@cfg[:cid]).get(:sid)
-          @stat = Record.new(sid).ext_remote(@host)
+          @stat = Record.new(sid)
           @int.pars.add_num(sid)
           @qry = Query.new(@stat, @sv_stat, @valid_keys) do |cid|
             @sv_stat.send(format('%s:%s', cid, sid))

@@ -39,6 +39,7 @@ module CIAX
       def _ext_remote
         super
         _remote_stat
+        self
       end
 
       # Overridden by libmansh

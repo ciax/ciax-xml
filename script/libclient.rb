@@ -3,6 +3,33 @@ require 'libudp'
 
 # Provide Client
 module CIAX
+  class Exe
+    # Remote module
+    module Remote
+      def self.extended(obj)
+        Msg.type?(obj, Exe)
+      end
+
+      def ext_remote
+        @mode = 'CL'
+        self
+      end
+
+      # Remote setting for sv_stat (will be applied for App/Frm)
+      def _remote_sv_stat
+        @sv_stat.ext_remote(@host, @port)
+        @cobj.rem.add_empty
+        @cobj.rem.def_proc { |ent| @sv_stat.send(ent.id) }
+      end
+
+      # Should be done after _remote_sv_stat()
+      # @stat will be generated according to sv_stat response at macro
+      def _remote_stat
+        @stat.ext_remote(@host)
+        @sv_stat.upd_procs.append(self, :exe) { @stat.upd }
+      end
+    end
+  end
   # Device Processing
   class Prompt
     # Client module

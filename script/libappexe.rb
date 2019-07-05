@@ -29,7 +29,9 @@ module CIAX
 
       def _ext_remote
         super
+        _remote_sv_stat
         _remote_stat
+        self
       end
 
       def _ext_shell

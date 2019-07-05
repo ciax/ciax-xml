@@ -20,8 +20,9 @@ module CIAX
       private
 
       def _ext_remote
-        @stat.ext_remote(@host)
         super
+        _remote_stat
+        self
       end
 
       def _ext_shell

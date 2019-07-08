@@ -64,6 +64,7 @@ module CIAX
 
         # Re-generate record dic
         def refresh # returns self
+          dic.clear
           (___file_keys - dic.keys).each do |key|
             __push_record(jload(__rec_fname(key)))
           end
@@ -102,9 +103,9 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
-      Opt::Get.new('', options: 'chs') do |opts|
+      Opt::Get.new('', options: 'ch', r: 'refresh') do |opts|
         ra = RecArc.new.cmode(opts.host)
-        ra.ext_save.refresh if opts[:s]
+        ra.ext_save.refresh if opts[:r]
         puts ra
       end
     end

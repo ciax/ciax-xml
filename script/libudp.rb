@@ -51,13 +51,13 @@ module CIAX
       def ___recv
         line, @addr = @udp.recvfrom(4096)
         line.chomp!
-        verbose { cfmt('UDP Recv:%s is %s', line, line.class) }
+        verbose { cfmt('UDP Data Recv:%s is %s', line, line.class) }
         [line, Addrinfo.ip(@addr[2]).getnameinfo.first]
       end
 
       def ___send(send_str)
         @udp.send(send_str, 0, @addr[2], @addr[1])
-        verbose { cfmt('UDP Send:%s', send_str) }
+        verbose { cfmt('UDP Data Send:%s', send_str) }
       end
     end
   end

@@ -72,7 +72,7 @@ module CIAX
 
     def chk_module(mary, name)
       cpath = (mary + [name]).join('::')
-      return CIAX.const_get(cpath)
+      CIAX.const_get(cpath)
     rescue NameError
       mary.pop || give_up("No such constant #{name}")
       retry

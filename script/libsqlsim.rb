@@ -11,7 +11,7 @@ module CIAX
         @logary = [{}]
         @index = 0
         @sqlcmd = ['sqlite3', vardir('log') + "sqlog_#{id}.sq3"]
-        @tbl = query('.tables').split(/ /).grep(/^stream/).sort.last
+        @tbl = query('.tables').split(/ /).grep(/^stream/).max
         raise('No Stream table') unless @tbl
         @total = query("select count(*) from #{@tbl} where dir='rcv';").to_i
         raise('No Line') if @total < 1

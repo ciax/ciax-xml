@@ -8,7 +8,7 @@ module CIAX
     module_function
 
     def show(str = '')
-      $stderr.puts str
+      warn str
     end
 
     # For user prompting

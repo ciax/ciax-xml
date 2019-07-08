@@ -13,6 +13,7 @@ module CIAX
       def initialize(spcfg, atrb = Hashx.new, &submcr_proc)
         super
         verbose { 'Initiate New Macro' }
+        _init_port
         ___init_cmd
         @sv_stat = type?(@cfg[:sv_stat], Prompt)
         _opt_mode

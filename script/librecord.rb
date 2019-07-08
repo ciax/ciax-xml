@@ -51,8 +51,13 @@ module CIAX
           format(":%s (%s) [%s]\n", self[:label], self[:cid], date)
       end
 
-      def jverify(hash = {})
+      def refresh
         delete(:option)
+        self
+      end
+
+      def jverify(hash = {})
+        refresh
         res = super
         (res[:steps] || []).map! do |i|
           Step.new(res[:start]).update(i)

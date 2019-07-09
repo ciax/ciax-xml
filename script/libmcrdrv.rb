@@ -29,7 +29,7 @@ module CIAX
         def run
           @thread = Threadx::Fork.new('Macro', 'seq', @id) { batch }
           _set_def_proc('interrupt') { @thread.raise(Interrupt) }
-          super
+          self
         end
 
         private

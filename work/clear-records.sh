@@ -11,5 +11,4 @@ for i ; do
     rm -f "$i"
     echo "[${i##*/}] is not linked"
 done
-
-
+librecarc -r

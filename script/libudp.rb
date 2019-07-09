@@ -56,7 +56,7 @@ module CIAX
       end
 
       def ___send(send_str)
-        @udp.send(send_str, 0, @addr[2], @addr[1])
+        @udp.send(send_str || '', 0, @addr[2], @addr[1])
         verbose { cfmt('UDP Data Send:%s', send_str) }
       end
     end

@@ -15,7 +15,7 @@ case "$1" in
         opt=p
         ;;
     -c)
-        mcrsv -p
+        mcrsv -pn
         opt=c
         ;;
     *)

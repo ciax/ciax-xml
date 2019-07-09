@@ -29,7 +29,7 @@ module CIAX
             sleep 0.3
             tout = ___show_tail(tout) || 5
           end
-          show_fg @all.last
+          __show(@all.last)
           show_fg
           self
         end
@@ -48,10 +48,11 @@ module CIAX
         def __diff(str)
           return false if @prev == str.to_json
           @prev = str.to_json
+          dot
         end
 
         def __show(line)
-          show_fg(/.+\?$/ =~ line ? line.chop : line)
+          show_fg("\n" + line.chop)
         end
 
         def ___init_stat

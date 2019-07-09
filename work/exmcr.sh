@@ -6,16 +6,16 @@ dvexe -e tmc slot5
 case "$1" in
     -l)
         # VER=event:saved
-        dvsv -e
+        dvsv -eb
         # export VER=event:loaded
         opt=lwhlocalhost
         ;;
     -p)
-        dvsv -p
+        dvsv -pb
         opt=p
         ;;
     -c)
-        mcrsv -pn
+        mcrsv -pnb
         opt=c
         ;;
     *)

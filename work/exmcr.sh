@@ -35,4 +35,4 @@ mos_sim
 cd ~/ciax-xml
 git status | grep nothing && git tag -f 'Success!mos-sim'$(date +%y%m%d)
 [ "$out" ] || exit
-cat ~/.var/log/error_$out.out| grep -v duplicated
+cat ~/.var/log/error_$out.out| egrep -v 'duplicated|Initiate'

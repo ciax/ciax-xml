@@ -51,5 +51,11 @@ module CIAX
         CIAX.const_get(mod)
       end
     end
+
+    if __FILE__ == $PROGRAM_NAME
+      Conf.new('', options: 'h') do |cfg|
+        printf("PROJ=%s\n", cfg.get(:proj))
+      end
+    end
   end
 end

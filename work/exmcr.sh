@@ -9,14 +9,17 @@ case "$1" in
         dvsv -eb
         # export VER=event:loaded
         opt=lwhlocalhost
+        out=dvsv
         ;;
     -p)
         dvsv -pb
         opt=p
+        out=dvsv
         ;;
     -c)
         mcrsv -pnb
         opt=c
+        out=mcrsv
         ;;
     *)
         opt=e
@@ -31,3 +34,5 @@ do :;done
 mos_sim
 cd ~/ciax-xml
 git status | grep nothing && git tag -f 'Success!mos-sim'$(date +%y%m%d)
+[ "$out" ] || exit
+cat ~/.var/log/error_$out.out| grep -v duplicated

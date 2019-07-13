@@ -10,13 +10,13 @@
 
 doexe(){
     # Error output should be separated
-    eval $* 2>> $exelog
+    eval $args 2>> $exelog
     code="$?"
 }
 
 ### Status functions ###
 loghead(){
-    echo -en "[$(date +%F_%T)]% $@ " >> $exelog
+    echo -en "[$(date +%F_%T)]% $* " >> $exelog
 }
 setexit(){
     echo "$code" > $exitfile
@@ -28,39 +28,49 @@ updexit(){
     echo $code
 }
 updpid(){
-    sleep 0.1
     pid=$(< $pidfile)
-}
-bglog(){
-    echo "$$" > $pidfile
-    loghead "$@" "(pid=$$)\n"
-    doexe "$@"
-    loghead "(pid=$$)"
-    setexit
+    if [ "$pid" ]; then
+        ps -ef | grep -v "$$ .* grep" | grep -qw $pid && return
+    fi
+    unset pid
     > $pidfile
 }
+bglog(){
+    doexe
+    loghead "$args (pid=$(< $pidfile))"
+    setexit
+}
 fglog(){
-    loghead "$@"
-    doexe "$@"
+    args="$*"
+    loghead "$args"
+    doexe
     setexit
     echo $code
 }
 reject(){
-    loghead "$@" "[Rejected by duplication!]\n"
+    loghead "$args" "[Rejected by duplication!]\n"
 }
 # Check background running
 # Back ground task is alive when $pidfile is not empty
 bgexe(){
-    pid=$(<$pidfile)
+    args="$*"
+    updpid
     if [ "$1" ] ; then
-        [ "$pid" ] && reject "$@" || { bglog "$@" & updpid; }
+        if [ "$pid" ]; then
+            reject
+        else
+            bglog &
+            #sleep 0.1
+            echo "$!" > $pidfile
+            loghead "$args (pid=$!)\n"
+            updpid
+        fi
     fi
-    [ "$pid" ] || pid=0
-    echo $pid
+    echo ${pid:-0}
 }
-exitfile=~/.var/exit.txt
-pidfile=~/.var/pid.txt
-exelog=~/.var/gen2log.txt
+exitfile=~/.var/run/exit.txt
+pidfile=~/.var/run/pid.txt
+exelog=~/.var/log/gen2log.txt
 [ -f $exitfile ] || echo "0" > $exitfile
 [ -f $pidfile ] || touch $pidfile
 case "$1" in
@@ -69,12 +79,12 @@ case "$1" in
         ;;
     -b) # bg -> return pid, duplicated -> reject and pid 
         shift
-        bgexe "$@"
+        bgexe "$*"
         ;;
     -v) #For maintenance
         cat $exelog
         ;;
     *)
-        fglog "$@"
+        fglog "$*"
         ;;
 esac

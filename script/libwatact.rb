@@ -20,6 +20,7 @@ module CIAX
 
         def action
           ___flush_blocklist
+          ___upd_by_action
           ___exec_by_event
           ___event_flag
           self
@@ -30,6 +31,10 @@ module CIAX
         def ___flush_blocklist
           block = @event.get(:block).map { |id, par| par ? nil : id }.compact
           @eobj.cobj.rem.ext.valid_sub(block)
+        end
+
+        def ___upd_by_action
+          @event[:exec] << ['event', 2, ['upd']] if @sv_stat.up?(:action)
         end
 
         def ___exec_by_event

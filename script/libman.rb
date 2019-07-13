@@ -39,6 +39,8 @@ module CIAX
       def _ext_remote
         super
         _remote_sv_stat
+        _remote_stat
+        self
       end
 
       # Overridden by libmansh
@@ -80,11 +82,17 @@ module CIAX
           @cfg[:cid] = 'manager'
           @mode = 'DRY' if @opt.dry?
           @cobj.rem.ext_input_log if @opt.mcr_log?
+          @cobj.get('nonstop').def_proc { sv_stat.up(:nonstop) }
+          @cobj.get('interactive').def_proc { sv_stat.dw(:nonstop) }
+          ___init_pre_exe
+          self
+        end
+
+        def ___init_pre_exe
           @pre_exe_procs << proc do
             @sv_stat.repl(:sid, '')
             @sv_stat.flush(:run).cmt if @sv_stat.get(:list).empty?
           end
-          self
         end
       end
     end

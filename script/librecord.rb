@@ -13,7 +13,7 @@ module CIAX
       def initialize(id = nil) # Session ID for Loading
         super('record', id)
         _attr_set('0', nil, 'record')
-        @id = self[:id] = self[:time].to_s unless @id
+        @id ||= self[:id] = self[:time].to_s
         type?(@id, String)
         update(port: 55_555, cid: nil, label: nil, pid: '0')
         update(mode: 'test', status: 'ready', result: 'busy')
@@ -51,7 +51,13 @@ module CIAX
           format(":%s (%s) [%s]\n", self[:label], self[:cid], date)
       end
 
+      def refresh
+        delete(:option)
+        self
+      end
+
       def jverify(hash = {})
+        refresh
         res = super
         (res[:steps] || []).map! do |i|
           Step.new(res[:start]).update(i)

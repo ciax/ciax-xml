@@ -30,6 +30,8 @@ module CIAX
       def _ext_remote
         super
         _remote_sv_stat
+        _remote_stat
+        self
       end
 
       def _ext_shell
@@ -77,7 +79,6 @@ module CIAX
           super
           ___init_proc_set
           ___init_proc_del
-          @stat.ext_sym(@cfg[:sdb])
           self
         end
 

@@ -71,6 +71,11 @@ module CIAX
       _ext_shell.shell
     end
 
+    def batch
+      puts exe(@cfg[:args])
+      self
+    end
+
     private
 
     # Option handling
@@ -85,9 +90,8 @@ module CIAX
     end
 
     def _ext_remote
-      @mode = 'CL'
-      @stat.ext_remote(@host)
-      self
+      require 'libclient'
+      extend(context_module('Remote')).ext_remote
     end
 
     def _ext_local
@@ -151,15 +155,6 @@ module CIAX
       @mode = se.mode
       @post_exe_procs.concat(se.post_exe_procs)
       se
-    end
-
-    # Remote setting for sv_stat (will be applied for App/Frm)
-    def _remote_sv_stat
-      @sv_stat.ext_remote(@host, @port)
-      @sv_stat.upd_procs.append(self, :exe) { @stat.upd }
-      @cobj.rem.add_empty
-      @cobj.rem.def_proc { |ent| @sv_stat.send(ent.id) }
-      self
     end
   end
 end

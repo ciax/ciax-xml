@@ -13,8 +13,8 @@
       </site>
     </group>
     <group id="cx_sim" label="SimLab">
-      <site id="cr2" dev_id="cr2" app_id="mel" port="25502" label="CIAX CART 2"/>
-      <site id="c2j" dev_id="cr2" app_id="cjk" port="25503" label="CART 2 Jack Setting"/>
+      <site id="cr2" dev_id="cr2" app_id="mel" port="25502" label="CIAX CART 2" enable="false"/>
+      <site id="c2j" dev_id="cr2" app_id="cjk" port="25503" label="CART 2 Jack Setting" enable="false"/>
     </group>
     <group id="cx_cfg" label="Setting">
       <site id="c3j" dev_id="crt" app_id="cjk" host="ciax" port="25501" label="CART 3 Jack Setting" enable="false">

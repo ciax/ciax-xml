@@ -86,9 +86,8 @@ module CIAX
         class Group
           def initialize(dom_cfg, atrb = Hashx.new)
             super
-            sv_stat = @cfg[:sv_stat]
-            add_form('nonstop', 'Mode').def_proc { sv_stat.up(:nonstop) }
-            add_form('interactive', 'Mode').def_proc { sv_stat.dw(:nonstop) }
+            add_form('nonstop', 'Mode')
+            add_form('interactive', 'Mode')
           end
         end
       end

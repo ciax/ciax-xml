@@ -6,28 +6,34 @@ dvexe -e tmc slot5
 case "$1" in
     -l)
         # VER=event:saved
-        dvsv -e
+        dvsv -eb
         # export VER=event:loaded
-        opt=lwhlocalhost
+        opt=nlwhlocalhost
+        out=dvsv
         ;;
     -p)
-        dvsv -p
-        opt=p
+        dvsv -pb
+        opt=pn
+        out=dvsv
         ;;
     -c)
-        mcrsv -p
+        mcrsv -pnb
         opt=c
+        out=mcrsv
+        sleep 1
         ;;
     *)
-        opt=e
+        opt=en
         ;;
 esac
-mcrexe -n$opt upd
+mcrexe -$opt upd
 while
-    mcrexe -n$opt cinit
+    mcrexe -$opt cinit
     [ $? -gt 8 ]
 do :;done
 [ "$opt" ] && dvsv
 mos_sim
 cd ~/ciax-xml
 git status | grep nothing && git tag -f 'Success!mos-sim'$(date +%y%m%d)
+[ "$out" ] || exit
+cat ~/.var/log/error_$out.out| egrep -v 'duplicated|Initiate'

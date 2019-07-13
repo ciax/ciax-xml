@@ -74,6 +74,7 @@ module CIAX
         id = ent.par[0]
         mobj = get(id)
         @sv_stat.repl(:sid, id)
+        mobj.stat.refresh
         ent.msg = mobj.exe([ent[:id]]).to_s || 'NOSID'
       end
 

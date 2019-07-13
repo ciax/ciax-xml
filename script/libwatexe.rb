@@ -19,6 +19,12 @@ module CIAX
 
       private
 
+      def _ext_remote
+        super
+        _remote_stat
+        self
+      end
+
       def _ext_shell
         super.input_conv_set
         @cfg[:output] = View.new(@stat).ext_prt.upd

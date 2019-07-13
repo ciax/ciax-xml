@@ -8,7 +8,7 @@ module CIAX
     module_function
 
     def show(str = '')
-      $stderr.puts str
+      warn str
     end
 
     # For user prompting
@@ -25,9 +25,9 @@ module CIAX
     end
 
     # Messaging methods
-    def dot(f = true)
-      p = colorize(f ? '.' : 'x', 5)
-      $stderr.print(p)
+    def dot(tf = true)
+      $stderr.print(tf ? '.' : colorize('x', 1))
+      tf
     end
 
     def efmt(*ary)

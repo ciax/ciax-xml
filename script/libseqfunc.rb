@@ -97,6 +97,10 @@ module CIAX
       def _qry_exec?(estep)
         @qry.query(%w(exec skip), estep)
       end
+
+      def _qry_ok?(ostep)
+        @qry.query(['ok'], ostep).is_a?(Step)
+      end
     end
   end
 end

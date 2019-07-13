@@ -36,7 +36,7 @@ module CIAX
       def ___get_proj
         return PROJ unless (host = self[:h])
         udp = Udp::Client.new(host, 54_321)
-        line = udp.send('.').recv.lines.grep(/^\[run\]/).first
+        line = j2h(udp.send('top').recv).first
         line.chomp.split(':').last
       end
 
@@ -49,6 +49,12 @@ module CIAX
         mod = name.capitalize
         cfg_err("No #{mod} module") unless CIAX.const_defined?(mod)
         CIAX.const_get(mod)
+      end
+    end
+
+    if __FILE__ == $PROGRAM_NAME
+      Conf.new('', options: 'h') do |cfg|
+        printf("PROJ=%s\n", cfg.get(:proj))
       end
     end
   end

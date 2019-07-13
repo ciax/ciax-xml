@@ -71,8 +71,7 @@ module CIAX
 
       def ___init_status(status)
         _init_sub_stat(status, App::Status, @dbi)
-        @upd_procs.append(self, :event) { @sub_stat.upd }
-        propagation(@sub_stat)
+        propagation(@sub_stat, :event)
       end
     end
 

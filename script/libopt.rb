@@ -37,11 +37,11 @@ module CIAX
 
       # Shell or Command Line. Add after block.
       def cui
-        if @argv.empty?
+        if !interactive? && @argv.empty?
           @obj.shell
         else
           @obj = @obj.get(@argv.shift) if @obj.is_a?(ExeDic)
-          puts [@obj.exe(@argv), @obj.stat]
+          @obj.batch
         end
         self
       rescue InvalidARGS

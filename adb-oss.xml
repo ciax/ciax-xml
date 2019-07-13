@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="oss" id="oss" label="TSC Control" version="8">
+  <app frm_id="oss" id="oss" label="TSC Control" version="9">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gsys" caption="System">
         <item id="cinit" label="Start TCP Status Request">
@@ -605,7 +605,7 @@
             <field ref="clm" index="1-$_/8" bit="$_%8"/>
           </repeat_field>
         </binary>
-        <float id="jkm" operation="average" format="%5.2f" formula="$#/100" label="Len Av">
+        <float id="jkm" operation="average" format="%5.2f" formula="$#/1600" label="Len Av">
           <repeat_field from="0" to="15">
             <field ref="jk" index="$_"/>
           </repeat_field>

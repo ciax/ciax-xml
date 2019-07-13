@@ -46,7 +46,7 @@ module CIAX
         def ___get_val(hash, id)
           val = ___get_by_type(hash)
           verbose { "GetData[#{val}](#{id})" }
-          val = ___conv_fomula(hash, val, id)
+          val = ___conv_formula(hash, val, id)
           val = hash[:format] % val if hash.key?(:format)
           val.to_s
         end
@@ -90,7 +90,7 @@ module CIAX
           sign * val
         end
 
-        def ___conv_fomula(hash, val, id)
+        def ___conv_formula(hash, val, id)
           return val unless hash.key?(:formula)
           f = hash[:formula].gsub(/\$#/, val.to_s)
           val = expr(f)

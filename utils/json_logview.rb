@@ -8,17 +8,15 @@ abort 'Usage: json_logview json_log' if STDIN.tty? && ARGV.empty?
 readlines.each do |line|
   next if line.to_s.empty?
 
-  ary = []
-  JSON.parse(line.chomp, symbolize_names: true).each do |k, v|
+  hash = JSON.parse(line.chomp, symbolize_names: true)
+  hash.each do |k, v|
     case k
     when :time
-      ary << Time.at(v / 1000, (v % 1000) * 1000).strftime('[%Y-%m-%d %T,%L]')
+      hash[:time] = Time.at(v / 1000, (v % 1000) * 1000).strftime('%Y-%m-%d %T,%L')
     when :base64
       data = v.unpack('m').first
-      ary << "data=#{data.inspect}(#{data.size})"
-    else
-      ary << "#{k}=#{v.inspect}"
+      hash[:data] = "#{data.inspect}(#{data.size})"
     end
   end
-  puts ary.join("\t")
+  puts JSON.dump(hash)
 end

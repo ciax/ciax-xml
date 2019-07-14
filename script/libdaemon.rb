@@ -26,7 +26,7 @@ module CIAX
     end
 
     def ___server(port)
-      info('Start Layer %s', yield.class)
+      info('Initiate Layer %s', yield.class)
       msg = 'for Thread status'
       reg = 'udp'
       Udp::Server.new(port, msg).listen do |inp, _host|

@@ -2,7 +2,7 @@
 chklog(){
     [ "$out" ] || return 0
     log=~/.var/log/error_$out.out
-    egrep -v 'duplicated|Initiate' $log || return 0
+    grep . $log | egrep -v 'duplicated|Initiate' || return 0
     > $log
     return 1
 }

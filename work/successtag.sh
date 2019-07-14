@@ -1,12 +1,23 @@
 #!/bin/bash
 # Add git tag for the version of successful operation
 # You can Specify date
+chktag(){
+    echo "$*"
+    git check-ref-format "$*" || { echo "Invalid format"; return 1; }
+}
+settag(){
+    if [ "$s" ] ; then
+        git tag "$*"
+        git push --tag
+    else
+        echo "Usage: successtag (-s: real setting, -d: specific date) (message)"
+    fi
+}
 [ "$1" = -s ] && { s=1; shift; }
-date=$(date ${1:+-d $1} +%Y/%m/%d)
+[ "$1" = -d ] && { shift; sd="-d ${1:-now}"; shift; }
+date=$(date $sd +%Y/%m/%d)
 br=$(git branch --contains)
-tag="Success!${PROJ^^}@$HOSTNAME($date)-${br#* }"
-git check-ref-format "$tag" || { echo "Invalid format"; exit 1; }
-echo "$tag"
-[ "$s" ] || { echo "successtag (-s: real setting)"; exit; }
-git tag $tag
-git push --tag
+IFS=_
+tag="$date-Success@$HOSTNAME(project=$PROJ,branch=${br#* })$*"
+chktag $tag || exit 1
+settag $tag

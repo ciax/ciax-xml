@@ -38,7 +38,7 @@ module CIAX
         private
 
         def _ext_driver
-          @stat.ext_log
+          @stat.ext_local.ext_log
           self
         end
       end

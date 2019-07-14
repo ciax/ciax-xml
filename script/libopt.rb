@@ -16,7 +16,7 @@ module CIAX
       attr_reader :init_layer
       def initialize(ustr = '', optarg = {}, &opt_proc)
         ustr = '(opt) ' + ustr unless optarg.empty?
-        @defopt = optarg.delete(:default).to_s
+        ___set_default(optarg)
         @optdb = Db.new(optarg)
         _set_opt(optarg.delete(:options))
         getarg(ustr, &opt_proc)
@@ -88,8 +88,10 @@ module CIAX
       end
 
       # Pick up a specified option from limiting ary
-      def __make_exopt(ary)
-        ary.find { |c| self[c] } || ary.find { |c| @defopt.include?(c.to_s) }
+      def ___set_default(optarg)
+        optarg.delete(:default).to_s.each_char do |s|
+          self[s.to_sym] = true
+        end
       end
 
       def __any_key?(*ary)

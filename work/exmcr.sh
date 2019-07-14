@@ -1,4 +1,17 @@
 #!/bin/bash
+chklog(){
+    [ "$out" ] || return 0
+    log=~/.var/log/error_$out.out
+    egrep -v 'duplicated|Initiate' $log || return 0
+    > $log
+    return 1
+}
+settag(){
+    cd ~/ciax-xml
+    tag=$(date +%y%m%d)'-Success@$HOSTNAME(project=$PROJ)w/mos-sim'
+    git status | grep nothing && git tag -f $tag
+}
+
 PROJ=dmcs
 mos_sim -
 sleep 5
@@ -27,13 +40,13 @@ case "$1" in
         ;;
 esac
 mcrexe -$opt upd
-while
-    mcrexe -$opt cinit
-    [ $? -gt 8 ]
-do :;done
-[ "$opt" ] && dvsv
+if chklog; then
+    while
+        mcrexe -$opt cinit
+        [ $? -gt 8 ]
+    do echo "RETRY"
+    done
+    settag
+fi
+dvsv
 mos_sim
-cd ~/ciax-xml
-git status | grep nothing && git tag -f 'Success!mos-sim'$(date +%y%m%d)
-[ "$out" ] || exit
-cat ~/.var/log/error_$out.out| egrep -v 'duplicated|Initiate'

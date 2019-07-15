@@ -31,28 +31,29 @@ module CIAX
     end
 
     def info(*ary)
-      show __make_msg(cfmt(*ary), 7)
+      show __make_msg('Info:' + cfmt(*ary), 7)
       self
     end
 
     def warning(*ary)
-      show __make_msg(cfmt(*ary), 3)
+      show __make_msg('Warning:' + cfmt(*ary), 3)
       self
     end
 
     def alert(*ary)
-      show __make_msg(cfmt(*ary), 5)
+      show __make_msg('Alert:' + cfmt(*ary), 5)
       self
     end
 
     def watch(val)
-      show __make_msg(cfmt('%p(%s) on %s', val, val.object_id, last_caller), 3)
+      fmt = 'Watch:%p(%s) on %s'
+      show __make_msg(cfmt(fmt, val, val.object_id, last_caller), 3)
       val
     end
 
     # For debugging
     def errmsg
-      show __make_msg("ERROR:#{$ERROR_INFO} at\n", 1) +
+      show __make_msg(cfmt("Error:%s at\n", $ERROR_INFO), 1) +
            $ERROR_POSITION.join("\n")
       self
     end
@@ -77,8 +78,7 @@ module CIAX
     end
 
     def __make_msg(title, c = nil)
-      return unless title
-      __make_head(c ? Msg.colorize(title.to_s, c) : title.to_s)
+      __make_head(c ? Msg.colorize(title.to_s, c) : title.to_s) if title
     end
 
     def ___head_ary

@@ -44,7 +44,7 @@ module CIAX
 
     # Json feature
     def j2h(jstr = nil)
-      key2str(JSON.parse(jstr, symbolize_names: true))
+      key2str(JSON.parse(jstr || '', symbolize_names: true))
     rescue JSON::ParserError
       data_err('NOT JSON [%p]', jstr)
     end

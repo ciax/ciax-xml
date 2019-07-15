@@ -113,6 +113,7 @@ module CIAX
     def mklink(tag = 'latest')
       # Making 'latest' link
       sname = rmlink(tag)
+      ::File.unlink(sname) if ::File.symlink?(sname)
       ::File.symlink(__file_path, sname)
       verbose { "File Symboliclink to [#{sname}]" }
       self

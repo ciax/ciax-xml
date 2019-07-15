@@ -18,6 +18,11 @@ module CIAX
       ___server(port) { yield cfg }
     end
 
+    # Error output redirection to Log File
+    def show(str)
+      warn format("[#{Time.now}]%s", str)
+    end
+
     private
 
     def ___set_env
@@ -26,10 +31,10 @@ module CIAX
     end
 
     def ___server(port)
-      info('Initiate Layer %s', yield.class)
-      msg = 'for Thread status'
+      obj = yield
+      verbose { cfmt('Layer %s', obj.class) }
       reg = 'udp'
-      Udp::Server.new(port, msg).listen do |inp, _host|
+      Udp::Server.new(port, 'for Thread status').listen do |inp, _host|
         reg = inp.delete('"') unless inp.empty?
         Threadx.list.view(reg)
       end
@@ -43,7 +48,7 @@ module CIAX
       info('Git Tagged [%s], Status Port [%s]', tag_set, port) if opt.git_tag?
       ___detach
       ___redirect(tag) if opt.bg?
-      verbose { "Initiate Daemon Start [#{tag}] " + git_ver }
+      verbose { cfmt('Daemon Start [%s] %s', tag, git_ver) }
     end
 
     def ___detach
@@ -51,7 +56,7 @@ module CIAX
       #  as the main process exit in Process.daemon
       Process.daemon(true, true)
       __write_pid($PROCESS_ID)
-      verbose { "Initiate Daemon Detached (#{$PROCESS_ID})" }
+      verbose { "Detached (#{$PROCESS_ID})" }
     end
 
     def ___kill_pids(port)
@@ -100,20 +105,6 @@ module CIAX
       str = "error_#{tag}"
       str << "_#{name}" if name
       vardir('log') + str + '.out'
-    end
-
-    # Error output redirection to Log File
-    class File < File
-      include Msg
-      def initialize(fname, rw)
-        super
-        @base_time = now_msec
-        write("\n")
-      end
-
-      def puts(str)
-        super(format("[#{Time.now}/%s]%s", elps_date(@base_time), str))
-      end
     end
   end
 end

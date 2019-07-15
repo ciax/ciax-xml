@@ -11,6 +11,7 @@
         <mesg label="tfp ok?"/>
         <upd site="tap"/>
         <mesg label="tap ok?"/>
+        <upd site="tts"/>
         <upd site="tbb"/>
         <upd site="tbw"/>
       </item>

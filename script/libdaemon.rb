@@ -3,9 +3,10 @@ require 'liboptconf'
 require 'libthreadx'
 require 'libudp'
 module CIAX
+  # Error output redirection to Log File
   module Msg
     module_function
-    # Error output redirection to Log File
+
     def show(str)
       warn $stderr.tty? ? str : format("[#{Time.now}]%s", str)
     end
@@ -24,7 +25,6 @@ module CIAX
       ___init_server(tag, cfg.opt, port)
       ___server(port) { yield cfg }
     end
-
 
     private
 
@@ -51,7 +51,7 @@ module CIAX
       ___detach
       ___redirect(tag) if opt.bg?
       info('Initiate Daemon Start [%s] %s', tag, git_ver)
-      info('Initiate Git Tagged [%s], Status Port [%s]', tag_set, port) if opt.git_tag?
+      info('Git Tagged [%s], Status Port [%s]', tag_set, port) if opt.git_tag?
     end
 
     def ___detach

@@ -3,6 +3,13 @@ require 'liboptconf'
 require 'libthreadx'
 require 'libudp'
 module CIAX
+  module Msg
+    module_function
+    # Error output redirection to Log File
+    def show(str)
+      warn $stderr.tty? ? str : format("[#{Time.now}]%s", str)
+    end
+  end
   ### Daemon Methods ###
   class Daemon
     include Msg
@@ -18,10 +25,6 @@ module CIAX
       ___server(port) { yield cfg }
     end
 
-    # Error output redirection to Log File
-    def show(str)
-      warn format("[#{Time.now}]%s", str)
-    end
 
     private
 
@@ -45,10 +48,10 @@ module CIAX
 
     # Background (Switch error output to file)
     def ___init_server(tag, opt, port)
-      info('Git Tagged [%s], Status Port [%s]', tag_set, port) if opt.git_tag?
       ___detach
       ___redirect(tag) if opt.bg?
-      verbose { cfmt('Daemon Start [%s] %s', tag, git_ver) }
+      info('Initiate Daemon Start [%s] %s', tag, git_ver)
+      info('Initiate Git Tagged [%s], Status Port [%s]', tag_set, port) if opt.git_tag?
     end
 
     def ___detach

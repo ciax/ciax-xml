@@ -8,7 +8,7 @@ chklog(){
 }
 settag(){
     cd ~/ciax-xml
-    tag=$(date +%y%m%d)'-Success@$HOSTNAME(project=$PROJ)w/mos-sim'
+    tag=$(date +%y%m%d)"-Success@$HOSTNAME(project=$PROJ)w/mos-sim"
     git status | grep nothing && git tag -f $tag
 }
 

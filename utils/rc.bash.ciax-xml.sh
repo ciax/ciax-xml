@@ -22,6 +22,9 @@ init_proj(){
         moircsobcp)
             proj moircs
             ;;
+	hecmprssrv)
+	    proj cmp
+	    ;;
         *)
             proj dmcs
             ;;

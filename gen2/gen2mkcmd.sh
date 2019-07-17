@@ -31,6 +31,7 @@ selcmd(){
         login) mkcmd 1A1901ciax%%%%%%%%%%%%%%%% CIAX%%%%%%%%%%%% dummyunit dummyMenu dummyMessage;;
         logout) mkcmd 1A1902;;
         init)  mkcmd 1A1011;;
+        selcs) mkcmd 904017;;
         tsconly) mkcmd 1A1008TSCONLY;;
         tscpri) mkcmd 1A1008TSCPRI%;;
         ron) mkcmd 904013;;

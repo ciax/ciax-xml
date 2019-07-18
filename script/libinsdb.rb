@@ -23,6 +23,7 @@ module CIAX
         end
       end
 
+      # reduced by hexdb
       def valid_apps(applist)
         list.select! do |id|
           applist.include?(get(id)[:app_id])
@@ -35,6 +36,12 @@ module CIAX
           did = get(s)[:dev_id]
           hash[did] = vi[s] if did && vi.key?(s)
         end
+      end
+
+      def runlist_dev
+        host_ddb.select do |_id, host|
+          /#{HOST}|localhost/ =~ host
+        end.keys
       end
 
       private
@@ -121,8 +128,9 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
         db = Db.new(PROJ)
-        puts "Ins list = #{db.host_idb.inspect}"
-        puts "Dev list = #{db.host_ddb.inspect}"
+        puts "Ins host db = #{db.host_idb.inspect}"
+        puts "Dev host db = #{db.host_ddb.inspect}"
+        puts "Dev run list = #{db.runlist_dev.inspect}"
         dbi = db.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)
       end

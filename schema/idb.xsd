@@ -51,7 +51,6 @@
       <xsd:attribute name="host" type="xsd:token"/>
       <xsd:attribute name="port" type="xsd:int"/>
       <xsd:attribute name="enable" type="xsd:boolean"/>
-      <xsd:attribute name="run" type="xsd:boolean"/>
       <xsd:attribute name="label" type="xsd:token"/>
     </xsd:complexType>
   </xsd:element>

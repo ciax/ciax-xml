@@ -23,6 +23,10 @@ module CIAX
         end
       end
 
+      def runlist_ins
+        __runlist(host_idb)
+      end
+
       # reduced by hexdb
       def valid_apps(applist)
         list.select! do |id|
@@ -39,9 +43,7 @@ module CIAX
       end
 
       def runlist_dev
-        host_ddb.select do |_id, host|
-          /#{HOST}|localhost/ =~ host
-        end.keys
+        __runlist(host_ddb)
       end
 
       private
@@ -75,6 +77,12 @@ module CIAX
         return unless doc.key?(:command)
         super(dbi)
         CmdDb.new.override(doc[:command][:ref], @cdb)
+      end
+
+      def __runlist(db)
+        db.select do |_id, host|
+          /#{HOST}|localhost/ =~ host
+        end.keys
       end
 
       # Status Domain
@@ -129,6 +137,7 @@ module CIAX
       Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
         db = Db.new(PROJ)
         puts "Ins host db = #{db.host_idb.inspect}"
+        puts "Ins run list = #{db.runlist_ins.inspect}"
         puts "Dev host db = #{db.host_ddb.inspect}"
         puts "Dev run list = #{db.runlist_dev.inspect}"
         dbi = db.get(args.shift)

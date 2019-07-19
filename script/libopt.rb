@@ -89,13 +89,14 @@ module CIAX
 
       # Pick up a specified option from limiting ary
       def ___set_default(optarg)
+        @default = []
         optarg.delete(:default).to_s.each_char do |s|
-          self[s.to_sym] = true
+          @default << s.to_sym
         end
       end
 
       def __any_key?(*ary)
-        ary.any? { |k| key?(k) }
+        ary.any? { |k| key?(k) || @default.include?(k) }
       end
     end
   end

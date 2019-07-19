@@ -141,6 +141,7 @@ module CIAX
       @cfg.update(@dbi.pick(*ary))
     end
 
+    # Set UDP port (Frm,App,Hex,Man)
     def _init_port(port_offset = 0)
       @port = @cfg[:port].to_i + port_offset
       self

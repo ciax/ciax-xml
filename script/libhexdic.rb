@@ -10,11 +10,10 @@ module CIAX
       # atrb must have [:db]
       def initialize(spcfg, atrb = Hashx.new)
         super
-        idb = type?(@cfg[:db], Ins::Db)
-        _store_db(idb, idb.host_idb)
+        @db = Ins::Db.new(@cfg.proj)
         _init_subdic(Wat)
         hdb = @cfg[:hdb] = Db.new
-        @run_list.reduce(@db.valid_apps(hdb.list))
+        @run_list = @db.runlist_ins.reduce(@db.valid_apps(hdb.list))
       end
     end
 

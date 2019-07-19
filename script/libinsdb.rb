@@ -80,9 +80,9 @@ module CIAX
       end
 
       def __runlist(db)
-        db.select do |_id, host|
+        Arrayx.new(db.select do |_id, host|
           /#{HOST}|localhost/ =~ host
-        end.keys
+        end.keys)
       end
 
       # Status Domain

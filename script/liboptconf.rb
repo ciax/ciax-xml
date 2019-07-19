@@ -24,7 +24,6 @@ module CIAX
         name = super
         require "lib#{name}dic"
         @cfg[:db] = Ins::Db.new(@cfg.proj)
-        @cfg[:db].reduce(@cfg[:sites]) if @cfg[:sites]
         ___get_mod(name)
       end
 

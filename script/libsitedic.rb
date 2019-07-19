@@ -20,6 +20,7 @@ module CIAX
       def run
         verbose { "Initiate Run #{@run_list.inspect}" }
         @sub_dic.run if @sub_dic
+        @run_list.reduce(@cfg[:sites]) if @cfg[:sites]
         @run_list.each { |s| get(s).run }
         self
       end

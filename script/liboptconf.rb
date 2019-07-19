@@ -42,7 +42,8 @@ module CIAX
 
       def ___init_db
         @cfg[:db] = Ins::Db.new(@cfg.proj)
-        @cfg[:sites] = @cfg.args
+        sites = @cfg[:sites] = @cfg.args
+        @cfg[:db].reduce(sites) unless sites.empty?
       end
 
       def ___get_mod(name)

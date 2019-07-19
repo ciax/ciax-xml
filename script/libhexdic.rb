@@ -13,7 +13,8 @@ module CIAX
         @db = Ins::Db.new(@cfg.proj)
         _init_subdic(Wat)
         hdb = @cfg[:hdb] = Db.new
-        @run_list = @db.runlist_ins.reduce(@db.valid_apps(hdb.list))
+        @db.valid_apps(hdb.list)
+        @run_list = @db.runlist_ins
       end
     end
 

@@ -7,9 +7,12 @@ module CIAX
   module Dev
     # Device DB
     class Db < Dbx::Index
-      def initialize
+      def initialize(idb = nil)
         super('ddb')
         @fdb = Frm::Db.new
+        return unless idb
+        @host_ddb = idb.host_ddb
+        reduce(@host_ddb.keys)
       end
 
       private
@@ -19,7 +22,8 @@ module CIAX
         dbi = @fdb.get(at[:frm_id]).deep_copy
         dbi.update(at)
         __rec_db(doc[:top], dbi)
-        dbi[:site_id] = dbi[:id]
+        id = dbi[:site_id] = dbi[:id]
+        dbi[:host] = @host_ddb[id] if @host_ddb
         dbi
       end
 
@@ -38,8 +42,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
-        dlist = Ins::Db.new.runlist_dev
-        db = Db.new.reduce(dlist)
+        db = Db.new(Ins::Db.new)
         puts "Dev list = #{db.list.inspect}"
         dbi = db.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)

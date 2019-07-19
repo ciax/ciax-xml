@@ -11,7 +11,8 @@ module CIAX
       def initialize(spcfg, atrb = Hashx.new)
         super
         idb = type?(@cfg[:db], Ins::Db)
-        _store_db(Dev::Db.new, idb.host_ddb)
+        @run_list = idb.runlist_dev
+        @db = @cfg[:db] = Dev::Db.new(idb)
       end
     end
 

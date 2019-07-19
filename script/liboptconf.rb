@@ -23,7 +23,8 @@ module CIAX
       def top_layer
         name = super
         require "lib#{name}dic"
-        ___init_db
+        @cfg[:db] = Ins::Db.new(@cfg.proj)
+        @cfg[:db].reduce(@cfg[:sites]) if @cfg[:sites]
         ___get_mod(name)
       end
 
@@ -38,12 +39,6 @@ module CIAX
         udp = Udp::Client.new(host, 54_321)
         line = j2h(udp.send('top').recv).first
         line.chomp.split(':').last
-      end
-
-      def ___init_db
-        @cfg[:db] = Ins::Db.new(@cfg.proj)
-        sites = @cfg[:sites] = @cfg.args
-        @cfg[:db].reduce(sites) unless sites.empty?
       end
 
       def ___get_mod(name)

@@ -22,6 +22,7 @@ module CIAX
       ___set_env
       tag = $PROGRAM_NAME.split('/').last
       ___chk_args(___kill_pids(port), cfg.args + cfg.opt.values)
+      ___set_sites(cfg)
       ___init_server(tag, cfg.opt, port)
       ___server(port) { yield cfg }
     end
@@ -44,6 +45,10 @@ module CIAX
     rescue SignalException
       Threadx.killall
       retry if $ERROR_INFO.message == 'SIGHUP'
+    end
+
+    def ___set_sites(cfg)
+      cfg[:sites] = cfg.args unless cfg.args.empty?
     end
 
     # Background (Switch error output to file)

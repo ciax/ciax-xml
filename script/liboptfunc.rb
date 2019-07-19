@@ -82,7 +82,7 @@ module CIAX
         @valids = []
         %i(f a w x m).any? do |l|
           @valids.unshift(l)
-          key?(l)
+          key?(l) || @default.include?(l)
         end || @valids = %i(w a f)
         @optdb.layers[@valids.shift]
       end

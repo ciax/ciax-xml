@@ -23,6 +23,7 @@ module CIAX
       ___init_opt
       ___init_procs
       ___init_dbi
+      @host = @opt.host || @cfg[:host]
       @cobj = context_module('Index').new(@cfg)
       @layer = layer_name
     end
@@ -141,7 +142,6 @@ module CIAX
     end
 
     def _init_port(port_offset = 0)
-      @host = @opt.host || @cfg[:host]
       @port = @cfg[:port].to_i + port_offset
       self
     end

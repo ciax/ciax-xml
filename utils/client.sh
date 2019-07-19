@@ -11,7 +11,7 @@ shift $(( $OPTIND -1 ))
 id="$1";shift
 layer="$1";shift
 host=${host:-localhost}
-[ "$id" ] || echo "${0##*/} (-h ${host:-host}) [id] [layer]" >&2
+[ "$id" ] || { echo "${0##*/} (-h ${host:-host}) [id] [layer]" >&2; exit; }
 while read line; do
     echo $line
     [ "$dup" ] && continue

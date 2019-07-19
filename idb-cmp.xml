@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="cmp" label="Helium Compressor">
-    <group id="cp_sum" host="ciax" label="Summit Helium Compressor">
+    <group id="cp_sum" host="hecmprssrv" label="Summit Helium Compressor">
       <site id="cco" dev_id="cco" app_id="bbe" port="53204" label="OPT Helium Compressor">
         <command ref="cco"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">

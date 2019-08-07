@@ -11,13 +11,15 @@ settag(){
     tag=$(date +%y%m%d)"-Success@$HOSTNAME(project=$PROJ)w/mos-sim"
     git status | grep nothing && git tag -f $tag
 }
-
+premot(){
+    mos_sim -
+    sleep 5
+    dvexe -e tmc slot5
+}
 PROJ=dmcs
-mos_sim -
-sleep 5
-dvexe -e tmc slot5
 case "$1" in
     -l)
+        premot
         # VER=event:saved
         dvsv -eb
         # export VER=event:loaded
@@ -25,18 +27,25 @@ case "$1" in
         out=dvsv
         ;;
     -p)
+        premot
         dvsv -pb
         opt=pn
         out=dvsv
         ;;
     -c)
+        premot
         mcrsv -pnb
         opt=c
         out=mcrsv
         sleep 1
         ;;
-    *)
+    -e)
+        premot
         opt=en
+        ;;
+    *)
+        echo "Usage: exmcr -(e|c|p|l)"
+        exit
         ;;
 esac
 mcrexe -$opt upd

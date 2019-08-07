@@ -42,10 +42,10 @@
     <site id="mmf" frm_id="mic" port="24618" iocmd="socat - tcp:localhost:19990" label="Focus Actuator" enable="false"/>
   </group>
   <group id="cmp" label="Helium Compressor" column="2">
-    <site id="cro" frm_id="bbe" port="24106" iocmd="socat - tcp:ltc-o:4003" label="OPT Helium Compressor 2"/>
-    <site id="cci" frm_id="bbe" port="24108" iocmd="socat - tcp:ltc-i:4002" label="IR Helium Compressor 1"/>
-    <site id="cco" frm_id="bbe" port="24109" iocmd="socat - tcp:ltc-o:4002" label="OPT Helium Compressor 1"/>
-    <site id="cri" frm_id="bbe" port="24110" iocmd="socat - tcp:ltc-i:4003" label="IR Helium Compressor 2"/>
+    <site id="cco" frm_id="bbe" port="52204" iocmd="socat - tcp:ltc-o:4002" label="OPT Helium Compressor 1"/>
+    <site id="cro" frm_id="bbe" port="52205" iocmd="socat - tcp:ltc-o:4003" label="OPT Helium Compressor 2"/>
+    <site id="cci" frm_id="bbe" port="52206" iocmd="socat - tcp:ltc-i:4002" label="IR Helium Compressor 1"/>
+    <site id="cri" frm_id="bbe" port="52207" iocmd="socat - tcp:ltc-i:4003" label="IR Helium Compressor 2"/>
     <site id="cf1" frm_id="k3n" port="24201" iocmd="socat - tcp:ltt-o:4001" label="S1 HC Coolant Flow" enable="false"/>
     <site id="cfa" frm_id="k3n" port="24210" iocmd="socat - tcp:ltt-i:4015" label="S10 HC Coolant Flow" enable="false"/>
   </group>

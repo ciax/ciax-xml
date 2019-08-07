@@ -16,7 +16,7 @@ settag(){
 [ "$1" = -s ] && { s=1; shift; }
 [ "$1" = -d ] && { shift; sd="-d ${1:-now}"; shift; }
 date=$(date $sd +%Y/%m/%d)
-br=$(git branch --contains)
+br=$(git branch --contains|grep '^\*')
 IFS=_
 tag="$date-Success@$HOSTNAME(project=$PROJ,branch=${br#* })$*"
 chktag $tag || exit 1

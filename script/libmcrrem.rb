@@ -52,7 +52,7 @@ module CIAX
         end
 
         def __show(line)
-          show_fg("\n" + line.chop)
+          show_fg("\n" + line.chomp)
         end
 
         def ___init_stat

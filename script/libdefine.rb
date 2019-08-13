@@ -5,7 +5,7 @@ module CIAX
   require 'debug' if ENV['DEBUG']
 
   # MY HOST
-  HOST = `hostname`.strip
+  HOST = `hostname`.strip.split('.').first
   # MY NAME
   PROGRAM = $PROGRAM_NAME.split('/').pop
   # Initial View Mode

@@ -15,24 +15,24 @@ module CIAX
       # etc. : additional option db (i.e. { ? : "description" })
       attr_reader :init_layer
       def initialize(ustr = '', optarg = {}, &opt_proc)
-        ustr = '(opt) ' + ustr unless optarg.empty?
+        @usagestr = optarg.empty? ? ustr : '(opt) ' + ustr
         ___set_default(optarg)
         @optdb = Db.new(optarg)
         _set_opt(optarg.delete(:options))
-        getarg(ustr, &opt_proc)
+        getarg(&opt_proc)
       rescue InvalidARGS
-        usage(ustr)
+        usage
       end
 
-      def getarg(ustr)
+      def getarg
         @obj = yield(self, @argv)
         self
       rescue InvalidARGS
-        usage(ustr)
+        usage
       end
 
-      def usage(ustr = @usagestr)
-        super("#{ustr}\n" + columns(@index))
+      def usage
+        super("#{@usagestr}\n" + columns(@index))
       end
 
       # Shell or Command Line. Add after block.

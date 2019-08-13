@@ -48,8 +48,6 @@ module CIAX
       rescue @cfg[:jump_class]
         @current = $ERROR_INFO.to_s
         retry
-      rescue InvalidARGS
-        @opt.usage('(opt) [id]')
       end
 
       def switch(site)

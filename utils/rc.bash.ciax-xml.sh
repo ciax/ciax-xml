@@ -63,6 +63,7 @@ alias jj='ruby -r json -e "jj(JSON.parse(gets(nil)))"'
 alias js='fixjsstyle *.js'
 alias sim='killall -q mos_sim && echo Terminated || mos_sim; psg mos_sim'
 alias ds='nc -u localhost 54321'
+alias loge='tail -f ~/.var/log/error_mcrsv.out'
 init_proj
 develop >/dev/null
 

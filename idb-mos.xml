@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <idb xmlns="http://ciax.sum.naoj.org/ciax-xml/idb">
   <project id="mos" label="MOIRCS MOS" column="3">
-    <group id="mc_mos" label="MOS Mask Exchanger">
-      <site id="mfp" dev_id="mfp" app_id="cfp" host="moircsobcp" port="25601" label="Pneumatic Actuator"/>
-      <site id="map" dev_id="map" app_id="oma" host="moircsobcp" port="25602" label="Air Pressure"/>
-      <site id="mma" dev_id="mma" app_id="mma" host="moircsobcp" port="25603" label="Extension Arm"/>
-      <site id="mmc" dev_id="mmc" app_id="mmc" host="moircsobcp" port="25604" label="Carrousel">
+    <group id="mc_mos" host="moircsobcp" label="MOS Mask Exchanger">
+      <site id="mfp" dev_id="mfp" app_id="cfp" port="25601" label="Pneumatic Actuator"/>
+      <site id="map" dev_id="map" app_id="oma" port="25602" label="Air Pressure"/>
+      <site id="mma" dev_id="mma" app_id="mma" port="25603" label="Extension Arm"/>
+      <site id="mmc" dev_id="mmc" app_id="mmc" port="25604" label="Carrousel">
         <command ref="mmc"/>
         <status xmlns="http://ciax.sum.naoj.org/ciax-xml/idbs">
           <group ref="gpos">
@@ -17,7 +17,7 @@
           </group>
         </status>
       </site>
-      <site id="cmi" app_id="cmi" host="moircsobcp" port="25600" label="Current Mask Index"/>
+      <site id="cmi" app_id="cmi" port="25600" label="Current Mask Index"/>
     </group>
   </project>
 </idb>

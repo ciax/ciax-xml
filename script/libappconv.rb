@@ -32,6 +32,7 @@ module CIAX
           time_upd(@sub_stat.flush)
           @adbsi.each do |id, hash|
             cnd = hash[:fields].empty?
+info('id=%p, frozen?=%s', id, id.frozen?)
             next if cnd && get(id)
             dflt = hash[:default] || ''
             # Don't use put() which makes infinity loop in cmt

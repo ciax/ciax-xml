@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'libprompt'
-require 'libappstat'
+require 'libwatstat'
 require 'libhexdb'
 module CIAX
   # Ascii Hex Pack
@@ -114,7 +114,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id]', options: 'h') do |opt, args|
-        stat = App::Status.new(args).cmode(opt.host)
+        stat = Wat::Event.new(args).cmode(opt.host)
         stat.stat_pool['sv_stat'] = Prompt.new('site', stat.id)
         puts View.new(stat).to_x
       end

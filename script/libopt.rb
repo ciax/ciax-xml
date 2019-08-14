@@ -24,7 +24,9 @@ module CIAX
         usage
       end
 
-      def getarg
+      # Takes parameter for recursive usage
+      def getarg(ustr = nil)
+        @usagestr = ustr if ustr
         @obj = yield(self, @argv)
         self
       rescue InvalidARGS

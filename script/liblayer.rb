@@ -10,13 +10,23 @@ module CIAX
       ___init_layers(obj)
     end
 
+    private
+
     # Initialize all sub layers
     def ___init_layers(obj)
+      ___get_site(obj)
       loop do
         ns = m2id(obj.class, -2)
         put(ns, obj)
         obj = obj.sub_dic || break
       end
+    end
+
+    def ___get_site(obj)
+      return unless obj.is_a? Site::ExeDic
+      args = @cfg[:args]
+      return if args.empty?
+      obj.current = args.shift
     end
 
     # Shell module which is Layer specific

@@ -6,7 +6,7 @@ module CIAX
     # This should be set [:db]
     class ExeDic < CIAX::ExeDic
       attr_reader :db, :sub_dic
-      attr_accessor :super_dic
+      attr_accessor :super_dic, :current
       def initialize(spcfg, atrb = Hashx.new)
         super
         @cfg[:column] = 2
@@ -49,7 +49,7 @@ module CIAX
           super
           @cfg[:jump_site] = @jumpgrp
           @jumpgrp.ext_grp.merge_forms(@cfg[:db].disp_dic)
-          @current = @run_list.first || @db.list.first
+          @current ||= @run_list.first || @db.list.first
           @sub_dic.ext_shell if @sub_dic
           self
         end

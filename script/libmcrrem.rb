@@ -39,7 +39,8 @@ module CIAX
         def ___show_tail(timeout)
           str = @stat.upd.to_v
           @all = str.lines
-          lines = @all.grep_v(/^ \(/)
+          # V2.0 doesn't have grep_v() 
+          lines = @all.select { |i| /^ \(/ !~ i }
           lines[@idx..-1].each { |l| __show l }
           @idx = lines.size
           return(timeout - 1) unless @qry.query || __diff(str)

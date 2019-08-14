@@ -26,8 +26,8 @@ module CIAX
       end
 
       # Get with token
-      def get(token)
-        token.sub!(%r(data/), '')
+      def get(id)
+        token = id.sub(%r(data/), '')
         return super unless %r(/) =~ token
         cat = $`.to_sym
         cfg_err('No such entry [%s]', cat) unless key?(cat)

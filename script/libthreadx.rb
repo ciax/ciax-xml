@@ -57,7 +57,7 @@ module CIAX
         th = super do
           Thread.pass
           verbose { "Initiate Thread #{id}" }
-          ___try { yield }
+          ___try(tname) { yield }
         end
         th.update(layer: layer, name: tname, id: id).update(atrb)
         Threads.add(th)
@@ -65,10 +65,10 @@ module CIAX
 
       private
 
-      def ___try
+      def ___try(tname)
         yield
       rescue StandardError
-        show_err
+        errmsg
       end
     end
 

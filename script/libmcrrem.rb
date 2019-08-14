@@ -11,6 +11,9 @@ module CIAX
       # Remote mode
       module Remote
         include CIAX::Exe::Remote
+
+        TOUT=10
+
         def self.extended(obj)
           Msg.type?(obj, Exe)
         end
@@ -24,10 +27,10 @@ module CIAX
 
         def batch
           @idx = 0
-          tout = 5
+          tout = TOUT
           while tout > 0
             sleep 0.3
-            tout = ___show_tail(tout) || 5
+            tout = ___show_tail(tout) || TOUT
           end
           __show(@all.last)
           show_fg

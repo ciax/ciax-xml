@@ -19,6 +19,10 @@ module CIAX
         _init_subdic
       end
 
+      def get(id)
+        super || id_err(id, 'macro')
+      end
+
       def run
         dbi = @cfg[:dbi]
         ___arc_refresh(dbi)

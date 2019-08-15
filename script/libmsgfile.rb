@@ -6,8 +6,10 @@ module CIAX
   ### File related ###
   module Msg
     #  Used for initial reading to get id
-    def pre_read(jstr = nil)
-      @preload = jread(jstr)
+    def pre_read
+      return {} if STDIN.tty?
+      jstr = gets(nil)
+      jstr ? @preload = j2h(jstr) : {}
     end
 
     # OK for bad file
@@ -26,7 +28,7 @@ module CIAX
 
     # Json read with contents conversion
     # Invalid json str including nil gives error
-    def jread(jstr = nil)
+    def jread
       unless jstr
         data_err("No data in file(#{ARGV})") unless (jstr = gets(nil))
         show('Getting Data from STDIN')

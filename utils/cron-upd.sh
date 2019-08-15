@@ -5,3 +5,4 @@ date >> $clog
 for i; do
     $HOME/bin/dvexe -e $i upd >> $clog 2>&1
 done
+[ -t 0 ] && cat $clog

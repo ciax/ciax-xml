@@ -64,8 +64,7 @@ module CIAX
         # Need to wait inactive.
         # Otherwise macro proceed on bad condition (before valid_keys recovery).
         def timeout?
-          tf = progress { active? } ||
-               progress { __all_conds? } ||
+          tf = progress { __all_conds? } ||
                progress { !active? }
           which?('timeout', 'pass', tf)
         end

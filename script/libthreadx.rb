@@ -54,18 +54,16 @@ module CIAX
       def initialize(tname, layer, id, atrb = {})
         @layer = layer
         @id = id
-        th = super do
-          Thread.pass
-          verbose { "Initiate Thread #{id}" }
-          ___try(tname) { yield }
-        end
+        th = super { ___try(id) { yield } }
         th.update(layer: layer, name: tname, id: id).update(atrb)
         Threads.add(th)
       end
 
       private
 
-      def ___try(tname)
+      def ___try(id)
+        Thread.pass
+        verbose { "Initiate Thread #{id}" }
         yield
       rescue StandardError
         errmsg

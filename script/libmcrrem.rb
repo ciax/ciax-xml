@@ -12,7 +12,7 @@ module CIAX
       module Remote
         include CIAX::Exe::Remote
 
-        TOUT=10
+        TOUT = 10
 
         def self.extended(obj)
           Msg.type?(obj, Exe)
@@ -42,8 +42,8 @@ module CIAX
         def ___show_tail(timeout)
           str = @stat.upd.to_v
           @all = str.lines
-          # V2.0 doesn't have grep_v() 
-          lines = @all.select { |i| /^ \(/ !~ i }
+          # V2.0 doesn't have grep_v()
+          lines = @all.reject { |i| /^ \(/ =~ i }
           lines[@idx..-1].each { |l| __show l }
           @idx = lines.size
           return(timeout - 1) unless @qry.query || __diff(str)

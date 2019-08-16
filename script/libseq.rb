@@ -38,7 +38,7 @@ module CIAX
         ___pre_play
         _sequencer(@cfg, @record.cmt)
       rescue CommError, Verification
-        safe_exit
+        nil
       rescue Interrupt
         ___site_interrupt
       ensure

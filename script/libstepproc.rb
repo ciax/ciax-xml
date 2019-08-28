@@ -51,7 +51,7 @@ module CIAX
 
         # Interactive section
         def exec?
-          which?('approval', 'dryrun', !@opt.dry?)
+          which?('approval', 'dryrun', !@opt.dry? && !@opt.test?)
         end
 
         # Execution section

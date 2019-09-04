@@ -26,7 +26,7 @@ module CIAX
           # App::Exe dic used in this Step
           return self unless (condb = delete(:cond))
           @condition = Condition.new(condb) do |s|
-            __dev_exe(s).stat_pool
+            __get_site(s).stat_pool
           end
           self
         end
@@ -45,7 +45,7 @@ module CIAX
 
         # step has site,var,form
         def select_args
-          stat = __dev_exe.stat_pool['status']
+          stat = __get_site.stat_pool['status']
           super(stat.pick_val(self))
         end
 
@@ -93,12 +93,12 @@ module CIAX
 
         private
 
-        def __dev_exe(site = nil)
+        def __get_site(site = nil)
           @dev_dic.get(site || self[:site])
         end
 
         def _exe_site
-          __dev_exe.exe(self[:args], 'macro')
+          __get_site.exe(self[:args], 'macro')
         end
 
         def __all_conds?

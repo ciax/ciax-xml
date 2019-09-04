@@ -45,8 +45,12 @@ module CIAX
         self
       end
 
+      def all_keys
+        keys - @dummy_keys + @hidden_keys
+      end
+
       def reset!
-        @valid_keys.replace(keys - @dummy_keys + @hidden_keys)
+        @valid_keys.replace(all_keys)
         self
       end
 

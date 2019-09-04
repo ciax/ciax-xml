@@ -59,6 +59,18 @@ module CIAX
       raise InvalidCMD, line.flatten.join("\n"), caller(1)
     end
 
+    def noncmd_err(*ary) # Raise User error (Invalid User input)
+      line = [efmt(*ary)]
+      line.concat([yield]) if defined? yield
+      raise NonCMD, line.flatten.join("\n"), caller(1)
+    end
+
+    def block_err(*ary) # Raise User error (Invalid User input)
+      line = [efmt(*ary)]
+      line.concat([yield]) if defined? yield
+      raise BlockedCMD, line.flatten.join("\n"), caller(1)
+    end
+
     def par_err(*ary) # Raise User error (Invalid User input)
       raise InvalidPAR, efmt(*ary), caller(1)
     end

@@ -19,6 +19,10 @@ module CIAX
         rank(ENV['RANK'].to_i)
       end
 
+      def all_keys
+        @disp_dic.all_keys
+      end
+
       def add_dummy(id, title = nil) # returns Display
         @disp_dic.put_item(id, title)
       end

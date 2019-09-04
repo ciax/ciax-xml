@@ -17,6 +17,10 @@ module CIAX
         @layer = @cfg[:layer]
       end
 
+      def all_keys
+        map(&:all_keys).compact.flatten
+      end
+
       def valid_keys
         # map{ |e| e.valid_keys }
         map(&:valid_keys).compact.flatten

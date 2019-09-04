@@ -45,6 +45,10 @@ module CIAX
   class InvalidPAR < InvalidCMD; end
   # When Parameter Shortage, continue in shell/server
   class ParShortage < InvalidPAR; end
+  # When nonexistent Command, continue in shell/server
+  class NonCMD < InvalidCMD; end
+  # When blocked Command, continue in shell/server
+  class BlockedCMD < InvalidCMD; end
 
   ### Mangaged Exception(Long Jump) ###
   class LongJump < RuntimeError; end

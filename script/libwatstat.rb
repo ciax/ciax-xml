@@ -30,7 +30,7 @@ module CIAX
         blkcmd = self[:block].map { |ary| ary.join(':') }
         verbose { "BLOCKING:#{blkcmd}" } unless blkcmd.empty?
         return unless blkcmd.any? { |blk| Regexp.new(blk).match(cid) }
-        Msg.cmd_err("Blocking(#{args})")
+        Msg.block_err("Blocking(#{args})")
       end
 
       # Update the next update time

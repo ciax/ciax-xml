@@ -27,7 +27,7 @@
         </goal>
         <exec site="mix" name="prehome"/>
         <wait retry="20" label="Start?">
-          <not form="msg" var="stp" site="mix">STOP</not>
+          <equal form="msg" var="stp" site="mix">NO</equal>
         </wait>
         <wait retry="300" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
@@ -39,7 +39,7 @@
           <argv>0.2</argv>
         </exec>
         <wait retry="20" label="Start?">
-          <not form="msg" var="stp" site="mix">STOP</not>
+          <equal form="msg" var="stp" site="mix">NO</equal>
         </wait>
         <wait retry="300" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
@@ -72,7 +72,7 @@
       <item id="mech_home" label="Mechanical Homing">
         <exec site="mix" name="posinit"/>
         <wait retry="20" label="Start?">
-          <not form="msg" var="stp" site="mix">STOP</not>
+          <equal form="msg" var="stp" site="mix">NO</equal>
         </wait>
         <wait retry="600" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
@@ -98,7 +98,7 @@
           <argv>10</argv>
         </exec>
         <wait retry="20" label="Start?">
-          <not form="msg" var="stp" site="mix">STOP</not>
+          <equal form="msg" var="stp" site="mix">NO</equal>
         </wait>
         <wait retry="300" label="Run end?">
           <equal form="msg" var="stp" site="mix">STOP</equal>
@@ -162,7 +162,7 @@
           <argv>1</argv>
         </exec>
         <wait retry="20" label="Start?">
-          <not form="msg" var="stp" site="mix">STOP</not>
+          <equal form="msg" var="stp" site="mix">NO</equal>
         </wait>
       </item>
       <item id="find_home" label="Find Home Position">

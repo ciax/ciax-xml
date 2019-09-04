@@ -64,7 +64,7 @@ module CIAX
         # Need to wait inactive.
         # Otherwise macro proceed on bad condition (before valid_keys recovery).
         def timeout?
-          tf = progress { __all_conds? }
+          tf = progress { __all_conds? && !active? }
           which?('timeout', 'pass', tf)
         end
 
@@ -81,6 +81,7 @@ module CIAX
           self
         end
 
+        # Until loop
         def progress(var = nil)
           var ||= self[:retry].to_i - self[:count].to_i
           return super(var) unless defined? yield

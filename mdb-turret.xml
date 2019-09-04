@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
-  <macro id="turret" version="8" label="Turret Control" port="55555">
+  <macro id="turret" version="9" label="Turret Control" port="55555">
     <group id="grp_init" caption="Initialize" rank="0">
       <item id="tinit" label="Initialize Turret">
         <mcr name="thome"/>
+        <cfg site="mix" name="offsetp"/>
         <mcr name="lineup"/>
       </item>
       <item id="thome" label="Turret to Home">
         <cfg site="mft" name="set6v"/>
         <upd site="mft"/>
         <mcr name="ret_home"/>
-        <mcr name="search_home" retry="3" wait="5"/>
         <mcr name="pre_pos"/>
-        <mcr name="precise_home" retry="3" wait="5"/>
-        <cfg site="mix" name="offsetp"/>
+        <mcr name="search_home" retry="3" wait="5"/>
       </item>
     </group>
     <group id="tr_sub" caption="Turret Commands" rank="1">
@@ -47,7 +46,7 @@
         </wait>
         <upd site="mft"/>
       </item>
-      <item id="search_home" label="Fast Mechanical Homing">
+      <item id="search_home" label="Two Step Mechanical Homing">
         <goal label="All Home?" verify="true">
           <match form="msg" site="mft" var="v1">HOME</match>
           <match form="msg" site="mft" var="v2">HOME</match>
@@ -56,23 +55,21 @@
           <match form="msg" site="mft" var="v5">HOME</match>
           <match form="msg" site="mft" var="v6">HOME</match>
         </goal>
+        <mcr name="fast_home"/>
+        <mcr name="precise_home"/>
+      </item>
+      <item id="fast_home" label="Fast Mechanical Homing">
         <cfg site="mix" name="ispdh"/>
+        <mcr name="pre_pos"/>
         <mcr name="mech_home"/>
       </item>
       <item id="precise_home" label="Precise Mechanical Homing">
-        <goal label="All Home?" verify="true">
-          <match form="msg" site="mft" var="v1">HOME</match>
-          <match form="msg" site="mft" var="v2">HOME</match>
-          <match form="msg" site="mft" var="v3">HOME</match>
-          <match form="msg" site="mft" var="v4">HOME</match>
-          <match form="msg" site="mft" var="v5">HOME</match>
-          <match form="msg" site="mft" var="v6">HOME</match>
-        </goal>
+        <mcr name="pre_pos"/>
         <cfg site="mix" name="ispdl"/>
         <mcr name="mech_home"/>
+        <cfg site="mix" name="ispdh"/>
       </item>
       <item id="mech_home" label="Mechanical Homing">
-        <mcr name="pre_pos"/>
         <exec site="mix" name="posinit"/>
         <wait retry="20" label="Start?">
           <not form="msg" var="stp" site="mix">STOP</not>

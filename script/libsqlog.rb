@@ -84,7 +84,7 @@ module CIAX
         dbi = Ins::Db.new.get(args.shift)
         stat = App::Status.new(dbi).ext_local.ext_file
         tbl = Table.new('app', stat)
-        puts stat
+        warn stat
         puts tbl.create
         puts tbl.insert
       end

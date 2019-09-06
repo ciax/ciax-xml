@@ -107,7 +107,7 @@ module CIAX
       return if type?(token, String) !~ /:/
       cat, id = token.split(':')
       cat = cat.to_sym
-      par_err("Invalid category (#{cat}/#{key})") unless key?(cat)
+      par_err("Invalid category (#{cat}/#{id})") unless key?(cat)
       par_err("Invalid id (#{cat}:#{id})") unless self[cat].key?(id)
       yield(self[cat], id)
     end

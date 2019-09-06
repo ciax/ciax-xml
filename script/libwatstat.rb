@@ -8,7 +8,7 @@ module CIAX
   module Wat
     # Event Data
     class Event < Statx
-      attr_reader :wdb, :status, :on_act_procs, :on_deact_procs, :interval
+      attr_reader :wdb, :sub_stat, :on_act_procs, :on_deact_procs, :interval
       def initialize(dbi = nil, status = nil)
         super('event', dbi, Ins::Db)
         @wdb = @dbi[:watch]
@@ -70,7 +70,7 @@ module CIAX
       end
 
       def ___init_status(status)
-        _init_sub_stat(status, App::Status, @dbi)
+        @sub_stat = type_gen(status, App::Status, @dbi)
         propagation(@sub_stat, :event)
       end
     end

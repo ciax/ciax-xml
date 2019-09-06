@@ -10,13 +10,13 @@ module CIAX
       # sv_stat should have server status (isu,watch,exe..) like App::Exe
       # stat contains Status (data:name ,class:name ,msg:name)
       #   + Field (field:name) + Frame (frame:name)
-      def initialize(stat, hdb = nil)
+      def initialize(stat_pool, hdb = nil)
         # To use token omitting 'status:'
-        @stat = type?(stat, Wat::Event)
+        @stat_pool = type?(stat_pool, StatPool)
+        @stat = @stat_pool['event']
         super('hex', @stat[:id])
         _attr_set(@stat[:data_ver])
         @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])
-        @stat_pool = @stat.stat_pool
         @sv_stat = type?(@stat_pool['sv_stat'], Prompt)
         ___init_cmt_procs
         vmode('x')
@@ -114,9 +114,10 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Opt::Get.new('[id]', options: 'h') do |opt, args|
-        stat = Wat::Event.new(args).cmode(opt.host)
-        stat.stat_pool['sv_stat'] = Prompt.new('site', stat.id)
-        puts View.new(stat).to_x
+        event = Wat::Event.new(args).cmode(opt.host)
+        stat_pool = StatPool.new(event)
+        stat_pool['sv_stat'] = Prompt.new('site', event.id)
+        puts View.new(stat_pool).to_x
       end
     end
   end

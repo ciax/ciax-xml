@@ -13,7 +13,7 @@ module CIAX
       module Int
         # Internal Command Group
         class Group
-          # cfg should have [:field]
+          # cfg should have [:stat_pool]
           def initialize(spcfg, atrb = Hashx.new)
             super
             _init_form_int
@@ -43,7 +43,7 @@ module CIAX
 
           def _gen_entity(opt)
             ent = super
-            @stat = type?(@cfg[:stat], Field)
+            @stat = type?(@cfg[:stat_pool]['field'], Field)
             @sel = Select.new(@dbi, :command).get(ent[:id])
             @cfg[:nocache] = @sel[:nocache] if @sel.key?(:nocache)
             @stat.echo = ___init_frame(ent)
@@ -116,9 +116,10 @@ module CIAX
       Opt::Conf.new(cap, options: 'rf') do |cfg|
         if cfg.opt[:f]
           dbi = Db.new.get(cfg.args.shift)
-          cfg[:stat] = Field.new(dbi)
+          cfg[:stat_pool] = StatPool.new(Field.new(dbi))
         else
-          dbi = (cfg[:stat] = Field.new(cfg.args)).dbi
+          cfg[:stat_pool] = StatPool.new(Field.new(cfg.args))
+          dbi = cfg[:stat_pool]['field'].dbi
         end
         # dbi.pick alreay includes :layer, :command, :version
         cobj = Index.new(cfg, dbi.pick(:stream))

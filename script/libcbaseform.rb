@@ -45,9 +45,9 @@ module CIAX
 
       # Substitute Parameters by Status ${var}
       def ___subst_stat(pary)
-        return pary unless @cfg.key?(:stat)
+        return pary unless @cfg.key?(:stat_pool)
         pary.map do |str|
-          type?(@cfg[:stat], Statx).subst(str)
+          type?(@cfg[:stat_pool], StatPool).subst(str)
         end
       end
 

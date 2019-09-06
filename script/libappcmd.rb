@@ -47,7 +47,7 @@ module CIAX
               enclose("GetCmd(FDB):#{e1.first}", 'Exec(FDB):%s') do
                 ___get_args(e1, args)
               end
-              args.map { |s| @cfg[:stat].subst(s) }
+              args.map { |s| @cfg[:stat_pool].subst(s) }
             end.extend(Enumx)
             ent
           end
@@ -72,7 +72,7 @@ module CIAX
       require 'libappstat'
       Opt::Conf.new('[id] [cmd] (par)', options: 'a') do |cfg|
         dbi = (cfg.opt[:a] ? Db : Ins::Db).new.get(cfg.args.shift)
-        cfg[:stat] = Status.new(dbi).cmode(cfg.opt.host)
+        cfg[:stat_pool] = StatPool.new(Status.new(dbi).cmode(cfg.opt.host))
         # dbi.pick already includes :layer, :command, :version
         rem = Index.new(cfg, dbi.pick).add_rem
         rem.add_int

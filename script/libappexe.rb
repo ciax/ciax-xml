@@ -42,12 +42,8 @@ module CIAX
       end
 
       def ___init_stat
-        @stat = @cfg[:stat] = Status.new(@dbi, ___init_field)
-        @stat_pool = @stat.stat_pool
-        @stat_pool['sv_stat'] = ___init_sv_stat
-      end
-
-      def ___init_sv_stat
+        @stat = Status.new(@dbi, ___init_field)
+        @stat_pool = @cfg[:stat_pool] = StatPool.new(@stat)
         @sv_stat = Prompt.new(@id, @sub_exe)
       end
 

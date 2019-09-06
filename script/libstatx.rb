@@ -6,11 +6,14 @@ module CIAX
   # Layer status container
   class StatPool < Hashx
     attr_reader :type
-    def initialize(type, obj)
+    def initialize(obj)
       # Default layer status name
-      @type = type
       @obj = type?(obj, Statx)
-      self[type] = @obj
+      @type = @obj.type
+      loop do
+        self[obj.type] = obj
+        obj = obj.sub_stat || break
+      end
     end
 
     def get(token)
@@ -19,6 +22,17 @@ module CIAX
       layer = $`
       cfg_err('No such entry [%s]', layer) unless key?(layer)
       self[layer].get($')
+    end
+
+    # Substitute str by self data
+    # - str format: ${type:key}
+    def subst(str)
+      return str unless /\$\{/ =~ str
+      enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
+        str.gsub(/\$\{(.+)\}/) do
+          get(Regexp.last_match(1))
+        end
+      end
     end
 
     def cmode(opt)
@@ -30,13 +44,13 @@ module CIAX
   #  STDIN function is availabie
   #  Need Header(Dbx::Item)
   class Statx < Varx
-    attr_reader :dbi, :stat_pool, :sub_stat
+    attr_reader :dbi, :sub_stat
+    # obj can be Dbx::Index, Array, String
     def initialize(type, obj, mod = Dbx::Index)
       super(type, ___get_id(obj))
       @dbi ||= mod.new.get(@id)
       _attr_set(@dbi[:version].to_i, @dbi[:host])
       @layer = @dbi[:layer]
-      @stat_pool = StatPool.new(@type, self)
     end
 
     # Substitute str by self data
@@ -45,27 +59,12 @@ module CIAX
       return str unless /\$\{/ =~ str
       enclose("Substitute from [#{str}]", 'Substitute to [%s]') do
         str.gsub(/\$\{(.+)\}/) do
-          subst_val(Regexp.last_match(1))
+          get(Regexp.last_match(1))
         end
       end
     end
 
-    def subst_val(key)
-      @stat_pool.get(key)
-    end
-
-    def latest
-      @sub_stat ? @sub_stat.latest : super
-      self
-    end
-
     private
-
-    def _init_sub_stat(stat, mod, par)
-      @sub_stat = type?(type_gen(stat, mod, par), Statx)
-      @stat_pool.update(@sub_stat.stat_pool)
-      self
-    end
 
     # Set dbi, otherwise generate by stdin info
     # When input from TTY

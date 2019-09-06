@@ -9,6 +9,7 @@ module CIAX
     class Field < Statx
       include Dic
       attr_accessor :echo
+      attr_reader :sub_stat
       def initialize(dbi = nil, frame = nil)
         super('field', dbi, Dev::Db)
         # Proc for Terminate process of each individual commands
@@ -65,7 +66,7 @@ module CIAX
       # - str format: ${key}
       # - output csv if array
       def subst_val(key)
-        ary = [*super].map! { |i| expr(i) }
+        ary = [*get(key)].map! { |i| expr(i) }
         cfg_err("No value for subst [#{key}]") if ary.empty?
         ary.join(',')
       end
@@ -74,7 +75,7 @@ module CIAX
 
       def ___init_frame(frame)
         if @dbi.key?(:response)
-          _init_sub_stat(frame, Stream::Frame, @dbi)
+          @sub_stat = type_gen(frame, Stream::Frame, @dbi)
         else
           init_time2cmt
         end

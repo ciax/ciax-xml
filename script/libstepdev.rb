@@ -56,19 +56,19 @@ module CIAX
           super(!__all_conds?)
         end
 
-        # wait for active?==true, then wait for cond
+        # Wait for condition
         # Need to wait inactive.
         # Otherwise macro proceed on bad condition (before valid_keys recovery).
         def timeout?
-          tf = progress { __all_conds? && !active? }
+          tf = progress { __all_conds? && !in_motion? }
           which?('timeout', 'pass', tf)
         end
 
         # obj.waitbusy -> looking at Prompt[:busy]
         # obj.stat -> looking at Status
 
-        def active?
-          @condition.active?
+        def in_motion?
+          @condition.in_motion?
         end
 
         # Blocking during busy. (for interlock check)

@@ -19,7 +19,7 @@ module CIAX
 
       def ___init_stat
         @stat = Event.new(@dbi, @sub_exe.stat)
-        @sv_stat.init_flg(auto: '&', event: '@')
+        @sv_stat.extend(Prompt).ext_wat
         @stat_pool = StatPool.new(@stat, @sv_stat)
       end
 
@@ -61,6 +61,22 @@ module CIAX
           require 'libwatdrv'
           extend(Driver).ext_driver
         end
+      end
+    end
+
+    # Additional function for App::Prompt
+    module Prompt
+      def self.extended(obj)
+        Msg.type?(obj, Prompt)
+      end
+
+      def ext_wat
+        init_flg(auto: '&', event: '@')
+        self
+      end
+
+      def in_motion?
+        up?(:action) || up?(:event)
       end
     end
 

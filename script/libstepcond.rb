@@ -15,8 +15,8 @@ module CIAX
           @spary = sites.map { |id| type?(yield(id), StatPool) }
         end
 
-        def active?
-          @spary.all? { |s| s[:event].active? }
+        def in_motion?
+          @spary.all? { |s| s[:sv_stat].in_motion? }
         end
 
         # Blocking during busy. (for interlock check)

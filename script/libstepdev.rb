@@ -56,7 +56,7 @@ module CIAX
           super(!__all_conds?)
         end
 
-        # Wait for condition
+        # Until loop (Wait for true)
         # Need to wait inactive.
         # Otherwise macro proceed on bad condition (before valid_keys recovery).
         def timeout?
@@ -80,6 +80,7 @@ module CIAX
         # Until loop
         def progress(var = nil)
           var ||= self[:retry].to_i - self[:count].to_i
+          # Just count
           return super(var) unless defined? yield
           super(var) do
             @condition.updating?

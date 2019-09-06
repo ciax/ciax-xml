@@ -12,21 +12,21 @@ module CIAX
         def initialize(cond)
           @conditions = type?(cond, Array)
           sites = @conditions.map { |ref| ref[:site] }.uniq
-          @stat_pool = sites.map { |id| type?(yield(id), StatPool) }
+          @spary = sites.map { |id| type?(yield(id), StatPool) }
         end
 
         def active?
-          @stat_pool.all? { |s| s['event'].active? }
+          @spary.all? { |s| s[:event].active? }
         end
 
         # Blocking during busy. (for interlock check)
         def wait_ready
-          @stat_pool.each { |s| s[:sv_stat].wait_ready }
+          @spary.each { |s| s[:sv_stat].wait_ready }
           self
         end
 
         def updating?
-          @stat_pool.all? { |s| s['event'].updating? }
+          @spary.all? { |s| s[:event].updating? }
         end
 
         # Get condition result Array with latest stat
@@ -53,8 +53,8 @@ module CIAX
 
         # Get Status from Devices via http
         def ___scan
-          @stat_pool.each_with_object({}) do |s, hash|
-            stat = s['status']
+          @spary.each_with_object({}) do |s, hash|
+            stat = s[:status]
             st = hash[stat.id] = stat.latest
             verbose { "Scanning #{stat.id} (#{elps_sec(st[:time])})" }
           end

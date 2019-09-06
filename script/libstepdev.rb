@@ -45,7 +45,7 @@ module CIAX
 
         # step has site,var,form
         def select_args
-          stat = __get_site.stat_pool['status']
+          stat = __get_site.stat_pool[:status]
           super(stat.pick_val(self))
         end
 

@@ -13,7 +13,7 @@ module CIAX
       def initialize(stat_pool, hdb = nil)
         # To use token omitting 'status:'
         @stat_pool = type?(stat_pool, StatPool)
-        @stat = @stat_pool['event']
+        @stat = @stat_pool[:event]
         super('hex', @stat[:id])
         _attr_set(@stat[:data_ver])
         @dbi = (hdb || Db.new).get(@stat.dbi[:app_id])

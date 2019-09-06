@@ -11,7 +11,7 @@ module CIAX
       @default = type?(obj, Statx)
       @type = @default.type
       loop do
-        self[obj.type] = obj
+        self[obj.type.to_sym] = obj
         obj = obj.sub_stat || break
       end
       self[:sv_stat] = prom if prom && type?(prom, Prompt)
@@ -20,7 +20,7 @@ module CIAX
     def get(token)
       token.sub!(/#{@type}:/, '')
       return @default.get(token) unless /:/ =~ token
-      layer = $`
+      layer = $`.to_sym
       cfg_err('No such entry [%s]', layer) unless key?(layer)
       self[layer].get($')
     end

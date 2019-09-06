@@ -45,12 +45,13 @@ module CIAX
           end.clear
         end
 
-        # @event[:active] : Array of event ids which meet criteria
-        # @event[:exec] : Cmd queue which contains cmds issued as event
-        # @event[:block] : Array of cmds (units) which are blocked during busy
-        # @event[:int] : List of interrupt cmds which is effectie during busy
-        # @sv_stat[:action] : Flag by command type 'action' (actuator moving)
-        # @sv_stat[:event] is internal var (actuator moving)
+        # @sv_stat[:busy]   : Flag while command issuing (status updated when it come down)
+        # @sv_stat[:action] : Flag by command name (type 'action' / actuator moving)
+        # @sv_stat[:event]  : Flag by combination of @event and @sv_stat (actuator moving)
+        # @event[:active]   : Array of event ids which meet criteria
+        # @event[:exec]     : Cmd queue which contains cmds issued as event
+        # @event[:block]    : Array of cmds (units) which are blocked during busy
+        # @event[:int]      : List of interrupt cmds which is effectie during busy
 
         ## Timing chart in active mode
         # busy   :__--__--__--==__--___

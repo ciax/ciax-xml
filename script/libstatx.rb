@@ -5,11 +5,11 @@ require 'libdb'
 module CIAX
   # Layer status container
   class StatPool < Hashx
-    attr_reader :type
+    attr_reader :type, :default
     def initialize(obj)
       # Default layer status name
-      @obj = type?(obj, Statx)
-      @type = @obj.type
+      @default = type?(obj, Statx)
+      @type = @default.type
       loop do
         self[obj.type] = obj
         obj = obj.sub_stat || break
@@ -18,7 +18,7 @@ module CIAX
 
     def get(token)
       token.sub!(/#{@type}:/, '')
-      return @obj.get(token) unless /:/ =~ token
+      return @default.get(token) unless /:/ =~ token
       layer = $`
       cfg_err('No such entry [%s]', layer) unless key?(layer)
       self[layer].get($')

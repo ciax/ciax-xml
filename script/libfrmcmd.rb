@@ -43,10 +43,11 @@ module CIAX
 
           def _gen_entity(opt)
             ent = super
-            @stat = type?(@cfg[:stat_pool]['field'], Field)
+            @stat_pool = type?(ent[:stat_pool], StatPool)
+            stat = type?(@stat_pool.default, Field)
             @sel = Select.new(@dbi, :command).get(ent[:id])
             @cfg[:nocache] = @sel[:nocache] if @sel.key?(:nocache)
-            @stat.echo = ___init_frame(ent)
+            stat.echo = ___init_frame(ent)
             ent
           end
 
@@ -81,7 +82,7 @@ module CIAX
             word = ___chk_cc(dbc)
             return('') unless word
             # Replace status with ${status_id}
-            res = @stat.subst(word)
+            res = @stat_pool.subst(word)
             # No cache if status replacement
             chg = @cfg[:nocache] = true if res != word
             verbose { cfmt('Convert (%s) %p -> %p', @id, word, res) } if chg
@@ -116,11 +117,12 @@ module CIAX
       Opt::Conf.new(cap, options: 'rf') do |cfg|
         if cfg.opt[:f]
           dbi = Db.new.get(cfg.args.shift)
-          cfg[:stat_pool] = StatPool.new(Field.new(dbi))
+          field = Field.new(dbi)
         else
-          cfg[:stat_pool] = StatPool.new(Field.new(cfg.args))
-          dbi = cfg[:stat_pool]['field'].dbi
+          field = Field.new(cfg.args)
+          dbi = field.dbi
         end
+        cfg[:stat_pool] = StatPool.new(field)
         # dbi.pick alreay includes :layer, :command, :version
         cobj = Index.new(cfg, dbi.pick(:stream))
         rem = cobj.add_rem.def_proc { |ent| ent.msg = ent[:frame] }

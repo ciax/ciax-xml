@@ -6,7 +6,7 @@ module CIAX
   # Layer status container
   class StatPool < Hashx
     attr_reader :type, :default
-    def initialize(obj)
+    def initialize(obj, prom = nil)
       # Default layer status name
       @default = type?(obj, Statx)
       @type = @default.type
@@ -14,6 +14,7 @@ module CIAX
         self[obj.type] = obj
         obj = obj.sub_stat || break
       end
+      self[:sv_stat] = prom if prom && type?(prom, Prompt)
     end
 
     def get(token)

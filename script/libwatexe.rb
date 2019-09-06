@@ -19,9 +19,8 @@ module CIAX
 
       def ___init_stat
         @stat = Event.new(@dbi, @sub_exe.stat)
-        @stat_pool = StatPool.new(@stat)
         @sv_stat.init_flg(auto: '&', event: '@')
-        @stat_pool['sv_stat'] = @sv_stat
+        @stat_pool = StatPool.new(@stat, @sv_stat)
       end
 
       def _ext_remote

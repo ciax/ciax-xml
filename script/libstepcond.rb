@@ -9,25 +9,24 @@ module CIAX
       # Step condition class
       class Condition
         include Msg
-        attr_reader :stats
         def initialize(cond)
           @conditions = type?(cond, Array)
           sites = @conditions.map { |ref| ref[:site] }.uniq
-          @stats = sites.map { |id| type?(yield(id), StatPool) }
+          @stat_pool = sites.map { |id| type?(yield(id), StatPool) }
         end
 
         def active?
-          @stats.all? { |s| s['event'].active? }
+          @stat_pool.all? { |s| s['event'].active? }
         end
 
         # Blocking during busy. (for interlock check)
         def wait_ready
-          @stats.each { |s| s['sv_stat'].wait_ready }
+          @stat_pool.each { |s| s[:sv_stat].wait_ready }
           self
         end
 
         def updating?
-          @stats.all? { |s| s['event'].updating? }
+          @stat_pool.all? { |s| s['event'].updating? }
         end
 
         # Get condition result Array with latest stat
@@ -54,7 +53,7 @@ module CIAX
 
         # Get Status from Devices via http
         def ___scan
-          @stats.each_with_object({}) do |s, hash|
+          @stat_pool.each_with_object({}) do |s, hash|
             stat = s['status']
             st = hash[stat.id] = stat.latest
             verbose { "Scanning #{stat.id} (#{elps_sec(st[:time])})" }

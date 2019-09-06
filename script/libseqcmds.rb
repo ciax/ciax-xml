@@ -66,7 +66,7 @@ module CIAX
       end
 
       def _cmd_exec(step, _mstat)
-        step.exec if step.exec? && _qry_exec?(step)
+        step.exec_wait if step.exec? && _qry_exec?(step)
         site = step[:site]
         @sv_stat.push(:run, site).cmt unless
           @sv_stat.upd.get(:run).include?(site)

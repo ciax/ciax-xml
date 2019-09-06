@@ -25,10 +25,6 @@ module CIAX
         end
 
         #### In Drive mode
-        def exec
-          _set_res('dummy')
-        end
-
         def exec_wait
           _show_res('dummy')
         end

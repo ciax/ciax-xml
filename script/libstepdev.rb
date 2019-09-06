@@ -31,10 +31,6 @@ module CIAX
           self
         end
 
-        def exec
-          _set_res(_exe_site.to_s)
-        end
-
         def exec_wait
           _show_res(_exe_site.sv_stat.wait_ready)
         end

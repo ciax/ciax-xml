@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'libprompt'
 require 'libcmdremote'
+require 'libstatpool'
 
 # Integrates Command and Status
 # Provides Server and Client

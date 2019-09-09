@@ -75,8 +75,8 @@ module CIAX
         self
       end
 
-      def in_motion?
-        up?(:action) || up?(:event)
+      def action?
+        up?(:action)
       end
     end
 

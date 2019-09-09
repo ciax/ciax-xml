@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="slo" id="mma" label="MOIRCS Arm" version="2">
+  <app frm_id="slo" id="mma" label="MOIRCS Arm" version="3">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gu" caption="Status">
         <unit id="upd" label="Status">
@@ -9,6 +9,7 @@
             <frmcmd name="drv"/>
             <frmcmd name="bs"/>
             <frmcmd name="p"/>
+            <frmcmd name="spd"/>
             <repeat from="1" to="5">
               <frmcmd name="in">
                 <argv>$_</argv>
@@ -20,6 +21,13 @@
       <group id="gc" caption="Device Config">
         <item id="mres" label="Motor Reset">
           <frmcmd name="mres"/>
+        </item>
+        <item id="setspd" label="Set Speed (0.1-2)">
+          <par_num>0.1:2</par_num>
+          <frmcmd name="setspd">
+            <argv>$1</argv>
+          </frmcmd>
+          <frmcmd name="spd"/>
         </item>
         <item id="defcon" label="Default Config">
           <frmcmd name="hl">
@@ -109,6 +117,9 @@
         <string id="bs" label="Moter Moving" symbol="action">
           <field ref="bs"/>
         </string>
+        <float id="spd" label="Speed" format="%.2f">
+          <field ref="spd"/>
+        </float>
         <integer id="err" label="Error Code" symbol="err">
           <field ref="err"/>
         </integer>

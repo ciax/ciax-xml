@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'libmsg'
+require 'libstatpool'
 
 module CIAX
   # Macro Layer

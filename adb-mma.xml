@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="slo" id="mma" label="MOIRCS Arm" version="2">
+  <app frm_id="slo" id="mma" label="MOIRCS Arm" version="3">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gu" caption="Status">
         <unit id="upd" label="Status">
@@ -20,6 +20,12 @@
       <group id="gc" caption="Device Config">
         <item id="mres" label="Motor Reset">
           <frmcmd name="mres"/>
+        </item>
+        <item id="hispd" label="Hi Speed (x1.2)">
+          <frmcmd name="setspd">
+            <argv>1.2</argv>
+          </frmcmd>
+          <frmcmd name="spd"/>
         </item>
         <item id="defcon" label="Default Config">
           <frmcmd name="hl">

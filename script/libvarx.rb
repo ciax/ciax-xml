@@ -44,7 +44,7 @@ module CIAX
 
     # With Format Version check
     def jverify(hash = {})
-      __chk_ver('format', hash)
+      return {} unless __chk_ver('format', hash)
       # For back compatibility
       hash[:data_ver] = hash.delete(:ver) if hash.key?(:ver)
       __chk_ver('data', hash) ? hash : {}

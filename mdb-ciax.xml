@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro" host="ciax" port="55554">
+    <group id="g_upd" caption="Update Commands" rank="0">
+      <unit id="unit_upd" label="Update All Devices">
+        <item id="upd" label="Update All Devices">
+          <upd site="dts"/>
+          <upd site="crt"/>
+          <upd site="dso"/>
+          <upd site="dsi"/>
+          <upd site="cci"/>
+          <upd site="cco"/>
+        </item>
+      </unit>
+    </group>
     <!--Exchange Commands-->
-    <group id="g_exchg" caption="Exchange Commands" rank="0">
+    <group id="g_exchg" caption="Exchange Commands" rank="1">
       <unit id="unit_exchg" label="Exhange Instrument">
         <item id="ex_focas" label="Exchange to FOCAS">
           <mcr name="depart"/>
@@ -2079,16 +2091,6 @@
           </goal>
           <cfg site="crt" name="mcs"/>
           <cfg site="dts" name="mcs"/>
-        </item>
-      </unit>
-      <unit id="unit_upd" label="Update All Devices">
-        <item id="upd" label="Update All Devices">
-          <upd site="dts"/>
-          <upd site="crt"/>
-          <upd site="dso"/>
-          <upd site="dsi"/>
-          <upd site="cci"/>
-          <upd site="cco"/>
         </item>
       </unit>
       <unit id="unit_tsc" label="TSC commands">

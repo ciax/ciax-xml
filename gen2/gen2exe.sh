@@ -35,6 +35,12 @@ updpid(){
     unset pid
     > $pidfile
 }
+killpid(){
+    pid=$(< $pidfile)
+    [ "$pid" ] && kill $pid
+    unset pid
+    > $pidfile
+}
 bglog(){
     doexe
     loghead "$args (pid=$(< $pidfile))"
@@ -84,6 +90,10 @@ case "$1" in
     -v) #For maintenance
         cat $exelog
         ;;
+    -k)
+        killpid
+        ;;
+
     *)
         fglog "$*"
         ;;

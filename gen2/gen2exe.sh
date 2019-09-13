@@ -40,6 +40,7 @@ killpid(){
     [ "$pid" ] && kill $pid
     unset pid
     > $pidfile
+    echo 0
 }
 bglog(){
     doexe

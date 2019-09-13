@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fdb xmlns="http://ciax.sum.naoj.org/ciax-xml/fdb">
-  <frm id="oss" label="OSS Command line" version="3">
+  <frm id="oss" label="OSS Command line" version="4">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/fdbc">
       <frame>
         <body/>
@@ -126,6 +126,9 @@
         <item id="ares" label="All Reset" response="exit" type="action">
           <string>gen2cmd</string>
           <string> reset</string>
+        </item>
+        <item id="killpid" label="Kill Process" response="pid" type="action">
+          <string>gen2exe -k</string>
         </item>
       </group>
       <group caption="Action" id="gact">

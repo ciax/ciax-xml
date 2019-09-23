@@ -22,8 +22,8 @@
         <item id="mres" label="Motor Reset">
           <frmcmd name="mres"/>
         </item>
-        <item id="setspd" label="Set Speed (0.1-2)">
-          <par_num>0.1:2</par_num>
+        <item id="setspd" label="Set Speed (0.1-10)">
+          <par_num>0.1:10</par_num>
           <frmcmd name="setspd">
             <argv>$1</argv>
           </frmcmd>

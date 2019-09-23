@@ -19,11 +19,11 @@ init_proj(){
         ciax|cxws2)
             proj ciax
             ;;
-        moircsobcp.*)
+        moircsobcp*)
             proj moircs
             ;;
-	      hecmprssrv.*)
-	          proj cmp
+	hecmprssrv*)
+	    proj cmp
 	          ;;
         *)
             proj dmcs

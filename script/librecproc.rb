@@ -38,6 +38,7 @@ module CIAX
           self[:start] = now_msec
           self[:status] = 'run'
           title_s
+          cmt
         end
 
         def add_step(e1, depth) # returns Step

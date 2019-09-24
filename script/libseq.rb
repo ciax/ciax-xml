@@ -36,7 +36,7 @@ module CIAX
       # Start the macro
       def play
         ___pre_play
-        _sequencer(@cfg, @record.cmt)
+        _sequencer(@cfg, @record)
       rescue CommError, Verification
         nil
       rescue Interrupt

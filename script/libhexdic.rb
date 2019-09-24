@@ -14,7 +14,7 @@ module CIAX
         _init_subdic(Wat)
         hdb = @cfg[:hdb] = Db.new
         @db.valid_apps(hdb.list)
-        @run_list = @db.runlist_ins
+        @run_list = @sub_dic.run_list
       end
     end
 

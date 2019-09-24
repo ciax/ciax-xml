@@ -11,8 +11,8 @@ module CIAX
       def initialize(spcfg, atrb = Hashx.new)
         super
         @db = type?(@cfg[:db], Ins::Db)
-        @run_list = @db.runlist_ins
         _init_subdic(Frm)
+        @run_list = @db.runlist_ins(@cfg.opt.proper?)
         @cfg[:sdb] = Sym::Db.new
       end
     end

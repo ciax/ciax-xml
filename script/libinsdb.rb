@@ -25,7 +25,7 @@ module CIAX
 
       # Give all sites if not proper mode
       def runlist_ins(proper = true)
-        proper ? __runlist(host_idb) : list
+        proper ? __runlist(host_idb) : host_idb.keys
       end
 
       # reduced by hexdb

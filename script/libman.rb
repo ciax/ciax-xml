@@ -81,10 +81,10 @@ module CIAX
           super
           @cfg[:cid] = 'manager'
           @mode = 'DRY' if @opt.dry?
-          @cobj.rem.ext_input_log if @opt.mcr_log?
           @cobj.get('nonstop').def_proc { sv_stat.up(:nonstop) }
           @cobj.get('interactive').def_proc { sv_stat.dw(:nonstop) }
           ___init_pre_exe
+          ___init_log
           self
         end
 
@@ -93,6 +93,12 @@ module CIAX
             @sv_stat.repl(:sid, '')
             @sv_stat.flush(:run).cmt if @sv_stat.get(:list).empty?
           end
+        end
+
+        def ___init_log
+          return unless @opt.mcr_log?
+          @cobj.rem.ext_input_log
+          @sv_stat.ext_local.ext_log
         end
       end
     end

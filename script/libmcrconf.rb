@@ -35,6 +35,8 @@ module CIAX
       end
     end
 
+    class Prompt < Prompt; end
+
     if __FILE__ == $PROGRAM_NAME
       Conf.new('[id]') do |cfg|
         puts cfg.path(cfg.args.shift)

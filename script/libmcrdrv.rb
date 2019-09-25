@@ -17,7 +17,7 @@ module CIAX
           @id = @seq.id
           @int.def_proc { |ent| @seq.reply(ent.id) }
           @stat = @seq.record
-          @cobj.rem.ext_input_log
+          @cobj.rem.ext_input_log.cfg[:input].update(sid: @id)
           self
         end
 

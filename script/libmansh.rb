@@ -4,16 +4,16 @@ require 'libman'
 require 'librecdic'
 module CIAX
   # Macro Layer
-  module Mcr
+  module Man
     # Macro Manager
-    class Man
+    class Exe
       def _ext_shell
         extend(Shell).ext_shell
       end
 
       # Macro Shell
       module Shell
-        include Exe::Shell
+        include CIAX::Exe::Shell
         # cfg should have [:jump_groups]
         def ext_shell
           super
@@ -29,7 +29,7 @@ module CIAX
         private
 
         def ___init_stat
-          @view = RecDic.new(@stat, @int_par)
+          @view = Mcr::RecDic.new(@stat, @int_par)
           @cfg[:output] = @view
         end
 
@@ -78,7 +78,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       Conf.new('[proj] [cmd] (par)', options: 'cenlr') do |cfg|
-        Man.new(cfg)
+        Exe.new(cfg)
       end.cui
     end
   end

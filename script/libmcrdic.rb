@@ -15,7 +15,7 @@ module CIAX
         # For server response
         @sv_stat = type?(@cfg[:sv_stat], Prompt).repl(:sid, '')
         @rec_arc = type?(@cfg[:rec_arc], RecArc)
-        ___init_man(Man.new(@cfg))
+        ___init_man(Man::Exe.new(@cfg))
         _init_subdic
       end
 

@@ -6,7 +6,7 @@ require 'libwatdic'
 
 module CIAX
   # Macro Layer
-  module Mcr
+  module Man
     # Macro Manager/Manipulator
     #  Features
     #   *Test/Driver
@@ -21,7 +21,7 @@ module CIAX
     #  Commands
     #   *Mcr Generation Command (gencmd)
     #   *Mcr Manipulation command (mancmd)
-    class Man < CIAX::Exe
+    class Exe < CIAX::Exe
       def initialize(spcfg, atrb = Hashx.new)
         super
         verbose { 'Initiate Manager (option:' + @opt.keys.join + ')' }
@@ -72,7 +72,7 @@ module CIAX
       module Local
         include CIAX::Exe::Local
         def self.extended(obj)
-          Msg.type?(obj, Man)
+          Msg.type?(obj, Exe)
         end
 
         private
@@ -103,8 +103,8 @@ module CIAX
       end
     end
     if __FILE__ == $PROGRAM_NAME
-      Conf.new('[proj] [cmd] (par)', options: 'cedhlnr') do |cfg|
-        Man.new(cfg)
+      Mcr::Conf.new('[proj] [cmd] (par)', options: 'cedhlnr') do |cfg|
+        Exe.new(cfg)
       end.cui
     end
   end

@@ -5,7 +5,7 @@ module CIAX
     # @cfg[:db] associated site/layer should be set
     # This should be set [:db]
     class ExeDic < CIAX::ExeDic
-      attr_reader :db, :sub_dic
+      attr_reader :db, :sub_dic, :run_list
       attr_accessor :super_dic, :current
       def initialize(spcfg, atrb = Hashx.new)
         super

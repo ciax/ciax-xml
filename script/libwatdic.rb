@@ -11,8 +11,8 @@ module CIAX
       def initialize(spcfg, atrb = Hashx.new)
         super
         @db = type?(@cfg[:db], Ins::Db)
-        @run_list = @db.runlist_ins
         _init_subdic(App)
+        @run_list = @sub_dic.run_list
       end
 
       def init_sites

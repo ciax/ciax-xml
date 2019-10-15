@@ -127,7 +127,7 @@
           <string>gen2cmd</string>
           <string> reset</string>
         </item>
-        <item id="killpid" label="Kill Process" response="pid" type="action">
+        <item id="kill" label="Kill Process" response="pid" type="action">
           <string>gen2exe -k</string>
         </item>
       </group>

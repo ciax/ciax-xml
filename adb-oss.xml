@@ -16,6 +16,7 @@
           <frmcmd name="inrang"/>
           <frmcmd name="jaklen"/>
           <frmcmd name="zlen"/>
+          <frmcmd name="getpid"/>
           <frmcmd name="getexit"/>
         </item>
         <item id="updinr" label="Inr" hidden="true">

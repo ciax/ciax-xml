@@ -25,10 +25,22 @@ module CIAX
 
       private
 
+      # Need to check the external factor! (Don't stop)
+      def ___chk_input(line)
+        ary = j2h(line)
+        data_err(line.inspect) unless ary.is_a? Array
+        ary
+      rescue InvaidData
+        show_err(line.inspect)
+        []
+      end
+
+
+
       # If first arg is number, it is stored in Prompt as a sequencial number
       def ___init_input
         proc do |line|
-          args = type?(j2h(line), Array)
+          args = ___chk_input(line)
           if args[0].to_i > 0
             @sv_stat.put(:sn, args.shift)
           else

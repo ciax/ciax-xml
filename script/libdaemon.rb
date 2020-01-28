@@ -37,14 +37,20 @@ module CIAX
     def ___server(port)
       obj = yield
       verbose { cfmt('Layer %s', obj.class) }
-      reg = 'udp'
-      Udp::Server.new(port, 'for Thread status').listen do |inp, _host|
-        reg = inp.delete('"') unless inp.empty?
-        Threadx.list.view(reg)
-      end
+      ___listen(port)
     rescue SignalException
       Threadx.killall
       retry if $ERROR_INFO.message == 'SIGHUP'
+    end
+
+    def ___listen(port)
+      reg = 'udp'
+      Udp::Server.new(port, 'for Thread status').listen do |inp, _host|
+        inp.delete!('"')
+        inp = reg if inp.empty?
+        reg = inp if (str = Threadx.list.view(inp))
+        str
+      end
     end
 
     def ___set_sites(cfg)

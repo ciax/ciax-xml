@@ -45,6 +45,8 @@ module CIAX
           str += "(#{h[:type]})" if h[:type]
           str
         end.grep(/#{reg}/).sort.extend(Enumx).to_j
+      rescue RegexpError
+        nil
       end
     end
 

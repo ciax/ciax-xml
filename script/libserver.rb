@@ -30,7 +30,7 @@ module CIAX
         ary = j2h(line)
         data_err(line.inspect) unless ary.is_a? Array
         ary
-      rescue CIAX::InvaidData
+      rescue InvalidData
         show_err(line.inspect)
         []
       end

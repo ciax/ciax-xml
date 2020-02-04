@@ -57,7 +57,8 @@ module CIAX
       def ___post_play
         show_fg format("%s\n", @record.finish)
         @sv_stat.erase(:list, @id)
-        @record.rmlink(@id) if @opt.mcr_log?
+        # Don't remove record link. Otherwise OPGUI makes error
+        # @record.rmlink(@id) if @opt.mcr_log?
       end
 
       # macro returns result (true=complete /false=error)

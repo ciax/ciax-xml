@@ -113,6 +113,7 @@ module CIAX
     end
 
     if __FILE__ == $PROGRAM_NAME
+      require 'libstatpool'
       Opt::Get.new('[id]', options: 'h') do |opt, args|
         event = Wat::Event.new(args).cmode(opt.host)
         stat_pool = StatPool.new(event, Prompt.new('site', event.id))

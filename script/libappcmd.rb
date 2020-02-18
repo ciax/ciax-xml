@@ -70,6 +70,7 @@ module CIAX
 
     if __FILE__ == $PROGRAM_NAME
       require 'libappstat'
+      require 'libstatpool'
       Opt::Conf.new('[id] [cmd] (par)', options: 'a') do |cfg|
         dbi = (cfg.opt[:a] ? Db : Ins::Db).new.get(cfg.args.shift)
         cfg[:stat_pool] = StatPool.new(Status.new(dbi).cmode(cfg.opt.host))

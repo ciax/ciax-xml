@@ -113,6 +113,7 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       require 'libfrmconv'
       require 'libdevdb'
+      require 'libstatpool'
       cap = '[dev] [cmd] (par) < field_file'
       Opt::Conf.new(cap, options: 'rf') do |cfg|
         if cfg.opt[:f]

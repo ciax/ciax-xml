@@ -1,12 +1,14 @@
 #!/usr/bin/env ruby
+require 'libhashx'
 module CIAX
   # Config View module
   module ConfigView
+    include Msg
     # Show all contents of all generation
     def path(key = nil)
       i = 0
       ary = @generation.map do |h|
-        format('  [%d]{%s} (%s)', i += 1,
+        cfmt('  [%:6d]{%s} (%s)', i += 1,
                ___show_generation(key, h), __abbr_id(h))
       end
       __decorate(ary.reverse)
@@ -44,7 +46,7 @@ module CIAX
       h.map do |k, v|
         next if key && k != key.to_sym
         val = k == :obj ? __show(v.class) : ___show_contents(v)
-        "#{k.inspect.sub(/^:/, '')}: #{val}"
+        cfmt("%:3s: %s", k.inspect.sub(/^:/, ''), val)
       end.compact.join(', ')
     end
 

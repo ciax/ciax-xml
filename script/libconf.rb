@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-require 'libhashx'
 require 'libconfview'
 module CIAX
   # Recursive hash array of @generation:

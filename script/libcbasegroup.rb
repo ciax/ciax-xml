@@ -17,12 +17,25 @@ module CIAX
         rank(ENV['RANK'].to_i)
       end
 
+      def valid?(key)
+        valid_keys.include?(key)
+      end
+
+      # self.keys + dummy.keys
       def all_keys
         @disp_dic.all_keys.dup
       end
 
       def valid_keys
         @disp_dic.valid_keys.dup
+      end
+
+      def valid_view
+        opt_listing(valid_keys)
+      end
+
+      def valid_comp(word)
+        valid_keys.grep(/^#{word}/)
       end
 
       def add_dummy(id, title = nil) # returns Display
@@ -53,14 +66,24 @@ module CIAX
         self
       end
 
+      def valid_repl(cmds)
+        @disp_dic.valid_keys.replace(all_keys & cmds)
+        self
+      end
+
       def valid_reset
         @disp_dic.index.reset!
         self
       end
 
+      def valid_clear
+        @disp_dic.valid_keys.clear
+        self
+      end
+
       # Subtract ary from full keys from valid_keys
       def valid_sub(ary)
-        @disp_dic.valid_keys.replace(keys - type?(ary, Array)).freeze
+        @disp_dic.valid_keys.replace(all_keys - type?(ary, Array))
         verbose do
           "(#{@cfg[:id]}) valid_keys " +
             (ary.empty? ? 'restored' : "subtracted with #{ary.inspect}")

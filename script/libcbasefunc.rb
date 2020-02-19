@@ -40,21 +40,27 @@ module CIAX
       end
     end
 
+    # Common part of Form and Group
     module CmdGrpFunc
       include CmdFunc
       # args will be destroyed
       def set_cmd(args = [], opt = {})
         id = type?(args, Array).shift
         info('Setcmd %s', object_id) if @layer == 'mcr'
-        all_keys.include?(id) ||
-          noncmd_err('Nonexistent command [%s]', id) { view_dic }
-        valid_keys.include?(id) ||
-          cmd_err('Invalid command [%s]', id) { view_dic }
+        ___chk_cmd(id)
         form = get(id)
         @view_par = form.view_par
         form.set_par(args, opt)
       end
 
+      private
+
+      def ___chk_cmd(id)
+        all_keys.include?(id) ||
+          noncmd_err('Nonexistent command [%s]', id) { view_dic }
+        valid_keys.include?(id) ||
+          cmd_err('Invalid command [%s]', id) { view_dic }
+      end
     end
   end
 end

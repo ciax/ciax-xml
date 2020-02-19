@@ -6,8 +6,7 @@ module CIAX
   module CmdBase
     # Command Group
     class Group < Hashx
-      include CmdFunc
-      attr_reader :valid_keys
+      include CmdGrpFunc
       # cfg keys: caption,color,column
       def initialize(spcfg, atrb = Hashx.new)
         super()
@@ -15,12 +14,15 @@ module CIAX
         datr = @cfg.pick(:caption, :color, :column, :line_number)
         @disp_dic = Disp::Index.new(datr)
         @cfg[:disp] = @disp_dic
-        @valid_keys = @disp_dic.valid_keys
         rank(ENV['RANK'].to_i)
       end
 
       def all_keys
-        @disp_dic.all_keys
+        @disp_dic.all_keys.dup
+      end
+
+      def valid_keys
+        @disp_dic.valid_keys.dup
       end
 
       def add_dummy(id, title = nil) # returns Display
@@ -58,7 +60,7 @@ module CIAX
 
       # Subtract ary from full keys from valid_keys
       def valid_sub(ary)
-        @valid_keys.replace(keys - type?(ary, Array))
+        @disp_dic.valid_keys.replace(keys - type?(ary, Array)).freeze
         verbose do
           "(#{@cfg[:id]}) valid_keys " +
             (ary.empty? ? 'restored' : "subtracted with #{ary.inspect}")

@@ -9,7 +9,7 @@ module CIAX
   module CmdBase
     # Inherited by Index,Domain
     class GrpAry < Arrayx
-      include CmdFunc
+      include CmdGrpFunc
       def initialize(spcfg, atrb = Hashx.new)
         # @cfg is isolated from cfg
         # So it is same meaning to set value to 'atrb' and @cfg

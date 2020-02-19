@@ -10,18 +10,6 @@ module CIAX
       include Msg
       attr_reader :cfg, :view_par
 
-      # args will be destroyed
-      def set_cmd(args = [], opt = {})
-        id = type?(args, Array).shift
-        all_keys.include?(id) ||
-          noncmd_err('Nonexistent command [%s]', id) { view_dic }
-        valid_keys.include?(id) ||
-          cmd_err('Invalid command [%s]', id) { view_dic }
-        form = get(id)
-        @view_par = form.view_par
-        form.set_par(args, opt)
-      end
-
       def error
         cmd_err { view_dic }
       end
@@ -50,6 +38,23 @@ module CIAX
         end
         self
       end
+    end
+
+    module CmdGrpFunc
+      include CmdFunc
+      # args will be destroyed
+      def set_cmd(args = [], opt = {})
+        id = type?(args, Array).shift
+        info('Setcmd %s', object_id) if @layer == 'mcr'
+        all_keys.include?(id) ||
+          noncmd_err('Nonexistent command [%s]', id) { view_dic }
+        valid_keys.include?(id) ||
+          cmd_err('Invalid command [%s]', id) { view_dic }
+        form = get(id)
+        @view_par = form.view_par
+        form.set_par(args, opt)
+      end
+
     end
   end
 end

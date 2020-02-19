@@ -12,16 +12,16 @@ module CIAX
       # &submcr_proc for executing asynchronous submacro,
       #    which must returns hash with ['id']
       # ent should have [:sequence],[:dev_dic],[:pid]
-      def initialize(ment, &submcr_proc)
-        @cfg = ment
-        @opt = @cfg[:opt]
-        @dev_dic = type?(@cfg[:dev_dic], Wat::ExeDic)
-        ___init_record
-        @sv_stat = type?(@cfg[:sv_stat], Prompt).repl(:sid, @id)
+      def initialize(cfg, &submcr_proc)
+        @opt = type?(cfg, Config)[:opt]
+        ___init_record(cfg)
+        @dev_dic = type?(cfg[:dev_dic], Wat::ExeDic)
+        @sv_stat = type?(cfg[:sv_stat], Prompt).repl(:sid, @id)
+        @seq = type?(cfg[:sequence], Array)
         @submcr_proc = submcr_proc
         @depth = 0
         # For Thread mode
-        @qry = Reply.new(@record, @sv_stat, @cfg[:valid_keys] || [])
+        @qry = Reply.new(@record, @sv_stat, Index.new(cfg).add_rem.add_int)
       end
 
       # For prompt '(stat) [option]'
@@ -36,7 +36,7 @@ module CIAX
       # Start the macro
       def play
         ___pre_play
-        _sequencer(@cfg, @record)
+        _sequencer(@seq, @record)
       rescue CommError, Verification
         nil
       rescue Interrupt
@@ -61,11 +61,12 @@ module CIAX
       end
 
       # macro returns result (true=complete /false=error)
-      def _sequencer(cfg, mstat)
+      def _sequencer(seq, mstat)
         mstat.result = 'busy'
         @depth += 1
         # true: exit in the way, false: complete steps
-        ___get_seq(cfg).all? { |e| _new_step(e, mstat) }
+        @record[:total_steps] += seq.size
+        seq.all? { |e| _new_step(e, mstat) }
         # 'upd' passes whether commerr or not
         # result of multiple 'upd' is judged here
         mstat.result.gsub!('busy', 'complete')
@@ -102,8 +103,8 @@ module CIAX
       end
 
       # Sub for initialize()
-      def ___init_record
-        @record = Record.new.ext_local.ext_processor(@cfg)
+      def ___init_record(cfg)
+        @record = Record.new.ext_local.ext_processor(cfg)
         @id = @record[:id]
         @title = @record.title_s
         ___init_record_file
@@ -116,12 +117,6 @@ module CIAX
         @record.ext_local.ext_file.ext_save
         @record.mklink # Make latest link
         @record.mklink(@id) # Make link to /json
-      end
-
-      def ___get_seq(cfg)
-        seq = type?(cfg[:sequence], Array)
-        @record[:total_steps] += seq.size
-        seq
       end
     end
 

@@ -35,8 +35,6 @@ module CIAX
         []
       end
 
-
-
       # If first arg is number, it is stored in Prompt as a sequencial number
       def ___init_input
         proc do |line|

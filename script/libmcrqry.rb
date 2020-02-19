@@ -14,7 +14,7 @@ module CIAX
         @record = type?(stat, Record)
         @record.put(:status, 'ready')
         @sv_stat = type?(sv_stat, Prompt)
-        @cgrp_int = type?(cgrp_int, Group)
+        @cgrp_int = type?(cgrp_int, Remote::Int::Group)
         @res_proc = res_proc
       end
 

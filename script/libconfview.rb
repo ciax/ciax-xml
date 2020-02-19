@@ -9,7 +9,7 @@ module CIAX
       i = 0
       ary = @generation.map do |h|
         cfmt('  [%:6d]{%s} (%s)', i += 1,
-               ___show_generation(key, h), __abbr_id(h))
+             ___show_generation(key, h), __abbr_id(h))
       end
       __decorate(ary.reverse)
     end
@@ -46,7 +46,7 @@ module CIAX
       h.map do |k, v|
         next if key && k != key.to_sym
         val = k == :obj ? __show(v.class) : ___show_contents(v)
-        cfmt("%:3s: %s", k.inspect.sub(/^:/, ''), val)
+        cfmt('%:3s: %s', k.inspect.sub(/^:/, ''), val)
       end.compact.join(', ')
     end
 

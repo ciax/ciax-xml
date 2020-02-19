@@ -8,11 +8,11 @@ module CIAX
     # Sequencer as a Macro Processing (mcrdrv)
     class Sequencer
       include Msg
-      attr_reader :cfg, :record, :qry, :id, :title, :sv_stat
+      attr_reader :record, :qry, :id, :title, :sv_stat
       # &submcr_proc for executing asynchronous submacro,
       #    which must returns hash with ['id']
       # ent should have [:sequence],[:dev_dic],[:pid]
-      def initialize(cfg, &submcr_proc)
+      def initialize(cfg, cgrp_int, &submcr_proc)
         @opt = type?(cfg, Config)[:opt]
         ___init_record(cfg)
         @dev_dic = type?(cfg[:dev_dic], Wat::ExeDic)
@@ -21,7 +21,7 @@ module CIAX
         @submcr_proc = submcr_proc
         @depth = 0
         # For Thread mode
-        @qry = Reply.new(@record, @sv_stat, Index.new(cfg).add_rem.add_int)
+        @qry = Reply.new(@record, @sv_stat, cgrp_int)
       end
 
       # For prompt '(stat) [option]'
@@ -123,8 +123,10 @@ module CIAX
     if __FILE__ == $PROGRAM_NAME
       Conf.new('[proj] [cmd] (par)', options: 'eldnr') do |cfg|
         atrb = { dev_dic: cfg.opt.top_layer::ExeDic.new(cfg) }
-        ent = Index.new(cfg, atrb).add_rem.add_ext.set_cmd(cfg.args)
-        Sequencer.new(ent).play
+        rem = Index.new(cfg, atrb).add_rem
+        int = rem.add_int
+        ent = rem.add_ext.set_cmd(cfg.args)
+        Sequencer.new(ent, int).play
       end
     end
   end

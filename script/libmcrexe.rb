@@ -34,9 +34,9 @@ module CIAX
       # Mode Extention by Option
       def _ext_shell
         super
-        @prompt_proc = proc { opt_listing(@valid_keys) }
         @cobj.loc.add_view
         @cobj.rem.add_sys
+        @prompt_proc = proc { @int.valid_view }
         self
       end
 
@@ -44,7 +44,6 @@ module CIAX
         rem = @cobj.add_rem
         rem.cfg[:def_msg] = 'ACCEPT'
         @int = rem.add_int
-        @valid_keys = @cfg[:valid_keys] = @int.valid_keys.clear
       end
 
       # To inhelit CIAX::Exe::Local

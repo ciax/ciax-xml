@@ -9,12 +9,12 @@ module CIAX
     class Query
       include Msg
       # Record should have [:opt] key
-      def initialize(stat, sv_stat, valid_keys, &res_proc)
+      def initialize(stat, sv_stat, cgrp_int, &res_proc)
         # Datax#put() will access to header, but get() will access @data
         @record = type?(stat, Record)
         @record.put(:status, 'ready')
         @sv_stat = type?(sv_stat, Prompt)
-        @valid_keys = type?(valid_keys, Array)
+        @cgrp_int = type?(cgrp_int, Group)
         @res_proc = res_proc
       end
 
@@ -28,25 +28,25 @@ module CIAX
       def query
         opt = @record[:option] || []
         return if opt.empty?
-        @valid_keys.replace(opt)
+        @cgrp_int.valid_repl(opt)
         ___judge(___input_tty)
       ensure
         clear
       end
 
       def clear
-        @valid_keys.clear
+        @cgrp_int.valid_clear
         self
       end
 
       private
 
       def __options
-        opt_listing(@valid_keys)
+        @cgrp_int.valid_view
       end
 
       def ___input_tty
-        Readline.completion_proc = proc { |w| @valid_keys.grep(/^#{w}/) }
+        Readline.completion_proc = proc { |w| @cgrp_int.valid_comp(w) }
         loop do
           line = Readline.readline(__options, true)
           break 'interrupt' unless line

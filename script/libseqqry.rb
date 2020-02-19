@@ -8,7 +8,7 @@ module CIAX
     # Query options
     class Reply < Query
       include Msg
-      def initialize(stat, sv_stat, valid_keys)
+      def initialize(stat, sv_stat, cgrp_int)
         # Datax#put() will access to header, but get() will access @data
         super
         @que_cmd = Queue.new
@@ -30,7 +30,7 @@ module CIAX
       def query(cmds, step)
         return step.put(:action, 'nonstop') if @sv_stat.upd.up?(:nonstop)
         @record.put(:option, cmds).put(:status, 'query').cmt
-        @valid_keys.replace(cmds)
+        @cgrp_int.valid_repl(cmds)
         res = Msg.fg? ? ___input_tty : ___input_que
         step.put(:action, res).cmt
         ___judge(res)
@@ -48,7 +48,7 @@ module CIAX
       end
 
       def __response(id)
-        if @valid_keys.include?(id)
+        if @cgrp_int.valid?(id)
           @que_res << 'ACCEPT'
           return id
         elsif !id

@@ -75,14 +75,12 @@ module CIAX
       end
 
       def ___init_readline
-        Readline.completion_proc = proc { |word|
-          (@cobj.valid_keys + @cobj.valid_pars).grep(/^#{word}/)
-        }
+        Readline.completion_proc = proc { |word| @cobj.valid_comp(word) }
       end
 
       def ___input
         verbose { "Threads\n#{Threadx.list.view}" }
-        verbose { "Valid Commands #{@cobj.valid_keys.inspect}" }
+        verbose { "Valid Commands #{@cobj.valid_view}" }
         inp = Readline.readline(prompt, true)
         /^q/ =~ inp ? nil : inp
       rescue Interrupt

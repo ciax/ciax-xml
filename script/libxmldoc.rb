@@ -28,7 +28,7 @@ module CIAX
       attr_reader :top, :disp_dic
       def initialize(type, proj = nil)
         super()
-        /.+/ =~ type || Msg.args_err('No Db Type')
+        /[acdfhims]db/ =~ type || Msg.args_err('No Db Type')
         @type = type
         @proj = proj
         @disp_dic = Disp::Index.new

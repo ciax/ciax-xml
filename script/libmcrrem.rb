@@ -62,8 +62,8 @@ module CIAX
         def ___init_stat
           sid = @sv_stat.send(@cfg[:cid]).get(:sid)
           @stat = Record.new(sid)
-          @int.pars.add_num(sid)
-          @qry = Query.new(@stat, @sv_stat, @int) do |cid|
+          @rem.int.pars.add_num(sid)
+          @qry = Query.new(@stat, @sv_stat, @rem.int) do |cid|
             @sv_stat.send(format('%s:%s', cid, sid))
           end
         end

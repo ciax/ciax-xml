@@ -9,10 +9,11 @@ module CIAX
     class Sequencer
       include Msg
       attr_reader :record, :qry, :id, :title, :sv_stat
+      # rem = Remote domain in Command
       # &submcr_proc for executing asynchronous submacro,
       #    which must returns hash with ['id']
       # ent should have [:sequence],[:dev_dic],[:pid]
-      def initialize(cfg, cgrp_int, &submcr_proc)
+      def initialize(cfg, rem, &submcr_proc)
         @opt = type?(cfg, Config)[:opt]
         ___init_record(cfg)
         @dev_dic = type?(cfg[:dev_dic], Wat::ExeDic)
@@ -21,7 +22,7 @@ module CIAX
         @submcr_proc = submcr_proc
         @depth = 0
         # For Thread mode
-        @qry = Reply.new(@record, @sv_stat, cgrp_int)
+        @qry = Reply.new(@record, @sv_stat, rem)
       end
 
       # For prompt '(stat) [option]'
@@ -125,9 +126,9 @@ module CIAX
       Conf.new('[proj] [cmd] (par)', options: 'eldnr') do |cfg|
         atrb = { dev_dic: cfg.opt.top_layer::ExeDic.new(cfg) }
         rem = Index.new(cfg, atrb).add_rem
-        int = rem.add_int
+        rem.add_int
         ent = rem.add_ext.set_cmd(cfg.args)
-        Sequencer.new(ent, int).play
+        Sequencer.new(ent, rem).play
       end
     end
   end

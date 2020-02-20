@@ -13,9 +13,9 @@ module CIAX
       module Driver
         attr_reader :thread, :seq
         def ext_driver(&submcr_proc)
-          @seq = Sequencer.new(@cfg, @int, &submcr_proc)
+          @seq = Sequencer.new(@cfg, @rem, &submcr_proc)
           @id = @seq.id
-          @int.def_proc { |ent| @seq.reply(ent.id) }
+          @rem.int.def_proc { |ent| @seq.reply(ent.id) }
           @stat = @seq.record
           @cobj.rem.ext_input_log.cfg[:input].update(sid: @id)
           self

@@ -9,13 +9,13 @@ module CIAX
     class Query
       include Msg
       # Record should have [:opt] key
-      # cgrp_int = Remote::Int::Group
-      def initialize(stat, sv_stat, cgrp_int, &res_proc)
+      # rem = Remote::Domain
+      def initialize(stat, sv_stat, rem, &res_proc)
         # Datax#put() will access to header, but get() will access @data
         @record = type?(stat, Record)
         @record.put(:status, 'ready')
         @sv_stat = type?(sv_stat, Prompt)
-        @cgrp_int = type?(cgrp_int, Remote::Int::Group)
+        @rem = type?(rem, Remote::Domain)
         @res_proc = res_proc
       end
 
@@ -29,25 +29,25 @@ module CIAX
       def query
         opt = @record[:option] || []
         return if opt.empty?
-        @cgrp_int.valid_repl(opt)
-        _judge(___input_tty)
+        @rem.int.valid_repl(opt)
+        _judge(_input_tty)
       ensure
         clear
       end
 
       def clear
-        @cgrp_int.valid_clear
+        @rem.int.valid_clear
         self
       end
 
       private
 
       def __options
-        @cgrp_int.valid_view
+        @rem.int.valid_view
       end
 
-      def ___input_tty
-        Readline.completion_proc = proc { |w| @cgrp_int.valid_comp(w) }
+      def _input_tty
+        Readline.completion_proc = proc { |w| @rem.valid_comp(w) }
         loop do
           line = Readline.readline(__options, true)
           break 'interrupt' unless line

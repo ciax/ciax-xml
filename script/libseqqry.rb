@@ -8,8 +8,8 @@ module CIAX
     # Query options
     class Reply < Query
       include Msg
-      # cgrp_int = Remote::Int::Group
-      def initialize(stat, sv_stat, cgrp_int)
+      # rem = Remote::Domain
+      def initialize(stat, sv_stat, rem)
         # Datax#put() will access to header, but get() will access @data
         super
         @que_cmd = Queue.new
@@ -31,8 +31,8 @@ module CIAX
       def query(cmds, step)
         return step.put(:action, 'nonstop') if @sv_stat.upd.up?(:nonstop)
         @record.put(:option, cmds).put(:status, 'query').cmt
-        @cgrp_int.valid_repl(cmds)
-        res = Msg.fg? ? ___input_tty : ___input_que
+        @rem.int.valid_repl(cmds)
+        res = Msg.fg? ? _input_tty : ___input_que
         step.put(:action, res).cmt
         _judge(res)
       ensure
@@ -49,7 +49,7 @@ module CIAX
       end
 
       def __response(id)
-        if @cgrp_int.valid?(id)
+        if @rem.valid?(id)
           @que_res << 'ACCEPT'
           return id
         elsif !id

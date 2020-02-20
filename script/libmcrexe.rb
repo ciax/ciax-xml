@@ -35,15 +35,15 @@ module CIAX
       def _ext_shell
         super
         @cobj.loc.add_view
-        @cobj.rem.add_sys
-        @prompt_proc = proc { @int.valid_view }
+        @prompt_proc = proc { @rem.int.valid_view }
         self
       end
 
       def ___init_cmd
-        rem = @cobj.add_rem
-        rem.cfg[:def_msg] = 'ACCEPT'
-        @int = rem.add_int
+        @rem = @cobj.add_rem
+        @rem.add_int
+        @rem.add_sys
+        @rem.cfg[:def_msg] = 'ACCEPT'
       end
 
       # To inhelit CIAX::Exe::Local

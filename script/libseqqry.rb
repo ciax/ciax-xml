@@ -8,6 +8,7 @@ module CIAX
     # Query options
     class Reply < Query
       include Msg
+      # cgrp_int = Remote::Int::Group
       def initialize(stat, sv_stat, cgrp_int)
         # Datax#put() will access to header, but get() will access @data
         super
@@ -33,7 +34,7 @@ module CIAX
         @cgrp_int.valid_repl(cmds)
         res = Msg.fg? ? ___input_tty : ___input_que
         step.put(:action, res).cmt
-        ___judge(res)
+        _judge(res)
       ensure
         clear
       end

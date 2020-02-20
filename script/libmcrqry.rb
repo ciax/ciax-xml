@@ -9,6 +9,7 @@ module CIAX
     class Query
       include Msg
       # Record should have [:opt] key
+      # cgrp_int = Remote::Int::Group
       def initialize(stat, sv_stat, cgrp_int, &res_proc)
         # Datax#put() will access to header, but get() will access @data
         @record = type?(stat, Record)
@@ -29,7 +30,7 @@ module CIAX
         opt = @record[:option] || []
         return if opt.empty?
         @cgrp_int.valid_repl(opt)
-        ___judge(___input_tty)
+        _judge(___input_tty)
       ensure
         clear
       end
@@ -55,7 +56,7 @@ module CIAX
         end
       end
 
-      def ___judge(res)
+      def _judge(res)
         case res
         when 'retry'
           raise(Retry)

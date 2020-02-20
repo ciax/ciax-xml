@@ -27,17 +27,22 @@ module CIAX
 
         def batch
           @idx = 0
-          tout = TOUT
-          while tout > 0
-            sleep 0.3
-            tout = ___show_tail(tout) || TOUT
-          end
+          ___loop(TOUT)
           __show(@all.last)
           show_fg
           self
         end
 
         private
+
+        def ___loop(tout)
+          while tout > 0
+            sleep 0.3
+            tout = ___show_tail(tout) || TOUT
+          end
+        rescue Interrupt
+          interrupt
+        end
 
         def ___show_tail(timeout)
           str = @stat.upd.to_v
@@ -63,7 +68,7 @@ module CIAX
           sid = @sv_stat.send(@cfg[:cid]).get(:sid)
           @stat = Record.new(sid)
           @rem.int.pars.add_num(sid)
-          @qry = Query.new(@stat, @sv_stat, @rem.int) do |cid|
+          @qry = Query.new(@stat, @sv_stat, @rem) do |cid|
             @sv_stat.send(format('%s:%s', cid, sid))
           end
         end

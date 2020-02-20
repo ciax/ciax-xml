@@ -17,11 +17,7 @@ module CIAX
         rank(ENV['RANK'].to_i)
       end
 
-      def valid?(key)
-        valid_keys.include?(key)
-      end
-
-      # self.keys + dummy.keys
+      # (form + dummy) keys
       def all_keys
         @disp_dic.all_keys.dup
       end
@@ -30,18 +26,12 @@ module CIAX
         @disp_dic.valid_keys.dup
       end
 
-      def valid_view
-        opt_listing(valid_keys)
-      end
-
-      def valid_comp(word)
-        valid_keys.grep(/^#{word}/)
-      end
-
+      # Manipulates Dummy entry
       def add_dummy(id, title = nil) # returns Display
         @disp_dic.put_item(id, title)
       end
 
+      # Manipulates Form entry
       # atrb could be dbi[:index][id]
       # atrb could have 'label',:body,'unit','group'
       def add_form(id, title = nil, atrb = Hashx.new) # returns Form
@@ -60,12 +50,13 @@ module CIAX
         clear
       end
 
-      def merge_forms(disp_dic)
-        @disp_dic.merge_sub(disp_dic)
-        disp_dic.keys.each { |id| _new_form(id) }
+      def merge_forms(other)
+        @disp_dic.merge_sub(other)
+        other.keys.each { |id| _new_form(id) }
         self
       end
 
+      # Manipulates Valid commands
       def valid_repl(cmds)
         @disp_dic.valid_keys.replace(all_keys & cmds)
         self
@@ -95,10 +86,12 @@ module CIAX
         values.map(&:valid_pars).flatten
       end
 
+      # Show Command List
       def view_dic
         @disp_dic.to_s
       end
 
+      # Manipulates Command List Display level
       def rank(n)
         @disp_dic.rank = n
         self

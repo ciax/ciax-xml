@@ -34,12 +34,12 @@ module CIAX
       def ___mcr_fg(ment, mstep)
         __enc_begin
         mstep[:count] = 1 if mstep[:retry]
-        ___mcr_trial(ment, mstep)
+        ___mcr_trial(ment[:sequence], mstep)
       end
 
       # Sub for _mcr_fg()
-      def ___mcr_trial(ment, mstep)
-        _sequencer(ment, mstep)
+      def ___mcr_trial(seq, mstep)
+        _sequencer(seq, mstep)
         __enc_end(mstep)
       rescue Verification
         mstep = ___mcr_retry(mstep)

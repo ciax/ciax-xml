@@ -19,6 +19,7 @@ module CIAX
         @dev_dic = type?(cfg[:dev_dic], Wat::ExeDic)
         @sv_stat = type?(cfg[:sv_stat], Prompt).repl(:sid, @id)
         @seq = type?(cfg[:sequence], Array)
+        @mancmd = type?(cfg[:index], Mcr::Index)
         @submcr_proc = submcr_proc
         @depth = 0
         # For Thread mode

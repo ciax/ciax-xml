@@ -69,7 +69,7 @@ module CIAX
         @depth += 1
         # true: exit in the way, false: complete steps
         @record[:total_steps] += seq.size
-        seq.all? { |e| _new_step(e, mstat) }
+        seq.all? { |e| ___new_step(e, mstat) }
         # 'upd' passes whether commerr or not
         # result of multiple 'upd' is judged here
         mstat.result.gsub!('busy', 'complete')
@@ -81,7 +81,7 @@ module CIAX
       end
 
       # Return false if sequence is broken
-      def _new_step(e, mstat)
+      def ___new_step(e, mstat)
         step = @record.add_step(e, @depth)
         ___step_trial(step, mstat)
       rescue CommError, Interlock, Interrupt, InvalidARGS
@@ -89,7 +89,7 @@ module CIAX
         raise
       end
 
-      # Sub for _new_step()
+      # Sub for ___new_step()
       def ___step_trial(step, mstat)
         show_fg step.title_s
         # Returns T/F

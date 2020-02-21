@@ -12,8 +12,8 @@ module CIAX
       # Driver module
       module Driver
         attr_reader :thread, :seq
-        def ext_driver(&submcr_proc)
-          @seq = Sequencer.new(@cfg, @rem, &submcr_proc)
+        def ext_driver
+          @seq = Sequencer.new(@cfg, @rem, &@submcr_proc)
           @id = @seq.id
           @rem.int.def_proc { |ent| @seq.reply(ent.id) }
           @stat = @seq.record

@@ -16,6 +16,7 @@ module CIAX
         _init_port
         ___init_cmd
         @sv_stat = type?(@cfg[:sv_stat], Prompt)
+        @submcr_proc = submcr_proc
         _opt_mode
       end
 

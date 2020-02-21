@@ -101,7 +101,7 @@ module CIAX
       def ___site_interrupt
         @dev_dic.interrupt(@sv_stat.get(:run)) if @dev_dic
         @sv_stat.flush(:run).cmt
-        raise
+        nil
       end
 
       # Sub for initialize()

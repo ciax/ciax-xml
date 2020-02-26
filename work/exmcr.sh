@@ -53,7 +53,7 @@ if chklog; then
     while
         mcrexe -$opt cinit
         [ $? -gt 8 ]
-    do echo "RETRY"
+    do echo "RETRY on Bash"
     done
     settag
 fi

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="slo" id="mmc" label="MOIRCS Carrousel" version="4">
+  <app frm_id="slo" id="mmc" label="MOIRCS Carrousel" version="5">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gu" caption="Status">
         <unit id="upd" label="Status">
@@ -116,6 +116,8 @@
           </frmcmd>
           <frmcmd name="bs"/>
         </item>
+      </group>
+      <group id="gs" caption="Stop">
         <item id="astop" label="Stop Run" hidden="true">
           <frmcmd name="stop"/>
           <frmcmd name="bs"/>

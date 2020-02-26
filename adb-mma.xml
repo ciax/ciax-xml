@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="slo" id="mma" label="MOIRCS Arm" version="3">
+  <app frm_id="slo" id="mma" label="MOIRCS Arm" version="4">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gu" caption="Status">
         <unit id="upd" label="Status">
@@ -102,6 +102,8 @@
           </frmcmd>
           <frmcmd name="mhn"/>
         </item>
+      </group>
+      <group id="gstop" caption="Device Stop">
         <item id="astop" label="Stop Run" hidden="true">
           <frmcmd name="stop"/>
         </item>

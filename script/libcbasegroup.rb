@@ -17,7 +17,7 @@ module CIAX
         rank(ENV['RANK'].to_i)
       end
 
-      # (form + dummy) keys
+      # (form + hidden) keys
       def all_keys
         @disp_dic.all_keys.dup
       end

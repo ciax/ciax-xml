@@ -16,10 +16,7 @@ module CIAX
       def initialize(cfg, rem, &submcr_proc)
         @opt = type?(cfg, Config)[:opt]
         ___init_record(cfg)
-        @dev_dic = type?(cfg[:dev_dic], Wat::ExeDic)
-        @sv_stat = type?(cfg[:sv_stat], Prompt).repl(:sid, @id)
-        @seq = type?(cfg[:sequence], Array)
-        @mancmd = type?(cfg[:index], Mcr::Index)
+        ___init_vars(cfg)
         @submcr_proc = submcr_proc
         @depth = 0
         # For Thread mode
@@ -120,6 +117,13 @@ module CIAX
         @record.ext_local.ext_file.ext_save
         @record.mklink # Make latest link
         @record.mklink(@id) # Make link to /json
+      end
+
+      def ___init_vars(cfg)
+        @dev_dic = type?(cfg[:dev_dic], Wat::ExeDic)
+        @sv_stat = type?(cfg[:sv_stat], Prompt).repl(:sid, @id)
+        @seq = type?(cfg[:sequence], Array)
+        @mancmd = type?(cfg[:index], Mcr::Index)
       end
     end
 

@@ -30,9 +30,7 @@ module CIAX
       # return t/f
       def query(cmds, step)
         return step.put(:action, 'nonstop') if @sv_stat.upd.up?(:nonstop)
-        @record.put(:option, cmds).put(:status, 'query').cmt
-        @rem.int.valid_repl(cmds)
-        res = Msg.fg? ? _input_tty : ___input_que
+        res = ___get_res(cmds)
         step.put(:action, res).cmt
         _judge(res)
       ensure
@@ -40,6 +38,12 @@ module CIAX
       end
 
       private
+
+      def ___get_res(cmds)
+        @record.put(:option, cmds).put(:status, 'query').cmt
+        @rem.int.valid_repl(cmds)
+        Msg.fg? ? _input_tty : ___input_que
+      end
 
       def ___input_que
         loop do

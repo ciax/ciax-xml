@@ -50,12 +50,7 @@ case "$1" in
 esac
 mcrexe -$opt upd
 if chklog; then
-    while
-        mcrexe -$opt cinit
-        [ $? -gt 8 ]
-    do echo "RETRY on Bash"
-    done
-    settag
+    mcrexe -$opt cinit && settag
 fi
 dvsv
 mos_sim

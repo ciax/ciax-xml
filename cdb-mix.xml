@@ -404,7 +404,7 @@
           <argv>11</argv>
         </item>
       </unit>
-      <unit id="ut2" title="[*]_2" label="Turret 2 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,hole]">
+      <unit id="ut2" title="[*]_2" label="Turret 2 [csl,css,oc_(hk|zj),nb(1657|2071|2315|2095|1550|2083),hole]">
         <item id="csl_2" label="[0] CSL" ref="opt">
           <argv>2</argv>
           <argv>0</argv>
@@ -433,7 +433,7 @@
           <argv>2</argv>
           <argv>6</argv>
         </item>
-        <item id="csl2_2" label="[7] CSL2" ref="opt">
+        <item id="hole_2" label="[7] HOLE" ref="opt">
           <argv>2</argv>
           <argv>7</argv>
         </item>
@@ -449,12 +449,12 @@
           <argv>2</argv>
           <argv>10</argv>
         </item>
-        <item id="hole_2" label="[11] NB2085" ref="opt">
+        <item id="nb2083_2" label="[11] NB2083" ref="opt">
           <argv>2</argv>
           <argv>11</argv>
         </item>
       </unit>
-      <unit id="ut5" title="[*]_5" label="Turret 5 [csl(2),css,oc_(hk|zj),nb(1657|2071|2315|2095|1550),b05,hole]">
+      <unit id="ut5" title="[*]_5" label="Turret 5 [csl,css,oc_(hk|zj),nb(1657|2071|2315|2095|1550|2083),hole]">
         <item id="csl_5" label="[0] CSL" ref="opt">
           <argv>5</argv>
           <argv>0</argv>
@@ -483,7 +483,7 @@
           <argv>5</argv>
           <argv>6</argv>
         </item>
-        <item id="csl2_5" label="[7] CSL2" ref="opt">
+        <item id="hole_5" label="[7] HOLE" ref="opt">
           <argv>5</argv>
           <argv>7</argv>
         </item>
@@ -499,12 +499,12 @@
           <argv>5</argv>
           <argv>10</argv>
         </item>
-        <item id="hole_5" label="[11] NB2085" ref="opt">
+        <item id="nb2083_5" label="[11] NB2083" ref="opt">
           <argv>5</argv>
           <argv>11</argv>
         </item>
       </unit>
-      <unit id="ut3" title="[*]_3" label="Turret 3 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,hole]">
+      <unit id="ut3" title="[*]_3" label="Turret 3 [vph_(h|k|j),(hk|zj)500,k_cont,nd,pv,bp,hole,ls_(j|h)]">
         <item id="vph_h_3" label="[0] VPH H" ref="opt">
           <argv>3</argv>
           <argv>0</argv>
@@ -521,7 +521,7 @@
           <argv>3</argv>
           <argv>3</argv>
         </item>
-        <item id="hole_3" label="[4] HOLE" ref="opt">
+        <item id="ls_h_3" label="[4] LS_H" ref="opt">
           <argv>3</argv>
           <argv>4</argv>
         </item>
@@ -541,7 +541,7 @@
           <argv>3</argv>
           <argv>8</argv>
         </item>
-        <item id="vph_y_3" label="[9] VPH Y" ref="opt">
+        <item id="ls_j_3" label="[9] LS_J" ref="opt">
           <argv>3</argv>
           <argv>9</argv>
         </item>
@@ -549,12 +549,12 @@
           <argv>3</argv>
           <argv>10</argv>
         </item>
-        <item id="r1300_3" label="[11] R1300" ref="opt">
+        <item id="hole_3" label="[11] HOLE" ref="opt">
           <argv>3</argv>
           <argv>11</argv>
         </item>
       </unit>
-      <unit id="ut6" title="[*]_6" label="Turret 6 [vph_(h|k|j|y),(hk|zj)500,r1300,k_cont,nd,pv,bp,hole]">
+      <unit id="ut6" title="[*]_6" label="Turret 6 [vph_(h|k|j),(hk|zj)500,k_cont,nd,pv,bp,hole,ls_(j|h)]">
         <item id="vph_h_6" label="[0] VPH H" ref="opt">
           <argv>6</argv>
           <argv>0</argv>
@@ -571,7 +571,7 @@
           <argv>6</argv>
           <argv>3</argv>
         </item>
-        <item id="hole_6" label="[4] HOLE" ref="opt">
+        <item id="ls_h_6" label="[4] LS_H" ref="opt">
           <argv>6</argv>
           <argv>4</argv>
         </item>
@@ -591,7 +591,7 @@
           <argv>6</argv>
           <argv>8</argv>
         </item>
-        <item id="vph_y_6" label="[9] VPH Y" ref="opt">
+        <item id="ls_j_6" label="[9] LS_J" ref="opt">
           <argv>6</argv>
           <argv>9</argv>
         </item>
@@ -599,7 +599,7 @@
           <argv>6</argv>
           <argv>10</argv>
         </item>
-        <item id="r1300_6" label="[11] R1300" ref="opt">
+        <item id="hole_6" label="[11] HOLE" ref="opt">
           <argv>6</argv>
           <argv>11</argv>
         </item>

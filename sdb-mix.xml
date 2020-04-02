@@ -23,25 +23,25 @@
       <numeric class="warn" msg="NB2071" tolerance="0.1">4</numeric>
       <numeric class="warn" msg="CSLM" tolerance="0.1">5</numeric>
       <numeric class="warn" msg="CSS" tolerance="0.1">6</numeric>
-      <numeric class="warn" msg="CSL2" tolerance="0.1">7</numeric>
+      <numeric class="warn" msg="HOLE" tolerance="0.1">7</numeric>
       <numeric class="warn" msg="NB2315" tolerance="0.1">8</numeric>
       <numeric class="warn" msg="NB2095" tolerance="0.1">9</numeric>
       <numeric class="warn" msg="NB1550" tolerance="0.1">10</numeric>
-      <numeric class="warn" msg="NB2085" tolerance="0.1">11</numeric>
+      <numeric class="warn" msg="NB2083" tolerance="0.1">11</numeric>
     </table>
     <table id="t3">
       <numeric class="warn" msg="VPH_H" tolerance="0.1">0</numeric>
       <numeric class="warn" msg="ND" tolerance="0.1">1</numeric>
       <numeric class="warn" msg="PV" tolerance="0.1">2</numeric>
       <numeric class="warn" msg="VPH_K" tolerance="0.1">3</numeric>
-      <numeric class="warn" msg="HOLE" tolerance="0.1">4</numeric>
+      <numeric class="warn" msg="LS_H" tolerance="0.1">4</numeric>
       <numeric class="warn" msg="HK500" tolerance="0.1">5</numeric>
       <numeric class="warn" msg="VPH_J" tolerance="0.1">6</numeric>
       <numeric class="warn" msg="K_CONT" tolerance="0.1">7</numeric>
       <numeric class="warn" msg="ZJ500" tolerance="0.1">8</numeric>
-      <numeric class="warn" msg="VPH_Y" tolerance="0.1">9</numeric>
+      <numeric class="warn" msg="LS_J" tolerance="0.1">9</numeric>
       <numeric class="warn" msg="BP" tolerance="0.1">10</numeric>
-      <numeric class="warn" msg="R1300" tolerance="0.1">11</numeric>
+      <numeric class="warn" msg="HOLE" tolerance="0.1">11</numeric>
     </table>
   </symbol>
 </sdb>

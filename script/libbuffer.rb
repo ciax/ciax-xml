@@ -84,12 +84,17 @@ module CIAX
         ___sv_up
         @sv_stat.push(:queue, cid)
         batch.each do |args|
-          fcmd = { args: args, cid: cid }
-          fcmd[:type] = @cobj.set_cmd(args.dup).get(:type) if @cobj
-          @sv_stat.up(:action) if fcmd[:type] == 'action'
-          @outbuf[pri] << fcmd
+          @outbuf[pri] << ___set_fcmd(args, cid)
         end
         verbose { "OutBuf:Recieved:timing #{cid}(#{@id})\n#{@outbuf}" }
+      end
+
+      def ___set_fcmd(args, cid)
+        fcmd = { args: args, cid: cid }
+        return fcmd unless @cobj
+        type = @cobj.set_cmd(args.dup).get(:type)
+        @sv_stat.up(:action) if type == 'action'
+        fcmd.update(type: type)
       end
 
       # Execute recieved command
@@ -126,6 +131,7 @@ module CIAX
         end
       end
 
+      # See timing chart in libwatact.rb
       def ___sv_up
         verbose { "Busy Up(#{@id}):timing" }
         @sv_stat.up(:busy)

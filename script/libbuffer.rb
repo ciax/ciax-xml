@@ -81,8 +81,8 @@ module CIAX
       private
 
       def ___pri_sort(pri, batch, cid)
-        ___sv_up
         @sv_stat.push(:queue, cid)
+        ___sv_up
         batch.each do |args|
           @outbuf[pri] << ___set_fcmd(args, cid)
         end
@@ -140,8 +140,8 @@ module CIAX
 
       def ___sv_dw
         verbose { "Busy Down(#{@id}):timing" }
-        @sv_stat.dw(:busy)
         @sv_stat.flush(:queue, @outbuf.cids)
+        @sv_stat.dw(:busy)
       end
 
       def __clear

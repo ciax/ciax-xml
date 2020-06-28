@@ -47,7 +47,7 @@ module CIAX
 
     def reset
       verbose { cfmt('Reset Flags %p', @flg_db.keys) }
-      @flg_db.keys.each { |k| repl(k, 'false') }
+      dw(@flg_db.keys)
       self
     end
 

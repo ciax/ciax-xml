@@ -43,7 +43,7 @@ module CIAX
     end
 
     def repl(key, val)
-      super { time_upd.cmt }
+      super { cmt }
     end
 
     def del(*keyary)

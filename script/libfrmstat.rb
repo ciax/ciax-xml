@@ -77,6 +77,7 @@ module CIAX
         if @dbi.key?(:response)
           @sub_stat = type_gen(frame, Stream::Frame, @dbi)
         else
+          # Dummy mode
           init_time2cmt
         end
       end

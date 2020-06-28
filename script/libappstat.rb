@@ -62,6 +62,7 @@ module CIAX
         if @dbi.key?(:dev_id)
           @sub_stat = type_gen(field, Frm::Field, @dbi[:dev_id])
         else
+          # Dummy mode
           init_time2cmt
         end
       end

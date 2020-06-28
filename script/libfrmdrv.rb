@@ -14,6 +14,7 @@ module CIAX
             ___init_processor_ext
             ___init_processor_int
           end
+          @sv_stat.ext_local.ext_file.ext_save.ext_log
           super
         end
 

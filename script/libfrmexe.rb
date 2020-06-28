@@ -80,12 +80,6 @@ module CIAX
           super
         end
 
-        def run
-          super
-          @sv_stat.ext_local.ext_file.ext_save.ext_log
-          self
-        end
-
         private
 
         def _ext_test

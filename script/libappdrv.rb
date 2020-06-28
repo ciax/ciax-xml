@@ -14,9 +14,11 @@ module CIAX
         # type of semantics: execution/test
         def ext_driver
           super
-          return self unless @sub_exe
-          @stat.ext_sym(@cfg[:sdb]).ext_conv
-          ___init_buffer
+          if @sub_exe
+            @stat.ext_sym(@cfg[:sdb]).ext_conv
+            ___init_buffer
+          end
+          @sv_stat.ext_local.ext_file.ext_save.ext_log
           self
         end
 

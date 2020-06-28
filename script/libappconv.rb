@@ -30,7 +30,7 @@ module CIAX
         # Field will commit multiple timese par one commit here
         # So no propagation with it except time update
         def conv
-          time_upd(@sub_stat.flush)
+          @sub_stat.flush
           @adbsi.each do |id, hash|
             cnd = hash[:fields].empty?
             next if cnd && get(id)
@@ -38,6 +38,7 @@ module CIAX
             # Don't use put() which makes infinity loop in cmt
             _dic[id] = cnd ? dflt : ___get_val(hash, id)
           end
+          time_upd
           verbose { _conv_text('Field -> Status', @id, time_id) }
           self
         end

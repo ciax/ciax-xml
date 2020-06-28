@@ -105,7 +105,7 @@ module CIAX
       Opt::Get.new('[site] | < status_file', options: 'rjv') do |opt, args|
         stat = Status.new(args).ext_local.ext_file
         view = View.new(stat)
-        puts opt[:c] ? view.to_csv : view.to_s
+        puts opt[:v] ? view.to_csv : view.to_s
       end
     end
   end

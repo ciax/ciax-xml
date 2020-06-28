@@ -60,10 +60,10 @@ module CIAX
         def conv(ent)
           res = @stream.response(ent)
           return unless res
-          # Time update from Stream
-          time_upd(res)
           cid = ___index_cid(res['cmd'])
           _dic.update(cid => res['base64'])
+          # Time update from Stream
+          time_upd
           verbose { _conv_text('Stream -> Frame', cid, time_id) }
           self
         end

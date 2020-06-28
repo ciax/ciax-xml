@@ -18,6 +18,7 @@ module CIAX
       # Watch Response Module
       module Conv
         def self.extended(obj)
+          Msg.not_type?(obj, :JSave)
           Msg.type?(obj, Event)
         end
 

@@ -23,6 +23,7 @@ module CIAX
         # @< (base),(prefix)
         # @ cobj,sel,fds,frame,fary,cc
         def self.extended(obj)
+          Msg.not_type?(obj, :JSave)
           Msg.type?(obj, Field)
         end
 

@@ -24,6 +24,18 @@ module CIAX
       raise(ServerError, res, src)
     end
 
+    # Checking for extension order (File should be after Conv)
+    # modules should be String or Symbol
+    def not_type?(name, *modules)
+      src = caller(1)
+      return name unless modules.any? do |mod|
+        const_defined?(mod) && name.is_a?(const_get(mod))
+      end
+      res = 'Wrong extension order of module '
+      res << format('<%s>> for %s at %s', name.class, modules, src.first)
+      raise(ServerError, res, src)
+    end
+
     def last_caller
       "'" + caller(2..2).first.split('`').last
     end

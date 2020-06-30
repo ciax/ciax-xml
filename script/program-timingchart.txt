@@ -38,11 +38,20 @@
     event | dw | Shell(App/Wat) | Wat::Action#action
 
  Dependency(active mode)
-   Main:  App command -> send to Buffer
-   Frm :  Buffer#recv
-            busy-up,action-dw
-            re-order cmmand
-            queue fill up, action-up
-            exec Frm commands -> respond
+   Shell: App command -> send to Buffer
+   Buf  : Buffer#recv
+              [busy-up,action-dw]
+              re-order cmmand
+              [queue fill up, action-up]
+              exec Frm commands
+                frame.conv <- response(stream)
+                field.conv
+              cmt
           Buffer#cmt
-            queue empty, busy-dw
+            [queue empty, busy-dw]
+            status.cmt
+          Status#cmt
+            status.conv (from field)
+            event.cmt
+          Event#cmt
+            event.conv (from status)

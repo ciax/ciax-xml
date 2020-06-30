@@ -80,6 +80,7 @@ module CIAX
 
       private
 
+      # Priority sort
       def ___pri_sort(pri, batch, cid)
         @sv_stat.push(:queue, cid)
         ___sv_up

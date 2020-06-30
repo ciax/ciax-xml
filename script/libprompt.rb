@@ -110,7 +110,7 @@ module CIAX
       propagation(type?(sub, Prompt), @id)
       @flg_db.update(sub.flg_db)
       @cmt_procs.append(self, @id, 2) { update(sub.pick(*args)) }
-      update(sub)
+      update(sub.pick(*args))
     end
 
     def ext_remote(host, port = nil)

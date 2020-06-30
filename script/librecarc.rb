@@ -12,7 +12,6 @@ module CIAX
         super('list', 'record')
         @push_procs = [proc { verbose { 'Propagate push' } }]
         # [:dic] : Archive Dic : Dictionary of Record (id: cid,pid,res)
-        self[:format_ver] = 1
       end
 
       def dic

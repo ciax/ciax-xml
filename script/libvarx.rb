@@ -19,7 +19,8 @@ module CIAX
       id ||= pre_read[:id]
       @id = self[:id] = id
       # @id is for file name (prevent overwritten)
-      self[:format_ver] = nil
+      self[:type] = @type
+      self[:format_ver] = 1
     end
 
     # For loading file manipulation module

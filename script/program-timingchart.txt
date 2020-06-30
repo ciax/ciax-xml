@@ -1,0 +1,38 @@
+ @sv_stat flags
+   :busy   : While command issuing (status updated when it comes down)
+   :action : According to command name (type 'action')
+   :event  : According to combination of @event and @sv_stat (moving)
+ @event variables
+   :active : Array of event ids which meet criteria
+   :exec   : Cmd queue which contains cmds issued as event
+   :block  : Array of cmds (units) which are blocked during event
+   :int    : List of interrupt cmds which is effectie during event
+
+ Timing chart in active mode
+   busy   :__--__--__--==__--___
+   action :___---_______________
+   active :_____------__----____
+   event  :_____-------------___
+
+ Timing chart in update mode
+   busy   :__--__
+   action :______
+   active :======
+   event  :======
+
+ Trigger Table
+   activ|event| mark| @sv_stat
+     o  |  o  |  e  | cmt
+     x  |  o  |  e  | event:down
+     o  |  x  |  s  | event:up
+     x  |  x  |  -  | cmt
+
+ Prompt Flag Driver(who drives the flag)
+    item  | at | Thread    | who         
+   --------------------------------------
+    busy  | up | Buffer(Frm)   | App::Buffer#recv 
+    busy  | dw | Buffer(Frm)   | App::Buffer#cmt  
+   action | up | Buffer(Frm)   | App::Buffer#recv(@busy-up) 
+   action | dw | Buffer(Frm)   | App::Buffer#recv/Wat::Action#action
+    event | up | Main(App/Wat) | Wat::Action#action
+    event | dw | Main(App/Wat) | Wat::Action#action

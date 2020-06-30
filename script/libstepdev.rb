@@ -31,6 +31,7 @@ module CIAX
           self
         end
 
+        # Wait for not busy
         def exec_wait
           _show_res(_exe_site.sv_stat.wait_ready)
         end

@@ -26,6 +26,13 @@ module CIAX
       self
     end
 
+    # Fill up all the missing element
+    # ope overwrites self
+    def deep_fillup(ope)
+      __rec_fillup(self, ope)
+      self
+    end
+
     # Search String
     def deep_search(reg)
       __rec_proc4str(self) do |obj, path|
@@ -80,6 +87,19 @@ module CIAX
           concat ? mv.concat(ov) : mv.replace(ov)
         else
           ov
+        end
+      end
+    end
+
+    # other fills up my blank (me will change)
+    def __rec_fillup(me, other)
+      me.update(other) do |_k, mv, fv|
+        if mv.is_a? Hash
+          __rec_fillup(mv, fv)
+        elsif mv.nil? || (mv.is_a?(Array) && mv.empty? && fv.is_a?(Array))
+          fv
+        else
+          mv
         end
       end
     end

@@ -58,7 +58,7 @@ module CIAX
     def ___init_load
       fname = __file_path
       return self unless test('r', fname)
-      deep_update(__veri_load(fname))
+      deep_fillup(__veri_load(fname))
     end
 
     def __tag_load(tag = nil)

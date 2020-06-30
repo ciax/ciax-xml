@@ -75,7 +75,7 @@ module CIAX
     # Returns argument
     def propagation(obj, updid = nil)
       @upd_procs.append(self, updid) { obj.upd } if updid
-      obj.cmt_procs.append(self, "cmt:#{@id}", 4) do |o|
+      obj.cmt_procs.append(self, "cmt(#{@id})", 4) do |o|
         # Update self[:time]
         time_upd(o)
         verbose { ___ppg_text(o, self) }

@@ -28,22 +28,14 @@
      x  |  x  |  -  | cmt
 
  Prompt Flag Driver(who drives the flag)
-    item  | at | Thread         | who         
+    item  | at | Thread         | who
    --------------------------------------
-<<<<<<< HEAD
-    busy  | up | Buffer(Frm)    | App::Buffer#recv 
-    busy  | dw | Buffer(Frm)    | App::Buffer#cmt  
-   action | up | Buffer(Frm)    | App::Buffer#recv(@busy-up) 
+    busy  | up | Buffer(Frm)    | App::Buffer#recv
+    busy  | dw | Buffer(Frm)    | App::Buffer#cmt
+   action | up | Buffer(Frm)    | App::Buffer#recv(@busy-up)
    action | dw | Buffer(Frm)    | App::Buffer#recv/Wat::Action#action
     event | up | Shell(App/Wat) | Wat::Action#action
     event | dw | Shell(App/Wat) | Wat::Action#action
-=======
-    busy  | up | Buffer(Frm)   | App::Buffer#recv 
-    busy  | dw | Buffer(Frm)   | App::Buffer#cmt  
-   action | up | Buffer(Frm)   | App::Buffer#recv(@busy-up) 
-   action | dw | Buffer(Frm)   | App::Buffer#recv/Wat::Action#action
-    event | up | Main(App/Wat) | Wat::Action#action
-    event | dw | Main(App/Wat) | Wat::Action#action
 
  Dependency(active mode)
    Main:  App command -> send to Buffer
@@ -54,5 +46,3 @@
             exec Frm commands -> respond
           Buffer#cmt
             queue empty, busy-dw
-  
->>>>>>> refs/remotes/origin/develop

@@ -28,14 +28,14 @@
      x  |  x  |  -  | cmt
 
  Prompt Flag Driver(who drives the flag)
-    item  | at | Thread         | who
+    item  | at | who
    --------------------------------------
-    busy  | up | Buffer(Frm)    | App::Buffer#recv
-    busy  | dw | Buffer(Frm)    | App::Buffer#cmt
-   action | up | Buffer(Frm)    | App::Buffer#recv(@busy-up)
-   action | dw | Buffer(Frm)    | App::Buffer#recv/Wat::Action#action
-    event | up | Shell(App/Wat) | Wat::Action#action
-    event | dw | Shell(App/Wat) | Wat::Action#action
+    busy  | up | App::Buffer#recv
+    busy  | dw | App::Buffer#cmt
+   action | up | App::Buffer#recv(@busy-up)
+   action | dw | App::Buffer#recv/Wat::Action#action
+    event | up | Wat::Action#action
+    event | dw | Wat::Action#action
 
  Dependency(active mode)
    Shell: App command -> send to Buffer

@@ -1,9 +1,12 @@
 #!/usr/bin/env ruby
 # Log viewer
 # For stream log version 6 or later
+# You can remove keys by setting EXCLUDE environment with CSV
 # alias jlv
 require 'json'
 abort 'Usage: json_logview json_log' if STDIN.tty? && ARGV.empty?
+exary = ENV['EXCLUDE'].to_s.split(',')
+
 ARGF.each do |line|
   next if line.to_s.empty?
   hash = {}
@@ -15,9 +18,8 @@ ARGF.each do |line|
       data = v.unpack('m').first
       hash[:data] = "#{data.inspect}(#{data.size})"
     else
-      hash[k] = v
+      hash[k] = v unless exary.include?(k.to_s)
     end
   end
-  hash[:filename] = File.basename($FILENAME,".*")
   puts JSON.dump(hash)
 end

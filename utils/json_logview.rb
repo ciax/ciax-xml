@@ -3,9 +3,8 @@
 # For stream log version 6 or later
 # alias jlv
 require 'json'
-
 abort 'Usage: json_logview json_log' if STDIN.tty? && ARGV.empty?
-readlines.each do |line|
+ARGF.each do |line|
   next if line.to_s.empty?
   hash = {}
   JSON.parse(line.chomp, symbolize_names: true).each do |k, v|
@@ -19,5 +18,6 @@ readlines.each do |line|
       hash[k] = v
     end
   end
+  hash[:filename] = File.basename($FILENAME,".*")
   puts JSON.dump(hash)
 end

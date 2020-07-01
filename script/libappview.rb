@@ -25,7 +25,7 @@ module CIAX
 
       def to_csv
         upd
-        @group.each_value_with_object('') do |gdb, str|
+        @group.values.each_with_object('') do |gdb, str|
           cap = gdb[:caption] || next
           gdb[:members].each do |id|
             label = @index[id][:label]

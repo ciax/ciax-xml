@@ -10,7 +10,7 @@ class Thread
   end
 
   def to_hash
-    each_key_with_object(status: status) { |k, h| h[k] = self[k] }
+    keys.each_with_object(status: status) { |k, h| h[k] = self[k] }
   end
 end
 

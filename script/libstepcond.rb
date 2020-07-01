@@ -16,7 +16,7 @@ module CIAX
         end
 
         def active?
-          @spary.all? { |s| s[:event].active? }
+          @spary.any? { |s| s[:sv_stat].active? }
         end
 
         # Blocking during busy. (for interlock check)

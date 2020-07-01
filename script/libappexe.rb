@@ -133,6 +133,10 @@ module CIAX
         com_err('Timeout for Busy Device')
       end
 
+      def active?
+        %i[busy action event].any? { |k| up?(k) }
+      end
+
       private
 
       def ___init_sub_exe(sub_exe)

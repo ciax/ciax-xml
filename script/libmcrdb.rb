@@ -125,7 +125,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Opt::Get.new('[id] (key) ..', options: 'j') do |opt, args|
         dbi = Db.new.get(PROJ || args.shift)
         puts opt[:j] ? dbi.web_select.to_j : dbi.path(args)

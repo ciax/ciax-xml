@@ -59,7 +59,7 @@ module CIAX
         raise if tim.empty?
         @index = tim.to_i
         cmd
-      rescue
+      rescue StandardError
         raise("NO record for #{str}") if @index.zero?
         @index = 0
         verbose { colorize('LINE:REWINDED', 3) }

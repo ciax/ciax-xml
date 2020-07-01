@@ -78,7 +78,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       require 'libappstat'
       Opt::Get.new('[id]') do |_opt, args|
         dbi = Ins::Db.new.get(args.shift)

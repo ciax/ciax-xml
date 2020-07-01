@@ -137,10 +137,10 @@ module CIAX
 
       def ___init_sub_exe(sub_exe)
         return unless sub_exe
-        sub_merge(sub_exe.sv_stat, %i(comerr ioerr))
+        sub_merge(sub_exe.sv_stat, %i[comerr ioerr])
       end
     end
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Opt::Conf.new('[id]', options: 'cehl') do |cfg|
         db = cfg[:db] = Ins::Db.new
         dbi = db.get(cfg.args.shift)

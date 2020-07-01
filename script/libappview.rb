@@ -100,7 +100,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       require 'libinsdb'
       Opt::Get.new('[site] | < status_file', options: 'rjv') do |opt, args|
         stat = Status.new(args).ext_local.ext_file

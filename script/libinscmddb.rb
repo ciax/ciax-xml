@@ -16,7 +16,7 @@ module CIAX
       def override(id, cdb)
         if (cref = ref(id))
           ali = cref[:command]
-          %i(group unit).each { |k| cdb[k].update(ali[k]) }
+          %i[group unit].each { |k| cdb[k].update(ali[k]) }
           ___conv_index(cdb, ali)
         end
         self
@@ -48,7 +48,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
         dbi = CmdDb.new.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)

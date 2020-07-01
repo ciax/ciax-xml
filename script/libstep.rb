@@ -113,7 +113,7 @@ module CIAX
       def ___cond_result(h)
         return __body('!', 6) if h[:skip]
         return __body('o', 2) if h[:res]
-        __body('x', %w(goal bypass).include?(self[:type]) ? 4 : 1)
+        __body('x', %w[goal bypass].include?(self[:type]) ? 4 : 1)
       end
 
       def ___cond_line(h)

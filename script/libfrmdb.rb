@@ -49,7 +49,7 @@ module CIAX
 
       def __add_cmdfrm(e)
         item = { type: e.name }
-        if %w(char string cc).include?(e.name)
+        if %w[char string cc].include?(e.name)
           item.update(_get_h(e) { |a| a[:val] = @rep.subst(a[:val]) })
         end
         verbose { "Data:[#{item}]" }
@@ -130,7 +130,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
         dbi = Db.new.get(args.shift)
         puts opt[:r] ? dbi.to_v : dbi.path(args)

@@ -112,7 +112,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       require 'libstatpool'
       Opt::Get.new('[id]', options: 'h') do |opt, args|
         event = Wat::Event.new(args).cmode(opt.host)

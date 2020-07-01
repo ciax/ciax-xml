@@ -25,7 +25,7 @@ module CIAX
           msg('Ctrl-\ for exit')
         end
         ___sv_loop(io)
-      rescue
+      rescue StandardError
         log("#{$ERROR_INFO} #{$ERROR_POSITION}")
         raise unless io
       end
@@ -122,6 +122,6 @@ module CIAX
 
     @sim_list = SimList.new
 
-    Server.new.serve if __FILE__ == $PROGRAM_NAME
+    Server.new.serve if $PROGRAM_NAME == __FILE__
   end
 end

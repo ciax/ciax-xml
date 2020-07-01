@@ -22,14 +22,14 @@ module CIAX
         @adbs = @dbi[:status]
         @adbsi = @adbs[:index].reject { |_k, v| v[:ref] }
         ext_dic(:data) { Hashx.new(@adbsi).skeleton }
-        %i(class msg).each { |k| self[k] ||= Hashx.new }
+        %i[class msg].each { |k| self[k] ||= Hashx.new }
         ___init_field(field)
       end
 
       # Get with token
       def get(id)
-        token = id.sub(%r(data/), '')
-        return super unless %r(/) =~ token
+        token = id.sub(%r{data/}, '')
+        return super unless %r{/} =~ token
         cat = $`.to_sym
         cfg_err('No such entry [%s]', cat) unless key?(cat)
         self[cat].get($')
@@ -68,7 +68,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Opt::Get.new('[id]', options: 'h') do |opt, args|
         puts Status.new(args).cmode(opt.host)
       end

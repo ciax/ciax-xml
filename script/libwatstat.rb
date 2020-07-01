@@ -61,9 +61,9 @@ module CIAX
 
       def ___init_struct
         # For Array element
-        %i(active exec block int).each { |i| self[i] = [] }
+        %i[active exec block int].each { |i| self[i] = [] }
         # For Hash element
-        %i(history res).each { |i| self[i] = {} }
+        %i[history res].each { |i| self[i] = {} }
         # For Time element
         self[:act_time] = [now_msec, now_msec]
       end
@@ -74,7 +74,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       require 'libinsdb'
       Opt::Get.new('[site]', options: 'h') do |opt, args|
         puts Event.new(args.shift).cmode(opt.host)

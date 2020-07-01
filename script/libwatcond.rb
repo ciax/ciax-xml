@@ -26,7 +26,7 @@ module CIAX
       # Done every after Status updated
       def upd_cond
         ___sync
-        %i(active exec block int).each { |s| @event[s].clear }
+        %i[active exec block int].each { |s| @event[s].clear }
         ___chk_conds
         @event
       end

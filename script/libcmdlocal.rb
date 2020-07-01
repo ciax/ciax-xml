@@ -25,7 +25,7 @@ module CIAX
         end
 
         def add_jump # returns Array(Symbols)
-          %i(jump_mcr jump_site jump_layer).each do |jk|
+          %i[jump_mcr jump_site jump_layer].each do |jk|
             append(@cfg[jk]) if @cfg[jk]
           end
         end
@@ -101,7 +101,7 @@ module CIAX
         end
       end
 
-      if __FILE__ == $PROGRAM_NAME
+      if $PROGRAM_NAME == __FILE__
         Opt::Conf.new('') do |cfg|
           loc = Index.new(cfg).loc
           loc.add_view

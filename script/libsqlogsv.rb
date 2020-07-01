@@ -54,7 +54,7 @@ module CIAX
         sql = que.shift
         IO.popen(@sqlcmd, 'w') { |f| f.puts sql }
         verbose { "Saved for '#{sql}'" }
-      rescue
+      rescue StandardError
         give_up("Sqlite3 input error\n#{sql}")
       end
 

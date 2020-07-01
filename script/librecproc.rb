@@ -25,8 +25,8 @@ module CIAX
         # cfg doesn't change
         def ext_processor(cfg)
           @cfg = type?(cfg, Config)
-          %i(port cid label).each { |k| self[k] = @cfg[k] }
-          %i(version pid).each { |k| self[k] = @cfg[k] || '0' }
+          %i[port cid label].each { |k| self[k] = @cfg[k] }
+          %i[version pid].each { |k| self[k] = @cfg[k] || '0' }
           self[:total_steps] = 0
           @opt = @cfg[:opt]
           self[:mode] = @opt.drv? ? 'drive' : 'test'

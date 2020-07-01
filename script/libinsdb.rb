@@ -135,7 +135,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Opt::Get.new('[id] (key) ..', options: 'r') do |opt, args|
         db = Db.new(PROJ)
         puts "Ins host db = #{db.host_idb.inspect}"

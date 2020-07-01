@@ -27,6 +27,6 @@ module CIAX
 
     @sim_list << Carousel
 
-    Carousel.new.serve if __FILE__ == $PROGRAM_NAME
+    Carousel.new.serve if $PROGRAM_NAME == __FILE__
   end
 end

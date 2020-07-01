@@ -41,7 +41,7 @@ module CIAX
       def view(reg = '.')
         map do |h|
           str = "[#{h[:status]}]"
-          str += %i(id layer name port).map { |id| h[id] }.compact.join(':')
+          str += %i[id layer name port].map { |id| h[id] }.compact.join(':')
           str += "(#{h[:type]})" if h[:type]
           str
         end.grep(/#{reg}/).sort.extend(Enumx).to_j

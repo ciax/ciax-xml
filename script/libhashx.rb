@@ -129,7 +129,7 @@ module CIAX
     end
   end
 
-  if __FILE__ == $PROGRAM_NAME
+  if $PROGRAM_NAME == __FILE__
     a = Hashx.new
     a[:b] = { c: { 'd' => 'e' } }
     puts a.to_v

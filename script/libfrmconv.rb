@@ -132,7 +132,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       require 'libfrmcmd'
       Opt::Conf.new('[id] [cmd]', options: 'h') do |cfg|
         field = Field.new(cfg.args).ext_local.ext_conv

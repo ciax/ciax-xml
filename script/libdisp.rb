@@ -104,7 +104,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       # Top level only
       idx = Index.new(column: 3, caption: 'top1')
       6.times { |i| idx.put_item("x#{i}", "caption #{i}") }

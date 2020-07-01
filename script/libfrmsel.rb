@@ -51,7 +51,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       # No option -> :command, -r: :response
       Opt::Get.new('[id] [cmd]', options: 'h', r: 'response') do |opt, args|
         mode = opt.delete(:r) ? :response : :command

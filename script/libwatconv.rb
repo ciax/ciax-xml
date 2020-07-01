@@ -61,7 +61,7 @@ module CIAX
           verbose { cfmt('Auto Update(%s, %s)', time, @regexe) }
           begin
             queue('auto', 3, @regexe)
-          rescue
+          rescue StandardError
             errmsg
           end
           self
@@ -82,7 +82,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       require 'libinsdb'
       Opt::Get.new('< status_file', options: 't') do |opt, args|
         stat = App::Status.new(args).ext_local.ext_file

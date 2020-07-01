@@ -114,7 +114,7 @@ module CIAX
 
     # Sub methods for Initialize
     def ___init_opt
-      @cfg.check_keys(%i(opt))
+      @cfg.check_keys(%i[opt])
       @opt = @cfg[:opt]
     end
 

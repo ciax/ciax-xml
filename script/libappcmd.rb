@@ -68,7 +68,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       require 'libappstat'
       require 'libstatpool'
       Opt::Conf.new('[id] [cmd] (par)', options: 'a') do |cfg|

@@ -53,6 +53,6 @@ module CIAX
       end
     end
 
-    Slosyn.new.serve if __FILE__ == $PROGRAM_NAME
+    Slosyn.new.serve if $PROGRAM_NAME == __FILE__
   end
 end

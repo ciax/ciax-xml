@@ -76,7 +76,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Opt::Get.new('[id] [grp]') do |opt, args|
         dbi = Ins::Db.new.get(args.shift)
         opt.getarg('[id] (ctl)') do |_o, ar|

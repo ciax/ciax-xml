@@ -76,7 +76,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Conf.new('[proj] [cmd] (par)', options: 'cenlr') do |cfg|
         Exe.new(cfg)
       end.cui

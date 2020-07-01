@@ -40,6 +40,6 @@ module CIAX
 
     @sim_list << Arm
 
-    Arm.new.serve if __FILE__ == $PROGRAM_NAME
+    Arm.new.serve if $PROGRAM_NAME == __FILE__
   end
 end

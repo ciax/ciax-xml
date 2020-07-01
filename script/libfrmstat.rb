@@ -129,7 +129,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Opt::Get.new('[id]', options: 'h') do |opt, args|
         puts Field.new(args).cmode(opt.host)
       end

@@ -48,11 +48,11 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       require 'libopt'
       Opt::Get.new('[type]') do |_o, args|
         file = Msg.xmlfiles(args.shift).first.to_s
-        Msg.args_err(%w(adb fdb idb ddb mdb cdb sdb hdb).inspect) if file.empty?
+        Msg.args_err(%w[adb fdb idb ddb mdb cdb sdb hdb].inspect) if file.empty?
         ele = Elem.new(file)
         ele.each { |e| puts e.name }
       end

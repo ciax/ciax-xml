@@ -80,10 +80,10 @@ module CIAX
 
       def top_layer
         @valids = []
-        %i(f a w x m).any? do |l|
+        %i[f a w x m].any? do |l|
           @valids.unshift(l)
           key?(l) || @default.include?(l)
-        end || @valids = %i(w a f)
+        end || @valids = %i[w a f]
         @optdb.layers[@valids.shift]
       end
 
@@ -92,7 +92,7 @@ module CIAX
         return dup unless (lo = self[:l])
         @valids.shift
         return dup if @valids.include?(lo.to_sym)
-        sb = %i(s e l).each_with_object(dup) { |k, o| o.delete(k) }
+        sb = %i[s e l].each_with_object(dup) { |k, o| o.delete(k) }
         sb.update(h: 'localhost')
       end
 

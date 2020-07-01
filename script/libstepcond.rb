@@ -41,7 +41,7 @@ module CIAX
 
         def ___condition(stat, ref)
           c = {}
-          %i(site var form cmp cri skip).each { |k| c[k] = ref[k] }
+          %i[site var form cmp cri skip].each { |k| c[k] = ref[k] }
           unless c[:skip]
             real = stat.pick_val(c)
             res = method('_ope_' + c[:cmp]).call(c[:cri], real)

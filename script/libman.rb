@@ -102,7 +102,7 @@ module CIAX
         end
       end
     end
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Mcr::Conf.new('[proj] [cmd] (par)', options: 'cedhlnr') do |cfg|
         Exe.new(cfg)
       end.cui

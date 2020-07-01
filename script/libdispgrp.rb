@@ -138,7 +138,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       # Two level groups with item number
       cap2 = 'top2'
       idx1 = Index.new(column: 3, caption: cap2, line_number: true).ext_grp

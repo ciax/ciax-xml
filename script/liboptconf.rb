@@ -47,7 +47,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Conf.new('', options: 'h') do |cfg|
         printf("PROJ=%s\n", cfg.get(:proj))
       end

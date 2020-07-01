@@ -121,7 +121,7 @@ module CIAX
 
       class Jump < LongJump; end
 
-      if __FILE__ == $PROGRAM_NAME
+      if $PROGRAM_NAME == __FILE__
         Conf.new('[id]', options: 'cehlns') do |cfg|
           ExeDic.new(cfg)
         end.cui

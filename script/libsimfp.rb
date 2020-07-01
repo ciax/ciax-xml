@@ -100,6 +100,6 @@ module CIAX
 
     @sim_list << FpDio
 
-    FpDio.new.serve if __FILE__ == $PROGRAM_NAME
+    FpDio.new.serve if $PROGRAM_NAME == __FILE__
   end
 end

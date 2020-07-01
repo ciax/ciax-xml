@@ -66,7 +66,7 @@ module CIAX
 
       def ___mk_thead
         @dbs = @adbs[:index]
-        tr = __mk_line(_mk_tbody, %i(time elapsed msg))
+        tr = __mk_line(_mk_tbody, %i[time elapsed msg])
         @ctltd = tr.enclose('td', class: 'center')
         # add buttons here
         _elem_button(@ctltd, 'upd')
@@ -120,7 +120,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Opt::Get.new('[id] (ctl)') do |_opt, args|
         puts Status.new(Ins::Db.new.get(args.shift))
       end

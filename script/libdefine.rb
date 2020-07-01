@@ -66,5 +66,5 @@ module CIAX
   # Array of Error Name
   Errors = constants.select { |o| const_get(o).is_a? Module }
 
-  puts Errors if __FILE__ == $PROGRAM_NAME
+  puts Errors if $PROGRAM_NAME == __FILE__
 end

@@ -148,7 +148,7 @@ module CIAX
     end
   end
 
-  if __FILE__ == $PROGRAM_NAME
+  if $PROGRAM_NAME == __FILE__
     Opt::Get.new('[type] (adb,fdb,idb,ddb,mdb,cdb,sdb,hdb)') do |opt, args|
       doc = Xml::Doc.new(args.shift)
       opt.getarg('[type] [id]') do |_o, ar|

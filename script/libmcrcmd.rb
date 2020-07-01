@@ -98,7 +98,7 @@ module CIAX
     end
   end
 
-  if __FILE__ == $PROGRAM_NAME
+  if $PROGRAM_NAME == __FILE__
     require 'libwatdic'
     Mcr::Conf.new('[cmd] (par)', options: 'j') do |cfg|
       ent = Mcr::Index.new(cfg).add_rem.add_ext.set_cmd(cfg.args)

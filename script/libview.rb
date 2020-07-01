@@ -51,7 +51,7 @@ module CIAX
 
       # Set view mode procs
       def _set_opt(str)
-        %i(j r).each do |k|
+        %i[j r].each do |k|
           @optdb[k][:proc] = proc do
             View.default_view.replace(k.to_s)
           end

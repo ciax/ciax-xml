@@ -11,7 +11,7 @@ module CIAX
       def initialize(method)
         super()
         # method [len, bcc, sum]
-        unless %w(len bcc sum).include?(method)
+        unless %w[len bcc sum].include?(method)
           Msg.cfg_err('Bad CC method %s', method)
         end
         @method = method
@@ -61,7 +61,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       require 'libopt'
       odb = { l: 'len', b: 'bcc', s: 'sum' }
       Opt::Get.new('[str]', odb) do |opt, args|

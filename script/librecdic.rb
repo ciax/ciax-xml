@@ -120,7 +120,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Opt::Get.new('[num]', options: 'chr') do |opts, args|
         Msg.args_err if args.empty?
         ra = RecArc.new.cmode(opts.host)

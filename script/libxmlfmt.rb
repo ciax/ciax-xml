@@ -49,7 +49,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       doc = Format.new
       doc << HEADER
       html = doc.enclose('html')

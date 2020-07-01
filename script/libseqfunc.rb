@@ -87,15 +87,15 @@ module CIAX
 
       # Query
       def _qry_giveup?(cstep)
-        @qry.query(%w(drop force retry), cstep)
+        @qry.query(%w[drop force retry], cstep)
       end
 
       def _qry_enter?(cstep)
-        cstep.result = 'enter' if @qry.query(%w(pass enter), cstep)
+        cstep.result = 'enter' if @qry.query(%w[pass enter], cstep)
       end
 
       def _qry_exec?(estep)
-        @qry.query(%w(exec skip), estep)
+        @qry.query(%w[exec skip], estep)
       end
 
       def _qry_ok?(ostep)

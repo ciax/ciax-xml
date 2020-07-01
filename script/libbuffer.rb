@@ -106,7 +106,7 @@ module CIAX
         cmt
       rescue CommError
         alert
-      rescue
+      rescue StandardError
         alert($ERROR_POSITION)
       end
 
@@ -181,7 +181,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Opt::Conf.new('[id] [cmd] (par)') do |cfg|
         id = cfg.args.shift
         dbi = Db.new.get(id)

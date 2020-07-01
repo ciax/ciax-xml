@@ -17,7 +17,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       Opt::Conf.new('[id]', options: 'cehl') do |cfg|
         ExeDic.new(cfg, db: Ins::Db.new(cfg.proj))
       end.cui

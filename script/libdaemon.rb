@@ -89,7 +89,7 @@ module CIAX
     def ___kill_pid(pid)
       Process.kill(:TERM, pid.to_i)
       show cfmt('%:1s Process Killed (%s)', 'Daemon', pid)
-    rescue
+    rescue StandardError
       nil
     end
 

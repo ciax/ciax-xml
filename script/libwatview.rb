@@ -32,7 +32,7 @@ module CIAX
       def ___init_upd_procs
         @upd_procs.append(self, :event) { @event.upd }
         @upd_procs.append(self, :to_s) do
-          %i(exec block int act_time upd_next).each do |id|
+          %i[exec block int act_time upd_next].each do |id|
             self[id] = @event.get(id)
           end
           ___upd_stat
@@ -89,7 +89,7 @@ module CIAX
       end
     end
 
-    if __FILE__ == $PROGRAM_NAME
+    if $PROGRAM_NAME == __FILE__
       require 'libinsdb'
       Opt::Get.new('[site] | < event_file', options: 'r') do |_opt, args|
         event = Event.new(args.shift).ext_local.ext_file

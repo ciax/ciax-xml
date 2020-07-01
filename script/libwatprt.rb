@@ -96,7 +96,7 @@ module CIAX
         end
       end
 
-      if __FILE__ == $PROGRAM_NAME
+      if $PROGRAM_NAME == __FILE__
         require 'libinsdb'
         Opt::Get.new('[site] | < event_file', options: 'r') do |_opt, args|
           event = Event.new(args.shift).ext_local.ext_file

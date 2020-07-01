@@ -74,7 +74,7 @@ module CIAX
       end
 
       def ___mk_stat
-        @adbs[:group].values.each do |g|
+        @adbs[:group].each_value do |g|
           cap = g[:caption] || next
           ___mk_column(g[:members], cap, g[:column])
         end

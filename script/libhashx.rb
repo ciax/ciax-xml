@@ -49,7 +49,7 @@ module CIAX
 
     # Make empty copy (Empty string because it can be operated with replacement)
     def skeleton
-      keys.each_with_object(Hashx.new) do |i, hash|
+      each_key_with_object(Hashx.new) do |i, hash|
         hash[i] = ''
       end
     end

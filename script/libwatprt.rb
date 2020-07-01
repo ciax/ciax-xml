@@ -48,7 +48,7 @@ module CIAX
 
         def ___view_cond(vw)
           vw << __itemize('Conditions')
-          self[:stat].values.each do |i| # each event
+          self[:stat].each_value do |i| # each event
             vw << cfmt("    %:6s\t: %s\n", i[:label], __result(i[:active]))
             ___view_event(vw, i[:cond])
           end

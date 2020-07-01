@@ -41,7 +41,7 @@ module CIAX
       def ___conv_index(cdb, ali)
         idx = cdb[:index]
         aidx = ali[:index]
-        aidx.each do |_id, itm|
+        aidx.each_value do |itm|
           itm.update(idx[itm[:ref]].pick(:parameters, :body))
         end
         idx.update(aidx)

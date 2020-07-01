@@ -25,7 +25,7 @@ module CIAX
     # Value should be String to replace
     def init_flg(flg_db = {}) # returns self
       @flg_db.update(type?(flg_db, Hash))
-      flg_db.keys.each do |k|
+      flg_db.each_key do |k|
         self[k] = 'false'
       end
       self
@@ -99,7 +99,7 @@ module CIAX
     # Subtract and merge to self data, return rest of the data
     def subtr(input)
       hash = input.dup
-      @flg_db.keys.each do |k|
+      @flg_db.each_key do |k|
         self[k] = hash[k] ? hash.delete(k) : false
       end
       hash

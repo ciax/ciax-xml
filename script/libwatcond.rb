@@ -18,7 +18,7 @@ module CIAX
         @event = type?(event, Event)
         # Pick usable val
         @list = []
-        @windex.values.each do |v|
+        @windex.each_value do |v|
           @list |= v[:cnd].map { |i| i[:var] || i[:vars] }.flatten
         end
       end

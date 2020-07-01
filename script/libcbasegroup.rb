@@ -52,7 +52,7 @@ module CIAX
 
       def merge_forms(other)
         @disp_dic.merge_sub(other)
-        other.keys.each { |id| _new_form(id) }
+        other.each_key { |id| _new_form(id) }
         self
       end
 

@@ -84,7 +84,7 @@ module CIAX
       end
 
       def ___exe_opt
-        keys.each do |k|
+        each_key do |k|
           @optdb[k][:proc].call(self[k]) if @optdb[k].key?(:proc)
         end
       end

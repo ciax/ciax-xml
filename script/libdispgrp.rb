@@ -48,7 +48,7 @@ module CIAX
 
       def __rec_merge(gr)
         type?(gr, Section).index = self
-        gr.values.each do |sg|
+        gr.each_value do |sg|
           if sg.is_a? Section
             __rec_merge(sg)
           else

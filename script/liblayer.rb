@@ -35,7 +35,7 @@ module CIAX
       def ext_shell
         super
         @cfg[:jump_layer] = @jumpgrp
-        _dic.each do |id, _obj|
+        _dic.each_key do |id|
           @jumpgrp.add_form(id, id.capitalize + ' mode')
         end
         @current = @cfg[:opt].init_layer || _dic.keys.first

@@ -94,14 +94,32 @@ module CIAX
     # other fills up my blank (me will change)
     # don't merge non existent keys of me
     def __rec_fillup(me, other)
+      return me unless __chk_cls(Hash, me, other)
       me.each do |k, mv|
         fv = other[k]
-        if __chk_cls(Hash, mv, fv)
-          me[k] = __rec_fillup(mv, fv)
-        elsif mv.nil? || (__chk_cls(Array, mv, fv) && mv.empty?)
-          me[k] = fv
-        end
+        next if __repl_enum(mv, fv)
+        me.store(k, fv) if mv.to_s.empty?
       end
+      me
+    end
+
+    def __repl_enum(mv, fv)
+      return unless __chk_cls(Enumerable, mv, fv)
+      if __chk_cls(Hash, mv, fv)
+        __rec_fillup(mv, fv)
+      elsif __chk_cls(Array, mv, fv)
+        __rec_fillup_ary(mv, fv)
+      end
+    end
+
+    def __rec_fillup_ary(me, other)
+      return unless __chk_cls(Array, me, other)
+      me.each_with_index do |mv, i|
+        fv = other[i]
+        next if __repl_enum(mv, fv)
+        me[i] = fv if mv.to_s.empty?
+      end
+      me
     end
 
     def __chk_cls(cls, *ary)

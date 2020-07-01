@@ -25,7 +25,7 @@ module CIAX
           @symdb = type?(sdb, Sym::Db).get_dbi(['share'] + @adbs[:symtbl])
           @symbol = @adbs[:symbol] || {}
           @index = @adbs[:index].dup.update(@adbs[:alias] || {})
-          self
+          labeling
         end
 
         def labeling

@@ -24,7 +24,7 @@ module CIAX
 
         def ext_conv
           @cmt_procs.append(self, :conv, 1) { conv }
-          self
+          conv
         end
 
         # Field will commit multiple timese par one commit here

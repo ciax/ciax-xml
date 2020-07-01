@@ -26,7 +26,7 @@ module CIAX
       self
     end
 
-    # Fill up all the missing element
+    # Fill up all the empty(nil) element
     # ope overwrites self
     def deep_fillup(ope)
       __rec_fillup(self, ope)
@@ -92,16 +92,20 @@ module CIAX
     end
 
     # other fills up my blank (me will change)
+    # don't merge non existent keys of me
     def __rec_fillup(me, other)
-      me.update(other) do |_k, mv, fv|
-        if mv.is_a? Hash
-          __rec_fillup(mv, fv)
-        elsif mv.nil? || (mv.is_a?(Array) && mv.empty? && fv.is_a?(Array))
-          fv
-        else
-          mv
+      me.each do |k, mv|
+        fv = other[k]
+        if __chk_cls(Hash, mv, fv)
+          me[k] = __rec_fillup(mv, fv)
+        elsif mv.nil? || (__chk_cls(Array, mv, fv) && mv.empty?)
+          me[k] = fv
         end
       end
+    end
+
+    def __chk_cls(cls, *ary)
+      ary.all? { |v| v.is_a?(cls) }
     end
   end
 end

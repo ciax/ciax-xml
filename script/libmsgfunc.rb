@@ -81,7 +81,8 @@ module CIAX
       tagary = [PROGRAM, HOST, today]
       tag = format('%s@%s%d', *tagary)
       msgary = [PROJ, br, RUBY_VERSION]
-      msg = format('PROJECT = %s, BRANCH = %s, RUBY Ver = %s', *msgary)
+      msg = format('PROJECT = %s, BRANCH = %s, RUBY Ver = %s, ', *msgary)
+      msg += format('DAEMON = %s, SERVER = %s, DATE = %s',*tagary)
       _git("tag -afm '#{msg}' '#{tag}'")
       tag
     end

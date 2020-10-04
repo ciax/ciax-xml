@@ -3,17 +3,20 @@
   <alias id="ist" label="Cas Inst DB">
     <group id="gci" caption="Current Instrument">
       <unit id="uis" label="Instrument">
-        <item id="mcs" label="MCS" ref="seti">
-          <argv>8</argv>
-        </item>
         <item id="comics" label="COMICS" ref="seti">
           <argv>2</argv>
+        </item>
+        <item id="focas" label="FOCAS" ref="seti">
+          <argv>4</argv>
         </item>
         <item id="moircs" label="MOIRCS" ref="seti">
           <argv>7</argv>
         </item>
-        <item id="focas" label="FOCAS" ref="seti">
-          <argv>4</argv>
+        <item id="swims" label="SWIMS" ref="seti">
+          <argv>6</argv>
+        </item>
+        <item id="mcs" label="MCS" ref="seti">
+          <argv>9</argv>
         </item>
       </unit>
       <unit id="ucf" title="s[a|b|c|d]" label="Current Flange [%s]">

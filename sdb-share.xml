@@ -8,11 +8,10 @@
       <pattern class="normal" msg="CIAO">3</pattern>
       <pattern class="normal" msg="FOCAS">4</pattern>
       <pattern class="normal" msg="IRCS">5</pattern>
-      <pattern class="normal" msg="N/A">6</pattern>
+      <pattern class="normal" msg="SWIMS">6</pattern>
       <pattern class="normal" msg="MOIRCS">7</pattern>
-      <pattern class="normal" msg="MCS">8</pattern>
-      <pattern class="normal" msg="MP-CS2">9</pattern>
-      <pattern class="normal" msg="SWIMS">10</pattern>
+      <pattern class="normal" msg="MP-CS1">8</pattern>
+      <pattern class="normal" msg="MCS">9</pattern>
       <default class="warn" msg="OTHER"/>
     </table>
     <table id="flange">

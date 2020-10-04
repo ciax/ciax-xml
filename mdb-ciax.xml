@@ -1,43 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mdb xmlns="http://ciax.sum.naoj.org/ciax-xml/mdb">
   <macro id="ciax" version="1" label="Cart Macro" host="ciax" port="55554">
+    <group id="g_upd" caption="Update Commands" rank="0">
+      <unit id="unit_upd" label="Update All Devices">
+        <item id="upd" label="Update All Devices">
+          <upd site="dts"/>
+          <upd site="crt"/>
+          <upd site="dso"/>
+          <upd site="dsi"/>
+          <upd site="cci"/>
+          <upd site="cco"/>
+        </item>
+      </unit>
+    </group>
     <!--Exchange Commands-->
-    <group id="g_exchg" caption="Exchange Commands" rank="0">
+    <group id="g_exchg" caption="Exchange Commands" rank="1">
       <unit id="unit_exchg" label="Exhange Instrument">
         <item id="ex_focas" label="Exchange to FOCAS">
-          <mcr name="dpt"/>
-          <mcr name="get"/>
+          <mcr name="depart"/>
+          <mcr name="fetch"/>
           <mcr name="r2fi"/>
-          <mcr name="set"/>
-          <mcr name="ret"/>
+          <mcr name="deliver"/>
+          <mcr name="return"/>
         </item>
         <item id="ex_moircs" label="Exchange to MOIRCS">
-          <mcr name="dpt"/>
-          <mcr name="get"/>
+          <mcr name="depart"/>
+          <mcr name="fetch"/>
           <mcr name="r2mi"/>
-          <mcr name="set"/>
-          <mcr name="ret"/>
+          <mcr name="deliver"/>
+          <mcr name="return"/>
         </item>
         <item id="ex_comics" label="Exchange to COMICS">
-          <mcr name="dpt"/>
-          <mcr name="get"/>
+          <mcr name="depart"/>
+          <mcr name="fetch"/>
           <mcr name="r2mo"/>
-          <mcr name="set"/>
-          <mcr name="ret"/>
+          <mcr name="deliver"/>
+          <mcr name="return"/>
         </item>
         <item id="ex_k3d" label="Exchange to Kyoto3D">
-          <mcr name="dpt"/>
-          <mcr name="get"/>
+          <mcr name="depart"/>
+          <mcr name="fetch"/>
           <mcr name="r2fo"/>
-          <mcr name="set"/>
-          <mcr name="ret"/>
+          <mcr name="deliver"/>
+          <mcr name="return"/>
         </item>
       </unit>
     </group>
     <!--Abstract Commands-->
     <group id="g_abstract" caption="Abstract Commands" rank="0">
       <unit id="unit_dprt" label="Run to CAS">
-        <item id="dpt" label="Depart from Home">
+        <item id="depart" label="Depart from Home">
           <select site="crt" var="cps" form="data">
             <option val="10">
               <mcr name="rdpo"/>
@@ -47,7 +59,7 @@
             </option>
           </select>
         </item>
-        <item id="ret" label="Return to Home">
+        <item id="return" label="Return to Home">
           <select site="crt" var="ist" form="msg">
             <option val="COMICS">
               <mcr name="rrto"/>
@@ -65,7 +77,7 @@
         </item>
       </unit>
       <unit id="unit_getset" label="Transport to/from CAS">
-        <item id="get" label="Get from CAS">
+        <item id="fetch" label="Fetch from CAS">
           <select site="crt" var="ist" form="msg">
             <option val="COMICS">
               <mcr name="hmi"/>
@@ -81,7 +93,7 @@
             </option>
           </select>
         </item>
-        <item id="set" label="Set to CAS">
+        <item id="deliver" label="Deliver to CAS">
           <select site="crt" var="ist" form="msg">
             <option val="COMICS">
               <mcr name="cmi"/>
@@ -2079,16 +2091,6 @@
           </goal>
           <cfg site="crt" name="mcs"/>
           <cfg site="dts" name="mcs"/>
-        </item>
-      </unit>
-      <unit id="unit_upd" label="Update All Devices">
-        <item id="upd" label="Update All Devices">
-          <upd site="dts"/>
-          <upd site="crt"/>
-          <upd site="dso"/>
-          <upd site="dsi"/>
-          <upd site="cci"/>
-          <upd site="cco"/>
         </item>
       </unit>
       <unit id="unit_tsc" label="TSC commands">

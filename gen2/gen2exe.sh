@@ -4,17 +4,17 @@
 #  exe [command]    : Foreground execution
 #  exe -b           : Show active background process id
 #  exe -b [command] : Background execution
+#  exe -k           : Kill background command
 # command is exclusive
 # Description: Long term command should be done backgroup to update status
 #link exe
 
+## Command Execution with Log output ##
 doexe(){
     # Error output should be separated
     eval $args 2>> $exelog
     code="$?"
 }
-
-### Status functions ###
 loghead(){
     echo -en "[$(date +%F_%T)]% $* " >> $exelog
 }
@@ -22,12 +22,13 @@ setexit(){
     echo "$code" > $exitfile
     echo " [exitcode=$code]" >> $exelog
 }
+## Process Handling ##
 updexit(){
     code=$(< $exitfile)
     [ "$code" = "0" ] || echo "0" > $exitfile
     echo $code
 }
-updpid(){
+updpid(){ # Clean up PID
     pid=$(< $pidfile)
     if [ "$pid" ]; then
         ps -ef | grep -v "$$ .* grep" | grep -qw $pid && return
@@ -35,6 +36,14 @@ updpid(){
     unset pid
     > $pidfile
 }
+killpid(){
+    pid=$(< $pidfile)
+    [ "$pid" ] && kill $pid
+    unset pid
+    > $pidfile
+    echo 0
+}
+## Command by Background or Foreground ##
 bglog(){
     doexe
     loghead "$args (pid=$(< $pidfile))"
@@ -74,7 +83,7 @@ exelog=~/.var/log/gen2log.txt
 [ -f $exitfile ] || echo "0" > $exitfile
 [ -f $pidfile ] || touch $pidfile
 case "$1" in
-    '')
+    '') # Show latest exit code
         updexit
         ;;
     -b) # bg -> return pid, duplicated -> reject and pid 
@@ -84,6 +93,10 @@ case "$1" in
     -v) #For maintenance
         cat $exelog
         ;;
+    -k)
+        killpid
+        ;;
+
     *)
         fglog "$*"
         ;;

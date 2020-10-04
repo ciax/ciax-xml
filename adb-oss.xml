@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <adb xmlns="http://ciax.sum.naoj.org/ciax-xml/adb">
-  <app frm_id="oss" id="oss" label="TSC Control" version="9">
+  <app frm_id="oss" id="oss" label="TSC Control" version="10">
     <command xmlns="http://ciax.sum.naoj.org/ciax-xml/adbc">
       <group id="gsys" caption="System">
         <item id="cinit" label="Start TCP Status Request">
@@ -16,6 +16,7 @@
           <frmcmd name="inrang"/>
           <frmcmd name="jaklen"/>
           <frmcmd name="zlen"/>
+          <frmcmd name="getpid"/>
           <frmcmd name="getexit"/>
         </item>
         <item id="updinr" label="Inr" hidden="true">
@@ -94,6 +95,11 @@
             <frmcmd name="ajstop"/>
             <frmcmd name="inrang"/>
             <frmcmd name="jakstat"/>
+          </item>
+        </unit>
+        <unit id="ukill" label="Kill">
+          <item id="kill" label="Kill Process">
+            <frmcmd name="kill"/>
           </item>
         </unit>
       </group>

@@ -31,7 +31,7 @@ CIAX-xml has a several administration tools for setting up. While you can do it 
 sudo:x:27:(add user name)
 ...
 ```
-#### Set ''no password execution'' to shortcut the input
+#### Set ''no password execution'' to shortcut the input (Do not set up on a shared PC.)
 ```
  # visudo
  ...
